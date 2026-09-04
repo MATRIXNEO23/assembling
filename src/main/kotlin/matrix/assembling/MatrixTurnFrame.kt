@@ -50,6 +50,20 @@ data class NluOutput(
     val perspectiveReferent: String,
     val confidence: Map<String, Double>,
     val spans: Map<String, TextSpan?>,
+    /**
+     * Optional resolved fields produced by the Understanding lab contract.
+     *
+     * These fields keep the canonical labels above intact while preventing loss
+     * of already-resolved subject/target/owner/object data when a runtime emits
+     * full Domain.Claim-like output instead of only referent classes and spans.
+     */
+    val resolvedSubject: String? = null,
+    val resolvedTarget: String? = null,
+    val resolvedOwner: String? = null,
+    val resolvedPerspective: String? = null,
+    val objectValue: String? = null,
+    val sourceType: String? = null,
+    val worldTruth: Boolean = false,
 )
 
 data class TextSpan(val start: Int, val end: Int)
@@ -81,6 +95,8 @@ data class TypedClaim(
     val sourceType: String,
     val confidence: Map<String, Double>,
     val spans: Map<String, TextSpan?> = emptyMap(),
+    val perspective: String? = null,
+    val worldTruth: Boolean = false,
 )
 
 enum class CoherenceDecision {
