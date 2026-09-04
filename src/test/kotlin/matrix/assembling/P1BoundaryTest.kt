@@ -6,6 +6,7 @@ import kotlin.test.assertFalse
 import matrix.assembling.adapters.AffectiveLabAdapter
 import matrix.assembling.adapters.AffectiveRuntimeBridge
 import matrix.assembling.adapters.AffectiveRuntimeOutput
+import matrix.assembling.adapters.BasicCoherenceGuard
 import matrix.assembling.adapters.MatrixNluClaim
 import matrix.assembling.adapters.MatrixNluInterpretation
 import matrix.assembling.adapters.MatrixNluRequest
@@ -93,9 +94,12 @@ class P1BoundaryTest {
         )
 
         val result = adapter.understand(adapter.analyze(turn))
+        val checked = BasicCoherenceGuard().check(result)
 
         assertEquals("UNKNOWN", result.requireSemantic().subject)
         assertEquals("UNKNOWN", result.typedClaims.single().subject)
+        assertEquals(CoherenceDecision.LOW_CONFIDENCE_HOLD, checked.requireCoherence())
+        assertEquals("UNRESOLVED", checked.diagnostics.tags["coherence.subject"])
     }
 
     private fun baseAffectiveTurn(stableWrite: Boolean): MatrixTurnFrame = MatrixTurnFrame(
