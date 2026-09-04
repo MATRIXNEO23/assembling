@@ -1,11 +1,12 @@
 # Work Continuity — Matrix Assembling Lab
 
-Last updated: 2026-09-04T21:00+02:00
+Last updated: 2026-09-04T21:10+02:00
 Repository: `MATRIXNEO23/assembling`
-Working branch: `p1-diagnostics-hardening-20260904`
-Continuity schema: `matrix.assembling.continuity.v7`
-Current integrated main baseline: `0a2f9191428e7cf8246eacb06ebd5256bf58fd53`
-Open PR: `#3` — P1 hardening + DiagnosticTrace + canonical smoke tests
+Branch: `main`
+Continuity schema: `matrix.assembling.continuity.v8`
+Current integrated HEAD before this continuity commit: `b899740a0f9519f2e2b00ac9de2195d104dc8a26`
+PR `#3`: MERGED — P1 hardening + DiagnosticTrace + canonical smoke tests
+Final PR CI: `33908146792` — `Matrix Assembling CI` — SUCCESS
 
 ## Canonical work rules
 
@@ -50,7 +51,10 @@ Evidence:
 - post-fix CI `33906844505`: SUCCESS;
 - final P0 CI `33907038217`: SUCCESS.
 
-## P1 hardening — implemented on PR #3
+## P1 hardening — merged
+
+PR `#3` merged to main as:
+`b899740a0f9519f2e2b00ac9de2195d104dc8a26`
 
 ### P1-01 — Affective cannot own RelationshipState
 
@@ -101,11 +105,17 @@ P1 pre-fix evidence:
 - 15 tests;
 - exactly 3 expected failures matching P1-01/02/03.
 
-## DiagnosticTrace — implemented
+P1 final evidence:
+- code + DiagnosticTrace + smoke CI `33907887621` — SUCCESS;
+- final documented PR head CI `33908146792` — SUCCESS.
+
+No gate/threshold was lowered and no regression test was weakened to obtain PASS.
+
+## DiagnosticTrace — integrated
 
 The existing `MatrixTurnFrame.diagnostics` was extended; no parallel diagnostic system was created.
 
-Structured fields now include:
+Structured fields:
 - `inputOriginale`;
 - `observation`;
 - `understandingResult`;
@@ -118,16 +128,18 @@ Structured fields now include:
 - `reasoningChain`;
 - existing `events` and `tags`.
 
-`reasoningChain` contains observable deterministic reason codes only, never private chain-of-thought.
+`DiagnosticSnapshot` records observable boundary data such as module, input/output summary, decision/status, reason codes, confidence and metadata.
+
+`reasoningChain` contains deterministic diagnostic reason codes only, never private chain-of-thought.
 
 `firstDivergence` is write-once:
 
 ```text
 first divergence wins;
-later errors remain visible but do not overwrite it.
+later violations remain visible but do not overwrite it.
 ```
 
-Boundary snapshots are currently wired through:
+Boundary snapshots are wired through:
 
 ```text
 INPUT
@@ -148,14 +160,14 @@ Diagnostic tests:
 Coverage:
 - first divergence is immutable;
 - unauthorized persistent affect is blocked/traced;
-- illegal pre-response stable memory result carries the exact divergence.
+- illegal pre-response stable memory result carries exact divergence.
 
 ## Canonical end-to-end integration smoke test
 
 File:
 `src/test/kotlin/matrix/assembling/MatrixAssemblingOrchestratorIntegrationTest.kt`
 
-Actual path tested:
+Actual tested path:
 
 ```text
 UnderstandingLabAdapter(fake runtime)
@@ -175,14 +187,11 @@ Cases:
 4. direct assertion with persistence disabled;
 5. adult/intimacy semantic signal without automatic block.
 
-For each smoke case the trace is checked through Affective and memory remains non-persistent.
+Each smoke case verifies the structured trace through Affective and confirms no durable memory write.
 
-Code-level P1 + DiagnosticTrace + smoke CI:
-- run `33907887621` — SUCCESS.
+## Memory integration documents aligned
 
-## Memory documents aligned
-
-`docs/MEMORY_INTEGRATION_POLICY.md` and `docs/MEMORY_INTEGRATION_STATUS.md` now explicitly separate:
+`docs/MEMORY_INTEGRATION_POLICY.md` and `docs/MEMORY_INTEGRATION_STATUS.md` now separate:
 
 ```text
 READ / RETRIEVAL before decision
@@ -192,14 +201,18 @@ FINAL DURABLE COMMIT only after output validation
 
 A real future persistent adapter must not replace the current pre-response placeholder in place.
 
+`docs/COMPONENT_MAPPING_AUDIT_2026-09-04.md` was refreshed in place and no competing audit/spec document was created.
+
 ## Current hard boundaries
 
 - NLU/Understanding do not write memory;
 - Understanding does not own durable admission;
+- all NLU claims are preserved;
 - missing critical confidence fails closed;
 - unresolved subject remains unresolved;
 - Authority does not write persistence;
 - current memory adapters cannot produce durable writes;
+- orchestrator rejects pre-response stable write/memory IDs;
 - Affective cannot own RelationshipState;
 - Affective persistence cannot exceed upstream authorization;
 - GGUF remains language realization only;
@@ -226,10 +239,13 @@ No Frozen access or gate reduction is authorized.
 - real llama.cpp/MLC GGUF bridge;
 - Android application integration.
 
-## Next exact step after PR #3
+## Next exact work target
 
-1. run final CI on the documented PR head;
-2. merge PR #3 only if green;
-3. update `main` continuity with final merge HEAD if needed;
-4. next architecture work should introduce explicit Working Context/read boundaries before any real memory backend is connected;
-5. OutputValidator/PersistentConsolidation interfaces can follow as separate controlled workstreams.
+Continue only in `MATRIXNEO23/assembling`.
+
+Next architectural checkpoint:
+1. introduce explicit Working Context / context-read boundaries without persistence;
+2. add Long-Term retrieval port only as a read contract when the dependency is ready;
+3. keep real durable Memory Admission/Repository writes blocked until a post-validation `PersistentConsolidation` boundary exists;
+4. add `OutputValidatorPort` and `PersistentConsolidationPort` as separate controlled workstreams when their contracts are ready;
+5. preserve current P0/P1 regression suite and DiagnosticTrace invariants.
