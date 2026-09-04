@@ -1,6 +1,5 @@
 package matrix.assembling.adapters
 
-import matrix.assembling.DiagnosticTrace
 import matrix.assembling.MatrixTurnFrame
 import matrix.assembling.NluOutput
 import matrix.assembling.NluPort
@@ -38,39 +37,20 @@ class UnderstandingLabAdapter(
         val nlu = if (primary == null) {
             unresolvedNlu()
         } else {
-            NluOutput(
-                dialogueAct = primary.dialogueAct,
-                predicate = primary.predicate,
-                polarity = primary.polarity,
-                temporalRelation = primary.temporalRelation,
-                subjectReferent = primary.subjectReferent,
-                targetReferent = primary.targetReferent,
-                ownerReferent = primary.ownerReferent,
-                perspectiveReferent = primary.perspectiveReferent,
-                confidence = primary.confidenceByHead + ("overall" to primary.confidence),
-                spans = mapOf(
-                    "source" to primary.sourceSpan.toTextSpan(),
-                    "subject" to primary.subjectSpan.toTextSpan(),
-                    "object" to primary.objectSpan.toTextSpan(),
-                    "negation" to primary.negationSpan.toTextSpan(),
-                    "temporal" to primary.temporalSpan.toTextSpan(),
-                ),
-                resolvedSubject = primary.subject,
-                resolvedTarget = primary.target,
-                resolvedOwner = primary.owner,
-                resolvedPerspective = primary.perspective,
-                objectValue = primary.objectValue,
-                sourceType = primary.sourceType,
-                worldTruth = primary.worldTruth,
-            )
+            primary.toNluOutput()
+        }
+        val claims = interpretation.claims.mapIndexed { index, claim ->
+            claim.toTypedClaim(turn, index)
         }
         return turn.copy(
             nlu = nlu,
+            typedClaims = claims,
             diagnostics = turn.diagnostics
                 .add("understanding_lab.nlu.analyzed")
                 .tag("understanding_lab.status", interpretation.status)
                 .tag("understanding_lab.engine", interpretation.engine)
-                .tag("understanding_lab.claim_count", interpretation.claims.size.toString()),
+                .tag("understanding_lab.claim_count", interpretation.claims.size.toString())
+                .tag("understanding_lab.multi_claim", (interpretation.claims.size > 1).toString()),
         )
     }
 
@@ -85,7 +65,7 @@ class UnderstandingLabAdapter(
             ?: resolveOptionalReferent(nlu.ownerReferent, turn.input.speakerId, turn.input.observerId)
         val perspective = nlu.resolvedPerspective
             ?: resolveOptionalReferent(nlu.perspectiveReferent, turn.input.speakerId, turn.input.observerId)
-        val sourceType = nlu.sourceType ?: sourceType(nlu)
+        val sourceType = nlu.sourceType ?: sourceType(nlu.dialogueAct)
         val semantic = SemanticFrame(
             originalText = turn.input.text,
             semanticSummary = semanticSummary(nlu, objectValue),
@@ -102,7 +82,7 @@ class UnderstandingLabAdapter(
             // durable memory; downstream admission owns this decision.
             stableMemoryAllowed = false,
         )
-        val claim = TypedClaim(
+        val primaryClaim = TypedClaim(
             claimId = "${turn.turnId}:claim:0",
             ownerId = owner,
             subject = subject,
@@ -117,14 +97,75 @@ class UnderstandingLabAdapter(
             perspective = perspective,
             worldTruth = nlu.worldTruth,
         )
+        val claims = if (turn.typedClaims.isNotEmpty()) turn.typedClaims else listOf(primaryClaim)
         return turn.copy(
             semantic = semantic,
-            typedClaims = listOf(claim),
+            typedClaims = claims,
             diagnostics = turn.diagnostics
                 .add("understanding_lab.semantic_frame.built")
                 .tag("understanding_lab.source_type", sourceType)
                 .tag("understanding_lab.world_truth_observed", nlu.worldTruth.toString())
                 .tag("understanding_lab.memory_authority", "DEFERRED"),
+        )
+    }
+
+    private fun MatrixNluClaim.toNluOutput(): NluOutput = NluOutput(
+        dialogueAct = dialogueAct,
+        predicate = predicate,
+        polarity = polarity,
+        temporalRelation = temporalRelation,
+        subjectReferent = subjectReferent,
+        targetReferent = targetReferent,
+        ownerReferent = ownerReferent,
+        perspectiveReferent = perspectiveReferent,
+        confidence = confidenceByHead + ("overall" to confidence),
+        spans = mapOf(
+            "source" to sourceSpan.toTextSpan(),
+            "subject" to subjectSpan.toTextSpan(),
+            "object" to objectSpan.toTextSpan(),
+            "negation" to negationSpan.toTextSpan(),
+            "temporal" to temporalSpan.toTextSpan(),
+        ),
+        resolvedSubject = subject,
+        resolvedTarget = target,
+        resolvedOwner = owner,
+        resolvedPerspective = perspective,
+        objectValue = objectValue,
+        sourceType = sourceType,
+        worldTruth = worldTruth,
+    )
+
+    private fun MatrixNluClaim.toTypedClaim(turn: MatrixTurnFrame, index: Int): TypedClaim {
+        val spans = mapOf(
+            "source" to sourceSpan.toTextSpan(),
+            "subject" to subjectSpan.toTextSpan(),
+            "object" to objectSpan.toTextSpan(),
+            "negation" to negationSpan.toTextSpan(),
+            "temporal" to temporalSpan.toTextSpan(),
+        )
+        val resolvedSubject = subject
+            ?: resolveReferent(subjectReferent, turn.input.speakerId, turn.input.observerId)
+        val resolvedTarget = target
+            ?: resolveOptionalReferent(targetReferent, turn.input.speakerId, turn.input.observerId)
+        val resolvedOwner = owner
+            ?: resolveOptionalReferent(ownerReferent, turn.input.speakerId, turn.input.observerId)
+        val resolvedPerspective = perspective
+            ?: resolveOptionalReferent(perspectiveReferent, turn.input.speakerId, turn.input.observerId)
+        val resolvedObject = objectValue ?: turn.input.text.sliceOrNull(spans["object"])
+        return TypedClaim(
+            claimId = "${turn.turnId}:claim:$index",
+            ownerId = resolvedOwner,
+            subject = resolvedSubject,
+            predicate = predicate,
+            objectValue = resolvedObject,
+            target = resolvedTarget,
+            polarity = polarity,
+            temporalRelation = temporalRelation,
+            sourceType = sourceType ?: sourceType(dialogueAct),
+            confidence = confidenceByHead + ("overall" to confidence),
+            spans = spans,
+            perspective = resolvedPerspective,
+            worldTruth = worldTruth,
         )
     }
 
@@ -159,7 +200,7 @@ class UnderstandingLabAdapter(
         }
     }
 
-    private fun sourceType(nlu: NluOutput): String = when (nlu.dialogueAct) {
+    private fun sourceType(dialogueAct: String): String = when (dialogueAct) {
         "QUESTION", "REQUEST" -> "TURN_INTENT"
         "HYPOTHESIS" -> "HYPOTHESIS"
         else -> "USER_ASSERTION"
