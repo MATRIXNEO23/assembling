@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "matrix.assembling.nlu-artifact.v1",
+  "variant": "student-4-v2.2a",
+  "acceptanceTier": "R2",
+  "status": [
+    "CANDIDATE",
+    "OWNER_APPROVED_CONTROLLED_RUNTIME_CANDIDATE",
+    "EXPERIMENTAL_TEST_CANDIDATE_NOT_PRODUCTION_APPROVED",
+    "FAILED_DEV_GATE_CARRY_OVER",
+    "FROZEN_UNREAD"
+  ],
+  "artifact": {
+    "fileId": "file_00000000c5f08230a3c38ae78b8801d2",
+    "fileName": "matrix-nlu-student-4-v22a-mixed-head-protected-local-20260904T1440Z.zip",
+    "bytes": 356134801,
+    "sha256": "4998ce2f44dd8553d75f86b8d7975529f6a5f779de9107eef393648022d6ccb5",
+    "zipIntegrity": "PASS",
+    "internalChecksums": "13/13 PASS"
+  },
+  "runtimeModel": {
+    "fileName": "matrix-nlu-mixed-head-protected-int8.onnx",
+    "relativeInstallPath": "runtime/matrix-nlu/student-4-v2.2a/matrix-nlu-mixed-head-protected-int8.onnx",
+    "bytes": 149711344,
+    "sha256": "738a4d052790367509d55487b649b71aaa029d839135693bb5be46f74d55ef70",
+    "opset": 17,
+    "fixedSequenceLength": 64,
+    "quantization": "dynamic-int8-encoder-with-matrix-heads-fp32"
+  },
+  "fp32Reference": {
+    "fileName": "matrix-nlu-fp32.onnx",
+    "bytes": 234454909,
+    "sha256": "11c4f9e10c85badd1afa425cfe5f431035ec3ab61b41425f26479e58c71eb0d3"
+  },
+  "protectedHeads": [
+    "token.boundary",
+    "token.object",
+    "token.subject",
+    "token.negation",
+    "token.temporal",
+    "token.entity",
+    "sequence.dialogueAct",
+    "sequence.predicate",
+    "sequence.subjectReferent",
+    "sequence.targetReferent",
+    "sequence.ownerReferent",
+    "sequence.perspectiveReferent",
+    "sequence.polarity",
+    "sequence.temporalRelation",
+    "sequence.claimKind"
+  ],
+  "verification": {
+    "protectedHeadsFp32": "15/15 PASS",
+    "structuralChecks": "48 PASS",
+    "negationSpanParity": "6/6",
+    "decodedSemanticParity": "5/6",
+    "sizeReductionPercent": 36.144931,
+    "cpuMedianMsFp32": 7.900361,
+    "cpuMedianMsMixed": 4.428863,
+    "cpuMedianSpeedup": 1.783835
+  },
+  "knownLimitations": [
+    "One Spanish probe changes sequence.dialogueAct after encoder INT8 quantization; the dialogueAct head itself remains FP32."
+  ],
+  "provenance": {
+    "sourceRepository": "MATRIXNEO23/matrix-understanding-lab",
+    "trainingRunId": 33860928806,
+    "trainingRunHead": "617aeca8a6abac4366eb13347fb88026307dc3b8",
+    "modelStateSha256": "446b6a58265500001efd350f81d75867227cbfd3c6da699ed9c9330257d16a9c",
+    "bundleArtifactId": 9938150338,
+    "bundleArtifactDigestSha256": "f2dfea052df525af741f8ddd98e279b5443645450d09f949970a6eac18edb987"
+  },
+  "frozen": {
+    "frozenDataRead": false,
+    "frozenEvaluationExecuted": false,
+    "frozenPredictionsRead": false
+  },
+  "integrationBoundary": {
+    "nluIsProposalSource": true,
+    "directMemoryWriteAllowed": false,
+    "directPersistentAffectMutationAllowed": false,
+    "requiredRoute": "NLU -> Coherence Guard -> Authority Resolver -> Memory Admission -> Memory Foundation"
+  }
+}
