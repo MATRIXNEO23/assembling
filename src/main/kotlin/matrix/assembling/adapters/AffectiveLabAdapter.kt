@@ -7,10 +7,9 @@ import matrix.assembling.MatrixTurnFrame
 /**
  * Adapter over the Matrix Affective lab prototype.
  *
- * The prototype currently lives as Python code in vendor/matrix-affective-lab.
- * This adapter defines the stable Kotlin bridge that the Android app can later
- * implement with a local port, JNI, generated Kotlin, or a direct rewritten
- * Kotlin engine.
+ * RelationshipState remains canonically external to the affective system.
+ * Persistent affect is not a replacement for relationship state and this
+ * adapter must not create a competing relationship authority.
  */
 class AffectiveLabAdapter(
     private val runtime: AffectiveRuntimeBridge,
@@ -19,7 +18,9 @@ class AffectiveLabAdapter(
     override fun update(turn: MatrixTurnFrame): MatrixTurnFrame {
         val semantic = turn.requireSemantic()
         val memory = turn.memoryResult
-        val persistentAllowed = memory?.stableWrite == true && semantic.stableMemoryAllowed
+        // Durable-memory admission is the persistence authority. Understanding
+        // metadata is not an independent second gate for persistent affect.
+        val persistentAllowed = memory?.stableWrite == true
         val impulse = mapImpulse(turn, persistentAllowed)
         val output = runtime.update(
             AffectiveRuntimeRequest(
@@ -36,14 +37,16 @@ class AffectiveLabAdapter(
         )
         return turn.copy(
             affectiveState = AffectiveState(
-                relationshipSummary = output.relationshipSummary ?: relationshipSummary(output, turn.input.speakerId),
+                relationshipSummary = output.relationshipSummary
+                    ?: "RelationshipState esterno: nessuna modifica applicata dall'Affective Engine.",
                 affectiveSummary = output.affectiveSummary ?: affectiveSummary(output),
                 persistentDeltaAllowed = output.persistentDeltaApplied,
             ),
             diagnostics = turn.diagnostics
                 .add("affective_lab.updated")
                 .tag("affective_lab.impulse", impulse?.emotionType ?: "none")
-                .tag("affective_lab.persistent_delta", output.persistentDeltaApplied.toString()),
+                .tag("affective_lab.persistent_delta", output.persistentDeltaApplied.toString())
+                .tag("affective_lab.relationship_owner", "EXTERNAL"),
         )
     }
 
@@ -69,17 +72,6 @@ class AffectiveLabAdapter(
             appraisalChannel = "matrix_understanding",
             persistentAllowed = persistentAllowed,
         )
-    }
-
-    private fun relationshipSummary(output: AffectiveRuntimeOutput, speakerId: String): String {
-        val relation = output.persistentAffect[speakerId]
-        if (relation == null) return "Relazione non aggiornata in modo persistente."
-        return buildString {
-            append("Fiducia ${relation.trust.format2()}, affetto ${relation.affection.format2()}, ")
-            append("attaccamento ${relation.attachment.format2()}, rispetto ${relation.respect.format2()}.")
-            if (relation.resentment > 0.15) append(" Presente risentimento da considerare.")
-            if (relation.attraction > 0.15) append(" Presente attrazione da considerare.")
-        }
     }
 
     private fun affectiveSummary(output: AffectiveRuntimeOutput): String {

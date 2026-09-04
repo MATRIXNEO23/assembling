@@ -7,6 +7,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import matrix.assembling.AffectiveState
+import matrix.assembling.CoherenceDecision
 import matrix.assembling.MatrixTurnFrame
 import matrix.assembling.MemoryAdmissionResult
 import matrix.assembling.SemanticFrame
@@ -15,7 +16,7 @@ import matrix.assembling.UserMessage
 class ComponentMappingCompatibilityTest {
 
     @Test
-    fun understandingAdapterPreservesResolvedClaimFields() {
+    fun understandingAdapterPreservesResolvedClaimFieldsWithoutOwningMemoryAdmission() {
         val adapter = UnderstandingLabAdapter(
             StaticNluRuntime(
                 MatrixNluClaim(
@@ -29,6 +30,7 @@ class ComponentMappingCompatibilityTest {
                     perspectiveReferent = "SPEAKER",
                     confidence = 0.93,
                     confidenceByHead = mapOf(
+                        "token.negation" to 0.99,
                         "sequence.predicate" to 0.91,
                         "sequence.subjectReferent" to 0.94,
                         "sequence.targetReferent" to 0.90,
@@ -63,11 +65,12 @@ class ComponentMappingCompatibilityTest {
         assertEquals("alberto", claim.perspective)
         assertEquals("USER_ASSERTION", claim.sourceType)
         assertTrue(claim.worldTruth)
-        assertTrue(semantic.stableMemoryAllowed)
+        assertFalse(semantic.stableMemoryAllowed)
+        assertEquals("DEFERRED", turn.diagnostics.tags["understanding_lab.memory_authority"])
     }
 
     @Test
-    fun thirdPartyReportCannotBecomeStableMemoryByDefault() {
+    fun thirdPartyReportCannotBecomeDirectAuthority() {
         val adapter = UnderstandingLabAdapter(
             StaticNluRuntime(
                 MatrixNluClaim(
@@ -81,6 +84,7 @@ class ComponentMappingCompatibilityTest {
                     perspectiveReferent = "KNOWN_ENTITY",
                     confidence = 0.96,
                     confidenceByHead = mapOf(
+                        "token.negation" to 0.98,
                         "sequence.predicate" to 0.95,
                         "sequence.subjectReferent" to 0.95,
                         "sequence.targetReferent" to 0.95,
@@ -96,7 +100,10 @@ class ComponentMappingCompatibilityTest {
             )
         )
 
-        val turn = adapter.understand(adapter.analyze(baseTurn("Marco dice che non gli piaccio")))
+        var turn = adapter.understand(adapter.analyze(baseTurn("Marco dice che non gli piaccio")))
+        turn = BasicCoherenceGuard().check(turn)
+        turn = BasicAuthorityResolver().resolve(turn)
+
         val semantic = turn.requireSemantic()
         val claim = turn.typedClaims.single()
 
@@ -105,7 +112,36 @@ class ComponentMappingCompatibilityTest {
         assertEquals("Marco", semantic.owner)
         assertEquals("THIRD_PARTY_REPORT", claim.sourceType)
         assertFalse(claim.worldTruth)
-        assertFalse(semantic.stableMemoryAllowed)
+        assertEquals(CoherenceDecision.REPORT_ONLY, turn.requireCoherence())
+        assertFalse(turn.requireAuthority().accepted)
+        assertEquals("THIRD_PARTY_REPORT", turn.requireAuthority().sourceType)
+    }
+
+    @Test
+    fun coherenceUsesCanonicalTokenNegationConfidenceKey() {
+        val turn = baseTurn("Non voglio uscire").copy(
+            semantic = SemanticFrame(
+                originalText = "Non voglio uscire",
+                semanticSummary = "Rifiuto",
+                dialogueAct = "ASSERT",
+                predicate = "goal.object",
+                polarity = "NEGATIVE",
+                temporalRelation = "CURRENT",
+                subject = "alberto",
+                target = null,
+                owner = "alberto",
+                confidence = mapOf(
+                    "overall" to 0.95,
+                    "token.negation" to 0.40,
+                    "sequence.predicate" to 0.95,
+                    "sequence.subjectReferent" to 0.95,
+                    "sequence.targetReferent" to 0.95,
+                ),
+            )
+        )
+
+        val checked = BasicCoherenceGuard().check(turn)
+        assertEquals(CoherenceDecision.LOW_CONFIDENCE_HOLD, checked.requireCoherence())
     }
 
     @Test
@@ -151,10 +187,11 @@ class ComponentMappingCompatibilityTest {
         assertEquals("hope", request.impulse?.emotionType)
         assertNull(request.impulse?.targetId)
         assertFalse(turn.requireAffective().persistentDeltaAllowed)
+        assertEquals("EXTERNAL", turn.diagnostics.tags["affective_lab.relationship_owner"])
     }
 
     @Test
-    fun affectiveAdapterMapsStableSemanticMemoryToPersistentTarget() {
+    fun affectivePersistenceDependsOnAdmittedEventNotUnderstandingFlag() {
         var captured: AffectiveRuntimeRequest? = null
         val adapter = AffectiveLabAdapter(
             object : AffectiveRuntimeBridge {
@@ -183,7 +220,7 @@ class ComponentMappingCompatibilityTest {
                     target = "luna",
                     owner = "alberto",
                     confidence = mapOf("overall" to 0.92),
-                    stableMemoryAllowed = true,
+                    stableMemoryAllowed = false,
                 ),
                 memoryResult = MemoryAdmissionResult(
                     status = "ADMITTED",

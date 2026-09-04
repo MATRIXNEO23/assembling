@@ -14,7 +14,7 @@ import matrix.assembling.MemoryAdmissionResult
 
 /**
  * Minimal deterministic guard used until the production Coherence Buffer is ported.
- * It blocks stable memory writes when critical heads are below safety thresholds.
+ * It validates semantic stability but does not own durable-memory authority.
  */
 class BasicCoherenceGuard(
     private val minNegation: Double = 0.90,
@@ -24,14 +24,17 @@ class BasicCoherenceGuard(
     override fun check(turn: MatrixTurnFrame): MatrixTurnFrame {
         val frame = turn.requireSemantic()
         val confidence = frame.confidence
+        val claim = turn.typedClaims.firstOrNull()
         val decision = when {
             frame.owner == null -> CoherenceDecision.REJECTED_UNSAFE
             frame.dialogueAct == "QUESTION" -> CoherenceDecision.QUESTION_ONLY
-            confidence.getOrDefault("tokens.negation", 1.0) < minNegation -> CoherenceDecision.LOW_CONFIDENCE_HOLD
+            claim?.sourceType == "THIRD_PARTY_REPORT" -> CoherenceDecision.REPORT_ONLY
+            confidence.getOrDefault("token.negation", 1.0) < minNegation -> CoherenceDecision.LOW_CONFIDENCE_HOLD
             confidence.getOrDefault("sequence.predicate", 1.0) < minPredicate -> CoherenceDecision.LOW_CONFIDENCE_HOLD
             confidence.getOrDefault("sequence.subjectReferent", 1.0) < minReferent -> CoherenceDecision.LOW_CONFIDENCE_HOLD
             confidence.getOrDefault("sequence.targetReferent", 1.0) < minReferent -> CoherenceDecision.LOW_CONFIDENCE_HOLD
-            !frame.stableMemoryAllowed -> CoherenceDecision.SAFE_TRANSIENT_ONLY
+            frame.dialogueAct == "REQUEST" || frame.dialogueAct == "HYPOTHESIS" -> CoherenceDecision.SAFE_TRANSIENT_ONLY
+            frame.predicate == "speech.unresolved" -> CoherenceDecision.SAFE_TRANSIENT_ONLY
             else -> CoherenceDecision.SAFE_TO_ADMIT
         }
         return turn.copy(
@@ -42,24 +45,37 @@ class BasicCoherenceGuard(
 }
 
 /**
- * Placeholder authority adapter. It is intentionally conservative: only a frame
- * already considered safe by coherence can be accepted as direct authority.
+ * Conservative authority adapter.
+ * Source/owner decisions come from the TypedClaim itself, not from guessed text
+ * differences or from the Coherence enum alone.
  */
 class BasicAuthorityResolver : AuthorityResolverPort {
     override fun resolve(turn: MatrixTurnFrame): MatrixTurnFrame {
         val coherence = turn.requireCoherence()
         val frame = turn.requireSemantic()
-        val accepted = coherence == CoherenceDecision.SAFE_TO_ADMIT
+        val claim = turn.typedClaims.firstOrNull()
+        val sourceType = claim?.sourceType ?: "UNRESOLVED"
+        val ownerResolved = claim?.ownerId != null || frame.owner != null
+        val accepted = coherence == CoherenceDecision.SAFE_TO_ADMIT &&
+            ownerResolved &&
+            sourceType != "THIRD_PARTY_REPORT"
         val decision = AuthorityDecision(
             accepted = accepted,
-            ownerResolved = frame.owner != null,
-            sourceType = if (coherence == CoherenceDecision.REPORT_ONLY) "THIRD_PARTY_REPORT" else "DIRECT",
+            ownerResolved = ownerResolved,
+            sourceType = sourceType,
             conflictStatus = if (coherence == CoherenceDecision.CONFLICT_REQUIRES_REVIEW) "PENDING_REVIEW" else "NONE",
-            reason = if (accepted) "coherence accepted stable frame" else "not stable enough for authority admission",
+            reason = when {
+                sourceType == "THIRD_PARTY_REPORT" -> "third-party report preserved as indirect source"
+                !ownerResolved -> "owner unresolved"
+                accepted -> "coherence and direct-source authority accepted"
+                else -> "not stable enough for authority admission"
+            },
         )
         return turn.copy(
             authorityDecision = decision,
-            diagnostics = turn.diagnostics.add("authority.accepted=$accepted"),
+            diagnostics = turn.diagnostics
+                .add("authority.accepted=$accepted")
+                .tag("authority.source_type", sourceType),
         )
     }
 }
@@ -86,7 +102,7 @@ class BasicMemoryAdmission : MemoryAdmissionPort {
                 status = "NO_MEMORY_BACKEND",
                 memoryIds = emptyList(),
                 stableWrite = false,
-                reason = "no memory backend; stable persistence disabled in assembling placeholder",
+                reason = "no memory backend; durable persistence disabled in assembling placeholder",
             )
         }
         return turn.copy(
@@ -99,18 +115,19 @@ class BasicMemoryAdmission : MemoryAdmissionPort {
 }
 
 /**
- * Minimal affective adapter. Persistent emotional deltas are allowed only after
- * stable memory admission; otherwise state is translated as transient attitude.
+ * Minimal affective adapter.
+ * RelationshipState remains externally owned; this adapter exposes affective
+ * state only and cannot create a competing relationship authority.
  */
 class BasicAffectiveAdapter : AffectivePort {
     override fun update(turn: MatrixTurnFrame): MatrixTurnFrame {
         val memory = turn.requireMemory()
         val state = AffectiveState(
-            relationshipSummary = "Luna considera il rapporto con l'utente attivo e tiene conto del contesto recente.",
+            relationshipSummary = "RelationshipState esterno: nessuna modifica applicata dall'Affective Engine.",
             affectiveSummary = if (memory.stableWrite) {
-                "Luna può reagire emotivamente al significato confermato dal sistema."
+                "Luna può applicare un effetto affettivo persistente solo perché un evento è stato realmente ammesso."
             } else {
-                "Luna reagisce con cautela: il contenuto non è stato stabilizzato in memoria."
+                "Luna può reagire emotivamente nel turno, senza creare automaticamente persistenza."
             },
             persistentDeltaAllowed = memory.stableWrite,
         )

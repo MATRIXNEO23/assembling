@@ -10,10 +10,10 @@ import matrix.assembling.contracts.SemanticFrame
 import matrix.assembling.contracts.TemporalRelation
 
 /**
- * Deterministic safety guard between Understanding and downstream modules.
+ * Deterministic coherence guard used by the compatibility prompt path.
  *
- * It does not censor. It only decides whether a semantic frame is safe for a
- * reply, stable memory, or persistent affect.
+ * It does not censor and it is not the final durable-memory authority. Adult /
+ * intimacy markers are semantic context, never a blanket persistence penalty.
  */
 class CoherenceGuard(
     private val thresholds: CoherenceThresholds = CoherenceThresholds(),
@@ -114,7 +114,7 @@ class CoherenceGuard(
         if (frame.adultIntimacy == AdultIntimacyMarker.UnresolvedIntimateTerm) {
             return decision(
                 CoherenceStatus.TransientOnly,
-                "intimate term is unresolved; do not treat as stable memory",
+                "intimate term is unresolved; keep it transient until meaning is resolved",
                 stableMemoryAllowed = false,
                 persistentAffectAllowed = false,
             )
@@ -128,7 +128,9 @@ class CoherenceGuard(
             else -> true
         }
 
-        val persistentAffectAllowed = stableMemoryAllowed && frame.adultIntimacy == AdultIntimacyMarker.None
+        // Adult/intimacy itself is never a reason to suppress affect. Persistence
+        // follows semantic/admission stability just like every other domain.
+        val persistentAffectAllowed = stableMemoryAllowed
 
         return decision(
             CoherenceStatus.SafeToUseForReply,
