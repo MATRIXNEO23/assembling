@@ -22,7 +22,10 @@ class MatrixAssemblingOrchestrator(
             turnId = turnId,
             sessionId = sessionId,
             input = input,
-            diagnostics = DiagnosticTrace().add("turn.created"),
+            diagnostics = DiagnosticTrace()
+                .withInput(input.text)
+                .reason("INPUT_ACCEPTED")
+                .add("turn.created"),
         )
         val completed = handle(initial)
         return completed.reply ?: error("MatrixTurnFrame completed without assistant reply")
@@ -30,6 +33,7 @@ class MatrixAssemblingOrchestrator(
 
     fun handle(turn: MatrixTurnFrame): MatrixTurnFrame {
         return turn
+            .let(::initializeTrace)
             .let(nlu::analyze)
             .let(understanding::understand)
             .let(coherence::check)
@@ -42,15 +46,31 @@ class MatrixAssemblingOrchestrator(
             .let { completed -> completed.copy(diagnostics = completed.diagnostics.add("turn.completed")) }
     }
 
+    private fun initializeTrace(turn: MatrixTurnFrame): MatrixTurnFrame {
+        if (turn.diagnostics.inputOriginale != null) return turn
+        return turn.copy(
+            diagnostics = turn.diagnostics
+                .withInput(turn.input.text)
+                .reason("INPUT_ACCEPTED")
+                .add("turn.trace.initialized"),
+        )
+    }
+
     private fun enforcePreResponseMemoryBoundary(turn: MatrixTurnFrame): MatrixTurnFrame {
         val memoryResult = turn.requireMemory()
         if (memoryResult.stableWrite || memoryResult.memoryIds.isNotEmpty()) {
-            throw IllegalStateException(
-                "Durable memory write/result is forbidden before output validation and persistent consolidation"
+            val trace = turn.diagnostics
+                .diverge("MEMORY.PRE_RESPONSE_STABLE_WRITE")
+                .tag("memory.pre_response_boundary", "VIOLATION")
+            throw MatrixBoundaryViolationException(
+                "Durable memory write/result is forbidden before output validation and persistent consolidation",
+                trace,
             )
         }
         return turn.copy(
-            diagnostics = turn.diagnostics.add("memory.pre_response_boundary.ok"),
+            diagnostics = turn.diagnostics
+                .reason("MEMORY_PRE_RESPONSE_BOUNDARY_OK")
+                .add("memory.pre_response_boundary.ok"),
         )
     }
 }
