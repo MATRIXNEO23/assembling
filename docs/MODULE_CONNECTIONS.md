@@ -1,207 +1,214 @@
 # Matrix Assembling — Module Connections
 
-Status: integration contract, not production approval.
+Status: CANONICAL MODULE WIRING
 Date: 2026-09-04
+Global source: `MATRIXNEO23/8.10.9evo3-solo-gpt/ARCHITETTURA_MATRIX_ENGINE.md`
 
-## Goal
-
-Connect the already separated components without letting any single module take unsafe final authority.
-
-Core rule:
+## Core rule
 
 ```text
-NLU reads language.
-Understanding builds semantic frames.
-Coherence checks stability.
-Authority resolves source/conflict/owner.
-Memory stores only admitted/provisional records.
-Affective reacts only to safe events.
-Prompt Builder translates internal state for GGUF.
-GGUF writes natural language only.
+UNDERSTAND ≠ BELIEVE ≠ REMEMBER ≠ FEEL ≠ DECIDE ≠ RESPOND
 ```
 
-## Canonical flow
+No module may silently absorb the authority of another.
+
+## Canonical runtime direction
 
 ```text
-UserMessage
+UserMessage / Observation
   ↓
 NluPort
   ↓
 UnderstandingPort
   ↓
-CoherenceGuardPort
+Working Memory / context envelope
   ↓
-AuthorityResolverPort
+Context read
+  ├─ Long-Term Memory retrieval
+  ├─ RelationshipState snapshot
+  ├─ Affective snapshot
+  └─ World/perceived-state snapshot
   ↓
-MemoryAdmissionPort
+Coherence / Authority / belief resolution
   ↓
-AffectivePort
+Affective appraisal
   ↓
-SemanticFrameToPromptPort
+Matrix decision layer
+  ↓
+SemanticFrameToPrompt
   ↓
 GgufPort
   ↓
-AssistantReply
+Output validation
+  ↓
+AssistantReply / ActionIntent
+  ↓
+Persistent consolidation
 ```
+
+The current code does not yet implement every future stage. Missing stages must be reported as `NON_CABLATO`, never simulated.
+
+## Current authoritative implementation path
+
+```text
+MatrixTurnFrame
++ IntegrationPorts.kt
++ MatrixAssemblingOrchestrator.kt
++ root SemanticFrameToPrompt.kt
+```
+
+The older path:
+
+```text
+contracts/*
+pipeline/*
+prompt/*
+```
+
+is retained as a compatibility/testing facade. It is not a second architecture and must not receive new independent authority.
 
 ## Module responsibilities
 
-### 1. NLU
-
-Input: raw user text.
-Output: numeric/class predictions and confidence.
-
-Allowed:
-- dialogue act
-- predicate
-- polarity
-- subject/object spans
-- negation span
-- temporal relation
-- referent hints
-- confidence values
-
-Forbidden:
-- final policy decisions
-- stable memory writes
-- affective changes
-- censorship/blocking
-- production approval
-
-### 2. Understanding
-
-Input: NLU output.
-Output: `SemanticFrame` / `TypedClaimDraft`.
+### NLU
+Input: language signal.
+Output: learned/structured semantic evidence and confidence.
 
 Allowed:
-- normalize NLU predictions
-- build subject/predicate/object frame
-- keep original text
-- mark uncertainty
+- dialogue act;
+- predicate;
+- polarity;
+- spans;
+- referent classes;
+- temporal relation;
+- confidence.
 
 Forbidden:
-- writing memory directly
-- deciding truth permanently
+- stable memory writes;
+- truth decisions;
+- affective persistence;
+- censorship policy.
 
-### 3. Coherence Guard
-
-Input: semantic frame and confidence.
-Output: `CoherenceDecision`.
-
-Allowed decisions:
-- `SAFE_TO_ADMIT`
-- `SAFE_TRANSIENT_ONLY`
-- `LOW_CONFIDENCE_HOLD`
-- `REPORT_ONLY`
-- `QUESTION_ONLY`
-- `CONFLICT_REQUIRES_REVIEW`
-- `REJECTED_UNSAFE`
-
-Key rule: if negation, predicate, referents or temporal relation are uncertain, do not create stable memory.
-
-### 4. Authority Resolver
-
-Input: coherence-checked claim.
-Output: authority/conflict decision.
+### Understanding
+Input: NLU evidence + supplied turn context.
+Output: `SemanticFrame` / `TypedClaim` draft.
 
 Allowed:
-- owner/source resolution
-- same-property conflict detection
-- correction/supersede proposal
-- third-party/report separation
+- preserve subject/target/owner/perspective;
+- normalize object values;
+- preserve source/provenance/world-observation flags;
+- mark uncertainty.
 
 Forbidden:
-- text-different-equals-conflict
-- hardcoded owner
+- deciding that a claim is durable memory;
+- turning a user/report claim into World Truth;
+- bypassing Authority/Memory Admission.
 
-### 5. Memory Admission
+Compatibility note: `SemanticFrame.stableMemoryAllowed` remains in the current data class only for ABI/source compatibility and is not authoritative. New code must rely on Coherence/Authority/Memory Admission.
 
-Input: authority result.
-Output: memory record lifecycle.
+### Working Memory / Context
+Purpose: temporary state used to answer the current turn.
 
-Allowed statuses:
-- `RAW_OBSERVATION`
-- `PROVISIONAL_CLAIM`
-- `COHERENCE_CHECKED`
-- `AUTHORITY_RESOLVED`
-- `ADMITTED_MEMORY`
-- `SUPERSEDED`
-- `REJECTED`
+Contains bounded current-turn semantics, active referents, retrieved memories and decision context. It is not durable storage.
 
-Stable memory can only be written after coherence and authority are resolved.
+### Coherence
+Purpose: validate semantic stability/invariants.
 
-### 6. Affective Engine
+Must inspect canonical confidence keys such as:
+- `token.negation`;
+- `sequence.predicate`;
+- `sequence.subjectReferent`;
+- `sequence.targetReferent`.
 
-Input: safe semantic/memory events only.
-Output: affective state deltas.
+It may mark low-confidence/transient/report/question states but does not own final persistence.
 
-Allowed:
-- transient emotion from uncertain input
-- persistent affect from safe/admitted events
+### Authority Resolver
+Purpose:
+- resolve source/owner/perspective;
+- distinguish direct assertion from third-party report;
+- detect same-property conflict when relevant memory exists;
+- propose correction/supersede semantics.
 
-Forbidden:
-- persistent trust/resentment changes from low-confidence claims
+It must consume actual claim source metadata, not infer report status only from Coherence enum values.
 
-### 7. Prompt Builder
+### Memory
+Two different roles are mandatory:
 
+```text
+READ: retrieve relevant Long-Term context before decision.
+WRITE: admit/persist only during controlled consolidation.
+```
+
+Current Assembling memory adapters are placeholders only and must return no durable write.
+
+Long-Term logical layers:
+- EPISODIC;
+- SEMANTIC;
+- REFLECTION;
+- optional CORE priority subset.
+
+Working Memory is separate and temporary.
+
+### Affective Engine
+Purpose:
+- appraisal;
+- transient emotions;
+- mood;
+- persistent affect proposals/state.
+
+Hard boundaries:
+- does not own `RelationshipState`;
+- does not create World Truth;
+- does not write memory directly;
+- adult/intimacy is not an automatic reason to suppress persistent affect.
+
+### RelationshipState owner/controller
+Relationship is canonical cognitive/app state separate from affective state. Affective signals may contribute evidence, but relationship changes require the relationship owner/controller and normal decision/commit rules.
+
+### Matrix Decision Layer
+Canonical owner of behavior choice.
+
+Target architecture uses BDI-lite + bounded Utility and emits a `DecisionSnapshot`. The full layer is not yet wired in Assembling; until then it is `NON_CABLATO`, not delegated silently to Affective or GGUF.
+
+### Prompt Builder
 Input:
-- original user text
-- semantic summary
-- memory summary
-- relationship state
-- affective state
-- hard limits
+- original text;
+- resolved semantic meaning;
+- filtered memory/context;
+- relationship snapshot;
+- affective/appraisal state;
+- decision constraints.
 
-Output: short GGUF prompt.
+Output: short natural-language instructions for GGUF.
 
-Rule: translate numeric/internal state into simple behavior instructions. Do not send raw numeric internals unless useful for diagnostics.
-
-### 8. GGUF
-
-Input: prepared prompt.
-Output: natural language reply.
-
-Allowed:
-- expressive response
-- style/personality realization
+### GGUF
+Role: natural-language realization only.
 
 Forbidden:
-- changing stable facts
-- writing memory
-- final truth resolution
-- overriding semantic negation/consent/refusal decisions
+- final truth resolution;
+- memory writes;
+- relationship mutation;
+- overriding resolved negation/referents/consent/context.
 
-## Minimal integration target
+### Output Validator
+Target role: verify the generated response against the resolved semantic/decision state. This is planned but not yet wired.
 
-The first integration must prove this:
+### Persistent Consolidation
+Target final stage after accepted output:
+- Memory Admission/write;
+- persistent affect;
+- Relationship update;
+- causal/lifecycle trace.
 
-```text
-"Non voglio uscire con Marco"
-→ semantic frame: refusal / negative goal
-→ no stable memory unless admitted
-→ no affective persistent penalty
-→ GGUF prompt says: respect the refusal
-→ reply does not invert the negation
-```
+## Adult/intimacy rule
 
-## Adult/intimacy robustness
+Adult/intimacy is a first-class semantic domain. It must not be treated as an automatic block, low-value event or reason to suppress memory/affect merely because it is intimate. Persistence depends on meaning, context, confidence, source, relevance and admission rules.
 
-Adult/intimacy text must not be treated as censorship by NLU.
+## Change-control
 
-Rule:
-
-```text
-adult/intimate terms
-→ classify as request/desire/consent/refusal/boundary/unresolved
-→ no automatic block
-→ no stable memory without admission
-```
-
-If meaning is unclear, emit `speech.unresolved` or a low-confidence semantic frame, not a hard error.
-
-## Integration status
-
-- NLU v2.2A: training in progress in `MATRIXNEO23/matrix-understanding-lab`.
-- Memory foundation: design saved in `MATRIXNEO23/memoria`.
-- Affective prototype: validated separately in `MATRIXNEO23/matrix-affective-lab`.
-- Assembling repo: this repository owns contracts, adapters and prompt-translation logic.
+A component change is complete only when the same workstream updates:
+- global architecture if ownership/order changed;
+- this module wiring document;
+- code adapters/contracts;
+- affected tests;
+- `WORK_CONTINUITY.md`;
+- any now-obsolete document status.
