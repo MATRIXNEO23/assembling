@@ -15,6 +15,10 @@ import matrix.assembling.UnderstandingPort
  * The copied lab component produces labels, spans and claim dictionaries.
  * This adapter normalizes that output into the canonical MatrixTurnFrame used
  * by the assembling layer.
+ *
+ * IMPORTANT: Understanding preserves semantic evidence and provenance but does
+ * not authorize durable memory. Stable persistence belongs downstream to
+ * Coherence/Authority/Memory Admission.
  */
 class UnderstandingLabAdapter(
     private val runtime: MatrixNluRuntimeBridge,
@@ -94,11 +98,9 @@ class UnderstandingLabAdapter(
             owner = owner,
             confidence = nlu.confidence,
             adultOrIntimacy = isAdultOrIntimacy(nlu, objectValue),
-            stableMemoryAllowed = nlu.dialogueAct in setOf("ASSERT", "CORRECT") &&
-                nlu.predicate != "speech.unresolved" &&
-                sourceType != "THIRD_PARTY_REPORT" &&
-                nlu.worldTruth &&
-                nlu.confidence.getOrDefault("overall", 0.0) >= 0.75,
+            // Compatibility field only. Understanding must never authorize
+            // durable memory; downstream admission owns this decision.
+            stableMemoryAllowed = false,
         )
         val claim = TypedClaim(
             claimId = "${turn.turnId}:claim:0",
@@ -121,7 +123,8 @@ class UnderstandingLabAdapter(
             diagnostics = turn.diagnostics
                 .add("understanding_lab.semantic_frame.built")
                 .tag("understanding_lab.source_type", sourceType)
-                .tag("understanding_lab.world_truth", nlu.worldTruth.toString()),
+                .tag("understanding_lab.world_truth_observed", nlu.worldTruth.toString())
+                .tag("understanding_lab.memory_authority", "DEFERRED"),
         )
     }
 
@@ -162,6 +165,11 @@ class UnderstandingLabAdapter(
         else -> "USER_ASSERTION"
     }
 
+    /**
+     * Compatibility fallback only until the NLU contract exposes the complete
+     * adult/intimacy semantic marker directly. This marker never censors and is
+     * not a persistence gate by itself.
+     */
     private fun isAdultOrIntimacy(nlu: NluOutput, objectValue: String?): Boolean {
         if (nlu.predicate in setOf("consent.grant", "consent.refuse")) return true
         val text = objectValue?.lowercase().orEmpty()
