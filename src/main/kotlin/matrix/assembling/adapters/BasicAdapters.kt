@@ -31,8 +31,10 @@ class BasicCoherenceGuard(
             "sequence.subjectReferent",
             "sequence.targetReferent",
         ).firstOrNull { it !in confidence }
+        val unresolvedSubject = frame.subject == "UNKNOWN" || claim?.subject == "UNKNOWN"
         val decision = when {
             frame.owner == null -> CoherenceDecision.REJECTED_UNSAFE
+            unresolvedSubject -> CoherenceDecision.LOW_CONFIDENCE_HOLD
             missingCritical != null -> CoherenceDecision.LOW_CONFIDENCE_HOLD
             frame.dialogueAct == "QUESTION" -> CoherenceDecision.QUESTION_ONLY
             claim?.sourceType == "THIRD_PARTY_REPORT" -> CoherenceDecision.REPORT_ONLY
@@ -47,6 +49,9 @@ class BasicCoherenceGuard(
         }
         val diagnostics = turn.diagnostics
             .add("coherence.$decision")
+            .let { trace ->
+                if (unresolvedSubject) trace.tag("coherence.subject", "UNRESOLVED") else trace
+            }
             .let { trace ->
                 if (missingCritical != null) trace.tag("coherence.missing_critical_confidence", missingCritical) else trace
             }
@@ -83,6 +88,7 @@ class BasicAuthorityResolver : AuthorityResolverPort {
             reason = when {
                 sourceType == "THIRD_PARTY_REPORT" -> "third-party report preserved as indirect source"
                 !ownerResolved -> "owner unresolved"
+                frame.subject == "UNKNOWN" -> "subject unresolved"
                 turn.typedClaims.size > 1 -> "multi-claim turn remains transient until claim-wise authority resolution is wired"
                 accepted -> "coherence and direct-source authority accepted"
                 else -> "not stable enough for authority admission"
