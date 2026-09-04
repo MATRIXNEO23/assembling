@@ -1,70 +1,115 @@
 # Memory Integration Policy
 
-Status: MEMORY FOUNDATION NOT YET IMPLEMENTED
+Status: MEMORY FOUNDATION NOT YET CONNECTED
 Date: 2026-09-04
 
 ## Decision
 
-The assembling repository must not pretend that a production memory module exists.
-Until `MATRIXNEO23/memoria` contains a real Memory Foundation, assembling may only use a safe placeholder memory adapter.
+The assembling repository must not pretend that production memory persistence exists.
+Until a real Memory Foundation is connected, assembling uses only non-persistent adapters and must reject any durable result on the pre-response path.
 
-## Current rule
+## Canonical separation
 
-- No stable memory writes.
-- No fake persistence.
-- No direct GGUF-to-memory access.
-- No Affective persistent deltas based on unadmitted memory.
-- Memory output must explicitly say `NO_MEMORY_BACKEND` or `TRANSIENT_ONLY`.
-
-## Temporary component
-
-Use a `NoMemoryAdapter` during integration tests.
-
-Expected behavior:
+Memory has two different integration roles:
 
 ```text
-input: MatrixTurnFrame
-output:
-  status = NO_MEMORY_BACKEND
-  stableWrite = false
-  memoryIds = []
-  reason = Memory Foundation not yet connected
+PRE-RESPONSE READ / EVALUATION
+- retrieve relevant Long-Term context when available
+- create/evaluate memory candidates
+- never perform durable write
+
+POST-VALIDATION CONSOLIDATION
+- Memory Admission durable decision
+- MemoryRepository write/supersede
+- persistent state commit
+- atomic transaction / lifecycle trace
 ```
 
-This allows the pipeline to be tested end-to-end without corrupting future persistence.
+The current `MemoryAdmissionPort` call in the prototype is compatibility/preflight only. It must not be replaced in place by a real persistent writer.
 
-## Future replacement
+## Current hard rules
 
-When `MATRIXNEO23/memoria` is implemented, replace `NoMemoryAdapter` with a real adapter that connects to:
+- no stable memory writes;
+- no fake persistence;
+- no fake memory IDs;
+- no direct GGUF-to-memory access;
+- no Affective persistent delta from an unadmitted event;
+- before response/output validation: `stableWrite == false` and `memoryIds == []`;
+- `MatrixAssemblingOrchestrator` rejects violations of this pre-response boundary.
+
+Current placeholder statuses may include:
 
 ```text
-MemoryObservation
-MemoryClaim
-MemoryRepository
-MemoryAdmission
+NO_MEMORY_BACKEND
+PROVISIONAL_CLAIM
+REJECTED
 ```
 
-Required contract:
+They describe integration state only and are not durable persistence results.
+
+## Temporary components
+
+Allowed adapters:
 
 ```text
-NLU / Understanding
-→ Coherence Guard
-→ Authority Resolver
-→ Memory Admission
-→ MemoryRepository
+NoPersistentMemoryAdmission
+BasicMemoryAdmission
+```
+
+Required behavior:
+
+```text
+stableWrite = false
+memoryIds = []
+```
+
+`NoPersistentMemoryAdmission` may preserve a claim provisionally inside the current `MatrixTurnFrame`; this is Working/turn state, not Long-Term storage.
+
+## Future real integration
+
+A future Memory Foundation integration must expose separate boundaries for:
+
+```text
+Long-Term retrieval/read
+MemoryCandidate / admission evaluation
+final durable admission/commit
+MemoryRepository public API
+```
+
+Logical flow:
+
+```text
+INPUT
+→ Understanding
+→ context/read retrieval
+→ Coherence / Authority
+→ appraisal / decision
+→ response generation
+→ output validation
+→ Persistent Consolidation
+     └→ Memory Admission
+          └→ MemoryRepository
 ```
 
 The GGUF must never write memory directly.
+Understanding, Coherence, Authority and Affective must never bypass the public memory contracts.
 
-## Integration order
+## Diagnostics
 
-1. Assemble NLU output into `MatrixTurnFrame`.
-2. Run Coherence/Authority.
-3. Use `NoMemoryAdapter` while memory is missing.
-4. Let Affective Engine receive only transient-safe signals.
-5. Build GGUF prompt with explicit `NO_MEMORY_BACKEND` status.
-6. Replace adapter later with real Memory Foundation.
+The canonical `DiagnosticTrace` records separately:
+- `admissionDecision`;
+- `memoryResult`;
+- `memoryId` when a real durable commit eventually exists;
+- reason codes;
+- first boundary divergence.
+
+A placeholder memory result must explicitly expose that persistence is disabled.
 
 ## Production status
 
-This is not production memory. It is an integration placeholder only.
+Current Assembling memory is an integration placeholder only:
+
+```text
+MEMORY_PERSISTENCE_DISABLED
+NOT_PRODUCTION_APPROVED
+```
