@@ -35,17 +35,22 @@ class AffectiveLabAdapter(
                 impulse = impulse,
             )
         )
+        val persistenceViolation = output.persistentDeltaApplied && !persistentAllowed
+        val persistentApplied = output.persistentDeltaApplied && persistentAllowed
         return turn.copy(
             affectiveState = AffectiveState(
-                relationshipSummary = output.relationshipSummary
-                    ?: "RelationshipState esterno: nessuna modifica applicata dall'Affective Engine.",
+                // RelationshipState is externally owned. Runtime-provided
+                // relationship summaries are compatibility data and are never
+                // accepted as canonical relationship authority here.
+                relationshipSummary = "RelationshipState esterno: nessuna modifica applicata dall'Affective Engine.",
                 affectiveSummary = output.affectiveSummary ?: affectiveSummary(output),
-                persistentDeltaAllowed = output.persistentDeltaApplied,
+                persistentDeltaAllowed = persistentApplied,
             ),
             diagnostics = turn.diagnostics
                 .add("affective_lab.updated")
                 .tag("affective_lab.impulse", impulse?.emotionType ?: "none")
-                .tag("affective_lab.persistent_delta", output.persistentDeltaApplied.toString())
+                .tag("affective_lab.persistent_delta", persistentApplied.toString())
+                .tag("affective_lab.persistence_violation", if (persistenceViolation) "BLOCKED" else "NONE")
                 .tag("affective_lab.relationship_owner", "EXTERNAL"),
         )
     }
@@ -120,6 +125,7 @@ data class AffectiveRuntimeOutput(
     val moodValence: Double = 0.0,
     val persistentAffect: Map<String, PersistentAffectSnapshot> = emptyMap(),
     val persistentDeltaApplied: Boolean = false,
+    /** Compatibility-only field. AffectiveLabAdapter never treats it as canonical RelationshipState. */
     val relationshipSummary: String? = null,
     val affectiveSummary: String? = null,
 )
