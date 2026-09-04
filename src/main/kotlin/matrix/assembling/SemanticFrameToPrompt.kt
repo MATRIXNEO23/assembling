@@ -7,14 +7,14 @@ package matrix.assembling
  * This builder turns module decisions into short natural-language instructions.
  */
 class SemanticFrameToPrompt : SemanticFrameToPromptPort {
-    override fun buildPrompt(
-        input: UserMessage,
-        frame: SemanticFrame,
-        coherenceDecision: CoherenceDecision,
-        authorityDecision: AuthorityDecision,
-        memoryResult: MemoryAdmissionResult,
-        affectiveState: AffectiveState,
-    ): GgufPrompt {
+    override fun buildPrompt(turn: MatrixTurnFrame): MatrixTurnFrame {
+        val input = turn.input
+        val frame = turn.requireSemantic()
+        val coherenceDecision = turn.requireCoherence()
+        val authorityDecision = turn.requireAuthority()
+        val memoryResult = turn.requireMemory()
+        val affectiveState = turn.requireAffective()
+
         val meaning = buildMeaningLine(frame, coherenceDecision)
         val memoryLine = buildMemoryLine(memoryResult)
         val authorityLine = buildAuthorityLine(authorityDecision)
@@ -47,7 +47,10 @@ class SemanticFrameToPrompt : SemanticFrameToPromptPort {
             appendLine()
             appendLine("RISPOSTA DI LUNA:")
         }
-        return GgufPrompt(prompt.trimEnd())
+        return turn.copy(
+            prompt = GgufPrompt(prompt.trimEnd()),
+            diagnostics = turn.diagnostics.add("prompt.built"),
+        )
     }
 
     private fun buildMeaningLine(frame: SemanticFrame, coherence: CoherenceDecision): String {
