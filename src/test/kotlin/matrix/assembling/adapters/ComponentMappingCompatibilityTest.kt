@@ -128,6 +128,7 @@ class ComponentMappingCompatibilityTest {
                 polarity = "NEGATIVE",
                 temporalRelation = "CURRENT",
                 subject = "alberto",
+                target = null,
                 owner = "alberto",
                 confidence = mapOf(
                     "overall" to 0.95,
