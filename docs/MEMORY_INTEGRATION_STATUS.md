@@ -1,57 +1,91 @@
 # Memory integration status
 
 Status: `NOT_IMPLEMENTED_YET / PORT_ONLY`
+Date: 2026-09-04
 
-The assembling repository does not currently contain the real Matrix memory
-system. Memory is represented only by an integration port and a no-persistent
-adapter so the rest of the pipeline can be connected and smoke-tested without
-pretending that durable memory exists.
+The assembling repository does not currently contain a real persistent Matrix memory backend.
+Memory is represented only by non-persistent integration adapters so the rest of the canonical pipeline can be connected and tested without pretending that durable storage exists.
 
 ## Current truth
 
-- Real persistent memory: not implemented here yet.
-- Memory Foundation repository: external work item, expected from
-  `MATRIXNEO23/memoria` or a future imported module.
-- Current assembling behavior: no stable database write, no real recall, no
-  supersede lineage, no Room/SQLite persistence.
-- Current memory adapter purpose: preserve the module boundary and prevent NLU,
-  Affective Engine or GGUF from writing memory directly.
+- real Long-Term persistence: `NON_CABLATO`;
+- real recall/retrieval: `NON_CABLATO`;
+- supersede lineage persistence: `NON_CABLATO`;
+- atomic repository transaction: `NON_CABLATO`;
+- current adapters never produce durable writes or real memory IDs;
+- `MatrixAssemblingOrchestrator` enforces that no durable memory result may exist before response/output validation.
 
-## Allowed temporary behavior
+## Current temporary behavior
 
-Until Memory Foundation exists, the assembling layer may use
-`NoPersistentMemoryAdmission`:
-
-- it returns `PROVISIONAL_CLAIM` or `REJECTED`;
-- it never returns real memory IDs;
-- it never writes stable memory;
-- it allows Affective and Prompt Builder integration to be tested safely;
-- it records diagnostics showing memory persistence is disabled.
-
-## Required future replacement
-
-The temporary adapter must later be replaced by a real memory component exposing
-this behavior:
+`NoPersistentMemoryAdmission` may return:
 
 ```text
-MemoryAdmissionPort
-→ validates CoherenceDecision + AuthorityDecision
-→ writes only admitted claims
-→ stores provenance
-→ supports RAW / PROVISIONAL / ADMITTED / SUPERSEDED / REJECTED
-→ supports validAt / invalidAt / supersedesId
-→ supports recall/search for prompt context
-→ never allows GGUF direct writes
+PROVISIONAL_CLAIM
+REJECTED
 ```
 
-## Integration rule
+`BasicMemoryAdmission` may return:
 
-The assembling pipeline may proceed with placeholder memory for end-to-end
-wiring, but any build using it must be marked:
+```text
+NO_MEMORY_BACKEND
+REJECTED
+```
+
+For all current adapters:
+
+```text
+stableWrite = false
+memoryIds = []
+```
+
+The provisional claim exists only in the current turn/frame and is not Long-Term persistence.
+
+## Diagnostic coverage
+
+Current `DiagnosticTrace` records:
+- `admissionDecision`;
+- `memoryResult`;
+- memory backend status;
+- reason codes;
+- eventual `firstDivergence`;
+- `memoryId` remains null while no real commit exists.
+
+## Required future architecture
+
+Do not replace the current pre-response placeholder with a durable writer.
+
+Future memory integration must separate:
+
+```text
+READ / RETRIEVAL
+→ relevant Long-Term context before contextual resolution/decision
+
+EVALUATE / PROPOSE
+→ MemoryCandidate / Authority / admission evaluation
+
+FINAL COMMIT
+→ only after accepted output/action result
+→ Memory Admission durable decision
+→ public MemoryRepository API
+→ atomic persistence / supersede lineage
+```
+
+Target write path:
+
+```text
+Output Validation
+→ Persistent Consolidation
+→ Memory Admission
+→ MemoryRepository
+```
+
+GGUF, NLU, Understanding, Authority and Affective must never write directly to the repository.
+
+## Integration status
+
+Builds using the current adapter must remain marked:
 
 ```text
 MEMORY_PERSISTENCE_DISABLED
 NOT_PRODUCTION_APPROVED
 ```
-
-This avoids confusing a smoke-test pipeline with a real cognitive memory system.

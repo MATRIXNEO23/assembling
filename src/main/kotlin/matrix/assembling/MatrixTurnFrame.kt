@@ -150,10 +150,76 @@ data class AssistantReply(
     val diagnosticTrace: Map<String, String> = emptyMap(),
 )
 
+/**
+ * Structured, observable diagnostic snapshot for one module boundary.
+ *
+ * `reasonCodes` and `decision` are diagnostic facts only. They must never
+ * contain private chain-of-thought or free-form hidden reasoning.
+ */
+data class DiagnosticSnapshot(
+    val module: String,
+    val input: String? = null,
+    val output: String? = null,
+    val decision: String? = null,
+    val status: String = "PASS",
+    val reasonCodes: List<String> = emptyList(),
+    val confidence: Map<String, Double> = emptyMap(),
+    val metadata: Map<String, String> = emptyMap(),
+)
+
+/**
+ * End-to-end diagnostic trace for a Matrix turn.
+ *
+ * `reasoningChain` is intentionally a list of deterministic reason codes, not
+ * model chain-of-thought. `firstDivergence` is write-once: later errors remain
+ * visible in events/reason codes but cannot hide the first broken boundary.
+ */
 data class DiagnosticTrace(
+    val inputOriginale: String? = null,
+    val observation: DiagnosticSnapshot? = null,
+    val understandingResult: DiagnosticSnapshot? = null,
+    val authorityResolution: DiagnosticSnapshot? = null,
+    val admissionDecision: DiagnosticSnapshot? = null,
+    val memoryResult: DiagnosticSnapshot? = null,
+    val memoryId: String? = null,
+    val affectiveStimulus: DiagnosticSnapshot? = null,
+    val firstDivergence: String? = null,
+    val reasoningChain: List<String> = emptyList(),
     val events: List<String> = emptyList(),
     val tags: Map<String, String> = emptyMap(),
 ) {
     fun add(event: String): DiagnosticTrace = copy(events = events + event)
+
     fun tag(key: String, value: String): DiagnosticTrace = copy(tags = tags + (key to value))
+
+    fun withInput(value: String): DiagnosticTrace = copy(inputOriginale = value)
+
+    fun reason(code: String): DiagnosticTrace = copy(reasoningChain = reasoningChain + code)
+
+    fun observe(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(observation = snapshot)
+
+    fun understood(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(understandingResult = snapshot)
+
+    fun authority(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(authorityResolution = snapshot)
+
+    fun admission(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(admissionDecision = snapshot)
+
+    fun memory(snapshot: DiagnosticSnapshot, id: String? = memoryId): DiagnosticTrace = copy(
+        memoryResult = snapshot,
+        memoryId = id,
+    )
+
+    fun affective(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(affectiveStimulus = snapshot)
+
+    fun diverge(code: String): DiagnosticTrace = copy(
+        firstDivergence = firstDivergence ?: code,
+        reasoningChain = reasoningChain + code,
+        events = events + "divergence.$code",
+    )
 }
+
+/** Boundary failure carrying the trace captured at the first contract violation. */
+class MatrixBoundaryViolationException(
+    message: String,
+    val diagnosticTrace: DiagnosticTrace,
+) : IllegalStateException(message)
