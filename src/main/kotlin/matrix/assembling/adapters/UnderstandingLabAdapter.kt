@@ -1,5 +1,6 @@
 package matrix.assembling.adapters
 
+import matrix.assembling.DiagnosticSnapshot
 import matrix.assembling.MatrixTurnFrame
 import matrix.assembling.NluOutput
 import matrix.assembling.NluPort
@@ -42,15 +43,36 @@ class UnderstandingLabAdapter(
         val claims = interpretation.claims.mapIndexed { index, claim ->
             claim.toTypedClaim(turn, index)
         }
+        var trace = turn.diagnostics
+            .observe(
+                DiagnosticSnapshot(
+                    module = "NLU",
+                    input = turn.input.text,
+                    output = "engine=${interpretation.engine}; claims=${interpretation.claims.size}",
+                    decision = interpretation.status,
+                    status = if (primary == null) "HOLD" else "PASS",
+                    reasonCodes = listOf(if (primary == null) "NLU_NO_CLAIM" else "NLU_OUTPUT_ACCEPTED"),
+                    confidence = primary?.confidenceByHead?.plus("overall" to primary.confidence).orEmpty(),
+                    metadata = mapOf(
+                        "engine" to interpretation.engine,
+                        "claimCount" to interpretation.claims.size.toString(),
+                        "multiClaim" to (interpretation.claims.size > 1).toString(),
+                    ),
+                )
+            )
+            .reason(if (primary == null) "NLU_NO_CLAIM" else "NLU_OUTPUT_ACCEPTED")
+            .add("understanding_lab.nlu.analyzed")
+            .tag("understanding_lab.status", interpretation.status)
+            .tag("understanding_lab.engine", interpretation.engine)
+            .tag("understanding_lab.claim_count", interpretation.claims.size.toString())
+            .tag("understanding_lab.multi_claim", (interpretation.claims.size > 1).toString())
+        if (primary == null) {
+            trace = trace.diverge("NLU.NO_CLAIM")
+        }
         return turn.copy(
             nlu = nlu,
             typedClaims = claims,
-            diagnostics = turn.diagnostics
-                .add("understanding_lab.nlu.analyzed")
-                .tag("understanding_lab.status", interpretation.status)
-                .tag("understanding_lab.engine", interpretation.engine)
-                .tag("understanding_lab.claim_count", interpretation.claims.size.toString())
-                .tag("understanding_lab.multi_claim", (interpretation.claims.size > 1).toString()),
+            diagnostics = trace,
         )
     }
 
@@ -98,15 +120,44 @@ class UnderstandingLabAdapter(
             worldTruth = nlu.worldTruth,
         )
         val claims = if (turn.typedClaims.isNotEmpty()) turn.typedClaims else listOf(primaryClaim)
+        val subjectUnresolved = subject == "UNKNOWN"
+        var trace = turn.diagnostics
+            .understood(
+                DiagnosticSnapshot(
+                    module = "UNDERSTANDING",
+                    input = "dialogueAct=${nlu.dialogueAct}; predicate=${nlu.predicate}; polarity=${nlu.polarity}",
+                    output = semantic.semanticSummary,
+                    decision = "SEMANTIC_FRAME_BUILT",
+                    status = if (subjectUnresolved) "HOLD" else "PASS",
+                    reasonCodes = listOf(
+                        "SEMANTIC_FRAME_BUILT",
+                        if (subjectUnresolved) "SUBJECT_UNRESOLVED" else "SUBJECT_RESOLVED",
+                        "MEMORY_AUTHORITY_DEFERRED",
+                    ),
+                    confidence = nlu.confidence,
+                    metadata = mapOf(
+                        "subject" to subject,
+                        "target" to (target ?: "NONE"),
+                        "owner" to (owner ?: "UNRESOLVED"),
+                        "perspective" to (perspective ?: "UNRESOLVED"),
+                        "sourceType" to sourceType,
+                        "claimCount" to claims.size.toString(),
+                    ),
+                )
+            )
+            .reason("UNDERSTANDING_FRAME_BUILT")
+            .add("understanding_lab.semantic_frame.built")
+            .tag("understanding_lab.source_type", sourceType)
+            .tag("understanding_lab.world_truth_observed", nlu.worldTruth.toString())
+            .tag("understanding_lab.subject_resolution", if (subjectUnresolved) "UNRESOLVED" else "RESOLVED")
+            .tag("understanding_lab.memory_authority", "DEFERRED")
+        if (subjectUnresolved) {
+            trace = trace.diverge("UNDERSTANDING.UNRESOLVED_SUBJECT")
+        }
         return turn.copy(
             semantic = semantic,
             typedClaims = claims,
-            diagnostics = turn.diagnostics
-                .add("understanding_lab.semantic_frame.built")
-                .tag("understanding_lab.source_type", sourceType)
-                .tag("understanding_lab.world_truth_observed", nlu.worldTruth.toString())
-                .tag("understanding_lab.subject_resolution", if (subject == "UNKNOWN") "UNRESOLVED" else "RESOLVED")
-                .tag("understanding_lab.memory_authority", "DEFERRED"),
+            diagnostics = trace,
         )
     }
 
