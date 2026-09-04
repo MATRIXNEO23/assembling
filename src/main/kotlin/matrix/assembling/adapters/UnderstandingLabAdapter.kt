@@ -51,6 +51,13 @@ class UnderstandingLabAdapter(
                     "negation" to primary.negationSpan.toTextSpan(),
                     "temporal" to primary.temporalSpan.toTextSpan(),
                 ),
+                resolvedSubject = primary.subject,
+                resolvedTarget = primary.target,
+                resolvedOwner = primary.owner,
+                resolvedPerspective = primary.perspective,
+                objectValue = primary.objectValue,
+                sourceType = primary.sourceType,
+                worldTruth = primary.worldTruth,
             )
         }
         return turn.copy(
@@ -65,10 +72,16 @@ class UnderstandingLabAdapter(
 
     override fun understand(turn: MatrixTurnFrame): MatrixTurnFrame {
         val nlu = turn.requireNlu()
-        val objectValue = turn.input.text.sliceOrNull(nlu.spans["object"])
-        val subject = resolveReferent(nlu.subjectReferent, turn.input.speakerId, turn.input.observerId)
-        val target = resolveOptionalReferent(nlu.targetReferent, turn.input.speakerId, turn.input.observerId)
-        val owner = resolveOptionalReferent(nlu.ownerReferent, turn.input.speakerId, turn.input.observerId)
+        val objectValue = nlu.objectValue ?: turn.input.text.sliceOrNull(nlu.spans["object"])
+        val subject = nlu.resolvedSubject
+            ?: resolveReferent(nlu.subjectReferent, turn.input.speakerId, turn.input.observerId)
+        val target = nlu.resolvedTarget
+            ?: resolveOptionalReferent(nlu.targetReferent, turn.input.speakerId, turn.input.observerId)
+        val owner = nlu.resolvedOwner
+            ?: resolveOptionalReferent(nlu.ownerReferent, turn.input.speakerId, turn.input.observerId)
+        val perspective = nlu.resolvedPerspective
+            ?: resolveOptionalReferent(nlu.perspectiveReferent, turn.input.speakerId, turn.input.observerId)
+        val sourceType = nlu.sourceType ?: sourceType(nlu)
         val semantic = SemanticFrame(
             originalText = turn.input.text,
             semanticSummary = semanticSummary(nlu, objectValue),
@@ -83,6 +96,8 @@ class UnderstandingLabAdapter(
             adultOrIntimacy = isAdultOrIntimacy(nlu, objectValue),
             stableMemoryAllowed = nlu.dialogueAct in setOf("ASSERT", "CORRECT") &&
                 nlu.predicate != "speech.unresolved" &&
+                sourceType != "THIRD_PARTY_REPORT" &&
+                nlu.worldTruth &&
                 nlu.confidence.getOrDefault("overall", 0.0) >= 0.75,
         )
         val claim = TypedClaim(
@@ -94,14 +109,19 @@ class UnderstandingLabAdapter(
             target = target,
             polarity = nlu.polarity,
             temporalRelation = nlu.temporalRelation,
-            sourceType = sourceType(nlu),
+            sourceType = sourceType,
             confidence = nlu.confidence,
             spans = nlu.spans,
+            perspective = perspective,
+            worldTruth = nlu.worldTruth,
         )
         return turn.copy(
             semantic = semantic,
             typedClaims = listOf(claim),
-            diagnostics = turn.diagnostics.add("understanding_lab.semantic_frame.built"),
+            diagnostics = turn.diagnostics
+                .add("understanding_lab.semantic_frame.built")
+                .tag("understanding_lab.source_type", sourceType)
+                .tag("understanding_lab.world_truth", nlu.worldTruth.toString()),
         )
     }
 
@@ -116,6 +136,8 @@ class UnderstandingLabAdapter(
         perspectiveReferent = "UNKNOWN",
         confidence = mapOf("overall" to 0.0),
         spans = emptyMap(),
+        sourceType = "UNRESOLVED",
+        worldTruth = false,
     )
 
     private fun semanticSummary(nlu: NluOutput, objectValue: String?): String {
@@ -206,4 +228,11 @@ data class MatrixNluClaim(
     val objectSpan: List<Int>? = null,
     val negationSpan: List<Int>? = null,
     val temporalSpan: List<Int>? = null,
+    val subject: String? = null,
+    val target: String? = null,
+    val owner: String? = null,
+    val perspective: String? = null,
+    val objectValue: String? = null,
+    val sourceType: String? = null,
+    val worldTruth: Boolean = false,
 )
