@@ -96,14 +96,18 @@ Allowed:
 - preserve subject/target/owner/perspective;
 - normalize object values;
 - preserve source/provenance/world-observation flags;
+- preserve every claim emitted by the NLU runtime;
 - mark uncertainty.
 
 Forbidden:
+- silently dropping claims after the first one;
 - deciding that a claim is durable memory;
 - turning a user/report claim into World Truth;
 - bypassing Authority/Memory Admission.
 
 Compatibility note: `SemanticFrame.stableMemoryAllowed` remains in the current data class only for ABI/source compatibility and is not authoritative. New code must rely on Coherence/Authority/Memory Admission.
+
+Current multi-claim rule: all claims must remain in `MatrixTurnFrame.typedClaims`. Until claim-wise Coherence/Authority is fully wired, a turn containing more than one claim remains `SAFE_TRANSIENT_ONLY` and cannot become durable memory through the pre-response path.
 
 ### Working Memory / Context
 Purpose: temporary state used to answer the current turn.
@@ -118,6 +122,8 @@ Must inspect canonical confidence keys such as:
 - `sequence.predicate`;
 - `sequence.subjectReferent`;
 - `sequence.targetReferent`.
+
+Critical confidence is fail-closed: a missing critical confidence key is treated as `LOW_CONFIDENCE_HOLD`, never as confidence `1.0`.
 
 It may mark low-confidence/transient/report/question states but does not own final persistence.
 
@@ -139,6 +145,16 @@ WRITE: admit/persist only during controlled consolidation.
 ```
 
 Current Assembling memory adapters are placeholders only and must return no durable write.
+
+Hard pre-response invariant enforced by `MatrixAssemblingOrchestrator`:
+
+```text
+before Output Validation / Persistent Consolidation:
+stableWrite == false
+memoryIds == []
+```
+
+Any memory adapter returning a durable write/result before the response phase is rejected immediately. A future real persistent adapter must be connected to the post-validation consolidation phase rather than replacing the current placeholder in place.
 
 Long-Term logical layers:
 - EPISODIC;

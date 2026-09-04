@@ -25,21 +25,37 @@ class BasicCoherenceGuard(
         val frame = turn.requireSemantic()
         val confidence = frame.confidence
         val claim = turn.typedClaims.firstOrNull()
+        val missingCritical = listOf(
+            "token.negation",
+            "sequence.predicate",
+            "sequence.subjectReferent",
+            "sequence.targetReferent",
+        ).firstOrNull { it !in confidence }
         val decision = when {
             frame.owner == null -> CoherenceDecision.REJECTED_UNSAFE
+            missingCritical != null -> CoherenceDecision.LOW_CONFIDENCE_HOLD
             frame.dialogueAct == "QUESTION" -> CoherenceDecision.QUESTION_ONLY
             claim?.sourceType == "THIRD_PARTY_REPORT" -> CoherenceDecision.REPORT_ONLY
-            confidence.getOrDefault("token.negation", 1.0) < minNegation -> CoherenceDecision.LOW_CONFIDENCE_HOLD
-            confidence.getOrDefault("sequence.predicate", 1.0) < minPredicate -> CoherenceDecision.LOW_CONFIDENCE_HOLD
-            confidence.getOrDefault("sequence.subjectReferent", 1.0) < minReferent -> CoherenceDecision.LOW_CONFIDENCE_HOLD
-            confidence.getOrDefault("sequence.targetReferent", 1.0) < minReferent -> CoherenceDecision.LOW_CONFIDENCE_HOLD
+            turn.typedClaims.size > 1 -> CoherenceDecision.SAFE_TRANSIENT_ONLY
+            confidence.getValue("token.negation") < minNegation -> CoherenceDecision.LOW_CONFIDENCE_HOLD
+            confidence.getValue("sequence.predicate") < minPredicate -> CoherenceDecision.LOW_CONFIDENCE_HOLD
+            confidence.getValue("sequence.subjectReferent") < minReferent -> CoherenceDecision.LOW_CONFIDENCE_HOLD
+            confidence.getValue("sequence.targetReferent") < minReferent -> CoherenceDecision.LOW_CONFIDENCE_HOLD
             frame.dialogueAct == "REQUEST" || frame.dialogueAct == "HYPOTHESIS" -> CoherenceDecision.SAFE_TRANSIENT_ONLY
             frame.predicate == "speech.unresolved" -> CoherenceDecision.SAFE_TRANSIENT_ONLY
             else -> CoherenceDecision.SAFE_TO_ADMIT
         }
+        val diagnostics = turn.diagnostics
+            .add("coherence.$decision")
+            .let { trace ->
+                if (missingCritical != null) trace.tag("coherence.missing_critical_confidence", missingCritical) else trace
+            }
+            .let { trace ->
+                if (turn.typedClaims.size > 1) trace.tag("coherence.multi_claim", "TRANSIENT_ONLY") else trace
+            }
         return turn.copy(
             coherenceDecision = decision,
-            diagnostics = turn.diagnostics.add("coherence.$decision"),
+            diagnostics = diagnostics,
         )
     }
 }
@@ -67,6 +83,7 @@ class BasicAuthorityResolver : AuthorityResolverPort {
             reason = when {
                 sourceType == "THIRD_PARTY_REPORT" -> "third-party report preserved as indirect source"
                 !ownerResolved -> "owner unresolved"
+                turn.typedClaims.size > 1 -> "multi-claim turn remains transient until claim-wise authority resolution is wired"
                 accepted -> "coherence and direct-source authority accepted"
                 else -> "not stable enough for authority admission"
             },
