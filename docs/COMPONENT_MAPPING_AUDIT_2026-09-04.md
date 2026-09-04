@@ -154,15 +154,43 @@ Added tests verify:
 - no persistent target when memory is not stable;
 - persistent target is present only after stable semantic + stable memory admission.
 
-## Finding 4 — Memory is intentionally absent
+## Finding 4 — Memory placeholder could still admit stable memory
+
+Status: FIXED.
+
+Problem:
+
+`BasicMemoryAdmission` could return:
+
+```text
+status = ADMITTED
+stableWrite = true
+```
+
+That was incompatible with the real system status because the memory backend does not exist yet.
+
+Minimal fix applied:
+
+- modified only `BasicMemoryAdmission`;
+- no interface changes;
+- it now always returns `stableWrite=false` and empty `memoryIds`;
+- safe status is now `NO_MEMORY_BACKEND` or `REJECTED`.
+
+Commit:
+
+```text
+9cd0df38f2e2dcf53c418b2246c30fc99d9461e0
+```
+
+## Finding 5 — Memory is intentionally absent
 
 Status: OK.
 
 The real memory backend is not implemented. The correct current behavior remains:
 
 ```text
-NoPersistentMemoryAdmission
-status = PROVISIONAL_CLAIM or REJECTED
+NoPersistentMemoryAdmission / BasicMemoryAdmission
+status = NO_MEMORY_BACKEND, PROVISIONAL_CLAIM or REJECTED
 stableWrite = false
 memoryIds = emptyList()
 ```
