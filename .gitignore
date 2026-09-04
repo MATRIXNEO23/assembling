@@ -1,0 +1,8 @@
+# Local runtime model payloads are imported from verified artifacts.
+# The canonical SHA-256 values live in the assembling artifact descriptor.
+runtime/matrix-nlu/**/matrix-nlu-*.onnx
+runtime/matrix-nlu/**/*.zip
+
+# Local scratch / caches
+.gradle/
+build/
