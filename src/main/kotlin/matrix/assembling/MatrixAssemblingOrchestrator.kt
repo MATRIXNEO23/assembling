@@ -35,9 +35,22 @@ class MatrixAssemblingOrchestrator(
             .let(coherence::check)
             .let(authority::resolve)
             .let(memory::admit)
+            .let(::enforcePreResponseMemoryBoundary)
             .let(affective::update)
             .let(promptBuilder::buildPrompt)
             .let(gguf::generate)
             .let { completed -> completed.copy(diagnostics = completed.diagnostics.add("turn.completed")) }
+    }
+
+    private fun enforcePreResponseMemoryBoundary(turn: MatrixTurnFrame): MatrixTurnFrame {
+        val memoryResult = turn.requireMemory()
+        if (memoryResult.stableWrite || memoryResult.memoryIds.isNotEmpty()) {
+            throw IllegalStateException(
+                "Durable memory write/result is forbidden before output validation and persistent consolidation"
+            )
+        }
+        return turn.copy(
+            diagnostics = turn.diagnostics.add("memory.pre_response_boundary.ok"),
+        )
     }
 }
