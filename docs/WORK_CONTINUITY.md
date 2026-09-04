@@ -1,97 +1,124 @@
 # Work Continuity — Matrix Assembling Lab
 
-Last updated: 2026-09-04T13:41+02:00
+Last updated: 2026-09-04T14:43+02:00
 Repository: `MATRIXNEO23/assembling`
 Branch: `main`
-Continuity schema: `matrix.assembling.continuity.v1`
+Continuity schema: `matrix.assembling.continuity.v2`
 
 ## Current objective
 
-Combinare i componenti Matrix/Luna in un repo di integrazione separato, partendo dal ponte tra output semantico NLU e prompt leggibile dal GGUF.
+Combinare i componenti Matrix/Luna in un repo di integrazione separato, usando `MatrixTurnFrame` come formato canonico centrale e adapter espliciti per collegare Understanding/NLU, Coherence, Authority, Memory placeholder, Affective Engine, Prompt Builder e GGUF.
 
 ## Current status
 
-- Repo inizializzato come integration lab.
-- Prima pipeline di collegamento implementata:
-  `SemanticFrame -> CoherenceGuard -> PromptDirective -> GGUF prompt`.
-- Nessun modulo production importato.
-- Nessun artifact ONNX/INT8 importato.
+- Repo inizializzato come integration/assembling lab.
+- `MatrixTurnFrame` presente come envelope centrale per turno.
+- Porte/interfacce presenti per NLU, Understanding, Coherence, Authority, MemoryAdmission, Affective, PromptBuilder e GGUF.
+- Componenti Understanding/NLU copiati da `MATRIXNEO23/matrix-understanding-lab` in `vendor/`.
+- Componente Affective Engine copiato da `MATRIXNEO23/matrix-affective-lab` in `vendor/`.
+- Adapter Kotlin creati per collegare output Understanding/NLU e Affective al formato centrale.
+- Memoria reale non presente: usare solo `NoPersistentMemoryAdmission`, nessuna persistenza finta.
 - Nessun frozen letto.
 - Nessuna promotion production autorizzata.
 
-## Latest commits
+## Latest significant commits
 
 - `562654580cda170cf4fa7b8984c4b663c8f54d80` — initial README.
 - `1440b6b32ba624ee20263cbae57a79b72c5358ad` — continuity file.
 - `a65a70de257975c37c4376066c8bd18aa71a5820` — assembly plan.
 - `defca28fdf4f590a779774432d81187d9ceccd17` — shared contracts.
-- `e0c7ac6901bbae4bc394f3db4ebd6a70b4c7bf68` — Gradle settings.
-- `703fffb50df08809c6a086b14aa871cf0449a13c` — Kotlin JVM build.
-- `0760edf45eb625a379313e328b67d9db3514b889` — deterministic CoherenceGuard.
-- `39b233e572b54f0ad0405187449624509bbc934b` — SemanticFrameToPrompt translator.
-- `edb838472d80b36535fa7e0d09d3796b94e99c58` — MatrixAssemblyPipeline connector.
-- `28655608161e70d3df466937d0a2b39b728e0a5b` — bridge behavior tests.
-- `0169cd4588c621b815274d6ff056117befe85ea7` — CI workflow.
+- `882dbf83e5919fead37f960282f178fe8df29a6c` — canonical `MatrixTurnFrame`.
+- `167b1c35fe09cd6183dc68bdd111f5936ff011b0` — frame-based integration ports.
+- `c4daee93126f9984567159cbebda731b433ebc82` — orchestrator updated to frame pipeline.
+- `d2631e45da1a3b01db330088782f5c7f984a7493` — prompt builder updated to frame pipeline.
+- `aad7c694505543e7457902ebe358d244e7b11241` — memory integration policy / no real memory backend.
+- `03b5b8817eb00bedc646ed916fb5970c81e6b119` — copied Understanding `Domain.java`.
+- `c8ba9ddfd4d3f3da9795b0659b59a3981f693c6d` — copied `UnderstandingEngine.java`.
+- `09df9f03e67478a988f6f7563eb6a3c54285bad6` — copied Matrix-NLU `labels.py`.
+- `8e54c94d17e44f0b2dcea4ea17e8de3ed26b00d1` — copied Affective Engine prototype.
+- `1f5a4d9a58b24c176965b4ac699eaba3557ae2ce` — added `UnderstandingLabAdapter.kt`.
+- `eb7ab4d649d13931a4ce822b9675b3f248848dea` — added `AffectiveLabAdapter.kt`.
+- `0bcf497f6c1010f21e29aef9d02de2da46ff123f` — copied Matrix-NLU `inference.py` runtime.
+- `4d320fa78d8c87c69f648390aaaf69843e99d467` — imported components manifest.
 
-## Component state
+## Imported component state
 
-| Component | Source/status | Assembly status |
+| Component | Source repository | Imported into assembling | Assembly status |
+|---|---|---|---|
+| Understanding domain contract | `MATRIXNEO23/matrix-understanding-lab` | `vendor/matrix-understanding-lab/core/.../Domain.java` | Copied snapshot |
+| Understanding engine interface | `MATRIXNEO23/matrix-understanding-lab` | `vendor/matrix-understanding-lab/core/.../UnderstandingEngine.java` | Copied snapshot |
+| Matrix-NLU labels | `MATRIXNEO23/matrix-understanding-lab` | `vendor/matrix-understanding-lab/matrix_nlu/labels.py` | Copied snapshot |
+| Matrix-NLU inference runtime | `MATRIXNEO23/matrix-understanding-lab` | `vendor/matrix-understanding-lab/matrix_nlu/inference.py` | Copied snapshot |
+| Affective Engine prototype | `MATRIXNEO23/matrix-affective-lab` | `vendor/matrix-affective-lab/src/affective_engine.py` | Copied snapshot |
+| Memory Foundation | Not implemented yet | Not imported | Placeholder only |
+
+## New adapter state
+
+| Adapter | Role | Status |
 |---|---|---|
-| Student-4-v2.2A NLU | Training in corso in `MATRIXNEO23/matrix-understanding-lab`, run `33860928806` | Await candidate artifact |
-| SemanticFrame contract | Local repo | Implemented skeleton |
-| Coherence Guard | Local repo | Implemented v0.1 deterministic |
-| SemanticFrameToPrompt | Local repo | Implemented v0.1 deterministic |
-| MatrixAssemblyPipeline | Local repo | Implemented v0.1 connector |
-| Memory Foundation | Discussione salvata in `MATRIXNEO23/memoria` | Contract bridge pending |
-| Affective Engine | Validato isolato in `MATRIXNEO23/matrix-affective-lab`, not production | Await guarded input |
-| Authority Resolver | P0 not fully resolved | Must be guarded |
-| GGUF integration | Existing app path outside this repo | Await Android integration patch |
+| `UnderstandingLabAdapter.kt` | Matrix-NLU/lab output → `NluOutput` → `SemanticFrame` → `TypedClaim` → `MatrixTurnFrame` | Created |
+| `AffectiveLabAdapter.kt` | `SemanticFrame` + memory decision → affective impulse/request → `AffectiveState` → `MatrixTurnFrame` | Created |
+| `NoPersistentMemoryAdmission.kt` | Temporary memory admission adapter while real memory is absent | Present |
+| `SemanticFrameToPrompt.kt` | Internal semantic/affective/memory state → GGUF-readable prompt | Present |
 
-## Implemented assembly path
+## Current assembly path
 
 ```text
-SemanticFrame
-  contains original text, dialogueAct, predicate, polarity, referents,
-  temporalRelation, confidence and adult/intimacy marker
-
-CoherenceGuard
-  decides reply safety, memory stability and persistent affect permission
-
-SemanticFrameToPrompt
-  converts internal classes into short natural-language instructions
-
-MatrixAssemblyPipeline
-  exposes buildDirective(...) and buildPrompt(...)
+UserMessage
+→ UnderstandingLabAdapter.analyze
+→ UnderstandingLabAdapter.understand
+→ CoherenceGuardPort.check
+→ AuthorityResolverPort.resolve
+→ NoPersistentMemoryAdmission.admit
+→ AffectiveLabAdapter.update
+→ SemanticFrameToPromptPort.buildPrompt
+→ GgufPort.generate
+→ AssistantReply
 ```
+
+## Memory status
+
+The real memory backend does not exist yet.
+
+Required temporary behavior:
+
+```text
+NoPersistentMemoryAdmission
+status = NO_MEMORY_BACKEND
+stableWrite = false
+reason = real memory backend missing
+```
+
+Do not create fake persistence, fake memories, or hidden state in `assembling`.
 
 ## Active design rule
 
-The GGUF receives short natural-language instructions, not raw NLU numbers. Example:
+The GGUF receives short natural-language instructions, not raw NLU numbers.
+
+Internal:
 
 ```text
-USER_TEXT:
-"Non voglio uscire con Marco"
-
-SYSTEM_MEANING:
-L'utente sta rifiutando di uscire con Marco. La negazione è importante.
-
-RESPONSE_INSTRUCTION:
-Rispondi come Luna rispettando il rifiuto. Non interpretarlo come desiderio di uscire.
+dialogueAct = REQUEST
+predicate = goal.object
+polarity = NEGATIVE
+confidence = 0.91
 ```
 
-## First behavior tests
+Prompt-facing:
 
-- Negative refusal: must not invert negation; no stable memory.
-- Question: must not become a stable fact.
-- Adult/intimacy: semantic handling, no automatic block/error.
-- Low confidence: transient/cautious response; no stable memory.
+```text
+L'utente sta facendo una richiesta con negazione/rifiuto.
+Rispondi rispettando significato, relazione e limiti del contesto.
+Non inventare memoria stabile.
+```
 
 ## Next exact activity
 
-1. Check CI result for `Matrix Assembling CI`.
-2. Add Memory/Affective bridge contracts.
-3. When v2.2A artifact exists, define import contract for NLU output -> `SemanticFrame`.
-4. Prepare Android/GGUF integration patch with prompt visibility diagnostics.
+1. Add runnable tests with fake `MatrixNluRuntimeBridge`, fake `AffectiveRuntimeBridge`, `NoPersistentMemoryAdmission`, prompt builder and fake GGUF.
+2. Ensure the full path produces one `MatrixTurnFrame` with semantic, coherence, authority, no-memory result, affective summary, GGUF prompt and reply.
+3. Add compile guard to avoid duplicate/conflicting prompt builder contracts.
+4. When Student-4-v2.2A artifact is available, wire the ONNX runtime output into `MatrixNluRuntimeBridge`.
+5. Only after the memory repo becomes real, replace `NoPersistentMemoryAdmission` with a real `MemoryRepository` adapter.
 
 ## Safety/project constraints
 
@@ -102,3 +129,4 @@ Rispondi come Luna rispettando il rifiuto. Non interpretarlo come desiderio di u
 - Adult/intimacy handling is semantic robustness only.
 - Uncertain semantic frames must not create stable memories.
 - Persistent affect only from guarded, safe events.
+- Memory remains absent until explicitly implemented in a real backend.
