@@ -105,6 +105,7 @@ class UnderstandingLabAdapter(
                 .add("understanding_lab.semantic_frame.built")
                 .tag("understanding_lab.source_type", sourceType)
                 .tag("understanding_lab.world_truth_observed", nlu.worldTruth.toString())
+                .tag("understanding_lab.subject_resolution", if (subject == "UNKNOWN") "UNRESOLVED" else "RESOLVED")
                 .tag("understanding_lab.memory_authority", "DEFERRED"),
         )
     }
@@ -218,7 +219,7 @@ class UnderstandingLabAdapter(
     }
 
     private fun resolveReferent(referent: String, speaker: String, observer: String): String =
-        resolveOptionalReferent(referent, speaker, observer) ?: speaker
+        resolveOptionalReferent(referent, speaker, observer) ?: "UNKNOWN"
 
     private fun resolveOptionalReferent(referent: String, speaker: String, observer: String): String? = when (referent) {
         "SPEAKER" -> speaker
