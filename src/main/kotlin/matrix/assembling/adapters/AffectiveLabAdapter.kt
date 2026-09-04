@@ -2,6 +2,7 @@ package matrix.assembling.adapters
 
 import matrix.assembling.AffectivePort
 import matrix.assembling.AffectiveState
+import matrix.assembling.DiagnosticSnapshot
 import matrix.assembling.MatrixTurnFrame
 
 /**
@@ -37,21 +38,47 @@ class AffectiveLabAdapter(
         )
         val persistenceViolation = output.persistentDeltaApplied && !persistentAllowed
         val persistentApplied = output.persistentDeltaApplied && persistentAllowed
+        val state = AffectiveState(
+            // RelationshipState is externally owned. Runtime-provided
+            // relationship summaries are compatibility data and are never
+            // accepted as canonical relationship authority here.
+            relationshipSummary = "RelationshipState esterno: nessuna modifica applicata dall'Affective Engine.",
+            affectiveSummary = output.affectiveSummary ?: affectiveSummary(output),
+            persistentDeltaAllowed = persistentApplied,
+        )
+        var trace = turn.diagnostics
+            .affective(
+                DiagnosticSnapshot(
+                    module = "AFFECTIVE",
+                    input = "predicate=${semantic.predicate}; polarity=${semantic.polarity}; persistentAllowed=$persistentAllowed",
+                    output = "impulse=${impulse?.emotionType ?: "none"}; persistentApplied=$persistentApplied",
+                    decision = if (persistentApplied) "PERSISTENT_AND_TRANSIENT" else "TRANSIENT_ONLY",
+                    status = if (persistenceViolation) "VIOLATION_BLOCKED" else "PASS",
+                    reasonCodes = listOf(
+                        if (persistentAllowed) "PERSISTENCE_AUTHORIZED" else "PERSISTENCE_NOT_AUTHORIZED",
+                        if (persistenceViolation) "PERSISTENCE_ATTEMPT_BLOCKED" else "AFFECTIVE_OUTPUT_ACCEPTED",
+                        "RELATIONSHIP_OWNER_EXTERNAL",
+                    ),
+                    confidence = mapOf("overall" to semantic.confidence.getOrDefault("overall", 0.0)),
+                    metadata = mapOf(
+                        "relationshipOwner" to "EXTERNAL",
+                        "persistentAllowed" to persistentAllowed.toString(),
+                        "persistentApplied" to persistentApplied.toString(),
+                    ),
+                )
+            )
+            .reason(if (persistentApplied) "AFFECTIVE_PERSISTENCE_APPLIED" else "AFFECTIVE_TRANSIENT_ONLY")
+            .add("affective_lab.updated")
+            .tag("affective_lab.impulse", impulse?.emotionType ?: "none")
+            .tag("affective_lab.persistent_delta", persistentApplied.toString())
+            .tag("affective_lab.persistence_violation", if (persistenceViolation) "BLOCKED" else "NONE")
+            .tag("affective_lab.relationship_owner", "EXTERNAL")
+        if (persistenceViolation) {
+            trace = trace.diverge("AFFECTIVE.PERSISTENCE_WITHOUT_ADMISSION")
+        }
         return turn.copy(
-            affectiveState = AffectiveState(
-                // RelationshipState is externally owned. Runtime-provided
-                // relationship summaries are compatibility data and are never
-                // accepted as canonical relationship authority here.
-                relationshipSummary = "RelationshipState esterno: nessuna modifica applicata dall'Affective Engine.",
-                affectiveSummary = output.affectiveSummary ?: affectiveSummary(output),
-                persistentDeltaAllowed = persistentApplied,
-            ),
-            diagnostics = turn.diagnostics
-                .add("affective_lab.updated")
-                .tag("affective_lab.impulse", impulse?.emotionType ?: "none")
-                .tag("affective_lab.persistent_delta", persistentApplied.toString())
-                .tag("affective_lab.persistence_violation", if (persistenceViolation) "BLOCKED" else "NONE")
-                .tag("affective_lab.relationship_owner", "EXTERNAL"),
+            affectiveState = state,
+            diagnostics = trace,
         )
     }
 
