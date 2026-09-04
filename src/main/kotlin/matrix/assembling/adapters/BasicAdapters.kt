@@ -65,34 +65,35 @@ class BasicAuthorityResolver : AuthorityResolverPort {
 }
 
 /**
- * Minimal memory admission adapter. It never creates stable memory unless both
- * Coherence and Authority have explicitly allowed it.
+ * Temporary memory placeholder.
+ *
+ * The real memory backend is not implemented yet, therefore this adapter must
+ * never return stableWrite=true or real memory IDs. It keeps the pipeline
+ * runnable without pretending that persistence exists.
  */
 class BasicMemoryAdmission : MemoryAdmissionPort {
     override fun admit(turn: MatrixTurnFrame): MatrixTurnFrame {
         val coherence = turn.requireCoherence()
         val authority = turn.requireAuthority()
-        val stable = coherence == CoherenceDecision.SAFE_TO_ADMIT && authority.accepted
         val result = when {
-            stable -> MemoryAdmissionResult(
-                status = "ADMITTED",
-                stableWrite = true,
-                reason = "coherence and authority accepted stable write",
-            )
-            coherence == CoherenceDecision.REJECTED_UNSAFE -> MemoryAdmissionResult(
+            coherence == CoherenceDecision.REJECTED_UNSAFE || !authority.ownerResolved -> MemoryAdmissionResult(
                 status = "REJECTED",
+                memoryIds = emptyList(),
                 stableWrite = false,
-                reason = "unsafe or unresolved owner/source",
+                reason = "no memory backend; unsafe or unresolved claim rejected before storage",
             )
             else -> MemoryAdmissionResult(
-                status = "PROVISIONAL_CLAIM",
+                status = "NO_MEMORY_BACKEND",
+                memoryIds = emptyList(),
                 stableWrite = false,
-                reason = "kept transient/provisional for this turn only",
+                reason = "no memory backend; stable persistence disabled in assembling placeholder",
             )
         }
         return turn.copy(
             memoryResult = result,
-            diagnostics = turn.diagnostics.add("memory.${result.status}"),
+            diagnostics = turn.diagnostics
+                .add("memory.${result.status}")
+                .tag("memory", "MEMORY_PERSISTENCE_DISABLED"),
         )
     }
 }
