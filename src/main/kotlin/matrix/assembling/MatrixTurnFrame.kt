@@ -52,10 +52,8 @@ data class NluOutput(
     val spans: Map<String, TextSpan?>,
     /**
      * Optional resolved fields produced by the Understanding lab contract.
-     *
-     * These fields keep the canonical labels above intact while preventing loss
-     * of already-resolved subject/target/owner/object data when a runtime emits
-     * full Domain.Claim-like output instead of only referent classes and spans.
+     * They preserve already-resolved semantic evidence without granting
+     * downstream truth or persistence authority.
      */
     val resolvedSubject: String? = null,
     val resolvedTarget: String? = null,
@@ -63,6 +61,10 @@ data class NluOutput(
     val resolvedPerspective: String? = null,
     val objectValue: String? = null,
     val sourceType: String? = null,
+    /**
+     * Observation/provenance flag copied from the source runtime when present.
+     * It is never, by itself, authorization for Belief or Memory persistence.
+     */
     val worldTruth: Boolean = false,
 )
 
@@ -80,6 +82,11 @@ data class SemanticFrame(
     val owner: String?,
     val confidence: Map<String, Double>,
     val adultOrIntimacy: Boolean = false,
+    /**
+     * LEGACY COMPATIBILITY FIELD.
+     * New Understanding code must not set this as durable-memory authority.
+     * Coherence + Authority + Memory Admission own persistence decisions.
+     */
     val stableMemoryAllowed: Boolean = false,
 )
 
@@ -125,6 +132,10 @@ data class MemoryAdmissionResult(
 )
 
 data class AffectiveState(
+    /**
+     * Compatibility projection for prompt construction only. Canonical
+     * RelationshipState is externally owned and must not be mutated here.
+     */
     val relationshipSummary: String,
     val affectiveSummary: String,
     val persistentDeltaAllowed: Boolean,
