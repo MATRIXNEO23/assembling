@@ -1,172 +1,196 @@
 # Work Continuity — Matrix Assembling Lab
 
-Last updated: 2026-09-04T15:27+02:00
+Last updated: 2026-09-04T20:00+02:00
 Repository: `MATRIXNEO23/assembling`
-Branch: `main`
-Continuity schema: `matrix.assembling.continuity.v3`
-Current HEAD before pause: `f5c86ba5913bf34aa4cbff7b75f44b32b9528e3a`
-Latest verified CI run: `33877882671` — `Matrix Assembling CI` — `success`
+Working branch: `architecture-alignment-20260904`
+Continuity schema: `matrix.assembling.continuity.v4`
+Branch tip before this continuity update: `559e21d1a56fb1a41034f9f7ad2dc729414f4bb6`
+Baseline main before alignment: `4399a47258d4e44a7be3a216e2fdede01b8c407e`
+Latest previously verified main CI: `33877882671` — success
 
-## Stop reason
+## Canonical sources
 
-Session paused by user request: "dobbiamo fermarci un attimo".
+Global Matrix architecture:
+`MATRIXNEO23/8.10.9evo3-solo-gpt/ARCHITETTURA_MATRIX_ENGINE.md`
 
-This file is the canonical restart point for continuing the `assembling` work without losing state.
+Assembling document order:
+1. `docs/README.md` — document index/status;
+2. `docs/MODULE_CONNECTIONS.md` — canonical module wiring;
+3. `docs/ASSEMBLY_PLAN.md` — operational plan;
+4. `docs/WORK_CONTINUITY.md` — restart/current state.
 
 ## Current objective
 
-Build `MATRIXNEO23/assembling` as the integration layer that connects the independently developed Matrix/Luna components:
+Preserve all healthy modules already built while eliminating architecture drift and competing authorities.
+
+Canonical principle:
 
 ```text
-Understanding / Matrix-NLU
-→ canonical MatrixTurnFrame
-→ Coherence / Authority
-→ Memory admission placeholder
-→ Affective Engine
-→ SemanticFrameToPrompt
-→ GGUF adapter
+UNDERSTAND ≠ BELIEVE ≠ REMEMBER ≠ FEEL ≠ DECIDE ≠ RESPOND
 ```
 
-`assembling` must not become a training lab and must not hide missing components. It should expose clear contracts, adapters, tests and continuity documents.
-
-## Source repositories
-
-| Component | Repository | Status | Import strategy |
-|---|---|---|---|
-| Understanding / NLU | `MATRIXNEO23/matrix-understanding-lab` | Active lab; Student-4-v2.2A still experimental until evaluation/frozen authorization | Copy stable contracts/runtime-facing interfaces and adapt to `MatrixTurnFrame` |
-| Affective Engine / sentimenti | `MATRIXNEO23/matrix-affective-lab` | Validated prototype, not Android production module yet | Copy prototype and wrap behind a bridge/adapter |
-| Memory | Not implemented yet | Missing real backend | Use only `NoPersistentMemoryAdmission` / `NO_MEMORY_BACKEND` |
-| GGUF | Exists in Android app, not in assembling | Real adapter not connected yet | Use placeholder/fake until llama.cpp/MLC bridge is imported |
-
-## Current architectural decision
-
-Use one canonical frame per turn:
+Canonical runtime direction:
 
 ```text
-MatrixTurnFrame
+User/World observation
+→ NLU / Understanding
+→ Working Memory / Semantic Draft
+→ context read
+→ Coherence / Authority / Belief resolution
+→ Affective appraisal
+→ Matrix decision layer
+→ Prompt / GGUF realization
+→ output validation
+→ persistent consolidation
 ```
 
-Every module receives the same frame and returns an updated copy.
+Not all future stages are wired yet. Missing stages must be marked `NON_CABLATO` rather than simulated.
 
-Do not connect modules directly like this:
+## Preserved modules
 
-```text
-NLU → Memory
-GGUF → Memory
-Affective → Memory DB
-GGUF → Affective persistent state
-```
+No module was discarded by this alignment.
 
-Allowed route:
+Preserved authoritative frame path:
+- `src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt`
+- `src/main/kotlin/matrix/assembling/IntegrationPorts.kt`
+- `src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt`
+- `src/main/kotlin/matrix/assembling/SemanticFrameToPrompt.kt`
+- adapters under `src/main/kotlin/matrix/assembling/adapters/`
 
-```text
-UserMessage
-→ NluPort
-→ UnderstandingPort
-→ CoherenceGuardPort
-→ AuthorityResolverPort
-→ MemoryAdmissionPort
-→ AffectivePort
-→ SemanticFrameToPromptPort
-→ GgufPort
-→ AssistantReply
-```
+Preserved compatibility/testing path:
+- `src/main/kotlin/matrix/assembling/contracts/*`
+- `src/main/kotlin/matrix/assembling/pipeline/*`
+- `src/main/kotlin/matrix/assembling/prompt/*`
 
-## Implemented core files
+The compatibility path remains build/test material only and must not become a second independent architecture.
 
-| File | Purpose | Status |
-|---|---|---|
-| `src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt` | Canonical per-turn envelope; contains input, NLU, semantic, claims, coherence, authority, memory, affective, prompt, reply, diagnostics | Implemented |
-| `src/main/kotlin/matrix/assembling/IntegrationPorts.kt` | Frame-based ports for all modules | Implemented |
-| `src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt` | Sequential frame pipeline orchestrator | Implemented |
-| `src/main/kotlin/matrix/assembling/SemanticFrameToPrompt.kt` | Main frame-based prompt builder | Implemented |
-| `src/main/kotlin/matrix/assembling/prompt/SemanticFrameToPrompt.kt` | Older/parallel contract-level prompt translator | Present; keep until duplicate-contract cleanup |
-| `src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt` | Earlier directive/prompt pipeline using `contracts/*` types | Present; still tested |
-| `src/main/kotlin/matrix/assembling/contracts/MatrixAssemblyContracts.kt` | Earlier contract model used by old prompt pipeline | Present; still tested |
+## Contradictions resolved in this workstream
 
-Important: there are currently two prompt/contract paths:
+### 1. Documentation drift / two architectural paths
 
-```text
-A. Frame path: MatrixTurnFrame.kt + IntegrationPorts.kt + MatrixAssemblingOrchestrator.kt + root SemanticFrameToPrompt.kt
-B. Older contract path: contracts/* + pipeline/* + prompt/*
-```
+Resolved by:
+- adding `docs/README.md` document index;
+- declaring the frame path authoritative;
+- declaring `contracts/pipeline/prompt` compatibility-only;
+- updating root `README.md`, `MODULE_CONNECTIONS.md`, `ASSEMBLY_PLAN.md`.
 
-Do not delete either blindly. Next cleanup must identify whether B is still needed or should be migrated into A.
+### 2. Understanding owned durable-memory admission
 
-## Imported component snapshots
+Old behavior:
+`UnderstandingLabAdapter` set `SemanticFrame.stableMemoryAllowed` from dialogue act, source type, worldTruth and confidence.
 
-### Understanding / Matrix-NLU
+New behavior:
+- Understanding preserves semantic evidence and provenance;
+- `stableMemoryAllowed` remains only as legacy compatibility field and is set `false` by the real Understanding adapter;
+- durable memory authority is deferred to Coherence + Authority + Memory Admission;
+- diagnostic tag: `understanding_lab.memory_authority=DEFERRED`.
 
-Copied/adapted from `MATRIXNEO23/matrix-understanding-lab`:
+Relevant branch commit:
+`777a59f6b110eab0cbba0aefba1db0612b4d6e58`
 
-```text
-vendor/matrix-understanding-lab/core/src/main/java/com/matrix/p0/Domain.java
-vendor/matrix-understanding-lab/core/src/main/java/com/matrix/p0/UnderstandingEngine.java
-vendor/matrix-understanding-lab/matrix_nlu/labels.py
-vendor/matrix-understanding-lab/matrix_nlu/inference.py
-```
+### 3. Negation confidence key mismatch
 
-Source contract facts:
+Old BasicCoherenceGuard key:
+`tokens.negation`
 
-- `UnderstandingEngine.interpret(caseId, language, text, context)` returns an `Interpretation`.
-- `Domain.Claim` has `speaker`, `subject`, `target`, `owner`, `perspective`, `dialogueAct`, `predicate`, `objectValue`, `polarity`, `negationScope`, `temporalRelation`, `temporalExpression`, `entities`, `claimKind`, `confidence`, `sourceSpans`, `sourceIds`, `worldTruth`.
+Canonical Matrix-NLU head:
+`token.negation`
 
-Assembly adapter:
+Fixed in BasicCoherenceGuard.
 
-```text
-src/main/kotlin/matrix/assembling/adapters/UnderstandingLabAdapter.kt
-```
+### 4. Third-party report path could never reach Authority correctly
 
-Role:
+Old BasicAuthorityResolver derived source mostly from Coherence state; BasicCoherenceGuard did not reliably produce report state.
 
-```text
-Matrix-NLU/runtime output
-→ NluOutput
-→ SemanticFrame
-→ TypedClaim
-→ MatrixTurnFrame
-```
+New behavior:
+- Coherence reads `TypedClaim.sourceType`;
+- `THIRD_PARTY_REPORT` becomes `REPORT_ONLY`;
+- Authority reads the actual claim `sourceType` and rejects direct authority while preserving the indirect source.
 
-### Affective Engine
+Relevant branch commit:
+`1c150a2ee080391073492e8ddd40cc7653005f04`
 
-Copied/adapted from `MATRIXNEO23/matrix-affective-lab`:
+### 5. Affective vs Relationship authority conflation
 
-```text
-vendor/matrix-affective-lab/src/affective_engine.py
-```
+Global Affective contract already says RelationshipState is external.
 
-Source prototype facts:
+Old assembly adapter could derive `relationshipSummary` from persistent affect fields.
 
-- Has `AffectiveEngine`.
-- Supports transient emotions, mood, PAD-like values.
-- Persistent affect fields include: `trust`, `attachment`, `affection`, `attraction`, `resentment`, `respect`, `admiration`, `aversion`.
+New behavior:
+- Affective no longer derives canonical RelationshipState;
+- prompt compatibility field explicitly says RelationshipState is externally owned;
+- diagnostic tag: `affective_lab.relationship_owner=EXTERNAL`;
+- persistent affect is allowed only from an actually admitted event (`memory.stableWrite=true`), not from Understanding's legacy flag.
 
-Assembly adapter:
+Relevant branch commit:
+`5ebc7afa0ea691174ecf8f03893d67e94422d68d`
 
-```text
-src/main/kotlin/matrix/assembling/adapters/AffectiveLabAdapter.kt
-```
+### 6. Adult/intimacy blanket persistence penalty
 
-Role:
+Old compatibility CoherenceGuard required:
+`persistentAffectAllowed = stableMemoryAllowed && adultIntimacy == None`
 
-```text
-SemanticFrame + MemoryAdmissionResult
-→ AffectiveRuntimeRequest
-→ AffectiveState
-→ MatrixTurnFrame
-```
+New behavior:
+`persistentAffectAllowed = stableMemoryAllowed`
 
-Persistent affect is guarded:
+Adult/intimacy itself is never a reason to suppress affect; unresolved semantics may still remain transient like any other domain.
 
-```text
-persistentAllowed = memory.stableWrite == true && semantic.stableMemoryAllowed
-```
+Relevant branch commit:
+`627fcbbf9dbac2fcda9ee31d3099e047ea769711`
+
+### 7. Contract comments were misleading
+
+`MatrixTurnFrame.kt` now explicitly states:
+- `worldTruth` is observation/provenance metadata, not a persistence shortcut;
+- `stableMemoryAllowed` is legacy compatibility only;
+- `AffectiveState.relationshipSummary` is a prompt projection, not Relationship ownership.
+
+Relevant branch commit:
+`559e21d1a56fb1a41034f9f7ad2dc729414f4bb6`
+
+## Tests updated / added
+
+`src/test/kotlin/matrix/assembling/adapters/ComponentMappingCompatibilityTest.kt`
+
+Current intended coverage:
+1. resolved semantic fields are preserved while Understanding does not own Memory Admission;
+2. third-party reports become `REPORT_ONLY` and cannot become direct authority;
+3. `token.negation` canonical key is actually enforced;
+4. no persistent affect without stable admitted memory;
+5. persistent affect depends on admitted event, not `SemanticFrame.stableMemoryAllowed`.
+
+Branch commit:
+`9cac02ad7f2dbf14f978d5bb02575706e010b796`
+
+## Global architecture alignment
+
+A parallel alignment branch exists in:
+`MATRIXNEO23/8.10.9evo3-solo-gpt`
+
+Branch:
+`architecture-alignment-20260904`
+
+Canonical architecture update commit:
+`3816df2f3b01f1fc0932729e34956c8065e12b64`
+
+Global changes include:
+- Working Memory/Working Context explicitly temporary;
+- remove `WORKING` from persistent Long-Term layers;
+- Long-Term = `EPISODIC`, `SEMANTIC`, `REFLECTION`, optional `CORE` priority subset;
+- Memory Acquisition creates candidates only;
+- durable write moved to controlled consolidation;
+- Long-Term retrieval/read happens before contextual decision when useful;
+- RelationshipState separated from AffectiveState;
+- adult/intimacy made explicit first-class semantic domain;
+- orchestrator reordered as ingress/read/resolve/appraise/decide/respond/validate/consolidate;
+- ADR-013 added for Working-vs-Long-Term and final persistent commit;
+- ADR-011 strengthened: component changes require canonical docs + wiring + tests + continuity updates in same workstream.
 
 ## Memory state
 
-Memory backend is not implemented yet.
+Real persistent Memory Foundation is still not connected in Assembling.
 
-Current rule:
+Hard rule remains:
 
 ```text
 No real memory writes.
@@ -175,353 +199,79 @@ No fake memory IDs.
 No hidden stable state.
 ```
 
-Allowed temporary adapters:
+Current adapters must keep:
 
 ```text
-src/main/kotlin/matrix/assembling/adapters/NoPersistentMemoryAdmission.kt
-src/main/kotlin/matrix/assembling/adapters/BasicAdapters.kt::BasicMemoryAdmission
-```
-
-Current required behavior:
-
-```text
-status = NO_MEMORY_BACKEND / PROVISIONAL_CLAIM / REJECTED
-memoryIds = emptyList()
 stableWrite = false
+memoryIds = []
+status = NO_MEMORY_BACKEND / PROVISIONAL_CLAIM / REJECTED
 ```
 
-`BasicMemoryAdmission` was fixed because it could previously return `ADMITTED`/`stableWrite=true`, which was wrong while no memory backend exists.
-
-Fix commit:
+Future design distinction:
 
 ```text
-9cd0df38f2e2dcf53c418b2246c30fc99d9461e0
+WORKING MEMORY
+= temporary current-turn/context state
+
+LONG-TERM MEMORY
+= EPISODIC + SEMANTIC + REFLECTION
+  + optional CORE priority subset
 ```
 
-## Component mapping audit performed
+A future real MemoryAdmission integration must not reuse the current pre-response placeholder call as an uncontrolled durable write. Durable commit belongs to the final consolidation phase.
 
-User requested check:
+## NLU model state
 
-```text
-A produces X
-B receives Y
-verify mapping, types, defaults, missing required fields, naming consistency
-apply minimum fix only
-```
+Student-4-v2.2A:
+- status remains controlled runtime candidate / not production approved;
+- mixed-head-protected runtime bundle stored via Git LFS in Assembling;
+- full artifact SHA-256: `4998ce2f44dd8553d75f86b8d7975529f6a5f779de9107eef393648022d6ccb5`;
+- Student-5 remains separate experimental work and does not block Assembling.
 
-Audit file:
+Do not lower NLU gates and do not touch Frozen without explicit authorization.
 
-```text
-docs/COMPONENT_MAPPING_AUDIT_2026-09-04.md
-```
+## Adult/intimacy canonical rule
 
-Findings:
+Adult/intimacy is first-class semantic coverage, not a censorship taxonomy.
 
-### Finding 1 — Understanding → MatrixTurnFrame was lossy
+It must not be automatically:
+- blocked by NLU;
+- treated as low-value;
+- excluded from affective persistence;
+- excluded from memory solely because it is intimate.
 
-Problem:
+Persistence/behavior depend on ordinary Matrix semantics: context, source, confidence, relationship, meaning, relevance and admission rules.
 
-The source Understanding contract already produces resolved fields:
+## Still not wired / not production-real
 
-```text
-subject
-target
-owner
-perspective
-objectValue
-worldTruth
-```
+- real ONNX Student-4-v2.2A Android/runtime bridge;
+- real Long-Term MemoryRepository adapter;
+- explicit Working Memory/context retrieval layer in Assembling;
+- canonical RelationshipState controller/port;
+- BDI-lite + Utility decision layer;
+- Output Semantic Validator;
+- explicit Persistent Consolidation/atomic commit port;
+- real llama.cpp/MLC GGUF adapter in this repo;
+- Android application integration.
 
-The first `UnderstandingLabAdapter` mainly transported:
+These are gaps, not competing authorities. Do not invent placeholders that pretend they are implemented.
 
-```text
-subjectReferent
-targetReferent
-ownerReferent
-perspectiveReferent
-objectSpan
-```
+## Next exact task after branch verification
 
-Risk:
+1. open/verify CI for the architecture-alignment branch;
+2. fix only actual compile/test failures;
+3. merge Assembling alignment only when green;
+4. merge global canonical architecture alignment;
+5. update this continuity file on `main` with final merge HEAD(s);
+6. then continue with the end-to-end `MatrixAssemblingOrchestrator` smoke test and explicit Working Context/read boundaries.
 
-```text
-Domain.Claim.target = "Marco"
-```
+## Permanent project-management rule
 
-could degrade into:
+When a component changes role, order, ownership or contract, the project update is incomplete until the same workstream updates:
+- canonical architecture/spec;
+- Assembling wiring/adapter;
+- affected tests;
+- continuity;
+- any active document that would otherwise contradict the new decision.
 
-```text
-targetReferent = KNOWN_ENTITY
-```
-
-without preserving the actual target value.
-
-Minimal fix applied:
-
-- Extend `NluOutput` with optional resolved fields:
-
-```text
-resolvedSubject
-resolvedTarget
-resolvedOwner
-resolvedPerspective
-objectValue
-sourceType
-worldTruth
-```
-
-- Extend `TypedClaim` with:
-
-```text
-perspective
-worldTruth
-```
-
-- Update only `UnderstandingLabAdapter` to preserve the fields.
-- Keep existing labels/fields untouched.
-- Use safe defaults for backwards compatibility.
-
-Commits:
-
-```text
-bd612ee386443e06711137281eaa6d01e85830ad
-5f3a5db748f4490e99b0d4e653025b7456a70bfc
-```
-
-### Finding 2 — Third-party/report could be over-stabilized
-
-Problem:
-
-High confidence alone was not enough to prevent an indirect report from being treated like stable truth.
-
-Minimal fix applied in `UnderstandingLabAdapter`:
-
-```text
-stableMemoryAllowed requires:
-- dialogueAct in ASSERT/CORRECT
-- predicate != speech.unresolved
-- sourceType != THIRD_PARTY_REPORT
-- worldTruth == true
-- overall confidence >= 0.75
-```
-
-### Finding 3 — Affective persistence gate is correct
-
-`AffectiveLabAdapter` already blocks persistent emotional/relationship deltas unless both semantic and memory gates allow it.
-
-### Finding 4 — Memory placeholder was too permissive
-
-Problem:
-
-`BasicMemoryAdmission` could return `ADMITTED`/`stableWrite=true` despite memory being absent.
-
-Minimal fix:
-
-- `BasicMemoryAdmission` now never returns stable writes.
-- Returns `NO_MEMORY_BACKEND` or `REJECTED`.
-- Does not create `memoryIds`.
-
-Commit:
-
-```text
-9cd0df38f2e2dcf53c418b2246c30fc99d9461e0
-```
-
-Audit documentation commit:
-
-```text
-0fc7294e99dfc957feaa381651d4562d37be695c
-```
-
-Audit update commit:
-
-```text
-f5c86ba5913bf34aa4cbff7b75f44b32b9528e3a
-```
-
-## Tests added / active
-
-Existing earlier prompt tests:
-
-```text
-src/test/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipelineTest.kt
-```
-
-New mapping compatibility tests:
-
-```text
-src/test/kotlin/matrix/assembling/adapters/ComponentMappingCompatibilityTest.kt
-```
-
-Coverage:
-
-1. `understandingAdapterPreservesResolvedClaimFields`
-2. `thirdPartyReportCannotBecomeStableMemoryByDefault`
-3. `affectiveAdapterDoesNotApplyPersistentDeltaWithoutStableMemory`
-4. `affectiveAdapterMapsStableSemanticMemoryToPersistentTarget`
-
-Commit:
-
-```text
-e3417637c544505acc0733cd7a59c0b6db318e2b
-```
-
-## CI state before pause
-
-Latest checked run:
-
-```text
-Run: 33877882671
-Workflow: Matrix Assembling CI
-Commit: f5c86ba5913bf34aa4cbff7b75f44b32b9528e3a
-Status: completed
-Conclusion: success
-Updated: 2026-09-04T13:26:01Z
-```
-
-Therefore the repo is paused in a CI-green state.
-
-## Current verified route
-
-Conceptual full route now represented in code:
-
-```text
-UserMessage
-→ MatrixTurnFrame
-→ UnderstandingLabAdapter.analyze
-→ UnderstandingLabAdapter.understand
-→ CoherenceGuardPort.check
-→ AuthorityResolverPort.resolve
-→ MemoryAdmissionPort.admit
-→ AffectiveLabAdapter.update
-→ SemanticFrameToPromptPort.buildPrompt
-→ GgufPort.generate
-→ AssistantReply
-```
-
-Simulatable now:
-
-```text
-fake MatrixNluRuntimeBridge
-+ fake AffectiveRuntimeBridge
-+ NoPersistentMemoryAdmission
-+ SemanticFrameToPrompt
-+ EchoGgufAdapter
-```
-
-Not yet real:
-
-```text
-real ONNX Student-4-v2.2A runtime bridge
-real GGUF llama.cpp/MLC adapter
-real MemoryRepository adapter
-real Android app integration
-```
-
-## Active constraints
-
-- Do not lower gates.
-- Do not hide bugs by rewriting tests.
-- Apply minimum fix only.
-- Do not invent memory backend.
-- Do not write stable memory until a real Memory Foundation exists.
-- Do not let GGUF decide truth, memory, consent, ownership or relationship state.
-- GGUF receives natural-language prompt summaries, not raw numeric/internal fields.
-- NLU is semantic sensor, not censor.
-- Adult/intimacy handling is semantic robustness only.
-- Frozen remains unread unless explicitly authorized later.
-- No automatic production approval.
-
-## Next exact restart task
-
-Resume from this point:
-
-```text
-Task: create an end-to-end smoke test around MatrixAssemblingOrchestrator.
-```
-
-Test should instantiate:
-
-```text
-UnderstandingLabAdapter(fake MatrixNluRuntimeBridge)
-BasicCoherenceGuard or current CoherenceGuardPort implementation
-BasicAuthorityResolver
-NoPersistentMemoryAdmission
-AffectiveLabAdapter(fake AffectiveRuntimeBridge)
-SemanticFrameToPrompt
-EchoGgufAdapter
-MatrixAssemblingOrchestrator
-```
-
-Required test cases:
-
-1. Negative/refusal case:
-
-```text
-"Non voglio uscire con Marco"
-```
-
-Expected:
-
-```text
-polarity = NEGATIVE
-no stable memory
-prompt says not to invert negation/refusal
-```
-
-2. Third-party report:
-
-```text
-"Marco dice che Sara mi odia"
-```
-
-Expected:
-
-```text
-sourceType = THIRD_PARTY_REPORT
-worldTruth = false
-stableMemoryAllowed = false
-memory stableWrite = false
-```
-
-3. Request to Luna:
-
-```text
-"Vieni con me al bar?"
-```
-
-Expected:
-
-```text
-dialogueAct = REQUEST
-memory stableWrite = false
-possible transient affect only
-```
-
-4. Stable direct assertion simulation:
-
-```text
-"Vivo a Padova"
-```
-
-Expected with current no-memory backend:
-
-```text
-semantic.stableMemoryAllowed may be true
-memory.stableWrite must still be false
-memory.status = NO_MEMORY_BACKEND
-```
-
-After this, check CI. If it fails, fix only the actual compatibility/compile bug. Do not modify tests to hide the mismatch.
-
-## Restart command/context for Work
-
-Use this exact intent when resuming:
-
-```text
-Continue in MATRIXNEO23/assembling from docs/WORK_CONTINUITY.md.
-Do not restart architecture.
-Do not add fake memory.
-Implement the next exact restart task: end-to-end smoke test around MatrixAssemblingOrchestrator using fake runtime bridges and no persistent memory.
-Then run CI and fix only real failures with minimum changes.
-```
+Do not create additional parallel architecture documents when an existing canonical document can be updated.
