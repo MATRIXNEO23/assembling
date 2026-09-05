@@ -4,6 +4,8 @@ import matrix.assembling.authority.AuthorityResolution
 import matrix.assembling.mip.MatrixContextSnapshot
 import matrix.assembling.mip.MipField
 import matrix.assembling.mip.MipFieldStatus
+import matrix.assembling.mip.MipUnderstandingV3Claim
+import matrix.assembling.mip.MipUnderstandingV3Observation
 import matrix.assembling.mip.RetrievalResult
 
 /**
@@ -37,6 +39,11 @@ data class MatrixTurnFrame(
     val retrievalResults: MipField<List<RetrievalResult>> = MipField.unavailable(),
     /** Current claim-wise canonical AUTHORITY-1.0 resolutions. */
     val canonicalAuthorityResolutions: MipField<List<AuthorityResolution>> = MipField.unavailable(),
+    /**
+     * Complete lossless Understanding V3 observation. Its claims are the real canonical V3
+     * TypedClaims; legacy `typedClaims` remains compatibility-only and is never auto-populated.
+     */
+    val canonicalUnderstandingV3: MipField<MipUnderstandingV3Observation> = MipField.unavailable(),
 ) {
     init {
         validateCanonicalRuntimeSlots()
@@ -49,6 +56,12 @@ data class MatrixTurnFrame(
     fun requireMemory(): MemoryAdmissionResult = memoryResult ?: error("MatrixTurnFrame missing memory result")
     fun requireAffective(): AffectiveState = affectiveState ?: error("MatrixTurnFrame missing affective state")
     fun requirePrompt(): GgufPrompt = prompt ?: error("MatrixTurnFrame missing GGUF prompt")
+
+    fun requireCanonicalUnderstandingV3(): MipUnderstandingV3Observation =
+        canonicalUnderstandingV3.requirePresentSlot("canonicalUnderstandingV3")
+
+    fun requireCanonicalTypedClaimsV3(): List<MipUnderstandingV3Claim> =
+        requireCanonicalUnderstandingV3().claims
 
     fun requireCanonicalContextSnapshot(): MatrixContextSnapshot =
         contextSnapshot.requirePresentSlot("contextSnapshot")
@@ -66,6 +79,30 @@ data class MatrixTurnFrame(
     }
 
     private fun validateCanonicalRuntimeSlots() {
+        require(canonicalUnderstandingV3.status in setOf(
+            MipFieldStatus.PRESENT,
+            MipFieldStatus.UNAVAILABLE,
+            MipFieldStatus.ERROR,
+        )) {
+            "canonicalUnderstandingV3 outer status=${canonicalUnderstandingV3.status} is invalid; linguistic ambiguity belongs inside V3 claims"
+        }
+        if (canonicalUnderstandingV3.status == MipFieldStatus.PRESENT) {
+            val understanding = requireNotNull(canonicalUnderstandingV3.value)
+            require(understanding.input == input.text) {
+                "canonical Understanding input does not match frame input"
+            }
+            require(understanding.speaker.resolutionStatus == matrix.assembling.mip.MipEntityResolutionStatus.RESOLVED &&
+                understanding.speaker.entityId == input.speakerId
+            ) {
+                "canonical Understanding speaker does not match frame speakerId"
+            }
+            require(understanding.observer.resolutionStatus == matrix.assembling.mip.MipEntityResolutionStatus.RESOLVED &&
+                understanding.observer.entityId == input.observerId
+            ) {
+                "canonical Understanding observer does not match frame observerId"
+            }
+        }
+
         require(contextSnapshot.status != MipFieldStatus.NO_MATCH) {
             "contextSnapshot cannot use NO_MATCH; context provider availability must remain explicit"
         }
