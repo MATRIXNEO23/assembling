@@ -1,165 +1,142 @@
-# Work Continuity — Matrix Assembling Lab
+# Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T09:02+02:00  
+Last updated: 2026-09-05T09:35+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Active contract-freeze branch: `authority-contract-freeze-v1`  
-Continuity schema: `matrix.assembling.continuity.v19`  
-Authority-freeze start HEAD: `afc5cd7e535dc08d09455339a056c71ba5dc6ea2`
+Active branch: `authority-kotlin-contracts-v1`  
+Continuity schema: `matrix.assembling.continuity.v20`
+
+## Continuity policy
+
+This file is the canonical restart point for Assembling work and must be updated after every significant checkpoint, including:
+
+- branch/task start;
+- contract or architecture decision;
+- code/test checkpoint;
+- CI or benchmark result;
+- strategy change;
+- before risky/long operations;
+- before any STOP or session end.
+
+Do not create a parallel continuity file for the same workstream.
 
 ## Canonical work rules
 
-- one repository at a time unless the owner explicitly says otherwise;
-- no writes to other repositories without explicit authorization;
-- historical repositories are backup/checkpoint sources;
-- when a component changes, update code/tests/docs/continuity coherently in the active repo;
-- do not create a second protocol or adapter family when MIP/MipBridge already own that boundary;
+- work on one repository at a time unless the owner explicitly authorizes otherwise;
+- active write target is only `MATRIXNEO23/assembling`;
+- other repositories may be read for evidence, never written without explicit authorization;
+- historical repositories are backups/checkpoints;
+- MIP is the only cross-module semantic authority;
+- MipBridge is the only common interop bridge;
 - every new functional module must live in a dedicated directory/package;
-- existing root runtime files are not moved for cosmetic cleanup.
+- existing root runtime files are not moved for cosmetic reasons;
+- no gate/test may be weakened to obtain a pass.
 
-Current owner-authorized task:
+## Current owner-authorized phase
 
 ```text
-AUTHORITY CONTRACT FREEZE ONLY
+PHASE = AUTHORITY KOTLIN CONTRACT TYPES ONLY
+BRANCH = authority-kotlin-contracts-v1
+START HEAD = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
 ```
 
-Explicitly NOT authorized/implemented by this task:
+Allowed now:
+
+- implement Kotlin types that directly realize already-frozen `AUTHORITY-1.0` semantics;
+- create them only under `src/main/kotlin/matrix/assembling/authority/`;
+- add contract-only tests under `src/test/kotlin/matrix/assembling/authority/`;
+- update docs and continuity;
+- run full regression/CI.
+
+Not authorized in this phase:
 
 ```text
-real Authority Resolver Kotlin
-Authority runtime DTO migration
-MipBridge migration to final Authority profile
-MatrixContextSnapshot runtime
-retrieval runtime
+real AuthorityResolver implementation
+semantic contradiction algorithm
+Memory reads/writes
+MatrixContextSnapshot runtime implementation
+Retrieval runtime implementation
+MipBridge final Authority migration
+current root AuthorityDecision migration
+orchestrator rewiring
 Memory Kotlin/Room
-Memory Admission durable wiring
+PersistentConsolidation implementation
 Relationship
 Reflection
 BDI/Decision
 Intimacy/Consent resolver
 Android integration
 real GGUF bridge
-orchestrator rewiring
 ```
 
-Other repositories modified:
+Other repositories modified = `false`.
+
+## Main baseline before current phase
+
+### Assembling cleanup
 
 ```text
-false
+cleanup start HEAD = ef433a3aed519b31efe9289a8df78ed974170510
+PR #8 tested HEAD = 2e51e1b51df101d0fdb25f9cb567201839fc07d6
+PR #8 merge = ff38d09f73a1eec8b2a72a24571b92f1954c729c
+PR #8 CI = 33951029064 SUCCESS
+post-merge CI = 33951548865 SUCCESS
+PR #9 merge = afc5cd7e535dc08d09455339a056c71ba5dc6ea2
+final cleanup CI = 33951808519 SUCCESS
 ```
 
-Other repositories / saved Python reference material may be read-only evidence only.
-
----
-
-## Assembling cleanup baseline — COMPLETE
-
-Cleanup start HEAD:
-
-`ef433a3aed519b31efe9289a8df78ed974170510`
-
-Cleanup PR #8:
+Cleanup completed:
 
 ```text
-branch = assembling-mip-cleanup
-final tested head = 2e51e1b51df101d0fdb25f9cb567201839fc07d6
-merge SHA = ff38d09f73a1eec8b2a72a24571b92f1954c729c
-PR CI = 33951029064 SUCCESS
-post-merge main CI = 33951548865 SUCCESS
-```
-
-Documentation finalization PR #9:
-
-```text
-head = 13822b4965390325195876b5f297451b84fb8153
-merge SHA = afc5cd7e535dc08d09455339a056c71ba5dc6ea2
-final main CI = 33951808519 SUCCESS
-```
-
-Cleanup sequence completed:
-
-```text
-inventory                     COMPLETE
-contract mapping              COMPLETE
-incompatibility matrix        COMPLETE
-MIP Bridge audit              COMPLETE
-structural cleanup            COMPLETE
-legacy-path classification    COMPLETE
-round-trip / strict tests     PASS
-documentation                 COMPLETE
-```
-
-Structural result:
-
-```text
+inventory = COMPLETE
+contract mapping = COMPLETE
+incompatibility matrix = COMPLETE
+MIP Bridge audit = COMPLETE
+structural cleanup = COMPLETE
+legacy-path classification = COMPLETE
+round-trip strict tests = PASS
+documentation = COMPLETE
 files moved = 0
 files renamed = 0
 files deleted = 0
-mass package refactor = false
 ```
 
-Canonical legacy quarantine:
+Legacy compatibility quarantine:
 
 ```text
-contracts/MatrixAssemblyContracts.kt
-= KEEP_COMPATIBILITY
-
-pipeline/MatrixAssemblyPipeline.kt
-= KEEP_COMPATIBILITY / DEPRECATED
-
-prompt/SemanticFrameToPrompt.kt
-= KEEP_COMPATIBILITY / DEPRECATED
-
-coherence/CoherenceGuard.kt
-= KEEP_COMPATIBILITY / DEPRECATED
+contracts/MatrixAssemblyContracts.kt = KEEP_COMPATIBILITY
+pipeline/MatrixAssemblyPipeline.kt = KEEP_COMPATIBILITY / DEPRECATED
+prompt/SemanticFrameToPrompt.kt = KEEP_COMPATIBILITY / DEPRECATED
+coherence/CoherenceGuard.kt = KEEP_COMPATIBILITY / DEPRECATED
 ```
-
-Future module rule:
-
-```text
-NEW FUNCTIONAL MODULE
-→ dedicated directory/package
-```
-
----
 
 ## Canonical MIP state
-
-Assembling owns:
 
 ```text
 docs/MATRIX_INTERMODULE_PROTOCOL.md
 version = MIP-1.0
+owner = assembling
 ```
 
-Hard rule:
+Hard semantic invariants:
 
 ```text
-MIP = the single cross-module semantic authority
+OBSERVE != UNDERSTAND != BELIEVE != REMEMBER != FEEL != RELATE != CONSENT != WANT != DECIDE != EXPRESS
+TypedClaim != Belief
+Belief != Memory
+Memory != State
+State != Context
+Relationship != Affective
+SexualInterest != CurrentDesire
+CurrentDesire != Consent
+Contradiction != Supersession
+InterpretationConfidence != SourceReliability
+SourceReliability != Authority
+Authority != BeliefConfidence
+BeliefConfidence != RetrievalRelevance
 ```
 
-No `MatrixInterop`, `CommonProtocol`, `UniversalClaim`, second Context model or parallel diagnostic protocol is authorized.
-
-Core semantic invariants:
-
-```text
-OBSERVE ≠ UNDERSTAND ≠ BELIEVE ≠ REMEMBER ≠ FEEL ≠ RELATE ≠ CONSENT ≠ WANT ≠ DECIDE ≠ EXPRESS
-
-TypedClaim ≠ Belief
-Belief ≠ Memory
-Memory ≠ State
-State ≠ Context
-Relationship ≠ Affective
-SexualInterest ≠ CurrentDesire
-CurrentDesire ≠ Consent
-Contradiction ≠ Supersession
-InterpretationConfidence ≠ SourceReliability
-SourceReliability ≠ Authority
-Authority ≠ BeliefConfidence
-BeliefConfidence ≠ RetrievalRelevance
-```
-
-Shared roles remain globally distinct:
+Shared role meanings remain distinct:
 
 ```text
 speaker
@@ -171,23 +148,7 @@ owner
 perspective
 ```
 
----
-
-## MIP Bridge state
-
-Canonical adapter:
-
-`src/main/kotlin/matrix/assembling/mip/MipBridge.kt`
-
-Canonical cleanup/compatibility audit:
-
-`docs/MIP_BRIDGE_COMPATIBILITY_AUDIT.md`
-
-Tests:
-
-`src/test/kotlin/matrix/assembling/mip/MipBridgeTest.kt`
-
-Current MIP general field status:
+MIP general field states:
 
 ```text
 PRESENT
@@ -201,7 +162,7 @@ NO_MATCH
 ERROR
 ```
 
-Entity resolution status is separate:
+Entity resolution states:
 
 ```text
 RESOLVED
@@ -212,83 +173,83 @@ CONFLICTED
 NOT_APPLICABLE
 ```
 
-Existing contradiction seam fail-closed mapping:
+## MIP Bridge state
+
+Canonical adapter:
+
+`src/main/kotlin/matrix/assembling/mip/MipBridge.kt`
+
+Canonical audit:
+
+`docs/MIP_BRIDGE_COMPATIBILITY_AUDIT.md`
+
+Authority contradiction seam already fail-closed:
 
 ```text
 PRESENT -> concrete ID
-NOT_APPLICABLE -> null / None
-UNKNOWN -> ERROR if native field cannot preserve it
-UNRESOLVED -> ERROR
-AMBIGUOUS -> ERROR
-CONFLICTED -> ERROR
-UNAVAILABLE -> ERROR
-NO_MATCH -> ERROR when native null has only no-contradiction meaning
-ERROR -> ERROR
+NOT_APPLICABLE -> native null/None
+UNKNOWN/UNRESOLVED/AMBIGUOUS/CONFLICTED/UNAVAILABLE/NO_MATCH/ERROR
+-> fail when native representation cannot preserve meaning
 ```
 
-Python arbitrary-size integer -> Kotlin `Long` requires explicit range validation; overflow is an error, never truncation.
+Python arbitrary-size integer to Kotlin `Long` uses explicit range validation; no truncation.
 
----
+Current `MipAuthorityResolutionV1` is a transition/compatibility projection, not final AUTHORITY-1.0.
 
-# AUTHORITY CONTRACT FREEZE — CURRENT CHECKPOINT
+## AUTHORITY-1.0 contract freeze — COMPLETE
 
-Canonical Authority profile created:
+Canonical file:
+
+`docs/MIP_AUTHORITY_CONTRACT.md`
+
+Status:
 
 ```text
-docs/MIP_AUTHORITY_CONTRACT.md
+CANONICAL MIP AUTHORITY PROFILE / CONTRACT FROZEN
 MIP-1.0 / AUTHORITY-1.0
-Status = CANONICAL MIP AUTHORITY PROFILE / CONTRACT FROZEN
 ```
 
-Profile creation commit:
+Freeze history:
 
-`a3c7bf9bb4cd01f8032fd32c4e3f4ce3dc293f9b`
+```text
+freeze start HEAD = afc5cd7e535dc08d09455339a056c71ba5dc6ea2
+contract commit = a3c7bf9bb4cd01f8032fd32c4e3f4ce3dc293f9b
+index alignment = dc3407cb2324c4bf96542ff8ff5ad7c441b13489
+freeze continuity = 9210773030afc96f631d0e0c0a3a669bf6a6c2f5
+PR #10 merge = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
+post-merge CI = 33952808037 SUCCESS
+```
 
-Document index alignment commit:
+No runtime/code file changed in the freeze PR.
 
-`dc3407cb2324c4bf96542ff8ff5ad7c441b13489`
-
-This profile is subordinate to `MATRIX_INTERMODULE_PROTOCOL.md`; it is not a second protocol.
-
-## Frozen Authority boundary
+### Frozen cognitive/persistence boundary
 
 ```text
 TypedClaim
-→ Authority Resolver
-→ AuthorityResolution
-→ Memory Admission
-→ MemoryRepository
+-> Authority Resolver
+-> AuthorityResolution
+-> Memory Admission
+-> MemoryRepository
 ```
 
-Runtime durable path remains:
+Durable runtime rule remains:
 
 ```text
-pre-response
+pre-response:
 TypedClaim + read-only context/retrieval
-→ AuthorityResolution
-→ preflight / MemoryCandidate only
+-> AuthorityResolution
+-> MemoryCandidate/preflight only
 
 accepted output/action
-→ VALIDATE
-→ PersistentConsolidationPort
-→ Memory Admission
-→ MemoryRepository
+-> VALIDATE
+-> PersistentConsolidationPort
+-> Memory Admission
+-> MemoryRepository
 ```
 
-Authority Resolver may read evidence but must never persist or mutate Memory.
+Authority never writes Memory and never owns `SAVE/SUPERSEDE/REJECT/IGNORE`.
 
-Authority Resolver never owns:
-
-```text
-SAVE
-SUPERSEDE
-REJECT
-IGNORE
-```
-
-Those remain Memory Admission decisions.
-
-## Frozen EpistemicClass
+### Frozen EpistemicClass
 
 ```text
 WORLD_TRUTH
@@ -300,14 +261,14 @@ BELIEF
 
 Rules:
 
-- WORLD_TRUTH only from explicit trusted WORLD/Game provenance;
-- user/NPC text cannot self-grant WORLD_TRUTH;
-- OBSERVATION requires direct structured observation provenance;
+- WORLD_TRUTH requires explicit trusted WORLD/Game provenance;
+- ordinary text cannot self-grant WORLD_TRUTH;
+- OBSERVATION requires structured direct-observation provenance;
 - REPORT preserves attributed external source;
 - INFERENCE requires explicit derived-from evidence;
-- BELIEF represents opinion/supposition/belief semantics.
+- BELIEF represents belief/opinion/supposition evidence.
 
-## Frozen confidence separation
+### Frozen confidence separation
 
 ```text
 EpistemicClass
@@ -318,15 +279,7 @@ EpistemicClass
 != RetrievalRelevance
 ```
 
-`AuthorityResolutionConfidence` means confidence that the Authority classification/resolution is correct. It does not change the EpistemicClass rank.
-
-`SourceReliability` is supplied only when real evidence/provider exists; never derive it from NLU confidence.
-
-`BeliefConfidence` remains Belief-state responsibility.
-
-## Frozen AuthorityResolveRequest
-
-Conceptual language-independent input:
+### Frozen AuthorityResolveRequest conceptual contract
 
 ```text
 AuthorityResolveRequest
@@ -337,9 +290,17 @@ AuthorityResolveRequest
 - provenance
 ```
 
-Authority consumes structured semantics. It must not re-parse free text to reinvent subject/predicate/object/target/owner/perspective/polarity/time/source.
+Important current dependency:
 
-## Frozen AuthorityResolution
+```text
+MatrixContextSnapshot runtime = NOT_IMPLEMENTED
+RetrievalResult runtime = NOT_IMPLEMENTED
+ProvenanceRef runtime = NOT_IMPLEMENTED
+```
+
+Therefore this current Kotlin-contract phase must NOT invent private Authority-specific replacements for Context, Retrieval or Provenance.
+
+### Frozen AuthorityResolution conceptual contract
 
 ```text
 AuthorityResolution
@@ -358,9 +319,7 @@ AuthorityResolution
 - provenance
 ```
 
-The full claim is not duplicated when immutable `claimId` + workspace/envelope already provide it.
-
-## Frozen AuthorityResolutionStatus
+AuthorityResolutionStatus:
 
 ```text
 COMPLETE
@@ -370,126 +329,49 @@ UNAVAILABLE
 ERROR
 ```
 
-`COMPLETE` means the requested Authority assessment completed, not “persist this claim”.
-
-`PARTIAL` cannot masquerade as complete persistence authorization.
-
-`HOLD` means unresolved semantic/entity/temporal/source ambiguity prevents safe resolution.
-
-## Frozen contradictedMemoryRef semantics
+### Contradiction identity semantics
 
 ```text
-PRESENT(memoryRef)
-= one concrete semantic contradiction target identified
-
-NOT_APPLICABLE
-= contradiction assessment completed and no target exists
-
-UNKNOWN
-= target may exist but genuinely unknown
-
-UNRESOLVED
-= assessment incomplete
-
-AMBIGUOUS
-= several plausible targets; no unique target
-
-CONFLICTED
-= contradiction-target evidence internally inconsistent
-
-UNAVAILABLE
-= required retrieval/context evidence unavailable
-
-NO_MATCH
-= retrieval succeeded and found no matching candidate
-
-ERROR
-= assessment failed
+PRESENT(memoryRef) = one concrete real contradiction target
+NOT_APPLICABLE = assessment complete; no contradiction target
+UNKNOWN = target may exist but genuinely unknown
+UNRESOLVED = assessment incomplete
+AMBIGUOUS = multiple plausible targets; no unique target
+CONFLICTED = contradiction-target evidence internally inconsistent
+UNAVAILABLE = required evidence provider unavailable
+NO_MATCH = retrieval succeeded; no matching candidate
+ERROR = assessment failed
 ```
 
-Hard native mapping rule:
+Concrete contradiction target requires:
 
-```text
-PRESENT -> concrete native ID
-NOT_APPLICABLE -> nullable None/null
-all non-representable uncertainty/error states -> FAIL CLOSED
-```
+1. candidate exists;
+2. candidate is VALID;
+3. same resolved semantic slot;
+4. same normalized predicate/property;
+5. compatible/overlapping temporal scope or same relevant event;
+6. mutually incompatible values/target/polarity;
+7. one unique target can be safely identified.
 
-A Python/Kotlin native `None/null` must never silently mean both “no contradiction” and “could not resolve contradiction”.
-
-## Frozen semantic contradiction rules
-
-A contradiction requires the same relevant semantic slot and real incompatibility.
-
-Comparison considers where applicable:
-
-```text
-resolved subject identity
-normalized PredicateId
-owner/scope
-perspective/source scope for subjective/reported claims
-target/object/value
-polarity
-temporal validity/reference event
-predicate-specific identity keys
-```
-
-Concrete durable contradiction target requires:
-
-1. candidate memory exists;
-2. candidate is VALID at the resolution snapshot;
-3. semantic slot is the same;
-4. normalized predicate/property is the same;
-5. temporal scopes overlap / same event-state applies;
-6. values/targets/polarity are mutually incompatible;
-7. one unique target can be identified safely.
-
-Forbidden heuristics by themselves:
+Forbidden standalone contradiction heuristics:
 
 ```text
 same actor
-same entity mentioned
+same entity mention
 text differs
 low lexical similarity
 shared words
-higher confidence
-lower confidence
-higher Authority
-lower Authority
+higher/lower confidence
+higher/lower authority
 ```
 
-Examples:
+Temporal change is not contradiction by default.
 
-```text
-Albert lives in Venice
-Albert loves coffee
-→ NO CONTRADICTION
-```
+Correction is strong candidate evidence but does not automatically mean contradiction or supersession.
 
-```text
-Albert lives in Venice
-Albert lives in Milan
-→ POSSIBLE only if same semantic + temporal slot
-```
+### Python reference policy
 
-```text
-Yesterday Albert was in Venice
-Today Albert is in Milan
-→ NO CONTRADICTION by default
-```
-
-Explicit correction is strong candidate evidence but does not bypass same-slot/VALID/temporal verification.
-
-Multiple plausible targets without a unique safe target:
-
-```text
-contradictedMemoryRef = AMBIGUOUS
-resolutionStatus = HOLD or PARTIAL
-```
-
-## Frozen Python-reference compatibility policy
-
-Read-only saved evidence confirms a historical Authority surface with at least:
+Recovered historical evidence contains at least:
 
 ```text
 claim
@@ -503,210 +385,102 @@ is_contradiction_detected
 ambiguity_level
 ```
 
-However no authoritative `authority_models.py` file with frozen filename/version/checksum is currently identified in the saved Library.
+No authoritative `authority_models.py` with frozen filename/version/checksum has been identified.
 
 Therefore:
 
 ```text
-Python reference = oracle / compatibility evidence
-MIP Authority profile = canonical contract owner
+Python = oracle / compatibility evidence
+MIP AUTHORITY-1.0 = contract owner
 ```
 
-Mapping constraints:
+Historical `contradicts_memory_id=None` maps to MIP `NOT_APPLICABLE` only when historical status proves contradiction assessment completed. Otherwise uncertainty/error state must remain explicit.
+
+### Current Kotlin compatibility predecessor
+
+Root `AuthorityDecision` currently contains:
 
 ```text
-Python authority -> MIP authority
-Python confidence -> authorityResolutionConfidence ONLY after source audit confirms meaning
-Python contradicts_memory_id -> contradictedMemoryRef
-Python candidate_memories -> candidateMemoryRefs
-Python reasoning -> legacy diagnostic text only
-Python is_contradiction_detected -> redundant consistency check
-Python ambiguity_level -> legacy diagnostic metadata; not canonical policy
+accepted
+ownerResolved
+sourceType
+conflictStatus
+reason
 ```
 
-If historical `is_contradiction_detected` disagrees with contradiction identity/status, adapter must fail.
+It is NOT the canonical AuthorityResolution and must not be enlarged ad hoc during this phase.
 
-Historical `contradicts_memory_id=None` maps to `NOT_APPLICABLE` only if the historical result proves the contradiction assessment completed successfully; unresolved/unavailable/error must remain explicit.
-
-## Current Kotlin compatibility state
-
-Current root:
+`BasicAuthorityResolver` remains:
 
 ```text
-AuthorityDecision
-- accepted
-- ownerResolved
-- sourceType
-- conflictStatus
-- reason
+conservative placeholder/gate
+!= real semantic Authority Resolver
 ```
 
-is **not** the canonical AuthorityResolution contract.
+It does not query Memory, retrieve candidates, detect semantic contradictions or populate contradiction identity.
 
-Current `MipAuthorityResolutionV1` in `MipBridge.kt` is a transition/compatibility projection, not the final implementation of AUTHORITY-1.0.
-
-No runtime DTO or bridge migration was authorized in this freeze task.
-
-Future real Authority module location is reserved:
+## Current phase checkpoint 0 — STARTED
 
 ```text
-src/main/kotlin/matrix/assembling/authority/
-```
-
-Reserved future names:
-
-```text
-AuthorityResolveRequest
-AuthorityResolution
-AuthorityResolutionStatus
-EpistemicClass
-AuthorityResolver
-```
-
-## Required future tests before replacing BasicAuthorityResolver
-
-At minimum:
-
-1. trusted WORLD provenance -> WORLD_TRUTH;
-2. direct structured evidence -> OBSERVATION;
-3. third-party attributed source -> REPORT;
-4. explicit derived evidence -> INFERENCE;
-5. belief/supposition -> BELIEF;
-6. Authority != AuthorityResolutionConfidence;
-7. real same-slot contradiction -> concrete target;
-8. same actor + unrelated predicate -> no contradiction;
-9. same predicate + incompatible value + overlapping time -> contradiction;
-10. different temporal scopes -> no false contradiction;
-11. correction prioritizes but does not bypass verification;
-12. NO_MATCH != UNAVAILABLE;
-13. SUPERSEDED memory cannot be active contradiction target;
-14. multiple ambiguous targets -> conservative HOLD/PARTIAL;
-15. unresolved owner/subject/time -> conservative behavior;
-16. resolver performs no writes;
-17. Python mapping fails closed on semantic loss;
-18. AuthorityResolution -> Memory Admission preserves contradiction identity;
-19. all existing Assembling tests remain green;
-20. Memory Foundation/Admission tests remain unchanged when that repository becomes active.
-
----
-
-## Existing Memory boundary preserved
-
-Pre-response durable write remains forbidden:
-
-```text
-MemoryPreflightPort
-= read/evaluate/propose only
-```
-
-Hard guard:
-
-```text
-stableWrite == false
-memoryIds == []
-```
-
-Durable direction:
-
-```text
-VALIDATE
-→ PersistentConsolidationPort
-→ Memory Admission
-→ MemoryRepository
-```
-
-Memory Admission decisions remain:
-
-```text
-SAVE
-SUPERSEDE
-REJECT
-IGNORE
-```
-
-Contradiction is identified upstream by Authority/Belief resolution. Semantic changes use `supersede()` and preserve lineage.
-
----
-
-## Context / retrieval direction preserved
-
-Canonical context target:
-
-```text
-MatrixContextSnapshot
-→ immutable/read-only
-→ versioned
-→ typed ContextEntry values
-→ explicit domain availability
-```
-
-Every normal turn eventually performs:
-
-```text
-LIGHTWEIGHT MEMORY INDEX PROBE
-```
-
-Retrieval levels remain:
-
-```text
-LEVEL 1 INDEX_PROBE — always
-LEVEL 2 HYDRATE_AND_RERANK — on relevant hits
-LEVEL 3 DEEP_OR_MULTI_HOP — explicit complex need only
-```
-
-Real runtime context/retrieval remains `NON_CABLATO`.
-
----
-
-## Still NON_CABLATO / NOT IMPLEMENTED
-
-- real Authority Resolver;
-- Kotlin runtime implementation of AUTHORITY-1.0;
-- migration of current `AuthorityDecision`;
-- migration of `MipAuthorityResolutionV1`;
-- full formal `MatrixEnvelope<T>` runtime integration;
-- full typed `TemporalRef` / `ProvenanceRef` runtime integration;
-- typed confidence wrappers across native DTOs;
-- Predicate registry implementation;
-- `TurnWorkspace` migration;
-- runtime `MatrixContextSnapshot` / `ContextEntry`;
-- read-only context ports;
-- real memory index/retrieval;
-- real BeliefState;
-- real OutputValidator implementation;
-- real PersistentConsolidation implementation;
-- Kotlin/Room Memory Foundation;
-- Relationship controller;
-- Intimacy/Consent resolver;
-- BDI-lite/Decision;
-- real GGUF bridge;
-- Android integration;
-- Reflection.
-
-## Current branch checkpoint
-
-```text
-branch = authority-contract-freeze-v1
-start HEAD = afc5cd7e535dc08d09455339a056c71ba5dc6ea2
-contract file = docs/MIP_AUTHORITY_CONTRACT.md
-contract commit = a3c7bf9bb4cd01f8032fd32c4e3f4ce3dc293f9b
-index alignment = dc3407cb2324c4bf96542ff8ff5ad7c441b13489
-code changed = false
-runtime behavior changed = false
+phase = AUTHORITY_KOTLIN_CONTRACT_TYPES_ONLY
+branch = authority-kotlin-contracts-v1
+base/main HEAD = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
+main CI = 33952808037 SUCCESS
+resolver implementation = NOT_STARTED
+orchestrator rewiring = false
+MipBridge migration = NOT_STARTED
 other repositories modified = false
 ```
 
-## Exact next-action / STOP rule
+Design decision for this phase:
 
-This task ends after documentation validation/CI and owner review.
+- create Kotlin Authority-owned enums/value types that can be represented without inventing shared Context/Retrieval/Provenance implementations;
+- do not create a fake `AuthorityResolveRequest` until canonical shared `MatrixContextSnapshot` and `RetrievalResult` runtime types exist;
+- do not create an Authority-private Context, Retrieval or Provenance model;
+- contract implementation location: `src/main/kotlin/matrix/assembling/authority/`;
+- tests location: `src/test/kotlin/matrix/assembling/authority/`.
 
-Do not automatically implement Authority Resolver.
+Planned first code checkpoint:
 
 ```text
-AUTHORITY CONTRACT = FROZEN
-AUTHORITY RESOLVER = NOT IMPLEMENTED
-MIP BRIDGE FINAL AUTHORITY MIGRATION = NOT STARTED
-MEMORY = NOT MODIFIED
-OTHER REPOSITORIES MODIFIED = false
-NEXT = AWAIT OWNER REVIEW BEFORE AUTHORITY IMPLEMENTATION TASK
+EpistemicClass
+AuthorityResolutionStatus
+opaque MemoryRef/value semantics
+normalized confidence value wrapper if it can remain MIP-compatible
+AUTHORITY reason-code constants/validation
+contract invariants only
 ```
+
+No semantic resolver logic in this checkpoint.
+
+## Required gates before phase completion
+
+- new Authority contract types match `docs/MIP_AUTHORITY_CONTRACT.md`;
+- no new protocol/context/retrieval family;
+- no resolver business logic;
+- no current DTO migration;
+- no MipBridge migration;
+- dedicated `authority/` package only;
+- contract unit tests PASS;
+- all existing Assembling tests PASS;
+- CI GREEN;
+- other repositories modified = false;
+- continuity updated after each checkpoint.
+
+## Exact restart point
+
+If context/session is lost, resume from:
+
+```text
+repo = MATRIXNEO23/assembling
+branch = authority-kotlin-contracts-v1
+base = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
+contract = docs/MIP_AUTHORITY_CONTRACT.md (AUTHORITY-1.0 frozen)
+current task = implement contract-only Kotlin Authority value/enums under authority/
+resolver = NOT_STARTED
+context/retrieval runtime = NOT_IMPLEMENTED
+MipBridge final Authority migration = NOT_STARTED
+other repos = READ-ONLY
+```
+
+Do not redo cleanup or contract freeze. Continue from current phase checkpoint 0.
