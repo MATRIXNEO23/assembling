@@ -1,207 +1,136 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T13:00+02:00  
+Last updated: 2026-09-05T13:05+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v57`
+Active branch: `runtime-frame-mip-slots-v1`  
+Continuity schema: `matrix.assembling.continuity.v58`
 
 ## Mandatory continuity policy
 
 This is the single canonical restart file for Assembling. Update after every meaningful checkpoint, CI result, architecture decision, before risky operations and before STOP/session end.
-
-## Hard work rules
-
-```text
-writable repository = MATRIXNEO23/assembling only unless owner explicitly switches
-MIP = single cross-module semantic authority
-new functional module = dedicated package/directory
-parallel competing protocol/adapter family = forbidden
-gate/test weakening = forbidden
-other repositories = read-only
-```
 
 ## Completed Authority baseline — DO NOT REDO
 
 ```text
 MIP = MIP-1.0
 AUTHORITY-1.0 = FROZEN
-Authority value types PR #11 merge = b87dadf376300587511a7dbce594b0fe88695798
-shared MIP evidence PR #12 merge = 8f45a631b70c283169d058d98d1c880b5e37e554
-Authority runtime DTO PR #13 merge = 6841d916ba8a28a5bfc16ab4b0fa679e40c555fc
-real Authority resolver PR #14 merge = b7237542259d86c26632b2185d7e90691e82141f
-Authority compatibility PR #15 merge = 736aee2ebcd977c89faab9e519ace0f2420f668d
-compatibility post-merge CI = 33961173851 SUCCESS
-compatibility continuity commit = 70e761de23e9c162c2415054e8662881590b2753
-compatibility continuity CI = 33961261672 SUCCESS
+Authority value types PR #11 = MERGED/GREEN
+shared MIP evidence PR #12 = MERGED/GREEN
+Authority runtime DTO PR #13 = MERGED/GREEN
+real Authority resolver PR #14 = MERGED/GREEN
+Authority compatibility PR #15 = MERGED/GREEN
+canonical Authority runtime adapter PR #16 merge = 7a772412570237260130bd4062555c6449feaf46
+runtime adapter post-merge CI = 33961639272 SUCCESS
+runtime adapter continuity commit = 65d3b9b407d0b861454bc66ba2d010da28d14a4f
+runtime adapter continuity CI = 33961726792 SUCCESS
 ```
 
-Canonical Authority pieces already integrated:
+Other repositories remain read-only. Memory writes/admission remain untouched.
+
+## ACTIVE TASK — RUNTIME FRAME MIP EVIDENCE SLOTS ONLY
 
 ```text
-AuthorityResolveRequest
-AuthorityResolution
-AuthorityCandidateEvidencePort (read-only)
-DeterministicAuthorityResolver
-canonical contradiction identity/status
-Kotlin Memory contradiction projection
-historical Python contradiction projection
+branch = runtime-frame-mip-slots-v1
+base = 65d3b9b407d0b861454bc66ba2d010da28d14a4f
+orchestrator rewiring = NOT AUTHORIZED IN THIS TASK
 ```
 
-Legacy `MipAuthorityResolutionV1` and root `AuthorityDecision` remain quarantined because they cannot losslessly represent canonical AUTHORITY-1.0.
+### Cardinality correction before implementation
 
-## CANONICAL AUTHORITY RUNTIME ADAPTER — COMPLETE / INTEGRATED / TESTED
-
-Branch:
-
-`authority-runtime-adapter-v1`
-
-PR:
-
-`#16 — Add standalone canonical Authority runtime adapter`
-
-Functional commits:
+The previous provisional plan named singular retrieval/Authority slots. That would be unsafe because:
 
 ```text
-2e0b46636d95526491fd68e76e220523826388bf
-= standalone canonical/legacy runtime adapter
-
-7dde24a59ff2f1bb218142bf89e15d3befec477e
-= standalone adapter regression gates
+one observation may contain multiple TypedClaims
+Authority resolves claim-wise
+MIP TurnWorkspace describes retrieval queries/results and coherence/authority resolutions as plural operational evidence
 ```
 
-Final tested PR head:
-
-`898b31f83168e0277042b67b0660d381ff7a09b0`
-
-PR final-head CI:
-
-```text
-33961583602 = SUCCESS
-```
-
-Merge SHA:
-
-`7a772412570237260130bd4062555c6449feaf46`
-
-Post-merge main CI:
-
-```text
-33961639272 = SUCCESS
-job = kotlin-tests
-Run tests = SUCCESS
-```
-
-Integrated files:
-
-```text
-src/main/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapter.kt
-src/test/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapterTest.kt
-```
-
-Integrated runtime adapter types:
-
-```text
-CanonicalAuthorityRuntimeInput
-LegacyAuthorityGap
-LegacyAuthorityDecisionProjectionStatus
-LegacyAuthorityRuntimeOutcome
-CanonicalAuthorityRuntimeAdapter
-```
-
-Properties now proven:
-
-- canonical runtime adapter output equals direct `DeterministicAuthorityResolver` output exactly;
-- canonical REPORT with resolved source can resolve COMPLETE/REPORT;
-- legacy USER_ASSERTION preserves source as UNKNOWN and reaches canonical HOLD instead of guessing;
-- trusted WORLD legacy evidence resolves only with independently trusted WORLD provenance;
-- context turn/session/claim/provenance mismatches block before resolver;
-- multi-claim turns require explicit claim selection; no implicit first-claim behavior;
-- MatrixTurnFrame remains unmodified and `authorityDecision` remains untouched;
-- adapter does not implement legacy `AuthorityResolverPort`;
-- adapter exposes no persistence mutation API;
-- no root `AuthorityDecision` is emitted because canonical AUTHORITY-1.0 cannot be represented there losslessly.
-
-## Current runtime gap
-
-The canonical adapter exists and is tested, but the current runtime frame still has no lossless slots for canonical shared evidence/output:
-
-```text
-MatrixContextSnapshot
-RetrievalResult / explicit MipField state
-AuthorityResolution
-```
-
-Current legacy frame still exposes:
-
-```text
-typedClaims: List<TypedClaim>
-authorityDecision: AuthorityDecision?
-```
-
-This means the orchestrator cannot yet be safely rewired to canonical Authority without either dropping fields or inventing parallel hidden state.
-
-## NEXT BOUNDED CHECKPOINT — RUNTIME FRAME MIP EVIDENCE SLOTS ONLY
-
-Next safe task:
-
-```text
-RUNTIME FRAME MIP EVIDENCE SLOTS ONLY
-```
-
-Goal:
-
-- add additive canonical runtime slots to `MatrixTurnFrame` for shared MIP context/retrieval/Authority output;
-- use explicit `MipField` status semantics rather than ambiguous nullable values;
-- preserve all legacy fields for compatibility;
-- do not automatically synchronize or collapse canonical `AuthorityResolution` into legacy `AuthorityDecision`;
-- add tests proving old callers remain source-compatible and canonical statuses survive copies/turn transitions;
-- no orchestrator stage replacement yet;
-- no BasicAuthorityResolver replacement yet;
-- no Memory writes/admission.
-
-Proposed additive fields to validate in that task:
+Therefore the safe additive frame contract for this checkpoint is:
 
 ```text
 contextSnapshot: MipField<MatrixContextSnapshot>
-retrievalResult: MipField<RetrievalResult>
-canonicalAuthorityResolution: MipField<AuthorityResolution>
+retrievalResults: MipField<List<RetrievalResult>>
+canonicalAuthorityResolutions: MipField<List<AuthorityResolution>>
 ```
 
-Default state must be explicit (normally `UNAVAILABLE`/`NOT_APPLICABLE` as semantically appropriate), never fake empty context or fake NO_MATCH.
+This is a correction of the implementation plan, not a change to MIP-1.0 or AUTHORITY-1.0.
 
-Only after this checkpoint is green should the orchestrator canonical Authority rewire be attempted.
+### Planned default semantics
 
-## Explicitly NOT implemented / not authorized yet
+The current legacy orchestrator has no canonical Context/Retrieval/Authority provider wired, so default state for all three new slots is:
 
 ```text
-orchestrator canonical Authority rewire
-BasicAuthorityResolver removal/replacement
-legacy AuthorityResolverPort removal
-root AuthorityDecision redesign/removal
-Memory Admission SAVE/SUPERSEDE/REJECT/IGNORE
-MemoryRepository implementation/dependency
-PersistentConsolidation
-end-to-end durable Memory write
-other repo writes
+UNAVAILABLE
+```
+
+Hard:
+
+```text
+UNAVAILABLE != NO_MATCH
+```
+
+A successful retrieval that found nothing must later be represented as:
+
+```text
+retrievalResults = PRESENT([
+  RetrievalResult(status = NO_MATCH, ...)
+])
+```
+
+not as an unavailable/empty placeholder.
+
+### Planned frame invariants
+
+- legacy constructor calls remain valid because fields are additive with defaults;
+- PRESENT context snapshot must match frame turnId/sessionId;
+- PRESENT retrievalResults requires PRESENT contextSnapshot;
+- retrieval query IDs must be unique within the current frame slot;
+- PRESENT canonicalAuthorityResolutions requires PRESENT contextSnapshot;
+- authority resolution IDs must be unique;
+- current authority resolutions must have unique claimId values;
+- every authority resolution claimId must exist in `typedClaims`;
+- every authority resolution contextSnapshotId must equal current snapshotId;
+- legacy `authorityDecision` and canonical Authority resolutions remain independent; no auto-sync/collapse;
+- no fake context, fake retrieval success, or fake no-contradiction state is created.
+
+### Hard boundaries
+
+```text
+no MatrixAssemblingOrchestrator behavior change
+no BasicAuthorityResolver replacement/removal
+no AuthorityResolverPort replacement/removal
+no root AuthorityDecision redesign/removal
+no Memory Admission
+no MemoryRepository dependency/write
+no PersistentConsolidation
+no other repo writes
+```
+
+### Planned tests
+
+```text
+old/minimal MatrixTurnFrame constructor -> all canonical slots UNAVAILABLE
+PRESENT context mismatch turn/session -> rejected
+PRESENT retrieval list without context -> rejected
+PRESENT RetrievalResult(NO_MATCH) preserves outer PRESENT + inner NO_MATCH
+multi-claim frame preserves multiple canonical AuthorityResolution values
+unknown authority claimId -> rejected
+authority resolution snapshot mismatch -> rejected
+legacy authorityDecision does not populate canonical resolutions
+canonical resolutions do not populate legacy authorityDecision
+copy() preserves canonical slots/statuses
 ```
 
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
-branch = main
-runtime adapter merge = 7a772412570237260130bd4062555c6449feaf46
-runtime adapter post-merge CI = 33961639272 SUCCESS
-AUTHORITY-1.0 = FROZEN
-Authority value types = COMPLETE / INTEGRATED / TESTED
-shared MIP evidence contracts = COMPLETE / INTEGRATED / TESTED
-Authority runtime DTO binding = COMPLETE / INTEGRATED / TESTED
-real DeterministicAuthorityResolver = COMPLETE / INTEGRATED / P0 TESTED
-canonical compatibility projections = COMPLETE / INTEGRATED / TESTED
-canonical runtime adapter = COMPLETE / INTEGRATED / TESTED
+branch = runtime-frame-mip-slots-v1
+base = 65d3b9b407d0b861454bc66ba2d010da28d14a4f
+cardinality audit = COMPLETE
+frame slot code = NOT STARTED
 orchestrator uses canonical resolver = false
-MatrixTurnFrame canonical MIP slots = NOT STARTED
 Memory writes/admission = NOT TOUCHED
-other repos = READ-ONLY
-NEXT = RUNTIME FRAME MIP EVIDENCE SLOTS ONLY
+NEXT = ADD MULTI-CLAIM-SAFE CANONICAL MIP SLOTS TO MatrixTurnFrame + TESTS
 ```
