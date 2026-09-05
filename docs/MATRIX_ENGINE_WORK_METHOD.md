@@ -277,6 +277,37 @@ CONTRACT FROZEN
 → POST-MERGE MAIN CI 100%
 ```
 
+Queste percentuali descrivono la **suite prevista per il checkpoint**: tutti i test obbligatori definiti devono passare. Non definiscono una percentuale canonica di accuratezza semantica del modello o del comportamento reale.
+
+### 11.1 Politica delle metriche di qualità semantica
+
+Accuratezza NLU, correttezza di classificazione, Memory Admission, retrieval Top-1/Top-k, qualità del comportamento e altre metriche statistiche devono essere misurate e riportate, ma **non vengono congelate in questo metodo come percentuali universali obbligatorie**.
+
+Regola:
+
+```text
+METRICA SEMANTICA
+→ MISURA
+→ CONFRONTA CON BASELINE
+→ ANALIZZA ERRORI
+→ MIGLIORA QUANTO POSSIBILE
+→ NON ABBASSARE I GATE STRUTTURALI
+```
+
+Più alta è la qualità, meglio è. Le soglie sperimentali possono essere definite dentro uno specifico benchmark/task quando servono a confrontare modelli o impedire regressioni, ma non diventano automaticamente regole canoniche globali del progetto.
+
+Restano invece rigidi al 100% i gate su proprietà deterministiche e strutturali previste dal checkpoint, ad esempio:
+
+- schema/contratto valido;
+- nessuna perdita silenziosa nell'adapter;
+- atomicità/rollback;
+- lineage preservato;
+- nessuna scrittura pre-response;
+- `UNKNOWN/UNAVAILABLE/NO_MATCH` non collassati;
+- ownership rispettata;
+- regression test specifici;
+- CI e suite obbligatorie verdi.
+
 Se uno di questi gate fallisce:
 
 ```text
@@ -423,6 +454,8 @@ nuovo turno / riavvio
 
 Solo dopo i test automatici verdi si produce il primo APK diagnostico.
 
+La qualità statistica osservata su benchmark e test spontanei deve essere riportata e migliorata iterativamente; questo documento non fissa una percentuale semantica universale di promozione.
+
 ## 18. Sequenza di lavoro corrente
 
 Ordine canonico verso il primo APK:
@@ -456,4 +489,5 @@ Reflection viene dopo una Memory verificata, così non produce inferenze su rico
 8. NEVER LOWER A GATE TO GET GREEN
 9. ONE WRITE REPO AT A TIME
 10. NO NEXT MODULE UNTIL CURRENT SUITE IS 100% GREEN
+11. SEMANTIC QUALITY IS MEASURED AND MAXIMIZED, NOT FROZEN AS ONE GLOBAL PERCENTAGE
 ```
