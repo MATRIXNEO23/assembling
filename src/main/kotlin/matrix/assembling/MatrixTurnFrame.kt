@@ -12,6 +12,8 @@ data class MatrixTurnFrame(
     val sessionId: String,
     val input: UserMessage,
     val nlu: NluOutput? = null,
+    /** All NLU claims. `nlu` remains the primary-claim compatibility view. */
+    val nluClaims: List<NluOutput> = emptyList(),
     val semantic: SemanticFrame? = null,
     val typedClaims: List<TypedClaim> = emptyList(),
     val coherenceDecision: CoherenceDecision? = null,
@@ -50,22 +52,17 @@ data class NluOutput(
     val perspectiveReferent: String,
     val confidence: Map<String, Double>,
     val spans: Map<String, TextSpan?>,
-    /**
-     * Optional resolved fields produced by the Understanding lab contract.
-     * They preserve already-resolved semantic evidence without granting
-     * downstream truth or persistence authority.
-     */
+    /** Resolved semantic evidence; it carries no truth or persistence authority. */
     val resolvedSubject: String? = null,
     val resolvedTarget: String? = null,
     val resolvedOwner: String? = null,
     val resolvedPerspective: String? = null,
     val objectValue: String? = null,
     val sourceType: String? = null,
-    /**
-     * Observation/provenance flag copied from the source runtime when present.
-     * It is never, by itself, authorization for Belief or Memory persistence.
-     */
+    /** Observation/provenance flag only; never a persistence shortcut. */
     val worldTruth: Boolean = false,
+    /** Explicit semantic marker when supplied by the NLU contract. */
+    val adultOrIntimacy: Boolean? = null,
 )
 
 data class TextSpan(val start: Int, val end: Int)
@@ -85,7 +82,6 @@ data class SemanticFrame(
     /**
      * LEGACY COMPATIBILITY FIELD.
      * New Understanding code must not set this as durable-memory authority.
-     * Coherence + Authority + Memory Admission own persistence decisions.
      */
     val stableMemoryAllowed: Boolean = false,
 )
@@ -132,28 +128,99 @@ data class MemoryAdmissionResult(
 )
 
 data class AffectiveState(
-    /**
-     * Compatibility projection for prompt construction only. Canonical
-     * RelationshipState is externally owned and must not be mutated here.
-     */
+    /** Prompt projection only. Canonical RelationshipState is externally owned. */
     val relationshipSummary: String,
     val affectiveSummary: String,
     val persistentDeltaAllowed: Boolean,
 )
 
-data class GgufPrompt(
-    val text: String,
-)
+data class GgufPrompt(val text: String)
 
 data class AssistantReply(
     val text: String,
     val diagnosticTrace: Map<String, String> = emptyMap(),
+    val diagnostics: DiagnosticTrace? = null,
+)
+
+enum class DiagnosticStatus {
+    PASS,
+    HOLD,
+    REJECT,
+    ERROR,
+    NOT_EXECUTED,
+    NON_CABLATO,
+}
+
+enum class DiagnosticStage {
+    INPUT,
+    OBSERVATION,
+    UNDERSTANDING,
+    COHERENCE,
+    AUTHORITY,
+    MEMORY_ADMISSION,
+    MEMORY,
+    AFFECTIVE,
+    PROMPT,
+    GGUF,
+    OUTPUT_VALIDATION,
+}
+
+/** Observable module evidence only; never private chain-of-thought. */
+data class DiagnosticSnapshot(
+    val module: String,
+    val status: DiagnosticStatus,
+    val input: Map<String, String> = emptyMap(),
+    val output: Map<String, String> = emptyMap(),
+    val decision: String? = null,
+    val reasonCodes: List<String> = emptyList(),
 )
 
 data class DiagnosticTrace(
+    val inputOriginale: String? = null,
+    val input: DiagnosticSnapshot? = null,
+    val observation: DiagnosticSnapshot? = null,
+    val understandingResult: DiagnosticSnapshot? = null,
+    val coherenceResult: DiagnosticSnapshot? = null,
+    val authorityResolution: DiagnosticSnapshot? = null,
+    val admissionDecision: DiagnosticSnapshot? = null,
+    val memory: DiagnosticSnapshot? = null,
+    val memoryId: String? = null,
+    val affectiveStimulus: DiagnosticSnapshot? = null,
+    val promptResult: DiagnosticSnapshot? = null,
+    val ggufResult: DiagnosticSnapshot? = null,
+    val outputValidation: DiagnosticSnapshot? = null,
+    val firstDivergence: String? = null,
+    /** Ordered deterministic reason codes, not hidden reasoning. */
+    val reasoningChain: List<String> = emptyList(),
     val events: List<String> = emptyList(),
     val tags: Map<String, String> = emptyMap(),
 ) {
     fun add(event: String): DiagnosticTrace = copy(events = events + event)
+
     fun tag(key: String, value: String): DiagnosticTrace = copy(tags = tags + (key to value))
+
+    fun reason(code: String): DiagnosticTrace =
+        if (code.isBlank() || code in reasoningChain) this else copy(reasoningChain = reasoningChain + code)
+
+    fun diverge(code: String): DiagnosticTrace {
+        val withReason = reason(code)
+        return if (withReason.firstDivergence == null) withReason.copy(firstDivergence = code) else withReason
+    }
+
+    fun record(stage: DiagnosticStage, snapshot: DiagnosticSnapshot): DiagnosticTrace {
+        val withReasons = snapshot.reasonCodes.fold(this) { trace, code -> trace.reason(code) }
+        return when (stage) {
+            DiagnosticStage.INPUT -> withReasons.copy(input = snapshot)
+            DiagnosticStage.OBSERVATION -> withReasons.copy(observation = snapshot)
+            DiagnosticStage.UNDERSTANDING -> withReasons.copy(understandingResult = snapshot)
+            DiagnosticStage.COHERENCE -> withReasons.copy(coherenceResult = snapshot)
+            DiagnosticStage.AUTHORITY -> withReasons.copy(authorityResolution = snapshot)
+            DiagnosticStage.MEMORY_ADMISSION -> withReasons.copy(admissionDecision = snapshot)
+            DiagnosticStage.MEMORY -> withReasons.copy(memory = snapshot)
+            DiagnosticStage.AFFECTIVE -> withReasons.copy(affectiveStimulus = snapshot)
+            DiagnosticStage.PROMPT -> withReasons.copy(promptResult = snapshot)
+            DiagnosticStage.GGUF -> withReasons.copy(ggufResult = snapshot)
+            DiagnosticStage.OUTPUT_VALIDATION -> withReasons.copy(outputValidation = snapshot)
+        }
+    }
 }
