@@ -9,11 +9,17 @@ import matrix.assembling.contracts.SemanticFrame
 import matrix.assembling.prompt.SemanticFrameToPrompt
 
 /**
- * First assembly pipeline.
+ * Legacy compatibility/testing prompt pipeline.
  *
- * This connects semantic understanding to the GGUF prompt without giving the
- * GGUF direct control over memory, affect or policy decisions.
+ * The authoritative runtime path is MatrixTurnFrame +
+ * MatrixAssemblingOrchestrator. This class remains only to preserve existing
+ * tests/callers during progressive migration and must not receive new
+ * architectural authority.
  */
+@Deprecated(
+    message = "Compatibility-only. Use MatrixTurnFrame + MatrixAssemblingOrchestrator for new integration work.",
+    level = DeprecationLevel.WARNING,
+)
 class MatrixAssemblyPipeline(
     private val coherenceGuard: CoherenceGuard = CoherenceGuard(),
     private val promptTranslator: SemanticFrameToPrompt = SemanticFrameToPrompt(),
