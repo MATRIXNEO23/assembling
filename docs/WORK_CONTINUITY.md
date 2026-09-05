@@ -1,234 +1,93 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T14:30+02:00  
+Last updated: 2026-09-05T14:34+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Active branch: `understanding-v3-runtime-v1`  
-Continuity schema: `matrix.assembling.continuity.v71`
+Continuity schema: `matrix.assembling.continuity.v72`
 
 ## Owner-approved execution order
 
 ```text
 1. IMPLEMENT UNDERSTANDING V3
-   -> produce real canonical TypedClaim evidence
 2. FIX P0 BUGS OF PYTHON AUTHORITY RESOLVER
 3. INTEGRATE AUTHORITY RESOLVER WITH UNDERSTANDING
-   -> consume real TypedClaims
 4. IMPLEMENT MEMORY KOTLIN/ROOM
-   -> consume AuthorityResolution
 ```
 
-This order is binding until the owner changes it explicitly.
-
-## Completed baseline — DO NOT REDO
-
-```text
-MIP = MIP-1.0
-AUTHORITY-1.0 Kotlin = FROZEN
-Kotlin DeterministicAuthorityResolver = IMPLEMENTED / TESTED / GREEN
-MatrixTurnFrame canonical Context/Retrieval/Authority slots = MERGED/GREEN
-CP-U1 Understanding V3 lossless audit = COMPLETE / PASS
-CP-U1 closure CI = 33964635851 SUCCESS
-CP-U2 Understanding V3 profile = COMPLETE / MERGED / GREEN
-CP-U2 profile = MIP-1.0/UNDERSTANDING-V3-1.0
-CP-U2 merge = accb1e7ac47738bc5d658ca44808c220e16dad32
-CP-U2 post-merge CI = 33965518114 SUCCESS
-```
-
-## CP-U3 — UNDERSTANDING V3 RUNTIME / REAL TYPED CLAIMS
-
-Branch:
-
-`understanding-v3-runtime-v1`
-
-Base:
-
-`c31c963bcf0cace44edd17e22ab732a974ef8f7a`
+## CP-U3 — COMPLETE / MERGED / GREEN
 
 PR:
-
 `#19 — Implement canonical Understanding V3 runtime and real TypedClaims`
 
-### Functional implementation
+Final PR head:
+`649af878630e49eba2934b14dd45862fcfb8de5b`
 
-Commit:
+Final PR CI:
+`33966229551 = SUCCESS`
 
-`87a80f5d111d7465601c70bc033bbb8ee17c5e5d`
+Merge SHA:
+`089cb7169c5f511ffd5d27b8a1d5e887c4348b0c`
 
-File:
+Post-merge main CI:
+`33966306986 = SUCCESS`
 
-`src/main/kotlin/matrix/assembling/understanding/v3/CanonicalUnderstandingV3Adapter.kt`
-
-Implemented:
-
-```text
-MatrixNluV3Request
-MatrixNluV3Alternative<T>
-MatrixNluV3Field<T>
-MatrixNluV3Mention
-MatrixNluV3ReferentCandidate
-MatrixNluV3TemporalEvidence
-MatrixNluV3TemporalRelationValue
-MatrixNluV3Claim
-MatrixNluV3Output
-MatrixNluV3RuntimeBridge
-CanonicalUnderstandingV3Config
-CanonicalUnderstandingV3Adapter
-```
-
-Canonical path:
+Integrated canonical path:
 
 ```text
 Matrix-NLU V3 runtime output
--> envelope/fingerprint/input/speaker/observer validation
--> lossless MipUnderstandingV3Observation
--> MipUnderstandingV3Claim[] REAL CANONICAL TYPED CLAIMS
+-> CanonicalUnderstandingV3Adapter
+-> MipUnderstandingV3Observation
+-> MipUnderstandingV3Claim[] real canonical V3 TypedClaims
+-> MatrixTurnFrame.canonicalUnderstandingV3
 -> DiagnosticTrace
 ```
 
-No free-text reparsing is performed.
+The V3 path preserves original claim IDs, independent source/subject/target/owner/perspective roles, claimKind, plural evidence spans, candidate identity, ambiguity alternatives, temporal anchors, structural/interpretation status and provenance. It does not auto-populate lossy legacy `TypedClaim`, `NluOutput` or `SemanticFrame` fields.
 
-### MatrixTurnFrame canonical Understanding slot
+Initial CI failure `33966040483` was a local compile-scope bug in the SHA-256 validator and was fixed by `b53eefd84f12847ba000e96ca7342975b0187001`; no gate or architecture was weakened.
 
-Commit:
-
-`bf45eddf6e0d1cf3d1e54b463834b250168083e8`
-
-Added as the final constructor field to preserve all historical positional parameter order:
+## Completed Understanding baseline — DO NOT REDO
 
 ```text
-canonicalUnderstandingV3: MipField<MipUnderstandingV3Observation>
+CP-U1 lossless audit = COMPLETE / PASS
+CP-U2 MIP-1.0/UNDERSTANDING-V3-1.0 profile = COMPLETE / MERGED / GREEN
+CP-U3 runtime + real canonical TypedClaims = COMPLETE / MERGED / GREEN
 ```
 
-Helpers:
+## Repository switch checkpoint
+
+`assembling` is now frozen/read-only for the next owner-approved step.
+
+No Authority integration or Memory code has been started after CP-U3.
+
+## NEXT OWNER-APPROVED STEP — PYTHON AUTHORITY RESOLVER P0
+
+Reference evidence recovered read-only from ChatGPT Library identifies the historical Python Authority P0 defects:
 
 ```text
-requireCanonicalUnderstandingV3()
-requireCanonicalTypedClaimsV3()
+P0-PA-01 owner hardcoded "test_agent" in candidate search
+P0-PA-02 fragile property extraction via regex/free-text parsing
+P0-PA-03 false conflict scoring from actor overlap + content difference
 ```
 
-The complete `MipUnderstandingV3Observation` remains in the turn frame so candidate tables, plural spans, ambiguity alternatives, temporal anchors, claim statuses and provenance are not lost.
-
-Legacy `typedClaims`, `NluOutput` and `SemanticFrame` are NOT auto-populated from the V3 path.
-
-### Tests
-
-Commit:
-
-`b8000e3e75453165580267ed8f4319392411a8ee`
-
-File:
-
-`src/test/kotlin/matrix/assembling/understanding/v3/CanonicalUnderstandingV3AdapterTest.kt`
-
-Coverage:
+Canonical direction, now enabled by CP-U3:
 
 ```text
-real canonical V3 TypedClaim creation
-source != perspective preservation
-plural negation spans
-claimKind preservation
-temporal anchor preservation
-original claimId preservation
-multi-claim + cross-claim anchor
-AMBIGUOUS + ranked alternatives survive
-INVALID/ABSTAINED survive
-empty observation remains explicit PRESENT/HOLD
-contract fingerprint mismatch fail-closed
-input/speaker/observer mismatch fail-closed
-runtime exception -> deterministic first divergence
-forbidden truth/Authority/Memory/state ownership fields absent
-legacy MatrixTurnFrame remains source-compatible
-legacy typedClaims remain untouched
+Python Authority Resolver should consume structured TypedClaim/MIP semantics
+(subject/predicate/object-target/owner/perspective/polarity/temporal/claimKind/source/provenance)
+and must not re-interpret natural-language text or infer contradiction from actor/content heuristics.
 ```
 
-### CI failure and targeted fix
-
-Initial PR head:
-
-`b8000e3e75453165580267ed8f4319392411a8ee`
-
-Initial CI:
-
-`33966040483 = FAILURE`
-
-Cause was task-introduced and local:
-
-```text
-CanonicalUnderstandingV3Config referenced SHA256 validator outside adapter companion scope
-```
-
-No architecture/test/gate change was made.
-
-Targeted fix commit:
-
-`b53eefd84f12847ba000e96ca7342975b0187001`
-
-Added:
-
-`src/main/kotlin/matrix/assembling/understanding/v3/UnderstandingV3Validation.kt`
-
-### Green gate
-
-Current functional/test head:
-
-`b53eefd84f12847ba000e96ca7342975b0187001`
-
-Full repository CI:
-
-```text
-run = 33966131534
-job = kotlin-tests
-Run tests = SUCCESS
-job conclusion = SUCCESS
-```
-
-## CP-U3 current verdict
-
-```text
-CANONICAL V3 RUNTIME DTO = COMPLETE
-VALIDATED ADAPTER = COMPLETE
-REAL CANONICAL V3 TYPED CLAIMS = COMPLETE
-MATRIXTURNFRAME V3 SLOT = COMPLETE
-DIAGNOSTICTRACE = COMPLETE FOR THIS BOUNDARY
-FULL REGRESSION = GREEN
-CP-U3 = PASS PENDING FINAL CONTINUITY-HEAD CI / MERGE / POST-MERGE CI
-```
-
-## Hard boundaries preserved
-
-```text
-Python Authority Resolver = NOT MODIFIED YET
-Authority integration with Understanding = NOT STARTED
-Memory Kotlin/Room = NOT STARTED
-MemoryRepository/PersistentConsolidation = NOT STARTED
-matrix-understanding-lab = NOT MODIFIED
-Student-5 training = NOT MODIFIED
-other repositories = READ-ONLY
-```
-
-## Next owner-approved step after CP-U3 closure
-
-```text
-STEP 2 = FIX PYTHON AUTHORITY RESOLVER P0 BUGS
-```
-
-Only after that:
-
-```text
-STEP 3 = INTEGRATE AUTHORITY WITH REAL UNDERSTANDING V3 CLAIMS
-STEP 4 = IMPLEMENT MEMORY KOTLIN/ROOM
-```
+Before writing Python code, recover the exact source revision and canonical Memory Foundation v3 support files/tests from Library; preserve provenance/checksums; do not rebuild from scratch if the real source exists.
 
 ## Exact restart point
 
 ```text
-repo = MATRIXNEO23/assembling
-branch = understanding-v3-runtime-v1
-PR = #19
-last green functional/test head = b53eefd84f12847ba000e96ca7342975b0187001
-CI = 33966131534 SUCCESS
-current operation = verify CI for this final continuity-only head
-CP-U3 = PASS PENDING FINAL-HEAD CI / MERGE / POST-MERGE CI
-NEXT AFTER GREEN MERGE = switch repository/workstream only after exact continuity save; Python Authority Resolver P0 fixes
+ASSEMBLING HEAD = 089cb7169c5f511ffd5d27b8a1d5e887c4348b0c
+ASSEMBLING POST-MERGE CI = 33966306986 SUCCESS
+CP-U3 = COMPLETE / CLOSED
+assembling writes = STOPPED for next step
+NEXT = recover exact Python Authority Resolver source + canonical Memory Foundation v3 references, then fix only P0 defects with tests
+AFTER = integrate Authority with real Understanding V3 claims
+THEN = Memory Kotlin/Room
 ```
