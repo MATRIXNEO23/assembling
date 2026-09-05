@@ -1,8 +1,7 @@
 # Matrix Assembling — Module Connections
 
-Status: CANONICAL MODULE WIRING
-Date: 2026-09-04
-Global source: `MATRIXNEO23/8.10.9evo3-solo-gpt/ARCHITETTURA_MATRIX_ENGINE.md`
+Status: CANONICAL MODULE WIRING  
+Date: 2026-09-05
 
 ## Core rule
 
@@ -21,34 +20,36 @@ NluPort
   ↓
 UnderstandingPort
   ↓
-Working Memory / context envelope
+Working Memory / MatrixTurnFrame
   ↓
-Context read
-  ├─ Long-Term Memory retrieval
+Context read (future)
+  ├─ Long-Term retrieval
   ├─ RelationshipState snapshot
   ├─ Affective snapshot
   └─ World/perceived-state snapshot
   ↓
 Coherence / Authority / belief resolution
   ↓
+MemoryPreflightPort (non-persistent only)
+  ↓
 Affective appraisal
   ↓
-Matrix decision layer
+Matrix decision layer (future)
   ↓
 SemanticFrameToPrompt
   ↓
 GgufPort
   ↓
-Output validation
+OutputValidatorPort (optional boundary; semantic validator not yet wired)
   ↓
 AssistantReply / ActionIntent
   ↓
-Persistent consolidation
+PersistentConsolidationPort (future durable-write boundary)
 ```
 
-The current code does not yet implement every future stage. Missing stages must be reported as `NON_CABLATO`, never simulated.
+Missing stages must be reported as `NON_CABLATO`, never simulated.
 
-## Current authoritative implementation path
+## Authoritative implementation path
 
 ```text
 MatrixTurnFrame
@@ -57,158 +58,163 @@ MatrixTurnFrame
 + root SemanticFrameToPrompt.kt
 ```
 
-The older path:
+The older `contracts/*`, `pipeline/*`, and `prompt/*` path remains compatibility/testing only and is explicitly deprecated for new callers.
 
-```text
-contracts/*
-pipeline/*
-prompt/*
-```
+## NLU
 
-is retained as a compatibility/testing facade. It is not a second architecture and must not receive new independent authority.
+Input: text, locale, speaker/observer context.  
+Output: one or more structured NLU claims with confidence.
 
-## Module responsibilities
-
-### NLU
-Input: language signal.
-Output: learned/structured semantic evidence and confidence.
-
-Allowed:
-- dialogue act;
-- predicate;
-- polarity;
-- spans;
-- referent classes;
-- temporal relation;
-- confidence.
+Required behavior:
+- preserve every emitted claim;
+- expose the first claim only as the legacy `nlu` view;
+- store all claims in `nluClaims`;
+- preserve critical confidence keys;
+- expose explicit adult/intimacy marker when available.
 
 Forbidden:
-- stable memory writes;
 - truth decisions;
+- stable memory writes;
 - affective persistence;
 - censorship policy.
 
-### Understanding
-Input: NLU evidence + supplied turn context.
-Output: `SemanticFrame` / `TypedClaim` draft.
+## Understanding
 
-Allowed:
-- preserve subject/target/owner/perspective;
-- normalize object values;
-- preserve source/provenance/world-observation flags;
-- mark uncertainty.
+Input: all NLU claims plus current turn metadata.  
+Output: all `TypedClaim` instances plus a primary compatibility `SemanticFrame`.
 
-Forbidden:
-- deciding that a claim is durable memory;
-- turning a user/report claim into World Truth;
-- bypassing Authority/Memory Admission.
+Required behavior:
+- preserve subject, target, owner, perspective, object, source and provenance;
+- never discard secondary claims silently;
+- leave unresolved subjects as `UNKNOWN`, not replace them with the speaker;
+- keep `SemanticFrame.stableMemoryAllowed=false` because that field is legacy only.
 
-Compatibility note: `SemanticFrame.stableMemoryAllowed` remains in the current data class only for ABI/source compatibility and is not authoritative. New code must rely on Coherence/Authority/Memory Admission.
-
-### Working Memory / Context
-Purpose: temporary state used to answer the current turn.
-
-Contains bounded current-turn semantics, active referents, retrieved memories and decision context. It is not durable storage.
-
-### Coherence
-Purpose: validate semantic stability/invariants.
-
-Must inspect canonical confidence keys such as:
-- `token.negation`;
-- `sequence.predicate`;
-- `sequence.subjectReferent`;
-- `sequence.targetReferent`.
-
-It may mark low-confidence/transient/report/question states but does not own final persistence.
-
-### Authority Resolver
-Purpose:
-- resolve source/owner/perspective;
-- distinguish direct assertion from third-party report;
-- detect same-property conflict when relevant memory exists;
-- propose correction/supersede semantics.
-
-It must consume actual claim source metadata, not infer report status only from Coherence enum values.
-
-### Memory
-Two different roles are mandatory:
+Multi-claim limitation:
 
 ```text
-READ: retrieve relevant Long-Term context before decision.
-WRITE: admit/persist only during controlled consolidation.
+all claims preserved
++ primary SemanticFrame compatibility view
++ Coherence = SAFE_TRANSIENT_ONLY
++ Authority = MULTI_CLAIM / deferred
 ```
 
-Current Assembling memory adapters are placeholders only and must return no durable write.
+until per-claim contextual resolution is implemented.
 
-Long-Term logical layers:
-- EPISODIC;
-- SEMANTIC;
-- REFLECTION;
-- optional CORE priority subset.
+## Coherence
 
-Working Memory is separate and temporary.
+Purpose: validate semantic invariants and confidence gates.
 
-### Affective Engine
+Critical keys:
+
+```text
+token.negation
+sequence.predicate
+sequence.subjectReferent
+sequence.targetReferent
+```
+
+A missing critical key is fail-closed:
+
+```text
+LOW_CONFIDENCE_HOLD
+firstDivergence = COHERENCE.MISSING_CRITICAL_CONFIDENCE
+```
+
+Coherence does not own durable persistence.
+
+## Authority Resolver
+
+Purpose:
+- resolve source/owner/perspective;
+- distinguish direct assertions from third-party reports;
+- reject direct authority for unresolved or multi-claim compatibility states;
+- expose reason codes.
+
+It never writes memory.
+
+## Memory boundaries
+
+### Pre-response
+
+```text
+MemoryPreflightPort.evaluate
+```
+
+This stage is evaluation only. It must always return:
+
+```text
+stableWrite=false
+memoryIds=[]
+```
+
+The orchestrator rejects violations before Affective/Prompt/GGUF continue.
+
+`MemoryAdmissionPort` remains a deprecated compatibility facade only.
+
+### Post-output validation
+
+```text
+PersistentConsolidationPort
+```
+
+This is the only intended boundary for future durable Memory Admission and MemoryRepository writes. It is currently `NON_CABLATO`.
+
+## Affective Engine
+
 Purpose:
 - appraisal;
 - transient emotions;
 - mood;
-- persistent affect proposals/state.
+- persistent-affect result only when an admitted event permits it.
 
 Hard boundaries:
 - does not own `RelationshipState`;
-- does not create World Truth;
-- does not write memory directly;
-- adult/intimacy is not an automatic reason to suppress persistent affect.
+- ignores any relationship summary emitted by the affective runtime;
+- clamps `persistentDeltaApplied` to the upstream persistence authorization;
+- records `AFFECTIVE.PERSISTENCE_WITHOUT_ADMISSION` on a runtime violation;
+- does not write memory.
 
-### RelationshipState owner/controller
-Relationship is canonical cognitive/app state separate from affective state. Affective signals may contribute evidence, but relationship changes require the relationship owner/controller and normal decision/commit rules.
+Adult/intimacy is not an automatic persistence penalty.
 
-### Matrix Decision Layer
-Canonical owner of behavior choice.
+## RelationshipState
 
-Target architecture uses BDI-lite + bounded Utility and emits a `DecisionSnapshot`. The full layer is not yet wired in Assembling; until then it is `NON_CABLATO`, not delegated silently to Affective or GGUF.
+Relationship is externally owned and currently `NON_CABLATO` in the authoritative frame path. Affective evidence may contribute later, but it cannot become a competing relationship authority.
 
-### Prompt Builder
-Input:
-- original text;
-- resolved semantic meaning;
-- filtered memory/context;
-- relationship snapshot;
-- affective/appraisal state;
-- decision constraints.
+## Matrix Decision Layer
 
-Output: short natural-language instructions for GGUF.
+Canonical owner of behavior choice. Full BDI-lite/Utility wiring is still `NON_CABLATO`; Prompt Builder must not silently replace it.
 
-### GGUF
-Role: natural-language realization only.
+## Prompt Builder
 
-Forbidden:
-- final truth resolution;
-- memory writes;
-- relationship mutation;
-- overriding resolved negation/referents/consent/context.
+Input: semantic evidence, Coherence, Authority, memory preflight status and affective summary.  
+Output: bounded natural-language realization constraints.
 
-### Output Validator
-Target role: verify the generated response against the resolved semantic/decision state. This is planned but not yet wired.
+It may preserve semantic invariants such as negation, referents, time and consent boundaries. It must not invent behavioral goals or durable facts.
 
-### Persistent Consolidation
-Target final stage after accepted output:
-- Memory Admission/write;
-- persistent affect;
-- Relationship update;
-- causal/lifecycle trace.
+## GGUF
 
-## Adult/intimacy rule
+Natural-language realization only. It cannot decide truth, memory, relationship state or persistence.
 
-Adult/intimacy is a first-class semantic domain. It must not be treated as an automatic block, low-value event or reason to suppress memory/affect merely because it is intimate. Persistence depends on meaning, context, confidence, source, relevance and admission rules.
+## Output Validator
 
-## Change-control
+`OutputValidatorPort` now exists as an explicit optional boundary. The real semantic validator remains `NON_CABLATO`; absence is recorded in `DiagnosticTrace` rather than hidden.
 
-A component change is complete only when the same workstream updates:
-- global architecture if ownership/order changed;
-- this module wiring document;
-- code adapters/contracts;
-- affected tests;
-- `WORK_CONTINUITY.md`;
-- any now-obsolete document status.
+## DiagnosticTrace
+
+Each phase records:
+- input received;
+- output produced;
+- decision;
+- deterministic reason codes;
+- status;
+- first divergence.
+
+`reasoningChain` contains observable reason codes only, never private chain-of-thought. Once set, `firstDivergence` cannot be overwritten by later failures.
+
+## Adult/intimacy
+
+Adult/intimacy is a first-class semantic domain. It must not be blocked or degraded merely because it is intimate. Normal source, confidence, context and admission rules apply.
+
+## Change control
+
+A component change is complete only when the same workstream updates code, tests, this wiring document, memory policy/status when relevant, and `WORK_CONTINUITY.md`.
