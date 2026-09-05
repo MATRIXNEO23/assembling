@@ -56,7 +56,8 @@ class MipBridgeTest {
         assertEquals(native, roundTrip)
         assertEquals("alberto", canonical.speaker.entityId)
         assertEquals("luna", canonical.observer.entityId)
-        assertEquals(MipFieldStatus.UNKNOWN, canonical.source.resolutionStatus)
+        assertEquals(MipEntityResolutionStatus.RESOLVED, canonical.speaker.resolutionStatus)
+        assertEquals(MipEntityResolutionStatus.UNKNOWN, canonical.source.resolutionStatus)
     }
 
     @Test
@@ -81,7 +82,32 @@ class MipBridgeTest {
         val roundTrip = MipBridge.toAssemblingTypedClaim(canonical)
 
         assertEquals(native, roundTrip)
-        assertEquals(MipFieldStatus.NOT_APPLICABLE, canonical.target.resolutionStatus)
+        assertEquals(MipEntityResolutionStatus.NOT_APPLICABLE, canonical.target.resolutionStatus)
+    }
+
+    @Test
+    fun entityResolutionIsDistinctFromGenericFieldPresence() {
+        val entity = MipEntityRef(
+            entityId = "anna",
+            surfaceForm = "Anna",
+            resolutionStatus = MipEntityResolutionStatus.RESOLVED,
+        )
+
+        assertEquals(MipEntityResolutionStatus.RESOLVED, entity.resolutionStatus)
+        assertFailsWith<IllegalArgumentException> {
+            MipEntityRef(entityId = "anna", resolutionStatus = MipEntityResolutionStatus.UNKNOWN)
+        }
+    }
+
+    @Test
+    fun fieldStatusVocabularyIncludesNoMatchAndErrorWithoutFakeValues() {
+        val noMatch = MipField.noMatch<String>()
+        val error = MipField.error<String>()
+
+        assertEquals(MipFieldStatus.NO_MATCH, noMatch.status)
+        assertEquals(MipFieldStatus.ERROR, error.status)
+        assertNull(noMatch.value)
+        assertNull(error.value)
     }
 
     @Test
@@ -106,15 +132,50 @@ class MipBridgeTest {
     }
 
     @Test
-    fun nullPythonContradictionRemainsNoContradiction() {
+    fun nullPythonContradictionRemainsKnownNoContradiction() {
         val canonical = MipBridge.fromPythonAuthorityResolution(PythonAuthorityResolutionWire(null))
 
         assertEquals(MipFieldStatus.NOT_APPLICABLE, canonical.contradictedMemoryId.status)
         assertNull(MipBridge.toKotlinMemoryAuthorityDecision(canonical).contradictedMemoryId)
+        assertNull(MipBridge.toPythonAuthorityResolution(canonical).contradicts_memory_id)
     }
 
     @Test
-    fun currentAssemblingAuthorityRoundTripWorksWhenNoContradictionIdExists() {
+    fun unresolvedContradictionCannotCollapseToKotlinNull() {
+        val canonical = pythonProjectionCanonical(contradictedMemoryId = MipField.unresolved())
+
+        assertFailsWith<MipContractException> {
+            MipBridge.toKotlinMemoryAuthorityDecision(canonical)
+        }
+    }
+
+    @Test
+    fun unavailableContradictionCannotCollapseToPythonNone() {
+        val canonical = pythonProjectionCanonical(contradictedMemoryId = MipField.unavailable())
+
+        assertFailsWith<MipContractException> {
+            MipBridge.toPythonAuthorityResolution(canonical)
+        }
+    }
+
+    @Test
+    fun pythonPartialProjectionRejectsDroppingOtherCanonicalAuthorityFields() {
+        val canonical = MipAuthorityResolutionV1(
+            accepted = MipField.present(true),
+            ownerResolved = MipField.unavailable(),
+            sourceType = MipField.unavailable(),
+            conflictStatus = MipField.unavailable(),
+            contradictedMemoryId = MipField.notApplicable(),
+            reason = MipField.unavailable(),
+        )
+
+        assertFailsWith<MipContractException> {
+            MipBridge.toPythonAuthorityResolution(canonical)
+        }
+    }
+
+    @Test
+    fun currentAssemblingAuthorityRoundTripWorksWhenContradictionFieldIsUnavailable() {
         val native = AuthorityDecision(
             accepted = true,
             ownerResolved = true,
@@ -147,14 +208,25 @@ class MipBridgeTest {
     }
 
     @Test
-    fun kotlinLongOverflowFailsExplicitly() {
+    fun currentAssemblingAuthorityAlsoFailsClosedForKnownAbsenceItCannotRepresent() {
         val canonical = MipAuthorityResolutionV1(
-            accepted = MipField.unavailable(),
-            ownerResolved = MipField.unavailable(),
-            sourceType = MipField.unavailable(),
-            conflictStatus = MipField.unavailable(),
-            contradictedMemoryId = MipField.present("9223372036854775808"),
-            reason = MipField.unavailable(),
+            accepted = MipField.present(true),
+            ownerResolved = MipField.present(true),
+            sourceType = MipField.present("USER_ASSERTION"),
+            conflictStatus = MipField.present("NONE"),
+            contradictedMemoryId = MipField.notApplicable(),
+            reason = MipField.present("known no contradiction"),
+        )
+
+        assertFailsWith<MipContractException> {
+            MipBridge.toAssemblingAuthorityDecision(canonical)
+        }
+    }
+
+    @Test
+    fun kotlinLongOverflowFailsExplicitly() {
+        val canonical = pythonProjectionCanonical(
+            contradictedMemoryId = MipField.present("9223372036854775808")
         )
 
         assertFailsWith<MipContractException> {
@@ -244,4 +316,15 @@ class MipBridgeTest {
             assertEquals(native, MipBridge.toAssemblingCoherenceDecision(MipBridge.fromAssemblingCoherenceDecision(native)))
         }
     }
+
+    private fun pythonProjectionCanonical(
+        contradictedMemoryId: MipField<String>,
+    ): MipAuthorityResolutionV1 = MipAuthorityResolutionV1(
+        accepted = MipField.unavailable(),
+        ownerResolved = MipField.unavailable(),
+        sourceType = MipField.unavailable(),
+        conflictStatus = MipField.unavailable(),
+        contradictedMemoryId = contradictedMemoryId,
+        reason = MipField.unavailable(),
+    )
 }
