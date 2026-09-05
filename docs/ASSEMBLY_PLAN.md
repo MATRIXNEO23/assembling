@@ -135,6 +135,54 @@ Only after accepted output may `PersistentConsolidationPort` later coordinate:
 - RelationshipState update through its owner/controller;
 - causal trace / lifecycle records.
 
+## Memory Foundation production migration policy
+
+Status: **CANONICAL DIRECTION / IMPLEMENTATION DEFERRED**.
+
+The validated Python Memory Foundation v3 must be preserved as a frozen **reference oracle**, not deleted and not used as the Android production runtime.
+
+Target production implementation:
+
+```text
+Python Memory Foundation v3
+= frozen reference/oracle
+        ↓ contract parity
+Kotlin / Room Memory Foundation
+= future production implementation
+        ↓ fault-injection + regression gates
+PersistentConsolidationPort
+= only allowed runtime integration point for durable writes
+```
+
+Hard invariants to preserve when Kotlin/Room is implemented:
+- `revisionOf` always points to the lineage root;
+- `supersededBy` preserves the sequential revision chain;
+- semantic changes use `supersede()`, never metadata update;
+- contradiction identity is explicit and comes from Authority resolution, not text-difference inference;
+- Authority identifies `contradictsMemoryId`, Memory Admission consumes that decision and owns SAVE/SUPERSEDE/REJECT/IGNORE;
+- atomic rollback and lineage protection must be demonstrated with fault-injection tests;
+- no durable Memory Foundation API may bypass `PersistentConsolidationPort`.
+
+Production implementation policy:
+- Kotlin/Room may start directly from the current canonical schema if no real legacy database requires migration;
+- do not recreate historical migrations solely to imitate the Python reference history;
+- do not use destructive migration as a normal fallback for persistent Luna memory;
+- Kotlin/Room must pass contract-parity tests against the frozen Python oracle before runtime integration;
+- keep a fast core gate plus the full extended regression suite; do not delete validated edge-case tests merely to reduce the core gate.
+
+Authority direction:
+- prefer structured Matrix-NLU evidence (`claimKind`, dialogue act, owner, perspective, source/provenance) over regex/text parsing when those fields are available;
+- Authority Resolver remains a resolver of epistemic/source authority, not a text parser and not a persistence writer.
+
+Not canonical yet and must be audited before implementation:
+- exact Room entities/DAO signatures;
+- exact `MemoryCategory` enum;
+- FTS design;
+- JSON versus normalized actor/entity persistence;
+- transaction-manager shape;
+- concrete FK/delete policy;
+- timestamp storage units.
+
 ## DiagnosticTrace
 
 Status: **WIRED THROUGH IMPLEMENTED COGNITIVE MODULES**.
