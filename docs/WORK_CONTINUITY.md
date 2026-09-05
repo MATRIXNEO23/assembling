@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T11:45+02:00  
+Last updated: 2026-09-05T11:48+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-compatibility-v1`  
-Continuity schema: `matrix.assembling.continuity.v51`
+Continuity schema: `matrix.assembling.continuity.v52`
 
 ## Mandatory continuity policy
 
@@ -31,12 +31,13 @@ Canonical `DeterministicAuthorityResolver` is implemented/P0-tested but delibera
 ```text
 branch = authority-compatibility-v1
 base = bd1f46751e220bbc570b44e5a80c5b56bc4dab0e
+PR = #15
 other repos modified = false
 ```
 
 ### Compatibility audit decision
 
-Legacy `MipAuthorityResolutionV1` and root `AuthorityDecision` cannot losslessly represent canonical `AuthorityResolution` because they lack EpistemicClass, resolver confidence, source reliability, full contradiction status, candidate identities, ambiguity, reason-code list and provenance. They remain compatibility/quarantine surfaces; no forced canonical conversion is authorized.
+Legacy `MipAuthorityResolutionV1` and root `AuthorityDecision` cannot losslessly represent canonical `AuthorityResolution`. They remain unchanged compatibility/quarantine surfaces. No forced canonical conversion is permitted.
 
 ### Checkpoint 1 — canonical contradiction-only projections
 
@@ -45,26 +46,16 @@ commit = 56e94328da2f57f895365911ad2ada711d7be462
 file = src/main/kotlin/matrix/assembling/mip/MipAuthorityCompatibility.kt
 ```
 
-Added only representable canonical projections:
+Added:
 
 ```text
 AuthorityResolution.toKotlinMemoryContradictionProjection()
 AuthorityResolution.toPythonContradictionProjection()
 ```
 
-Rules:
+Only COMPLETE resolutions may project. PRESENT IDs must retain exact canonical decimal identity. Kotlin additionally requires in-range Long. NOT_APPLICABLE becomes native null/None. Opaque IDs, noncanonical decimals and incomplete statuses fail closed.
 
-- `resolutionStatus` must be COMPLETE;
-- contradiction PRESENT -> exact canonical decimal identity;
-- Kotlin projection requires exact in-range Long;
-- Python projection accepts arbitrary-size exact BigInteger;
-- NOT_APPLICABLE -> native null/None;
-- PARTIAL/HOLD/UNAVAILABLE/ERROR cannot masquerade as admission-compatible output;
-- opaque nonnumeric MemoryRef fails closed;
-- noncanonical decimal forms such as `001` fail closed rather than normalize identity to `1`;
-- these functions project only contradiction identity and explicitly do NOT claim to map the full historical Python AuthorityResolution.
-
-No `MipAuthorityResolutionV1` or root `AuthorityDecision` redesign/migration was introduced.
+The Python function is explicitly a contradiction-only projection, not a claim of full historical Python AuthorityResolution compatibility.
 
 ### Checkpoint 2 — compatibility gates
 
@@ -73,28 +64,27 @@ commit = 95d2720c6cd800749071e263a3b46ebb48dd31e9
 file = src/test/kotlin/matrix/assembling/mip/MipAuthorityCompatibilityTest.kt
 ```
 
-Coverage:
+Tests cover native absence, exact numeric identity, opaque-ID rejection, Kotlin overflow vs Python arbitrary integer, noncanonical decimal rejection, and PARTIAL/HOLD projection rejection.
+
+### Diff / PR checkpoint
+
+Verified diff from base contains exactly:
 
 ```text
-COMPLETE + no contradiction -> Kotlin null / Python None
-COMPLETE + canonical decimal ID -> exact Long + BigInteger
-opaque nonnumeric MemoryRef -> fail closed
-Python arbitrary integer survives while Kotlin overflow fails closed
-noncanonical decimal identity `001` -> fail closed
-PARTIAL -> cannot project
-HOLD/AMBIGUOUS -> cannot project
+docs/WORK_CONTINUITY.md
+src/main/kotlin/matrix/assembling/mip/MipAuthorityCompatibility.kt
+src/test/kotlin/matrix/assembling/mip/MipAuthorityCompatibilityTest.kt
 ```
 
-### Current validation state
+PR #15:
 
-```text
-compatibility code = ADDED
-compatibility tests = ADDED
-full regression CI = NOT YET RUN
-legacy Authority DTOs = UNCHANGED / QUARANTINED
-orchestrator = UNCHANGED
-Memory = UNCHANGED
-```
+`Add fail-closed canonical Authority compatibility projections`
+
+PR-open head before this documentation update:
+
+`0d704c9d49bddc559d0b1897833aa0a11a01913c`
+
+Full repository CI is the merge gate. Merge is forbidden until the exact final PR head is green.
 
 ### Hard boundaries
 
@@ -113,12 +103,12 @@ no other repo writes
 ```text
 repo = MATRIXNEO23/assembling
 branch = authority-compatibility-v1
+PR = #15
 base = bd1f46751e220bbc570b44e5a80c5b56bc4dab0e
-last functional commit = 56e94328da2f57f895365911ad2ada711d7be462
-last test commit = 95d2720c6cd800749071e263a3b46ebb48dd31e9
-compatibility projections = CODE + TESTS ADDED / CI PENDING
+PR-open head = 0d704c9d49bddc559d0b1897833aa0a11a01913c
+compatibility projections = CODE + TESTS ADDED / PR OPEN / CI PENDING
 legacy MipAuthorityResolutionV1 = QUARANTINED / UNCHANGED
 orchestrator rewiring = NOT STARTED
 other repos = READ-ONLY
-NEXT = VERIFY DIFF; OPEN PR; FULL CI; MERGE ONLY IF FINAL HEAD GREEN
+NEXT = INSPECT PR #15 FINAL-HEAD CI; FIX ONLY TASK-INTRODUCED FAILURES; MERGE ONLY IF GREEN
 ```
