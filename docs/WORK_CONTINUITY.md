@@ -1,18 +1,18 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:11+02:00  
+Last updated: 2026-09-05T10:14+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v27`
+Continuity schema: `matrix.assembling.continuity.v28`
 
 ## Mandatory continuity policy
 
-This is the single canonical restart file for the active Assembling workstream. Update after every significant checkpoint: task/branch start, architecture/contract decision, code checkpoint, test/CI result, strategy change, before risky operations, and before every STOP/session end.
+This is the single canonical restart file for Assembling. Update it after every significant checkpoint: task/branch start, architecture/contract decision, code checkpoint, test/CI result, strategy change, before risky operations, and before every STOP/session end.
 
-## Work rules
+## Global work rules
 
 ```text
-writable repository = MATRIXNEO23/assembling only
+writable repository = MATRIXNEO23/assembling only unless owner explicitly switches
 MIP = single cross-module semantic authority
 MipBridge = single common interop bridge
 new functional module = dedicated directory/package
@@ -21,11 +21,9 @@ cosmetic mass refactor = forbidden
 gate/test weakening = forbidden
 ```
 
-Other repositories remain read-only until the owner explicitly switches active repository.
+Other repositories remain read-only.
 
-## Completed baseline
-
-### Assembling cleanup
+## Completed Assembling cleanup
 
 ```text
 cleanup start = ef433a3aed519b31efe9289a8df78ed974170510
@@ -36,12 +34,26 @@ PR #9 merge = afc5cd7e535dc08d09455339a056c71ba5dc6ea2
 final cleanup CI = 33951808519 SUCCESS
 ```
 
-Inventory, contract map, incompatibility matrix, MipBridge audit, structural cleanup, legacy quarantine, round-trip tests and docs are complete. No files moved/renamed/deleted.
+Inventory, contract map, incompatibility matrix, MipBridge audit, structural cleanup, legacy quarantine, round-trip tests and documentation are complete. No files were moved/renamed/deleted.
 
-Canonical protocol: `docs/MATRIX_INTERMODULE_PROTOCOL.md` = MIP-1.0.  
-Canonical bridge: `src/main/kotlin/matrix/assembling/mip/MipBridge.kt`.
+Compatibility-only legacy paths remain quarantined:
 
-MIP field states remain explicit:
+```text
+contracts/MatrixAssemblyContracts.kt
+pipeline/MatrixAssemblyPipeline.kt
+prompt/SemanticFrameToPrompt.kt
+coherence/CoherenceGuard.kt
+```
+
+## Canonical MIP state
+
+`docs/MATRIX_INTERMODULE_PROTOCOL.md` = `MIP-1.0`.
+
+Canonical bridge:
+
+`src/main/kotlin/matrix/assembling/mip/MipBridge.kt`
+
+MIP field states:
 
 ```text
 PRESENT
@@ -55,11 +67,26 @@ NO_MATCH
 ERROR
 ```
 
-Authority contradiction mapping remains fail-closed; Python arbitrary integer -> Kotlin Long remains range checked.
+Authority contradiction mapping is fail-closed. Python arbitrary integer -> Kotlin Long uses checked range conversion.
 
-## AUTHORITY-1.0 freeze — COMPLETE
+Hard distinctions remain:
 
-Canonical file: `docs/MIP_AUTHORITY_CONTRACT.md`.
+```text
+TypedClaim != Belief != Memory
+Memory != State != Context
+Relationship != Affective != Intimacy
+SexualInterest != CurrentDesire != Consent
+Contradiction != Supersession
+InterpretationConfidence != SourceReliability != Authority != BeliefConfidence != RetrievalRelevance
+```
+
+Roles remain distinct: speaker, observer, source, subject, target, owner, perspective.
+
+## AUTHORITY-1.0 contract freeze — COMPLETE
+
+Canonical file:
+
+`docs/MIP_AUTHORITY_CONTRACT.md`
 
 ```text
 contract = MIP-1.0 / AUTHORITY-1.0
@@ -73,10 +100,14 @@ post-merge CI = 33952808037 SUCCESS
 Frozen boundary:
 
 ```text
-TypedClaim -> Authority Resolver -> AuthorityResolution -> Memory Admission -> MemoryRepository
+TypedClaim
+-> Authority Resolver
+-> AuthorityResolution
+-> Memory Admission
+-> MemoryRepository
 ```
 
-Authority never writes Memory and never owns SAVE/SUPERSEDE/REJECT/IGNORE.
+Authority may read evidence but never writes Memory and never owns SAVE/SUPERSEDE/REJECT/IGNORE.
 
 Frozen `EpistemicClass`:
 
@@ -98,15 +129,25 @@ UNAVAILABLE
 ERROR
 ```
 
-Authority, AuthorityResolutionConfidence, SourceReliability, BeliefConfidence and RetrievalRelevance remain separate concepts.
+Authority, AuthorityResolutionConfidence, SourceReliability, BeliefConfidence and RetrievalRelevance remain separate.
 
-Concrete contradiction identity requires a real VALID same-slot candidate, same normalized predicate, compatible temporal scope, truly incompatible value/target/polarity and one uniquely safe target. Same actor/entity or different text alone never proves contradiction. Temporal change is not contradiction by default.
+Concrete contradiction identity requires:
 
-Historical Python Authority material remains oracle/compatibility evidence only; MIP owns semantics. Current root `AuthorityDecision` remains compatibility-only. `BasicAuthorityResolver` remains a conservative placeholder and does not perform semantic contradiction detection.
+1. candidate exists;
+2. candidate is VALID;
+3. same resolved semantic slot;
+4. same normalized predicate;
+5. compatible/overlapping temporal scope or same relevant event;
+6. truly incompatible value/target/polarity;
+7. one uniquely safe target.
 
-## Kotlin Authority contract types phase — COMPLETE
+Same actor/entity mention, different text, lexical similarity or confidence/authority rank alone never proves contradiction. Temporal change is not contradiction by default. Correction is strong candidate evidence but not automatic contradiction/supersession.
 
-Branch used:
+Historical Python Authority material remains oracle/compatibility evidence only. MIP owns the canonical contract. Current root `AuthorityDecision` remains compatibility-only. `BasicAuthorityResolver` remains a conservative placeholder and does not perform semantic contradiction detection.
+
+## Kotlin Authority contract value types — COMPLETE / INTEGRATED
+
+Phase branch:
 
 `authority-kotlin-contracts-v1`
 
@@ -118,28 +159,18 @@ PR:
 
 `#11`
 
-Merge:
+Merge SHA:
 
 `b87dadf376300587511a7dbce594b0fe88695798`
 
-Post-merge main CI:
-
-```text
-run = 33954180260
-Run tests = SUCCESS
-job conclusion = SUCCESS
-```
-
-### Files introduced
+Files introduced:
 
 ```text
 src/main/kotlin/matrix/assembling/authority/AuthorityTypes.kt
 src/test/kotlin/matrix/assembling/authority/AuthorityTypesTest.kt
 ```
 
-No MipBridge, root DTO, orchestrator, Memory, NLU, Affective or other-repository implementation was modified by this phase.
-
-### Canonical Kotlin Authority types now present
+Kotlin types now present:
 
 ```text
 EpistemicClass
@@ -150,77 +181,79 @@ MemoryRef
 AuthorityReasonCode
 ```
 
-Semantics:
+Properties:
 
-- `EpistemicClass` exactly matches AUTHORITY-1.0;
-- `AuthorityResolutionStatus` exactly matches AUTHORITY-1.0;
-- `AuthorityResolutionConfidence` is normalized `[0,1]` and distinct from Authority class;
-- `SourceReliability` is normalized `[0,1]` and distinct from resolver confidence;
-- `MemoryRef` is an opaque nonblank identifier, not a numeric protocol type;
-- frozen `AUTHORITY.*` reason codes are centralized and observable diagnostics only.
+- exact AUTHORITY-1.0 enum vocabulary;
+- confidence wrappers normalized `[0,1]` and reject NaN/out-of-range values;
+- MemoryRef is opaque/nonblank, not a numeric protocol type;
+- frozen `AUTHORITY.*` reason codes centralized;
+- no resolver/business logic;
+- no Memory access;
+- no semantic contradiction algorithm;
+- no Context/Retrieval/Provenance duplicates;
+- no MipBridge/root DTO/orchestrator migration.
 
-No resolver method/class, Memory access, contradiction algorithm or persistence operation exists in these types.
+### Test history
 
-### Contract tests
-
-Tests verify:
-
-```text
-exact EpistemicClass vocabulary
-exact AuthorityResolutionStatus vocabulary
-AuthorityResolutionConfidence [0,1]
-NaN/out-of-range rejection
-SourceReliability [0,1]
-MemoryRef opaque/nonblank behavior
-frozen AUTHORITY reason-code namespace/set
-```
-
-One new test initially had a counting error:
+Initial new-test gate:
 
 ```text
-expected frozen reason codes = 18
-actual frozen AUTHORITY-1.0 codes = 19
+CI 33953927557
+compile = PASS
+53 tests = 1 FAIL
+failure = Authority reason-code count expected 18 but frozen contract contains 19
 ```
 
-First gate:
+This was a test-only counting error. Contract/runtime constants were NOT changed to force a pass.
 
-`33953927557` = FAILED, 53 tests / 1 failed new assertion.
-
-Root cause was test-only. Frozen constants/runtime were not changed to force a pass.
-
-Test-only fix:
+Test-only correction commit:
 
 `831229d9bb77728782ffb84e60a4cfc5f3567c55`
 
-Correct expectation:
+Correction:
 
-`18 -> 19`
+```text
+expected reason-code count 18 -> 19
+```
 
-Subsequent PR CI:
+Subsequent green PR gates:
 
 ```text
 33954038866 = SUCCESS
 33954114182 = SUCCESS on final PR head
 ```
 
-Post-merge main CI:
-
-`33954180260 = SUCCESS`
-
-No gate was lowered.
-
-## Shared runtime dependencies — STILL NOT IMPLEMENTED
+Post-merge main gate:
 
 ```text
-MatrixContextSnapshot runtime
-ContextEntry runtime
-RetrievalQuery/Result runtime
-ProvenanceRef runtime
+33954180260 = SUCCESS
 ```
 
-These are universal MIP types and must NOT be redefined privately under `authority/`.
+Continuity-finalization commit before this update:
 
-Because those shared types are not yet implemented, the following remain intentionally deferred:
+`faf03c0d50e216e4ed8d8e1ada364f9125163d33`
+
+CI for that continuity checkpoint:
+
+```text
+33954269908 = SUCCESS
+```
+
+No gate was lowered and no pre-existing test was modified to hide a runtime failure.
+
+## Shared MIP evidence types — NEXT, NOT STARTED
+
+AUTHORITY-1.0 needs universal shared runtime evidence types that still do not exist:
+
+```text
+MatrixContextSnapshot / ContextEntry
+RetrievalQuery / RetrievalResult
+ProvenanceRef
+```
+
+These must be implemented as shared MIP runtime contracts, NOT as Authority-private substitutes.
+
+Because they are not implemented yet, the following remain intentionally deferred:
 
 ```text
 AuthorityResolveRequest runtime DTO
@@ -229,16 +262,42 @@ real AuthorityResolver
 semantic contradiction algorithm
 ```
 
+Next bounded task should therefore be:
+
+```text
+SHARED MIP EVIDENCE CONTRACT TYPES ONLY
+```
+
+Scope of that future task:
+
+- define minimal runtime `MatrixContextSnapshot`/`ContextEntry` contract types required by existing MIP semantics;
+- define minimal `RetrievalQuery`/`RetrievalResult` contract types required by Authority and future modules;
+- define shared `ProvenanceRef` runtime type;
+- add structural/serialization/fail-closed tests;
+- no retrieval engine;
+- no Memory implementation;
+- no Authority resolver/business logic;
+- no orchestrator rewiring.
+
+Only after that checkpoint may Assembling implement:
+
+```text
+AuthorityResolveRequest
+AuthorityResolution
+AuthorityResolver
+```
+
 ## Explicitly NOT IMPLEMENTED
 
 ```text
-AuthorityResolver
+real AuthorityResolver
 semantic contradiction algorithm
 AuthorityResolveRequest runtime
 full AuthorityResolution runtime DTO
-MatrixContextSnapshot
-RetrievalQuery/Result
-ProvenanceRef
+MatrixContextSnapshot runtime
+ContextEntry runtime
+RetrievalQuery/Result runtime
+ProvenanceRef runtime
 MipBridge final Authority migration
 root AuthorityDecision migration
 Memory Kotlin/Room
@@ -255,40 +314,22 @@ Other repositories modified:
 
 `false`
 
-## Next architectural step
-
-Before implementing the real Authority Resolver, implement/freeze the minimal shared MIP runtime evidence types required by AUTHORITY-1.0, without creating module-private duplicates:
-
-```text
-MatrixContextSnapshot / ContextEntry contract types
-RetrievalResult/read-only evidence contract
-ProvenanceRef runtime type
-```
-
-This should be a separate bounded task/checkpoint. It must remain contract/data-structure work first; no Memory retrieval engine or Authority business logic should be smuggled into those shared types.
-
-Only after those shared contracts are available should Assembling add:
-
-```text
-AuthorityResolveRequest
-AuthorityResolution
-AuthorityResolver implementation
-```
-
 ## STOP / exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
 branch = main
-current integrated HEAD before this continuity finalization = b87dadf376300587511a7dbce594b0fe88695798
+integrated Authority types merge = b87dadf376300587511a7dbce594b0fe88695798
+post-merge Authority CI = 33954180260 SUCCESS
+previous continuity checkpoint = faf03c0d50e216e4ed8d8e1ada364f9125163d33
+previous continuity CI = 33954269908 SUCCESS
 AUTHORITY-1.0 = FROZEN
-Kotlin Authority value types = INTEGRATED / TESTED
-post-merge CI = 33954180260 SUCCESS
+Kotlin Authority value types = COMPLETE / INTEGRATED / TESTED
 real AuthorityResolver = NOT_STARTED
-shared Context/Retrieval/Provenance runtime = NOT_IMPLEMENTED
+shared Context/Retrieval/Provenance runtime = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = shared MIP evidence contract types only
+NEXT = SHARED MIP EVIDENCE CONTRACT TYPES ONLY
 ```
 
-Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze or Kotlin Authority value-type work.
+Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, or Kotlin Authority value-type work.
