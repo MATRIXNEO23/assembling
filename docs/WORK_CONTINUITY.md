@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T12:45+02:00  
+Last updated: 2026-09-05T12:50+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-runtime-adapter-v1`  
-Continuity schema: `matrix.assembling.continuity.v54`
+Continuity schema: `matrix.assembling.continuity.v55`
 
 ## Mandatory continuity policy
 
@@ -59,55 +59,92 @@ base = 70e761de23e9c162c2415054e8662881590b2753
 other repos modified = false
 ```
 
-Purpose:
+### Checkpoint 1 — standalone runtime adapter
 
-- prove the canonical resolver can be invoked from runtime-facing inputs without modifying the orchestrator;
-- construct `AuthorityResolveRequest` from canonical MIP claim/context/retrieval/provenance inputs;
-- provide an explicit legacy-frame compatibility attempt that fails closed when old runtime data cannot supply required canonical semantics;
-- return canonical `AuthorityResolution` intact;
-- never write root `AuthorityDecision` as a lossy substitute;
-- never write Memory or perform admission.
+Commit:
 
-### Design decision — two adapter paths
+`2e0b46636d95526491fd68e76e220523826388bf`
 
-1. Canonical path
+File:
+
+`src/main/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapter.kt`
+
+Added:
 
 ```text
 CanonicalAuthorityRuntimeInput
-- requestId
-- claim: MipClaimV1
-- contextSnapshot: MatrixContextSnapshot
-- retrievalResult: MipField<RetrievalResult>
-- provenance: ProvenanceRef
-
--> AuthorityResolveRequest
--> DeterministicAuthorityResolver
--> AuthorityResolution
+LegacyAuthorityGap
+LegacyAuthorityDecisionProjectionStatus
+LegacyAuthorityRuntimeOutcome
+CanonicalAuthorityRuntimeAdapter
 ```
 
-2. Legacy compatibility path
+Design:
+
+- package is dedicated `matrix.assembling.authority.runtime`;
+- adapter does NOT implement legacy `AuthorityResolverPort`;
+- canonical path builds `AuthorityResolveRequest` and returns full `AuthorityResolution` unchanged;
+- legacy path requires one explicitly selected `TypedClaim`; no implicit first-claim selection;
+- legacy path uses existing `MipBridge.fromAssemblingTypedClaim` and surfaces missing semantics as typed compatibility gaps;
+- root `AuthorityDecision` is never produced because it cannot preserve canonical AUTHORITY-1.0 losslessly;
+- MatrixTurnFrame is never mutated;
+- structural turn/session/claim/provenance mismatches return deterministic `AUTHORITY.RUNTIME.*` Blocked outcome;
+- no Memory/admission/persistence method exists.
+
+Expected legacy gaps surfaced explicitly:
 
 ```text
-MatrixTurnFrame + TypedClaim + canonical Context/Retrieval/Provenance
--> existing MipBridge.fromAssemblingTypedClaim(...)
--> inspect whether the resulting MipClaimV1 preserves enough semantics
--> RESOLVED only if safe
--> BLOCKED with deterministic reason codes when fields are unavailable/unresolved
+SOURCE_IDENTITY_NOT_REPRESENTED
+DIALOGUE_ACT_NOT_REPRESENTED
+CLAIM_KIND_NOT_REPRESENTED
+OWNER_UNRESOLVED
+PERSPECTIVE_UNRESOLVED
 ```
 
-Important expected legacy gaps:
+A legacy USER_ASSERTION can therefore legitimately reach canonical `AuthorityResolutionStatus.HOLD` because source identity is unknown; the adapter must not guess the source.
+
+Trusted WORLD evidence may still resolve when independent trusted WORLD provenance supplies the required authority evidence; the missing root source field does not self-grant WORLD_TRUTH.
+
+### Checkpoint 2 — standalone adapter gates
+
+Commit:
+
+`7dde24a59ff2f1bb218142bf89e15d3befec477e`
+
+File:
+
+`src/test/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapterTest.kt`
+
+Coverage:
 
 ```text
-source identity may be UNKNOWN because root TypedClaim has no source EntityRef
-dialogueAct is unavailable in root TypedClaim mapping
-claimKind is absent
-perspective/owner may be nullable
-root AuthorityDecision cannot round-trip canonical EpistemicClass/confidence/provenance
+canonical adapter output == direct resolver AuthorityResolution exactly
+canonical REPORT with resolved source -> COMPLETE / REPORT
+legacy USER_ASSERTION -> source remains UNKNOWN, canonical HOLD, no guessed source
+legacy compatibility gaps expose source/dialogueAct/claimKind loss
+trusted WORLD legacy input resolves only with trusted WORLD provenance
+context turn mismatch -> BLOCKED before resolver
+claim not explicitly present in frame -> BLOCKED
+multi-claim frame requires explicit claim selection and preserves selected claim identity
+MatrixTurnFrame.authorityDecision remains null/unmodified
+adapter is not assignable to legacy AuthorityResolverPort
+adapter exposes no save/admit/supersede/delete/update/consolidate/persist API
 ```
 
-Therefore old runtime compatibility is not assumed. The adapter must expose the gap rather than guessing source/perspective/act or silently dropping canonical output fields.
+### Current validation state
 
-### Hard boundaries
+```text
+runtime adapter code = ADDED
+runtime adapter tests = ADDED
+full repository CI = NOT YET RUN
+orchestrator = UNCHANGED
+MatrixTurnFrame = UNCHANGED
+BasicAuthorityResolver = UNCHANGED
+root AuthorityDecision = UNCHANGED
+Memory = UNCHANGED
+```
+
+## Hard boundaries still enforced
 
 ```text
 no MatrixAssemblingOrchestrator modification
@@ -121,29 +158,18 @@ no PersistentConsolidation
 no other repo writes
 ```
 
-### Planned tests
-
-```text
-canonical input -> resolver COMPLETE and full AuthorityResolution preserved
-canonical REPORT with resolved source works
-legacy USER_ASSERTION with unknown source -> BLOCKED/HOLD, no guessed source
-trusted WORLD legacy projection may resolve only when provenance independently authorizes WORLD
-multi-claim requires claim-explicit invocation, no implicit first-claim selection
-legacy adapter never mutates MatrixTurnFrame.authorityDecision
-legacy projection status names exact missing/unavailable fields
-no Memory write API/dependency introduced
-```
-
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
 branch = authority-runtime-adapter-v1
 base = 70e761de23e9c162c2415054e8662881590b2753
-canonical runtime adapter = TASK STARTED / NO CODE YET
+last functional commit = 2e0b46636d95526491fd68e76e220523826388bf
+last test commit = 7dde24a59ff2f1bb218142bf89e15d3befec477e
+canonical runtime adapter = CODE + TESTS ADDED / CI PENDING
 orchestrator uses canonical resolver = false
 legacy BasicAuthorityResolver = STILL PRESENT / COMPATIBILITY
 Memory writes/admission = NOT TOUCHED
 other repos = READ-ONLY
-NEXT = IMPLEMENT STANDALONE CANONICAL/LEGACY AUTHORITY RUNTIME ADAPTER + TESTS
+NEXT = VERIFY DIFF; OPEN PR; RUN FULL CI; FIX ONLY TASK-INTRODUCED FAILURES
 ```
