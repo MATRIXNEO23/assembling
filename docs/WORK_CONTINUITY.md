@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T12:50+02:00  
+Last updated: 2026-09-05T12:56+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-runtime-adapter-v1`  
-Continuity schema: `matrix.assembling.continuity.v55`
+Continuity schema: `matrix.assembling.continuity.v56`
 
 ## Mandatory continuity policy
 
@@ -30,14 +30,13 @@ Authority value types PR #11 merge = b87dadf376300587511a7dbce594b0fe88695798
 shared MIP evidence PR #12 merge = 8f45a631b70c283169d058d98d1c880b5e37e554
 Authority runtime DTO PR #13 merge = 6841d916ba8a28a5bfc16ab4b0fa679e40c555fc
 real Authority resolver PR #14 merge = b7237542259d86c26632b2185d7e90691e82141f
-resolver post-merge CI = 33957882144 SUCCESS
 Authority compatibility PR #15 merge = 736aee2ebcd977c89faab9e519ace0f2420f668d
 compatibility post-merge CI = 33961173851 SUCCESS
 compatibility continuity commit = 70e761de23e9c162c2415054e8662881590b2753
 compatibility continuity CI = 33961261672 SUCCESS
 ```
 
-Canonical state already integrated:
+Canonical Authority pieces already integrated:
 
 ```text
 AuthorityResolveRequest
@@ -56,20 +55,18 @@ Legacy `MipAuthorityResolutionV1` and root `AuthorityDecision` remain quarantine
 ```text
 branch = authority-runtime-adapter-v1
 base = 70e761de23e9c162c2415054e8662881590b2753
+PR = #16
 other repos modified = false
 ```
 
 ### Checkpoint 1 — standalone runtime adapter
 
-Commit:
+```text
+commit = 2e0b46636d95526491fd68e76e220523826388bf
+file = src/main/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapter.kt
+```
 
-`2e0b46636d95526491fd68e76e220523826388bf`
-
-File:
-
-`src/main/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapter.kt`
-
-Added:
+Added canonical and legacy-facing standalone adapter types:
 
 ```text
 CanonicalAuthorityRuntimeInput
@@ -79,19 +76,20 @@ LegacyAuthorityRuntimeOutcome
 CanonicalAuthorityRuntimeAdapter
 ```
 
-Design:
+Properties:
 
-- package is dedicated `matrix.assembling.authority.runtime`;
+- dedicated package `matrix.assembling.authority.runtime`;
 - adapter does NOT implement legacy `AuthorityResolverPort`;
-- canonical path builds `AuthorityResolveRequest` and returns full `AuthorityResolution` unchanged;
-- legacy path requires one explicitly selected `TypedClaim`; no implicit first-claim selection;
-- legacy path uses existing `MipBridge.fromAssemblingTypedClaim` and surfaces missing semantics as typed compatibility gaps;
-- root `AuthorityDecision` is never produced because it cannot preserve canonical AUTHORITY-1.0 losslessly;
-- MatrixTurnFrame is never mutated;
-- structural turn/session/claim/provenance mismatches return deterministic `AUTHORITY.RUNTIME.*` Blocked outcome;
-- no Memory/admission/persistence method exists.
+- canonical path constructs `AuthorityResolveRequest` and returns full canonical `AuthorityResolution`;
+- legacy path requires an explicitly selected `TypedClaim` and never chooses first claim implicitly;
+- existing `MipBridge.fromAssemblingTypedClaim` is reused; no second bridge/protocol is created;
+- missing legacy semantics are surfaced as typed compatibility gaps, never guessed;
+- root `AuthorityDecision` is never produced because that conversion is inherently lossy;
+- turn/session/claim/provenance structural mismatches block with deterministic `AUTHORITY.RUNTIME.*` reason codes;
+- MatrixTurnFrame is immutable/unmodified;
+- no persistence or Memory API exists.
 
-Expected legacy gaps surfaced explicitly:
+Legacy gaps surfaced:
 
 ```text
 SOURCE_IDENTITY_NOT_REPRESENTED
@@ -101,48 +99,58 @@ OWNER_UNRESOLVED
 PERSPECTIVE_UNRESOLVED
 ```
 
-A legacy USER_ASSERTION can therefore legitimately reach canonical `AuthorityResolutionStatus.HOLD` because source identity is unknown; the adapter must not guess the source.
+### Checkpoint 2 — standalone runtime gates
 
-Trusted WORLD evidence may still resolve when independent trusted WORLD provenance supplies the required authority evidence; the missing root source field does not self-grant WORLD_TRUTH.
-
-### Checkpoint 2 — standalone adapter gates
-
-Commit:
-
-`7dde24a59ff2f1bb218142bf89e15d3befec477e`
-
-File:
-
-`src/test/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapterTest.kt`
+```text
+commit = 7dde24a59ff2f1bb218142bf89e15d3befec477e
+file = src/test/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapterTest.kt
+```
 
 Coverage:
 
 ```text
 canonical adapter output == direct resolver AuthorityResolution exactly
 canonical REPORT with resolved source -> COMPLETE / REPORT
-legacy USER_ASSERTION -> source remains UNKNOWN, canonical HOLD, no guessed source
-legacy compatibility gaps expose source/dialogueAct/claimKind loss
-trusted WORLD legacy input resolves only with trusted WORLD provenance
-context turn mismatch -> BLOCKED before resolver
-claim not explicitly present in frame -> BLOCKED
-multi-claim frame requires explicit claim selection and preserves selected claim identity
-MatrixTurnFrame.authorityDecision remains null/unmodified
-adapter is not assignable to legacy AuthorityResolverPort
-adapter exposes no save/admit/supersede/delete/update/consolidate/persist API
+legacy USER_ASSERTION -> source UNKNOWN + canonical HOLD, never guessed
+trusted WORLD legacy evidence resolves only with independent trusted WORLD provenance
+context turn mismatch -> BLOCKED
+claim not explicitly in frame -> BLOCKED
+multi-claim invocation preserves explicitly selected claim identity
+MatrixTurnFrame.authorityDecision remains null
+adapter is not AuthorityResolverPort
+adapter has no persistence mutation API
 ```
 
-### Current validation state
+### Diff / PR / CI evidence
+
+Verified diff from base contains exactly:
 
 ```text
-runtime adapter code = ADDED
-runtime adapter tests = ADDED
-full repository CI = NOT YET RUN
-orchestrator = UNCHANGED
-MatrixTurnFrame = UNCHANGED
-BasicAuthorityResolver = UNCHANGED
-root AuthorityDecision = UNCHANGED
-Memory = UNCHANGED
+docs/WORK_CONTINUITY.md
+src/main/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapter.kt
+src/test/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapterTest.kt
 ```
+
+PR #16:
+
+`Add standalone canonical Authority runtime adapter`
+
+Green tested PR head before this documentation update:
+
+`0254367261adbc92e3215e4aacd7667000770763`
+
+Full regression gate:
+
+```text
+run = 33961506698
+job = kotlin-tests
+Run tests = SUCCESS
+job conclusion = SUCCESS
+```
+
+No task-introduced CI fix was required.
+
+This documentation update creates a new final PR head. Merge is forbidden until CI for that exact final head is also green.
 
 ## Hard boundaries still enforced
 
@@ -163,13 +171,14 @@ no other repo writes
 ```text
 repo = MATRIXNEO23/assembling
 branch = authority-runtime-adapter-v1
+PR = #16
 base = 70e761de23e9c162c2415054e8662881590b2753
-last functional commit = 2e0b46636d95526491fd68e76e220523826388bf
-last test commit = 7dde24a59ff2f1bb218142bf89e15d3befec477e
-canonical runtime adapter = CODE + TESTS ADDED / CI PENDING
+last green tested head before doc update = 0254367261adbc92e3215e4aacd7667000770763
+CI = 33961506698 SUCCESS
+canonical runtime adapter = IMPLEMENTED / TESTED GREEN / FINAL DOC HEAD CI PENDING
 orchestrator uses canonical resolver = false
 legacy BasicAuthorityResolver = STILL PRESENT / COMPATIBILITY
 Memory writes/admission = NOT TOUCHED
 other repos = READ-ONLY
-NEXT = VERIFY DIFF; OPEN PR; RUN FULL CI; FIX ONLY TASK-INTRODUCED FAILURES
+NEXT = VERIFY FINAL DOC-ONLY HEAD CI; MERGE PR #16 ONLY IF GREEN; THEN VERIFY MAIN CI + FINALIZE CONTINUITY
 ```
