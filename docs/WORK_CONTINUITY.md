@@ -3,15 +3,15 @@
 Last updated: 2026-09-05T05:45+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v12`  
-Current integrated HEAD before this continuity commit: `b4a93d26062ca9fe5f6f123110c77a84e5ecc97d`  
+Continuity schema: `matrix.assembling.continuity.v13`  
+Current integrated HEAD before this continuity commit: `6b91d550838f1cb13c36e79e5653f200b6fe0c1a`  
 PR `#6`: MERGED — remaining integration boundary fixes  
-Final main CI before documentation-only Memory policy note: `33942262278` — `Matrix Assembling CI` — SUCCESS
+Final main CI before documentation-only Memory policy/checkpoint notes: `33942262278` — `Matrix Assembling CI` — SUCCESS
 
 ## Canonical work rules
 
 - work on one repository at a time unless the owner explicitly says otherwise;
-- active repository is `MATRIXNEO23/assembling`;
+- active repository at this checkpoint is `MATRIXNEO23/assembling`;
 - historical repositories are backup/checkpoint sources, not active targets;
 - do not write other repositories without explicit authorization;
 - when a component changes, keep code, tests, active documents and continuity coherent in the same workstream;
@@ -61,6 +61,7 @@ Evidence:
 - PR #4 merged as `a46919d925824e12d66d074a77c231aa2b4b7a1b`;
 - PR #6 merged as `1c603ac94d62d0e79d14fd455481c7a487d89ea4`;
 - final main continuity commit before Memory policy note: `0d5e7533f37a654865d1fe55f07b3c334bf1f1a2`;
+- Memory migration decision commits: `b4a93d26062ca9fe5f6f123110c77a84e5ecc97d`, `6b91d550838f1cb13c36e79e5653f200b6fe0c1a`;
 - final main CI run `33942262278` — SUCCESS.
 
 ## Current hard boundaries
@@ -227,6 +228,32 @@ DO NOT redo completed P0/P1/P2 hardening.
 Resume from Working Context / read-only context boundaries only when the owner explicitly returns to this backlog.
 ```
 
+## SWITCH CHECKPOINT — COMPLETE NLU NEXT
+
+Owner decision: pause Assembling here and switch focus to completing Matrix-NLU before resuming the deferred architecture backlog.
+
+Assembling state at handoff:
+- `main` is the authoritative branch;
+- architectural hardening P0/P1/P2 is closed and must not be repeated;
+- DiagnosticTrace and integration-boundary protections are preserved;
+- Memory Foundation migration policy is recorded but implementation remains deferred;
+- Working Context/read-only context work has NOT started;
+- no new Assembling architecture work should begin while NLU completion is the active priority.
+
+Next workstream objective:
+
+```text
+COMPLETE MATRIX-NLU
+→ finish the NLU candidate/gates and required semantic coverage
+→ preserve the existing Student-4-v2.2A controlled baseline and frozen rules
+→ only after NLU completion return to Assembling Working Context / read boundaries
+```
+
+Repository switch rule:
+- this file records the Assembling handoff only;
+- when the owner explicitly switches to the NLU repository, that repository becomes the only active write target;
+- do not modify Assembling during NLU work unless the owner explicitly returns to it.
+
 ## Current pause state
 
-Architecture backlog and Memory Foundation production-migration decisions recorded and intentionally paused by owner request. The next user task may be unrelated; do not automatically start any deferred item above.
+`MATRIXNEO23/assembling` is intentionally checkpointed and paused. The next active work is NLU completion. When Assembling resumes, continue from the deferred Working Context/read-only boundaries; do not redo the completed audit or hardening work.
