@@ -14,7 +14,14 @@ import matrix.assembling.contracts.TemporalRelation
  *
  * It does not censor and it is not the final durable-memory authority. Adult /
  * intimacy markers are semantic context, never a blanket persistence penalty.
+ *
+ * Compatibility-only: the authoritative runtime coherence boundary is the
+ * MatrixTurnFrame/CoherenceGuardPort path. Do not use this class for new modules.
  */
+@Deprecated(
+    message = "Compatibility-only legacy coherence path. New integration must use MatrixTurnFrame + CoherenceGuardPort and MIP semantics.",
+    level = DeprecationLevel.WARNING,
+)
 class CoherenceGuard(
     private val thresholds: CoherenceThresholds = CoherenceThresholds(),
 ) {
