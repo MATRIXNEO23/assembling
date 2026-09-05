@@ -1,9 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:14+02:00  
+Last updated: 2026-09-05T10:12+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v28`
+Active branch: `mip-evidence-contracts-v1`  
+Continuity schema: `matrix.assembling.continuity.v29`
 
 ## Mandatory continuity policy
 
@@ -229,62 +230,65 @@ Post-merge main gate:
 33954180260 = SUCCESS
 ```
 
-Continuity-finalization commit before this update:
+Continuity-finalization commit:
 
-`faf03c0d50e216e4ed8d8e1ada364f9125163d33`
+`05ff921d33e3f9c133ef7ea4fd9026c4966c67b7`
 
-CI for that continuity checkpoint:
+Previous continuity CI:
 
 ```text
-33954269908 = SUCCESS
+33954352500 = SUCCESS
 ```
 
 No gate was lowered and no pre-existing test was modified to hide a runtime failure.
 
-## Shared MIP evidence types — NEXT, NOT STARTED
+## Shared MIP evidence types — ACTIVE
 
-AUTHORITY-1.0 needs universal shared runtime evidence types that still do not exist:
+Task:
 
 ```text
-MatrixContextSnapshot / ContextEntry
-RetrievalQuery / RetrievalResult
-ProvenanceRef
+SHARED MIP EVIDENCE CONTRACT TYPES ONLY
 ```
 
-These must be implemented as shared MIP runtime contracts, NOT as Authority-private substitutes.
+Branch:
 
-Because they are not implemented yet, the following remain intentionally deferred:
+`mip-evidence-contracts-v1`
+
+Start HEAD:
+
+`05ff921d33e3f9c133ef7ea4fd9026c4966c67b7`
+
+Scope:
+
+- implement shared MIP runtime contract types for `ProvenanceRef`;
+- implement shared `MatrixContextSnapshot` / `ContextEntry` / domain availability types;
+- implement shared `RetrievalQuery` / `RetrievalResult` contract types;
+- preserve explicit NO_MATCH vs UNAVAILABLE vs ERROR semantics;
+- add structural/fail-closed/wire-round-trip tests without introducing a new protocol or adapter family;
+- keep all types in the existing shared `matrix.assembling.mip` package;
+- no retrieval engine;
+- no Memory implementation;
+- no Authority resolver/business logic;
+- no orchestrator rewiring;
+- no final MipBridge Authority migration;
+- no writes to other repositories.
+
+Design rule:
+
+```text
+shared Context/Retrieval/Provenance contracts belong to MIP
+NOT to authority/
+NOT to memory/
+NOT to a new parallel protocol
+```
+
+Because this task is structural only, these remain deferred:
 
 ```text
 AuthorityResolveRequest runtime DTO
 full AuthorityResolution runtime DTO
 real AuthorityResolver
 semantic contradiction algorithm
-```
-
-Next bounded task should therefore be:
-
-```text
-SHARED MIP EVIDENCE CONTRACT TYPES ONLY
-```
-
-Scope of that future task:
-
-- define minimal runtime `MatrixContextSnapshot`/`ContextEntry` contract types required by existing MIP semantics;
-- define minimal `RetrievalQuery`/`RetrievalResult` contract types required by Authority and future modules;
-- define shared `ProvenanceRef` runtime type;
-- add structural/serialization/fail-closed tests;
-- no retrieval engine;
-- no Memory implementation;
-- no Authority resolver/business logic;
-- no orchestrator rewiring.
-
-Only after that checkpoint may Assembling implement:
-
-```text
-AuthorityResolveRequest
-AuthorityResolution
-AuthorityResolver
 ```
 
 ## Explicitly NOT IMPLEMENTED
@@ -294,14 +298,11 @@ real AuthorityResolver
 semantic contradiction algorithm
 AuthorityResolveRequest runtime
 full AuthorityResolution runtime DTO
-MatrixContextSnapshot runtime
-ContextEntry runtime
-RetrievalQuery/Result runtime
-ProvenanceRef runtime
-MipBridge final Authority migration
-root AuthorityDecision migration
+retrieval engine
 Memory Kotlin/Room
 PersistentConsolidation
+MipBridge final Authority migration
+root AuthorityDecision migration
 Relationship
 Reflection
 BDI/Decision
@@ -318,18 +319,15 @@ Other repositories modified:
 
 ```text
 repo = MATRIXNEO23/assembling
-branch = main
-integrated Authority types merge = b87dadf376300587511a7dbce594b0fe88695798
-post-merge Authority CI = 33954180260 SUCCESS
-previous continuity checkpoint = faf03c0d50e216e4ed8d8e1ada364f9125163d33
-previous continuity CI = 33954269908 SUCCESS
+branch = mip-evidence-contracts-v1
+base HEAD = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
 AUTHORITY-1.0 = FROZEN
 Kotlin Authority value types = COMPLETE / INTEGRATED / TESTED
+shared Context/Retrieval/Provenance runtime = TASK STARTED / NO CODE YET
 real AuthorityResolver = NOT_STARTED
-shared Context/Retrieval/Provenance runtime = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = SHARED MIP EVIDENCE CONTRACT TYPES ONLY
+NEXT = IMPLEMENT MINIMAL SHARED MIP EVIDENCE TYPES + TESTS
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, or Kotlin Authority value-type work.
