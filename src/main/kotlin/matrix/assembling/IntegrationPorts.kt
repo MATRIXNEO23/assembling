@@ -1,12 +1,6 @@
 package matrix.assembling
 
-/**
- * Ports used by the assembling layer.
- *
- * Each module receives a MatrixTurnFrame and returns a copied/updated frame.
- * This is the single internal contract between NLU, understanding, coherence,
- * authority, memory, affective state, prompt construction and GGUF generation.
- */
+/** Ports used by the authoritative MatrixTurnFrame assembly path. */
 interface NluPort {
     fun analyze(turn: MatrixTurnFrame): MatrixTurnFrame
 }
@@ -23,8 +17,22 @@ interface AuthorityResolverPort {
     fun resolve(turn: MatrixTurnFrame): MatrixTurnFrame
 }
 
-interface MemoryAdmissionPort {
+/**
+ * Pre-response memory evaluation only. Implementations must not write durable
+ * state and must always return stableWrite=false.
+ */
+interface MemoryPreflightPort {
+    fun evaluate(turn: MatrixTurnFrame): MatrixTurnFrame
+}
+
+/**
+ * Compatibility facade for existing non-persistent adapters. New durable memory
+ * implementations must use a final consolidation boundary instead.
+ */
+@Deprecated("Pre-response stage is MemoryPreflightPort; durable writes belong to PersistentConsolidationPort")
+interface MemoryAdmissionPort : MemoryPreflightPort {
     fun admit(turn: MatrixTurnFrame): MatrixTurnFrame
+    override fun evaluate(turn: MatrixTurnFrame): MatrixTurnFrame = admit(turn)
 }
 
 interface AffectivePort {
@@ -37,4 +45,14 @@ interface SemanticFrameToPromptPort {
 
 interface GgufPort {
     fun generate(turn: MatrixTurnFrame): MatrixTurnFrame
+}
+
+/** Optional boundary until semantic output validation is implemented. */
+interface OutputValidatorPort {
+    fun validate(turn: MatrixTurnFrame): MatrixTurnFrame
+}
+
+/** Durable writes are allowed only here, after accepted output. */
+interface PersistentConsolidationPort {
+    fun consolidate(turn: MatrixTurnFrame): MatrixTurnFrame
 }
