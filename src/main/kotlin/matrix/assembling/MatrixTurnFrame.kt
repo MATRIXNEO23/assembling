@@ -1,5 +1,11 @@
 package matrix.assembling
 
+import matrix.assembling.authority.AuthorityResolution
+import matrix.assembling.mip.MatrixContextSnapshot
+import matrix.assembling.mip.MipField
+import matrix.assembling.mip.MipFieldStatus
+import matrix.assembling.mip.RetrievalResult
+
 /**
  * Canonical per-turn data envelope for Matrix Engine assembly.
  *
@@ -15,13 +21,27 @@ data class MatrixTurnFrame(
     val semantic: SemanticFrame? = null,
     val typedClaims: List<TypedClaim> = emptyList(),
     val coherenceDecision: CoherenceDecision? = null,
+    /** Legacy compatibility-only Authority surface; never auto-synchronized from canonical Authority. */
     val authorityDecision: AuthorityDecision? = null,
     val memoryResult: MemoryAdmissionResult? = null,
     val affectiveState: AffectiveState? = null,
     val prompt: GgufPrompt? = null,
     val reply: AssistantReply? = null,
     val diagnostics: DiagnosticTrace = DiagnosticTrace(),
+    /** Current immutable canonical MIP context snapshot. Legacy runtime defaults to UNAVAILABLE. */
+    val contextSnapshot: MipField<MatrixContextSnapshot> = MipField.unavailable(),
+    /**
+     * Current canonical retrieval results. Outer field status describes provider/stage availability;
+     * successful no-match is represented by PRESENT list entries with RetrievalStatus.NO_MATCH.
+     */
+    val retrievalResults: MipField<List<RetrievalResult>> = MipField.unavailable(),
+    /** Current claim-wise canonical AUTHORITY-1.0 resolutions. */
+    val canonicalAuthorityResolutions: MipField<List<AuthorityResolution>> = MipField.unavailable(),
 ) {
+    init {
+        validateCanonicalRuntimeSlots()
+    }
+
     fun requireNlu(): NluOutput = nlu ?: error("MatrixTurnFrame missing NLU output")
     fun requireSemantic(): SemanticFrame = semantic ?: error("MatrixTurnFrame missing semantic frame")
     fun requireCoherence(): CoherenceDecision = coherenceDecision ?: error("MatrixTurnFrame missing coherence decision")
@@ -29,7 +49,88 @@ data class MatrixTurnFrame(
     fun requireMemory(): MemoryAdmissionResult = memoryResult ?: error("MatrixTurnFrame missing memory result")
     fun requireAffective(): AffectiveState = affectiveState ?: error("MatrixTurnFrame missing affective state")
     fun requirePrompt(): GgufPrompt = prompt ?: error("MatrixTurnFrame missing GGUF prompt")
+
+    fun requireCanonicalContextSnapshot(): MatrixContextSnapshot =
+        contextSnapshot.requirePresentSlot("contextSnapshot")
+
+    fun requireCanonicalRetrievalResults(): List<RetrievalResult> =
+        retrievalResults.requirePresentSlot("retrievalResults")
+
+    fun requireCanonicalAuthorityResolutions(): List<AuthorityResolution> =
+        canonicalAuthorityResolutions.requirePresentSlot("canonicalAuthorityResolutions")
+
+    fun requireCanonicalAuthorityForClaim(claimId: String): AuthorityResolution {
+        require(claimId.isNotBlank()) { "claimId must not be blank" }
+        return requireCanonicalAuthorityResolutions().singleOrNull { it.claimId == claimId }
+            ?: error("MatrixTurnFrame missing unique canonical AuthorityResolution for claimId=$claimId")
+    }
+
+    private fun validateCanonicalRuntimeSlots() {
+        require(contextSnapshot.status != MipFieldStatus.NO_MATCH) {
+            "contextSnapshot cannot use NO_MATCH; context provider availability must remain explicit"
+        }
+        require(retrievalResults.status !in setOf(
+            MipFieldStatus.NO_MATCH,
+            MipFieldStatus.AMBIGUOUS,
+            MipFieldStatus.CONFLICTED,
+        )) {
+            "retrievalResults outer status=${retrievalResults.status} is invalid; result-level retrieval status belongs inside RetrievalResult"
+        }
+
+        val context = contextSnapshot.value.takeIf { contextSnapshot.status == MipFieldStatus.PRESENT }
+        if (context != null) {
+            require(context.turnId == turnId) {
+                "canonical context turnId=${context.turnId} does not match frame turnId=$turnId"
+            }
+            require(context.sessionId == sessionId) {
+                "canonical context sessionId=${context.sessionId} does not match frame sessionId=$sessionId"
+            }
+        }
+
+        if (retrievalResults.status == MipFieldStatus.PRESENT) {
+            require(context != null) {
+                "PRESENT retrievalResults requires PRESENT contextSnapshot"
+            }
+            val results = requireNotNull(retrievalResults.value)
+            require(results.isNotEmpty()) {
+                "PRESENT retrievalResults must contain at least one explicit RetrievalResult; use NO_MATCH inside a result"
+            }
+            require(results.map { it.queryId }.distinct().size == results.size) {
+                "retrievalResults queryIds must be unique"
+            }
+        }
+
+        if (canonicalAuthorityResolutions.status == MipFieldStatus.PRESENT) {
+            require(context != null) {
+                "PRESENT canonicalAuthorityResolutions requires PRESENT contextSnapshot"
+            }
+            val resolutions = requireNotNull(canonicalAuthorityResolutions.value)
+            val typedClaimIds = typedClaims.map { it.claimId }
+            require(typedClaimIds.distinct().size == typedClaimIds.size) {
+                "typedClaims claimIds must be unique when canonical Authority is present"
+            }
+            require(resolutions.map { it.resolutionId }.distinct().size == resolutions.size) {
+                "canonical Authority resolutionIds must be unique"
+            }
+            require(resolutions.map { it.claimId }.distinct().size == resolutions.size) {
+                "canonical Authority resolutions must contain at most one current resolution per claimId"
+            }
+            require(resolutions.map { it.claimId }.toSet() == typedClaimIds.toSet()) {
+                "canonical Authority resolutions must cover exactly the current typedClaims"
+            }
+            require(resolutions.all { it.contextSnapshotId == context.snapshotId }) {
+                "canonical Authority resolutions must reference the current contextSnapshotId=${context.snapshotId}"
+            }
+        }
+    }
 }
+
+private fun <T> MipField<T>.requirePresentSlot(name: String): T =
+    if (status == MipFieldStatus.PRESENT && value != null) {
+        value
+    } else {
+        error("MatrixTurnFrame canonical slot $name must be PRESENT, found $status")
+    }
 
 data class UserMessage(
     val text: String,
@@ -174,7 +275,7 @@ data class DiagnosticSnapshot(
 )
 
 /**
- * End-to-end diagnostic trace for a Matrix turn.
+ * End-to-end diagnostic trace for one Matrix turn.
  *
  * `reasoningChain` is intentionally a list of deterministic reason codes, not
  * model chain-of-thought. `firstDivergence` is write-once: later errors remain
