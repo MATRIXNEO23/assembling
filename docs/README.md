@@ -9,18 +9,22 @@ Date: 2026-09-05
    `MATRIXNEO23/8.10.9evo3-solo-gpt/ARCHITETTURA_MATRIX_ENGINE.md`
 2. Universal cross-module semantic contract:
    `docs/MATRIX_INTERMODULE_PROTOCOL.md` (`MIP-1.0`)
-3. Assembling module wiring:
+3. Frozen Authority profile subordinate to MIP-1.0:
+   `docs/MIP_AUTHORITY_CONTRACT.md` (`AUTHORITY-1.0`)
+4. Assembling module wiring:
    `docs/MODULE_CONNECTIONS.md`
-4. Current implementation plan:
+5. Current implementation plan:
    `docs/ASSEMBLY_PLAN.md`
-5. Current operational state / restart point:
+6. Current operational state / restart point:
    `docs/WORK_CONTINUITY.md`
 
 ## Document authority rule
 
 `docs/MATRIX_INTERMODULE_PROTOCOL.md` is the canonical Assembling-owned definition of shared intermodule meanings and boundary semantics.
 
-It defines terms shared across modules such as:
+`docs/MIP_AUTHORITY_CONTRACT.md` is a normative **profile of MIP-1.0**, not a second protocol. It freezes Authority-specific request/output semantics, epistemic classes, contradiction identity, confidence separation, compatibility mapping and future implementation gates. If it ever conflicts with the parent MIP document, MIP wins and the profile must be corrected.
+
+MIP defines terms shared across modules such as:
 - `subject`, `target`, `owner`, `perspective`, `source`;
 - entity resolution states;
 - temporal/provenance models;
@@ -32,6 +36,31 @@ It defines terms shared across modules such as:
 - Relationship vs Affective vs Intimacy/Consent separation.
 
 Module repositories may implement or extend their own internal details, but their public Matrix boundary must conform to the applicable MIP version and must not redefine shared terms independently.
+
+## Authority contract freeze status
+
+Frozen semantic boundary:
+
+```text
+TypedClaim
+→ Authority Resolver
+→ AuthorityResolution
+→ Memory Admission
+→ MemoryRepository
+```
+
+The frozen Authority profile explicitly preserves:
+
+```text
+Authority != AuthorityResolutionConfidence
+Authority != SourceReliability
+Authority != BeliefConfidence
+Contradiction != Supersession
+```
+
+`contradictedMemoryRef` is the MIP form of the Python v3 `contradicts_memory_id` seam. A concrete contradiction target may be emitted only when a unique `VALID` memory is semantically incompatible in the same relevant subject/predicate/temporal scope.
+
+Current root `AuthorityDecision` and current `MipAuthorityResolutionV1` remain compatibility/transition surfaces. This contract freeze does not implement the real Authority Resolver or migrate those DTOs.
 
 ## MIP adapter implementation status
 
@@ -62,6 +91,12 @@ matrix/assembling/adapters/
 matrix/assembling/coherence/
 ```
 
+When explicitly authorized, the future Authority implementation is reserved for:
+
+```text
+src/main/kotlin/matrix/assembling/authority/
+```
+
 Future modules such as context, retrieval, diagnostics or decision adapters must follow the same rule when explicitly authorized.
 
 Existing root runtime files remain in place unless a future audited move has a demonstrated compatibility benefit. The rule is not permission for a cosmetic mass refactor.
@@ -72,6 +107,7 @@ Existing root runtime files remain in place unless a future audited move has a d
 - `README.md`
 - `docs/README.md`
 - `docs/MATRIX_INTERMODULE_PROTOCOL.md`
+- `docs/MIP_AUTHORITY_CONTRACT.md`
 - `docs/MODULE_CONNECTIONS.md`
 - `docs/ASSEMBLY_PLAN.md`
 - `docs/MEMORY_INTEGRATION_POLICY.md`
@@ -104,7 +140,7 @@ Rules:
 - changing the active repository requires an explicit user instruction;
 - if a project-wide decision affects other repositories, record the dependency/action needed in the current repository continuity/backlog and apply it only when that repository becomes the active work target.
 
-Current temporary active repository for the universal-protocol clarification/bridge cleanup workstream: `MATRIXNEO23/assembling`.
+Current temporary active repository for the Authority-contract freeze workstream: `MATRIXNEO23/assembling`.
 
 This checkpoint does not authorize implementation work in `memoria`, NLU, Affective, Relationship or other repositories.
 
@@ -122,4 +158,4 @@ If the decision also affects another repository, do not modify it automatically:
 
 A decision made only in chat is not considered integrated project state.
 
-Do not create a second competing intermodule protocol. Future cross-module semantic clarification must update MIP rather than creating parallel definitions.
+Do not create a second competing intermodule protocol. Future cross-module semantic clarification must update MIP or an explicitly subordinate MIP profile rather than creating parallel definitions.
