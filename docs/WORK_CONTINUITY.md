@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:58+02:00  
+Last updated: 2026-09-05T11:01+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-runtime-dtos-v1`  
-Continuity schema: `matrix.assembling.continuity.v41`
+Continuity schema: `matrix.assembling.continuity.v42`
 
 ## Mandatory continuity policy
 
@@ -52,23 +52,14 @@ other repos modified = false
 ### Functional checkpoints
 
 ```text
-9f5b227de80c5f276eb029b64c1c563c1fbed6cd
-= AuthorityResolveRequest + AuthorityResolution DTOs
-
-60176c46ea2599504d6ae6ce63a9044b5f25989f
-= initial MipClaimV1 wire support
-
-9265458cde29d021a71f7c944f181c7992cf33c9
-= pre-CI semanticMarkers decoder fix
-
-297491d62219a60cdaa3362d54b0fc632dc4eafb
-= AuthorityContractWire primitive codec
-
-9542ce6248abee5d95a1016d2c709ac5c2f418a9
-= Authority DTO/wire/fail-closed tests
+9f5b227de80c5f276eb029b64c1c563c1fbed6cd = AuthorityResolveRequest + AuthorityResolution DTOs
+60176c46ea2599504d6ae6ce63a9044b5f25989f = initial MipClaimV1 wire support
+9265458cde29d021a71f7c944f181c7992cf33c9 = pre-CI semanticMarkers decoder fix
+297491d62219a60cdaa3362d54b0fc632dc4eafb = AuthorityContractWire primitive codec
+9542ce6248abee5d95a1016d2c709ac5c2f418a9 = Authority DTO/wire/fail-closed tests
 ```
 
-Files added by this task:
+Files added:
 
 ```text
 src/main/kotlin/matrix/assembling/authority/AuthorityContracts.kt
@@ -77,54 +68,41 @@ src/main/kotlin/matrix/assembling/mip/MipClaimWire.kt
 src/test/kotlin/matrix/assembling/authority/AuthorityContractsTest.kt
 ```
 
-Contract status:
+Contract properties:
 
-- request reuses MipClaimV1 + MatrixContextSnapshot + explicit MipField<RetrievalResult> + ProvenanceRef;
+- request reuses MipClaimV1, MatrixContextSnapshot, explicit MipField<RetrievalResult>, ProvenanceRef;
 - result uses frozen AUTHORITY-1.0 typed fields;
-- no nullable contradiction collapse;
-- COMPLETE requires resolved Authority classification/confidence and completed contradiction assessment;
+- COMPLETE does not mean persistence approval;
+- contradiction identity/status cannot collapse to nullable absence;
 - concrete/ambiguous/no-match contradiction states are structurally constrained;
-- claim/provenance identity mismatches fail;
-- wire codecs are serialization only and delegate shared payloads to existing MIP evidence codec;
-- no legacy AuthorityDecision or MipBridge final migration.
+- claim/provenance identity mismatch fails closed;
+- shared payload serialization delegates to existing MIP evidence codec;
+- no legacy AuthorityDecision or final MipBridge migration.
 
-Test coverage includes claim/request/result round-trips, explicit RetrievalResult(NO_MATCH), malformed MipFields, semantic markers, provenance mismatches, contradiction candidate identity, ambiguity cardinality, COMPLETE fail-closed states, reason namespaces, confidence range and unknown enum rejection.
+Test coverage includes claim/request/result round-trips, explicit RetrievalResult(NO_MATCH), malformed MipFields, semantic markers, provenance mismatches, contradiction target identity, ambiguity cardinality, COMPLETE fail-closed behavior, reason namespaces, confidence range and unknown-enum rejection.
 
-### PR checkpoint
+### PR / CI evidence
 
 PR #13:
 
 `Bind frozen Authority-1.0 runtime DTOs to MIP evidence`
 
-PR base:
+Final green tested PR head before this documentation update:
 
-`8dc6643e73c3ce6e569173a4922ec3a01e77e0ff`
+`bf8a8a3585d6668ff66d24be1fe7ce6bdf5414cf`
 
-PR-open head:
-
-`e2d9278dfb750177076fc67e3834679bdbcfe82d`
-
-Verified diff:
+Full regression CI:
 
 ```text
-docs/WORK_CONTINUITY.md
-src/main/kotlin/matrix/assembling/authority/AuthorityContractWire.kt
-src/main/kotlin/matrix/assembling/authority/AuthorityContracts.kt
-src/main/kotlin/matrix/assembling/mip/MipClaimWire.kt
-src/test/kotlin/matrix/assembling/authority/AuthorityContractsTest.kt
+run = 33956392311
+job = kotlin-tests
+Run tests = SUCCESS
+job conclusion = SUCCESS
 ```
 
-No orchestrator, Memory, legacy compatibility path, NLU repo or other repository changed.
+No task-introduced CI repair was required. The only defect found in this task was the semanticMarkers decoder-key mistake detected and fixed during self-review before CI.
 
-### Validation state
-
-```text
-PR #13 = OPEN
-full regression CI = PENDING
-merge = FORBIDDEN UNTIL FINAL PR HEAD GREEN
-```
-
-If CI fails, fix only task-introduced failures; do not weaken tests/contracts.
+This continuity update is documentation-only and creates the final pre-merge head. Merge is forbidden until the CI for this exact final head is green.
 
 ## Explicitly NOT IMPLEMENTED
 
@@ -153,12 +131,13 @@ repo = MATRIXNEO23/assembling
 branch = authority-runtime-dtos-v1
 PR = #13
 base = 8dc6643e73c3ce6e569173a4922ec3a01e77e0ff
-PR-open head = e2d9278dfb750177076fc67e3834679bdbcfe82d
-Authority runtime DTO binding = CODE + TESTS ADDED / PR OPEN / CI PENDING
+last green tested head before doc update = bf8a8a3585d6668ff66d24be1fe7ce6bdf5414cf
+CI = 33956392311 SUCCESS
+Authority runtime DTO binding = IMPLEMENTED / TESTED GREEN
 real AuthorityResolver = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = INSPECT PR #13 CI; FIX ONLY TASK-INTRODUCED FAILURES; MERGE ONLY IF FINAL HEAD GREEN
+NEXT = VERIFY FINAL DOC-ONLY HEAD CI; MERGE #13 ONLY IF GREEN; THEN POST-MERGE MAIN CI + FINALIZE CONTINUITY
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, Authority value types, or shared MIP evidence contracts.
