@@ -35,9 +35,9 @@ Module repositories may implement or extend their own internal details, but thei
 
 ## MIP adapter implementation status
 
-`src/main/kotlin/matrix/assembling/mip/MipBridge.kt` is the explicit adapter-only implementation candidate for translating existing native DTOs to/from MIP-1.0.
+`src/main/kotlin/matrix/assembling/mip/MipBridge.kt` is the explicit adapter-only implementation for translating existing native DTOs to/from MIP-1.0.
 
-Its compatibility audit is:
+Its compatibility/consolidation audit is:
 
 `docs/MIP_BRIDGE_COMPATIBILITY_AUDIT.md`
 
@@ -46,7 +46,25 @@ Hard rules:
 - no business logic belongs in MIP Bridge;
 - mappings are explicit, never reflection/magic;
 - lossy conversion fails explicitly rather than silently dropping data;
+- entity resolution uses its own MIP vocabulary (`RESOLVED`, `UNKNOWN`, `UNRESOLVED`, `AMBIGUOUS`, `CONFLICTED`, `NOT_APPLICABLE`);
+- ordinary field status keeps distinct `PRESENT`, `NOT_APPLICABLE`, `UNKNOWN`, `UNRESOLVED`, `AMBIGUOUS`, `CONFLICTED`, `UNAVAILABLE`, `NO_MATCH`, `ERROR`;
 - the current orchestrator is not rewired to the bridge by this checkpoint.
+
+## Module-directory rule
+
+Every **new functional module** added to this repository must live in its own dedicated directory/package.
+
+Examples:
+
+```text
+matrix/assembling/mip/
+matrix/assembling/adapters/
+matrix/assembling/coherence/
+```
+
+Future modules such as context, retrieval, diagnostics or decision adapters must follow the same rule when explicitly authorized.
+
+Existing root runtime files remain in place unless a future audited move has a demonstrated compatibility benefit. The rule is not permission for a cosmetic mass refactor.
 
 ## Document classes
 
@@ -70,10 +88,11 @@ The following code path is retained only to preserve existing work and tests whi
 - `src/main/kotlin/matrix/assembling/contracts/*`
 - `src/main/kotlin/matrix/assembling/pipeline/*`
 - `src/main/kotlin/matrix/assembling/prompt/*`
+- `src/main/kotlin/matrix/assembling/coherence/*`
 
-It must not receive new independent architectural authority.
+`pipeline.MatrixAssemblyPipeline`, `prompt.SemanticFrameToPrompt` and `coherence.CoherenceGuard` are explicitly deprecated compatibility surfaces. They must not receive new independent architectural authority.
 
-The current `MatrixTurnFrame`, `NluOutput`, `SemanticFrame`, `TypedClaim` and integration ports are implementation predecessors/compatibility surfaces. They are not allowed to override MIP semantics merely because they contain older nullable/string/boolean representations.
+The current root `MatrixTurnFrame`, `NluOutput`, `SemanticFrame`, `TypedClaim` and integration ports are runtime implementation/compatibility surfaces. They are not allowed to override MIP semantics merely because they contain older nullable/string/boolean representations.
 
 ## Canonical repository-work rule
 
@@ -85,9 +104,9 @@ Rules:
 - changing the active repository requires an explicit user instruction;
 - if a project-wide decision affects other repositories, record the dependency/action needed in the current repository continuity/backlog and apply it only when that repository becomes the active work target.
 
-Current temporary active repository for the universal-protocol clarification/bridge workstream: `MATRIXNEO23/assembling`.
+Current temporary active repository for the universal-protocol clarification/bridge cleanup workstream: `MATRIXNEO23/assembling`.
 
-This temporary architecture checkpoint does not authorize implementation work in `memoria`, NLU, Affective, Relationship or other repositories.
+This checkpoint does not authorize implementation work in `memoria`, NLU, Affective, Relationship or other repositories.
 
 ## Change-control rule
 
