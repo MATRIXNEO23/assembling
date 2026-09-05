@@ -15,9 +15,17 @@ import matrix.assembling.contracts.SemanticFrame
 import matrix.assembling.contracts.TemporalRelation
 
 /**
- * Converts internal semantic classes into short natural-language instructions
- * that a small/medium GGUF can follow more reliably than raw numeric fields.
+ * Converts compatibility semantic classes into short natural-language instructions.
+ *
+ * Compatibility-only: the authoritative runtime prompt builder is
+ * matrix.assembling.SemanticFrameToPrompt on the MatrixTurnFrame path. This
+ * class is retained for legacy callers/tests and must not receive new
+ * architectural authority.
  */
+@Deprecated(
+    message = "Compatibility-only legacy prompt translator. New integration must use matrix.assembling.SemanticFrameToPrompt on the MatrixTurnFrame path.",
+    level = DeprecationLevel.WARNING,
+)
 class SemanticFrameToPrompt {
     fun toDirective(
         frame: SemanticFrame,
