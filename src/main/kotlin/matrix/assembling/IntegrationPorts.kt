@@ -1,12 +1,6 @@
 package matrix.assembling
 
-/**
- * Ports used by the assembling layer.
- *
- * Each module receives a MatrixTurnFrame and returns a copied/updated frame.
- * This is the single internal contract between NLU, understanding, coherence,
- * authority, memory, affective state, prompt construction and GGUF generation.
- */
+/** Ports used by the authoritative MatrixTurnFrame assembly path. */
 interface NluPort {
     fun analyze(turn: MatrixTurnFrame): MatrixTurnFrame
 }
@@ -23,8 +17,28 @@ interface AuthorityResolverPort {
     fun resolve(turn: MatrixTurnFrame): MatrixTurnFrame
 }
 
-interface MemoryAdmissionPort {
+/**
+ * Pre-response memory evaluation only.
+ *
+ * Implementations must not write durable state, return durable memory IDs, or
+ * set `stableWrite=true`. Real Memory Admission belongs to final consolidation.
+ */
+interface MemoryPreflightPort {
+    fun evaluate(turn: MatrixTurnFrame): MatrixTurnFrame
+}
+
+/**
+ * Compatibility facade for the adapters created before the preflight/commit
+ * split became explicit. It must never be implemented by a durable writer.
+ */
+@Deprecated(
+    message = "Pre-response stage is MemoryPreflightPort; durable writes belong to PersistentConsolidationPort.",
+    level = DeprecationLevel.WARNING,
+)
+interface MemoryAdmissionPort : MemoryPreflightPort {
     fun admit(turn: MatrixTurnFrame): MatrixTurnFrame
+
+    override fun evaluate(turn: MatrixTurnFrame): MatrixTurnFrame = admit(turn)
 }
 
 interface AffectivePort {
@@ -37,4 +51,17 @@ interface SemanticFrameToPromptPort {
 
 interface GgufPort {
     fun generate(turn: MatrixTurnFrame): MatrixTurnFrame
+}
+
+/** Optional post-GGUF validation boundary. The real validator is not wired yet. */
+interface OutputValidatorPort {
+    fun validate(turn: MatrixTurnFrame): MatrixTurnFrame
+}
+
+/**
+ * Future post-validation durable commit boundary.
+ * No implementation is currently connected in Assembling.
+ */
+interface PersistentConsolidationPort {
+    fun consolidate(turn: MatrixTurnFrame): MatrixTurnFrame
 }
