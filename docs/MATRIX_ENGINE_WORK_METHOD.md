@@ -308,7 +308,45 @@ Restano invece rigidi al 100% i gate su proprietà deterministiche e strutturali
 - regression test specifici;
 - CI e suite obbligatorie verdi.
 
-Se uno di questi gate fallisce:
+### 11.2 Stop/Pivot basato su evidenza e approvazione del proprietario
+
+Non bisogna incaponirsi su un metodo, algoritmo, modello o modulo quando l'evidenza mostra che non aggiunge qualità sufficiente, presenta un limite strutturale o richiede un costo sproporzionato mentre esistono alternative valide.
+
+L'assistente può **rilevare e proporre** un pivot, ma non può eseguirlo autonomamente.
+
+Prima di qualsiasi cambio di metodo, modulo, architettura, modello, strategia o priorità:
+
+```text
+1. SALVA CHECKPOINT / WORK_CONTINUITY
+2. MOSTRA I RISULTATI DELLA STRADA ATTUALE
+3. IDENTIFICA IL LIMITE: BUG RISOLVIBILE O LIMITE STRUTTURALE
+4. PRESENTA LE ALTERNATIVE REALI
+5. CONFRONTA QUALITÀ / COSTO / RISCHI / COMPATIBILITÀ / COMPLESSITÀ
+6. DICHIARA COSA SI CONSERVA E COSA SI PERDE
+7. FORNISCI UNA RACCOMANDAZIONE TECNICA
+8. ATTENDI APPROVAZIONE ESPLICITA DEL PROPRIETARIO
+9. SOLO DOPO L'APPROVAZIONE CAMBIA DIREZIONE
+```
+
+Regola:
+
+```text
+PROPOSTA DI PIVOT != AUTORIZZAZIONE AL PIVOT
+```
+
+Un pivot non è giustificato da un singolo test negativo se la causa è concretamente correggibile. Prima si distingue tra:
+
+```text
+BUG / INTEGRAZIONE / DATI / CONFIGURAZIONE
+→ TENTARE FIX MIRATO + REGRESSION TEST
+
+LIMITE STRUTTURALE / NESSUN GUADAGNO / COSTO SPROPORZIONATO
+→ CONFRONTO ALTERNATIVE + PROPOSTA DI PIVOT AL PROPRIETARIO
+```
+
+Non si butta via ciò che funziona: ogni cambio deve preservare componenti, dataset, test, contratti o capacità forti riutilizzabili quando tecnicamente possibile.
+
+Se uno dei gate strutturali fallisce:
 
 ```text
 STOP
@@ -354,7 +392,8 @@ Solo dopo questa checklist il rewire è autorizzabile.
 - quando cambia contratto, dataset, modello o strategia;
 - prima di operazioni rischiose;
 - appena emerge un rischio di stop/perdita contesto;
-- prima di terminare la sessione.
+- prima di terminare la sessione;
+- **prima di proporre o applicare un cambio di metodo/modulo/architettura/priorità**.
 
 Deve contenere almeno:
 
@@ -490,4 +529,5 @@ Reflection viene dopo una Memory verificata, così non produce inferenze su rico
 9. ONE WRITE REPO AT A TIME
 10. NO NEXT MODULE UNTIL CURRENT SUITE IS 100% GREEN
 11. SEMANTIC QUALITY IS MEASURED AND MAXIMIZED, NOT FROZEN AS ONE GLOBAL PERCENTAGE
+12. PROPOSE PIVOTS WITH EVIDENCE; CHANGE DIRECTION ONLY AFTER OWNER APPROVAL
 ```
