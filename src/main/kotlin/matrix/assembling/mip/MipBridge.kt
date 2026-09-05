@@ -18,6 +18,7 @@ import matrix.assembling.adapters.MatrixNluClaim
  */
 const val MIP_SCHEMA_VERSION: String = "MIP-1.0"
 
+/** Presence/status vocabulary for ordinary MIP fields and boundary results. */
 enum class MipFieldStatus {
     PRESENT,
     NOT_APPLICABLE,
@@ -26,6 +27,21 @@ enum class MipFieldStatus {
     AMBIGUOUS,
     CONFLICTED,
     UNAVAILABLE,
+    NO_MATCH,
+    ERROR,
+}
+
+/**
+ * Entity resolution is intentionally separate from generic field presence.
+ * MIP-1.0 defines RESOLVED for entity identity; PRESENT is not an entity-resolution state.
+ */
+enum class MipEntityResolutionStatus {
+    RESOLVED,
+    UNKNOWN,
+    UNRESOLVED,
+    AMBIGUOUS,
+    CONFLICTED,
+    NOT_APPLICABLE,
 }
 
 data class MipField<T>(
@@ -43,21 +59,25 @@ data class MipField<T>(
         fun <T> notApplicable(): MipField<T> = MipField(MipFieldStatus.NOT_APPLICABLE)
         fun <T> unknown(): MipField<T> = MipField(MipFieldStatus.UNKNOWN)
         fun <T> unresolved(): MipField<T> = MipField(MipFieldStatus.UNRESOLVED)
+        fun <T> ambiguous(): MipField<T> = MipField(MipFieldStatus.AMBIGUOUS)
+        fun <T> conflicted(): MipField<T> = MipField(MipFieldStatus.CONFLICTED)
         fun <T> unavailable(): MipField<T> = MipField(MipFieldStatus.UNAVAILABLE)
+        fun <T> noMatch(): MipField<T> = MipField(MipFieldStatus.NO_MATCH)
+        fun <T> error(): MipField<T> = MipField(MipFieldStatus.ERROR)
     }
 }
 
 data class MipEntityRef(
     val entityId: String? = null,
     val surfaceForm: String? = null,
-    val resolutionStatus: MipFieldStatus,
+    val resolutionStatus: MipEntityResolutionStatus,
 ) {
     init {
-        require(resolutionStatus != MipFieldStatus.PRESENT || entityId != null) {
-            "Resolved/PRESENT EntityRef requires entityId"
+        require(resolutionStatus != MipEntityResolutionStatus.RESOLVED || entityId != null) {
+            "RESOLVED EntityRef requires entityId"
         }
-        require(resolutionStatus != MipFieldStatus.NOT_APPLICABLE || entityId == null) {
-            "NOT_APPLICABLE EntityRef cannot contain entityId"
+        require(resolutionStatus == MipEntityResolutionStatus.RESOLVED || entityId == null) {
+            "Only RESOLVED EntityRef may contain entityId"
         }
     }
 }
@@ -160,9 +180,9 @@ object MipBridge {
         observerId: String? = null,
     ): MipClaimV1 = MipClaimV1(
         claimId = claimId,
-        speaker = entityFromResolved(speakerId, null, missing = MipFieldStatus.UNKNOWN),
-        observer = entityFromResolved(observerId, null, missing = MipFieldStatus.UNKNOWN),
-        source = MipEntityRef(resolutionStatus = MipFieldStatus.UNKNOWN),
+        speaker = entityFromResolved(speakerId, null, missing = MipEntityResolutionStatus.UNKNOWN),
+        observer = entityFromResolved(observerId, null, missing = MipEntityResolutionStatus.UNKNOWN),
+        source = MipEntityRef(resolutionStatus = MipEntityResolutionStatus.UNKNOWN),
         subject = entityFromResolved(native.subject, native.subjectReferent, missing = referentStatus(native.subjectReferent)),
         target = entityFromResolved(native.target, native.targetReferent, missing = optionalReferentStatus(native.targetReferent)),
         owner = entityFromResolved(native.owner, native.ownerReferent, missing = referentStatus(native.ownerReferent)),
@@ -224,9 +244,9 @@ object MipBridge {
         observerId: String? = null,
     ): MipClaimV1 = MipClaimV1(
         claimId = native.claimId,
-        speaker = entityFromResolved(speakerId, null, missing = MipFieldStatus.UNKNOWN),
-        observer = entityFromResolved(observerId, null, missing = MipFieldStatus.UNKNOWN),
-        source = MipEntityRef(resolutionStatus = MipFieldStatus.UNKNOWN),
+        speaker = entityFromResolved(speakerId, null, missing = MipEntityResolutionStatus.UNKNOWN),
+        observer = entityFromResolved(observerId, null, missing = MipEntityResolutionStatus.UNKNOWN),
+        source = MipEntityRef(resolutionStatus = MipEntityResolutionStatus.UNKNOWN),
         subject = entityFromNativeValue(native.subject, required = true),
         target = entityFromNativeValue(native.target, required = false),
         owner = entityFromNativeValue(native.ownerId, required = true),
@@ -280,9 +300,9 @@ object MipBridge {
         )
 
     fun toAssemblingAuthorityDecision(canonical: MipAuthorityResolutionV1): AuthorityDecision {
-        if (canonical.contradictedMemoryId.status == MipFieldStatus.PRESENT) {
+        if (canonical.contradictedMemoryId.status != MipFieldStatus.UNAVAILABLE) {
             throw MipContractException(
-                "Current Assembling AuthorityDecision cannot represent contradictedMemoryId; use a Memory-boundary adapter instead"
+                "Current Assembling AuthorityDecision has no contradictedMemoryId field; only UNAVAILABLE can round-trip without semantic loss"
             )
         }
         return AuthorityDecision(
@@ -307,9 +327,10 @@ object MipBridge {
             reason = MipField.unavailable(),
         )
 
-    fun toPythonAuthorityResolution(canonical: MipAuthorityResolutionV1): PythonAuthorityResolutionWire =
-        PythonAuthorityResolutionWire(
-            contradicts_memory_id = canonical.contradictedMemoryId.presentOrNull("contradictedMemoryId")?.let {
+    fun toPythonAuthorityResolution(canonical: MipAuthorityResolutionV1): PythonAuthorityResolutionWire {
+        canonical.requireUnavailablePythonProjectionFields()
+        return PythonAuthorityResolutionWire(
+            contradicts_memory_id = canonical.contradictedMemoryId.presentOrKnownAbsent("contradictedMemoryId")?.let {
                 try {
                     BigInteger(it)
                 } catch (error: NumberFormatException) {
@@ -317,10 +338,11 @@ object MipBridge {
                 }
             }
         )
+    }
 
     fun toKotlinMemoryAuthorityDecision(canonical: MipAuthorityResolutionV1): KotlinMemoryAuthorityDecisionWire =
         KotlinMemoryAuthorityDecisionWire(
-            contradictedMemoryId = canonical.contradictedMemoryId.presentOrNull("contradictedMemoryId")?.let {
+            contradictedMemoryId = canonical.contradictedMemoryId.presentOrKnownAbsent("contradictedMemoryId")?.let {
                 it.toLongOrNull() ?: throw MipContractException(
                     "contradictedMemoryId=$it cannot be represented as Kotlin Long"
                 )
@@ -382,29 +404,34 @@ object MipBridge {
         )
     }
 
-    private fun entityFromResolved(value: String?, surface: String?, missing: MipFieldStatus): MipEntityRef =
-        if (value != null && value != "UNKNOWN") {
-            MipEntityRef(entityId = value, surfaceForm = surface, resolutionStatus = MipFieldStatus.PRESENT)
-        } else {
-            MipEntityRef(surfaceForm = surface, resolutionStatus = missing)
-        }
+    private fun entityFromResolved(
+        value: String?,
+        surface: String?,
+        missing: MipEntityResolutionStatus,
+    ): MipEntityRef = if (value != null && value != "UNKNOWN") {
+        MipEntityRef(entityId = value, surfaceForm = surface, resolutionStatus = MipEntityResolutionStatus.RESOLVED)
+    } else {
+        MipEntityRef(surfaceForm = surface, resolutionStatus = missing)
+    }
 
     private fun entityFromNativeValue(value: String?, required: Boolean): MipEntityRef = when {
-        value == null -> MipEntityRef(resolutionStatus = if (required) MipFieldStatus.UNRESOLVED else MipFieldStatus.NOT_APPLICABLE)
-        value == "UNKNOWN" -> MipEntityRef(surfaceForm = value, resolutionStatus = MipFieldStatus.UNKNOWN)
-        else -> MipEntityRef(entityId = value, surfaceForm = value, resolutionStatus = MipFieldStatus.PRESENT)
+        value == null -> MipEntityRef(
+            resolutionStatus = if (required) MipEntityResolutionStatus.UNRESOLVED else MipEntityResolutionStatus.NOT_APPLICABLE
+        )
+        value == "UNKNOWN" -> MipEntityRef(surfaceForm = value, resolutionStatus = MipEntityResolutionStatus.UNKNOWN)
+        else -> MipEntityRef(entityId = value, surfaceForm = value, resolutionStatus = MipEntityResolutionStatus.RESOLVED)
     }
 
-    private fun referentStatus(referent: String): MipFieldStatus = when (referent) {
-        "UNKNOWN" -> MipFieldStatus.UNKNOWN
-        "NONE" -> MipFieldStatus.NOT_APPLICABLE
-        else -> MipFieldStatus.UNRESOLVED
+    private fun referentStatus(referent: String): MipEntityResolutionStatus = when (referent) {
+        "UNKNOWN" -> MipEntityResolutionStatus.UNKNOWN
+        "NONE" -> MipEntityResolutionStatus.NOT_APPLICABLE
+        else -> MipEntityResolutionStatus.UNRESOLVED
     }
 
-    private fun optionalReferentStatus(referent: String): MipFieldStatus = when (referent) {
-        "NONE" -> MipFieldStatus.NOT_APPLICABLE
-        "UNKNOWN" -> MipFieldStatus.UNKNOWN
-        else -> MipFieldStatus.UNRESOLVED
+    private fun optionalReferentStatus(referent: String): MipEntityResolutionStatus = when (referent) {
+        "NONE" -> MipEntityResolutionStatus.NOT_APPLICABLE
+        "UNKNOWN" -> MipEntityResolutionStatus.UNKNOWN
+        else -> MipEntityResolutionStatus.UNRESOLVED
     }
 }
 
@@ -417,6 +444,10 @@ private fun <T> MipField<T>.requirePresent(name: String): T =
     if (status == MipFieldStatus.PRESENT && value != null) value
     else throw MipContractException("$name must be PRESENT, found $status")
 
+/**
+ * Compatibility helper for native nullable fields where the existing DTO genuinely cannot
+ * distinguish absence states. AMBIGUOUS/CONFLICTED/NO_MATCH/ERROR remain fail-closed.
+ */
 private fun <T> MipField<T>.presentOrNull(name: String): T? = when (status) {
     MipFieldStatus.PRESENT -> value ?: throw MipContractException("$name PRESENT without value")
     MipFieldStatus.NOT_APPLICABLE,
@@ -424,47 +455,72 @@ private fun <T> MipField<T>.presentOrNull(name: String): T? = when (status) {
     MipFieldStatus.UNRESOLVED,
     MipFieldStatus.UNAVAILABLE -> null
     MipFieldStatus.AMBIGUOUS,
-    MipFieldStatus.CONFLICTED -> throw MipContractException("$name=$status cannot be collapsed to nullable native field")
+    MipFieldStatus.CONFLICTED,
+    MipFieldStatus.NO_MATCH,
+    MipFieldStatus.ERROR -> throw MipContractException("$name=$status cannot be collapsed to nullable native field")
+}
+
+/** Only a known semantic absence may become native null on contradiction-ID boundaries. */
+private fun <T> MipField<T>.presentOrKnownAbsent(name: String): T? = when (status) {
+    MipFieldStatus.PRESENT -> value ?: throw MipContractException("$name PRESENT without value")
+    MipFieldStatus.NOT_APPLICABLE -> null
+    else -> throw MipContractException("$name=$status cannot be represented as native nullable absence")
+}
+
+private fun MipAuthorityResolutionV1.requireUnavailablePythonProjectionFields() {
+    val incompatible = listOf(
+        "accepted" to accepted.status,
+        "ownerResolved" to ownerResolved.status,
+        "sourceType" to sourceType.status,
+        "conflictStatus" to conflictStatus.status,
+        "reason" to reason.status,
+    ).filter { (_, status) -> status != MipFieldStatus.UNAVAILABLE }
+    if (incompatible.isNotEmpty()) {
+        throw MipContractException(
+            "PythonAuthorityResolutionWire is a contradiction-field-only projection; cannot drop canonical fields: " +
+                incompatible.joinToString { (name, status) -> "$name=$status" }
+        )
+    }
 }
 
 private fun MipEntityRef.nativeReferent(name: String): String =
     surfaceForm ?: entityId ?: when (resolutionStatus) {
-        MipFieldStatus.UNKNOWN -> "UNKNOWN"
-        MipFieldStatus.NOT_APPLICABLE -> "NONE"
-        MipFieldStatus.UNRESOLVED -> "UNKNOWN"
-        MipFieldStatus.PRESENT -> entityId ?: throw MipContractException("$name PRESENT without entityId")
+        MipEntityResolutionStatus.UNKNOWN -> "UNKNOWN"
+        MipEntityResolutionStatus.NOT_APPLICABLE -> "NONE"
+        MipEntityResolutionStatus.UNRESOLVED -> "UNKNOWN"
+        MipEntityResolutionStatus.RESOLVED -> entityId ?: throw MipContractException("$name RESOLVED without entityId")
         else -> throw MipContractException("$name=$resolutionStatus cannot be represented by MatrixNluClaim referent")
     }
 
 private fun MipEntityRef.nativeOptionalReferent(): String =
     surfaceForm ?: entityId ?: when (resolutionStatus) {
-        MipFieldStatus.NOT_APPLICABLE -> "NONE"
-        MipFieldStatus.UNKNOWN,
-        MipFieldStatus.UNRESOLVED -> "UNKNOWN"
-        MipFieldStatus.PRESENT -> entityId ?: throw MipContractException("PRESENT target without entityId")
+        MipEntityResolutionStatus.NOT_APPLICABLE -> "NONE"
+        MipEntityResolutionStatus.UNKNOWN,
+        MipEntityResolutionStatus.UNRESOLVED -> "UNKNOWN"
+        MipEntityResolutionStatus.RESOLVED -> entityId ?: throw MipContractException("RESOLVED target without entityId")
         else -> throw MipContractException("target=$resolutionStatus cannot be represented by MatrixNluClaim referent")
     }
 
 private fun MipEntityRef.nativeSubject(): String = when (resolutionStatus) {
-    MipFieldStatus.PRESENT -> entityId ?: throw MipContractException("subject PRESENT without entityId")
-    MipFieldStatus.UNKNOWN,
-    MipFieldStatus.UNRESOLVED -> "UNKNOWN"
+    MipEntityResolutionStatus.RESOLVED -> entityId ?: throw MipContractException("subject RESOLVED without entityId")
+    MipEntityResolutionStatus.UNKNOWN,
+    MipEntityResolutionStatus.UNRESOLVED -> "UNKNOWN"
     else -> throw MipContractException("subject=$resolutionStatus cannot be represented by TypedClaim")
 }
 
 private fun MipEntityRef.nativeRequiredOrNull(name: String): String? = when (resolutionStatus) {
-    MipFieldStatus.PRESENT -> entityId ?: throw MipContractException("$name PRESENT without entityId")
-    MipFieldStatus.UNKNOWN,
-    MipFieldStatus.UNRESOLVED,
-    MipFieldStatus.NOT_APPLICABLE -> null
+    MipEntityResolutionStatus.RESOLVED -> entityId ?: throw MipContractException("$name RESOLVED without entityId")
+    MipEntityResolutionStatus.UNKNOWN,
+    MipEntityResolutionStatus.UNRESOLVED,
+    MipEntityResolutionStatus.NOT_APPLICABLE -> null
     else -> throw MipContractException("$name=$resolutionStatus cannot be collapsed to nullable TypedClaim field")
 }
 
 private fun MipEntityRef.nativeOptionalId(): String? = when (resolutionStatus) {
-    MipFieldStatus.PRESENT -> entityId ?: throw MipContractException("target PRESENT without entityId")
-    MipFieldStatus.NOT_APPLICABLE,
-    MipFieldStatus.UNKNOWN,
-    MipFieldStatus.UNRESOLVED -> null
+    MipEntityResolutionStatus.RESOLVED -> entityId ?: throw MipContractException("target RESOLVED without entityId")
+    MipEntityResolutionStatus.NOT_APPLICABLE,
+    MipEntityResolutionStatus.UNKNOWN,
+    MipEntityResolutionStatus.UNRESOLVED -> null
     else -> throw MipContractException("target=$resolutionStatus cannot be collapsed to nullable TypedClaim field")
 }
 
