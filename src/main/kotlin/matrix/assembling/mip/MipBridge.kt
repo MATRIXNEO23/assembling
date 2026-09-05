@@ -168,11 +168,11 @@ object MipBridge {
         owner = entityFromResolved(native.owner, native.ownerReferent, missing = referentStatus(native.ownerReferent)),
         perspective = entityFromResolved(native.perspective, native.perspectiveReferent, missing = referentStatus(native.perspectiveReferent)),
         predicate = native.predicate,
-        objectValue = native.objectValue?.let(MipField<String>::present) ?: MipField.notApplicable(),
+        objectValue = native.objectValue?.let { MipField.present(it) } ?: MipField.notApplicable(),
         dialogueAct = MipField.present(native.dialogueAct),
         polarity = native.polarity,
         temporalRelation = native.temporalRelation,
-        sourceType = native.sourceType?.let(MipField<String>::present) ?: MipField.unresolved(),
+        sourceType = native.sourceType?.let { MipField.present(it) } ?: MipField.unresolved(),
         interpretationConfidence = MipField.present(native.confidence),
         confidenceByField = native.confidenceByHead,
         sourceSpans = mapOf(
@@ -232,12 +232,12 @@ object MipBridge {
         owner = entityFromNativeValue(native.ownerId, required = true),
         perspective = entityFromNativeValue(native.perspective, required = true),
         predicate = native.predicate,
-        objectValue = native.objectValue?.let(MipField<String>::present) ?: MipField.notApplicable(),
+        objectValue = native.objectValue?.let { MipField.present(it) } ?: MipField.notApplicable(),
         dialogueAct = MipField.unavailable(),
         polarity = native.polarity,
         temporalRelation = native.temporalRelation,
         sourceType = MipField.present(native.sourceType),
-        interpretationConfidence = native.confidence["overall"]?.let(MipField<Double>::present) ?: MipField.unavailable(),
+        interpretationConfidence = native.confidence["overall"]?.let { MipField.present(it) } ?: MipField.unavailable(),
         confidenceByField = native.confidence,
         sourceSpans = native.spans.mapValues { (_, span) -> span?.let { MipSpan(it.start, it.end) } },
         epistemicClass = if (native.worldTruth) MipField.present("WORLD_TRUTH") else MipField.unknown(),
@@ -302,7 +302,7 @@ object MipBridge {
             conflictStatus = MipField.unavailable(),
             contradictedMemoryId = native.contradicts_memory_id
                 ?.toString()
-                ?.let(MipField<String>::present)
+                ?.let { MipField.present(it) }
                 ?: MipField.notApplicable(),
             reason = MipField.unavailable(),
         )
@@ -486,7 +486,6 @@ private fun <T> MipField<T>.toWireMap(): Map<String, Any?> = mapOf(
 private fun Map<String, Any?>.requireString(key: String): String =
     this[key] as? String ?: throw MipContractException("Missing or non-string field: $key")
 
-@Suppress("UNCHECKED_CAST")
 private fun <T> Map<String, Any?>.requireField(
     key: String,
     decode: (Any?) -> T?,
