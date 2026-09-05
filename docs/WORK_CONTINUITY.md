@@ -1,9 +1,9 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T13:27+02:00  
+Last updated: 2026-09-05T13:29+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v63`
+Continuity schema: `matrix.assembling.continuity.v64`
 
 ## Mandatory continuity policy
 
@@ -31,7 +31,34 @@ NEVER LOWER A GATE
 ONE WRITE REPO AT A TIME
 NO NEXT MODULE UNTIL CURRENT SUITE IS 100% GREEN
 SAVE EXACT CONTINUITY BEFORE ANY PRIORITY SWITCH OR INTERRUPTION
+SEMANTIC QUALITY IS MEASURED AND MAXIMIZED, NOT FROZEN AS ONE GLOBAL PERCENTAGE
 ```
+
+## Quality metric policy — owner decision
+
+Owner decision on 2026-09-05:
+
+```text
+NO GLOBAL CANONICAL SEMANTIC SUCCESS PERCENTAGE
+```
+
+This does NOT lower the quality target. Required interpretation:
+
+```text
+measure semantic quality
+compare against baseline and previous best
+perform error analysis
+fix concrete causes
+preserve already-strong capabilities
+push accuracy/retrieval/admission quality as high as reasonably achievable
+never accept an avoidable regression merely because a fixed numeric threshold was crossed
+```
+
+Percentages such as NLU accuracy, role resolution, Memory Admission correctness, retrieval Top-1/Top-k and device success rate remain mandatory metrics when relevant. They are evidence for engineering decisions, not one universal project-wide promotion number.
+
+Checkpoint-specific benchmark thresholds may still be used when explicitly justified for a bounded experiment or regression gate. They do not become global canonical percentages automatically.
+
+Deterministic/structural properties remain hard gates: all required tests for those invariants must pass. Examples include contract validity, lossless adapters, atomic rollback, lineage preservation, no pre-response persistent writes, state-status distinctions, ownership boundaries and task-specific regression tests.
 
 ## Completed Authority / MIP baseline — DO NOT REDO
 
@@ -58,9 +85,13 @@ Document:
 
 `docs/MATRIX_ENGINE_WORK_METHOD.md`
 
-Commit:
+Initial commit:
 
 `c0e49e91a6d89563a080e1aea28df1bc3d872dea`
+
+Quality-metric policy update:
+
+`72fbccff439b73a9e0daa8d4ccd5348f36882c76`
 
 The method is binding for future Matrix Engine work. In particular, a downstream integration checkpoint must not start while an upstream canonical semantic boundary is still incomplete.
 
@@ -144,7 +175,7 @@ MemoryRepository = NOT TOUCHED
 
 ## ACTIVE CHECKPOINT — CP-U1 UNDERSTANDING V3 LOSSLESS CONTRACT AUDIT
 
-Owner priority is now explicit: finish Understanding before canonical Authority orchestrator rewire, then Memory immediately after Authority integration.
+Owner priority is explicit: finish Understanding before canonical Authority orchestrator rewire, then Memory immediately after Authority integration.
 
 CP-U1 must compare every frozen V3 field against current `MipClaimV1` and Assembling runtime types and classify it as:
 
@@ -201,6 +232,7 @@ The existing Student-5 Path A ONNX INT8 runtime probe is reserved for CP-APK1/ru
 repo = MATRIXNEO23/assembling
 branch = main
 work method = docs/MATRIX_ENGINE_WORK_METHOD.md
+work-method quality-policy commit = 72fbccff439b73a9e0daa8d4ccd5348f36882c76
 checkpoint roadmap = docs/MATRIX_ENGINE_CHECKPOINT_ROADMAP.md
 roadmap commit = 140cd6837dacc7e008e84b642291dfa86ae0072a
 frame-slot continuity CI = 33962208689 SUCCESS
