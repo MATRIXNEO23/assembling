@@ -2,14 +2,16 @@ package matrix.assembling.adapters
 
 import matrix.assembling.AffectivePort
 import matrix.assembling.AffectiveState
+import matrix.assembling.DiagnosticSnapshot
+import matrix.assembling.DiagnosticStage
+import matrix.assembling.DiagnosticStatus
 import matrix.assembling.MatrixTurnFrame
 
 /**
  * Adapter over the Matrix Affective lab prototype.
  *
- * RelationshipState remains canonically external to the affective system.
- * Persistent affect is not a replacement for relationship state and this
- * adapter must not create a competing relationship authority.
+ * RelationshipState remains canonically external. Persistent output from the
+ * runtime is accepted only when the upstream admitted-event gate allows it.
  */
 class AffectiveLabAdapter(
     private val runtime: AffectiveRuntimeBridge,
@@ -18,8 +20,6 @@ class AffectiveLabAdapter(
     override fun update(turn: MatrixTurnFrame): MatrixTurnFrame {
         val semantic = turn.requireSemantic()
         val memory = turn.memoryResult
-        // Durable-memory admission is the persistence authority. Understanding
-        // metadata is not an independent second gate for persistent affect.
         val persistentAllowed = memory?.stableWrite == true
         val impulse = mapImpulse(turn, persistentAllowed)
         val output = runtime.update(
@@ -33,20 +33,50 @@ class AffectiveLabAdapter(
                 confidence = semantic.confidence.getOrDefault("overall", 0.0),
                 persistentAllowed = persistentAllowed,
                 impulse = impulse,
-            )
+            ),
         )
+        val unauthorizedPersistence = output.persistentDeltaApplied && !persistentAllowed
+        val persistentApplied = persistentAllowed && output.persistentDeltaApplied
+        val reasonCodes = buildList {
+            add(if (persistentApplied) "AFFECTIVE_PERSISTENT_APPLIED" else "AFFECTIVE_TRANSIENT_ONLY")
+            if (unauthorizedPersistence) add("AFFECTIVE_UNAUTHORIZED_PERSISTENCE_BLOCKED")
+            if (output.relationshipSummary != null) add("AFFECTIVE_RELATIONSHIP_PROJECTION_IGNORED")
+        }
+        var diagnostics = turn.diagnostics
+            .record(
+                DiagnosticStage.AFFECTIVE,
+                DiagnosticSnapshot(
+                    module = "AFFECTIVE",
+                    status = if (unauthorizedPersistence) DiagnosticStatus.ERROR else DiagnosticStatus.PASS,
+                    input = mapOf(
+                        "predicate" to semantic.predicate,
+                        "polarity" to semantic.polarity,
+                        "persistentAllowed" to persistentAllowed.toString(),
+                    ),
+                    output = mapOf(
+                        "runtimePersistentApplied" to output.persistentDeltaApplied.toString(),
+                        "acceptedPersistentApplied" to persistentApplied.toString(),
+                        "impulse" to (impulse?.emotionType ?: "none"),
+                    ),
+                    decision = if (persistentApplied) "PERSISTENT_APPLIED" else "TRANSIENT_ONLY",
+                    reasonCodes = reasonCodes,
+                ),
+            )
+            .add("affective_lab.updated")
+            .tag("affective_lab.impulse", impulse?.emotionType ?: "none")
+            .tag("affective_lab.persistent_delta", persistentApplied.toString())
+            .tag("affective_lab.relationship_owner", "EXTERNAL")
+        if (unauthorizedPersistence) {
+            diagnostics = diagnostics.diverge("AFFECTIVE.PERSISTENCE_WITHOUT_ADMISSION")
+        }
+
         return turn.copy(
             affectiveState = AffectiveState(
-                relationshipSummary = output.relationshipSummary
-                    ?: "RelationshipState esterno: nessuna modifica applicata dall'Affective Engine.",
+                relationshipSummary = "RelationshipState NON_CABLATO: output relazionale dell'Affective Engine ignorato.",
                 affectiveSummary = output.affectiveSummary ?: affectiveSummary(output),
-                persistentDeltaAllowed = output.persistentDeltaApplied,
+                persistentDeltaAllowed = persistentApplied,
             ),
-            diagnostics = turn.diagnostics
-                .add("affective_lab.updated")
-                .tag("affective_lab.impulse", impulse?.emotionType ?: "none")
-                .tag("affective_lab.persistent_delta", output.persistentDeltaApplied.toString())
-                .tag("affective_lab.relationship_owner", "EXTERNAL"),
+            diagnostics = diagnostics,
         )
     }
 
@@ -86,7 +116,7 @@ class AffectiveLabAdapter(
     private fun Double.format2(): String = "%.2f".format(this)
 }
 
-/** Bridge implemented by the copied Python prototype, a local process, JNI, or a future Kotlin port. */
+/** Bridge implemented by the copied Python prototype, JNI, or a future Kotlin port. */
 interface AffectiveRuntimeBridge {
     fun update(request: AffectiveRuntimeRequest): AffectiveRuntimeOutput
 }
@@ -120,6 +150,7 @@ data class AffectiveRuntimeOutput(
     val moodValence: Double = 0.0,
     val persistentAffect: Map<String, PersistentAffectSnapshot> = emptyMap(),
     val persistentDeltaApplied: Boolean = false,
+    /** Compatibility input only. Assembling ignores this as Relationship authority. */
     val relationshipSummary: String? = null,
     val affectiveSummary: String? = null,
 )
