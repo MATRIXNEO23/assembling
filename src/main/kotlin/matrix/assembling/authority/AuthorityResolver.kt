@@ -18,9 +18,9 @@ fun interface AuthorityResolver {
 /**
  * Deterministic AUTHORITY-1.0 implementation.
  *
- * The resolver consumes structured semantics only. It never reparses natural-language text,
- * never mutates Memory, never decides Memory Admission, and never depends on retrieval score as
- * truth/authority evidence.
+ * It consumes structured MIP semantics only. It never reparses natural-language text,
+ * never mutates Memory, never decides Memory Admission, and never interprets retrieval
+ * relevance as truth/authority.
  */
 class DeterministicAuthorityResolver(
     private val candidateEvidencePort: AuthorityCandidateEvidencePort,
@@ -29,86 +29,80 @@ class DeterministicAuthorityResolver(
 
     override fun resolve(request: AuthorityResolveRequest): AuthorityResolution {
         val classification = classify(request)
-        val baseReasons = classification.reasonCodes.toMutableList()
-        val ambiguityReasons = classification.ambiguityReasons.toMutableList()
+        val reasons = classification.reasonCodes.toMutableList()
+        val ambiguity = classification.ambiguityReasons.toMutableList()
 
         if (classification.fatalStatus == AuthorityResolutionStatus.ERROR) {
-            return buildResolution(
-                request = request,
-                resolutionStatus = AuthorityResolutionStatus.ERROR,
-                authority = classification.authority,
-                authorityConfidence = classification.confidence,
-                contradictedMemoryRef = MipField.error(),
-                candidateMemoryRefs = emptyList(),
-                ambiguityReasons = ambiguityReasons,
-                reasonCodes = baseReasons + AuthorityReasonCode.ERROR,
+            return resolution(
+                request,
+                AuthorityResolutionStatus.ERROR,
+                classification.authority,
+                classification.confidence,
+                MipField.error(),
+                reasonCodes = reasons + AuthorityReasonCode.ERROR,
+                ambiguityReasons = ambiguity,
             )
         }
 
-        val semanticHold = semanticHold(request.claim, classification.authority.value)
-        if (semanticHold != null) {
-            baseReasons += semanticHold.reasonCode
-            ambiguityReasons += semanticHold.detail
-            return buildResolution(
-                request = request,
-                resolutionStatus = AuthorityResolutionStatus.HOLD,
-                authority = classification.authority,
-                authorityConfidence = classification.confidence,
-                contradictedMemoryRef = semanticHold.contradictionState,
+        semanticHold(request.claim, classification.authority.value)?.let { hold ->
+            reasons += hold.reasonCode
+            ambiguity += hold.detail
+            return resolution(
+                request,
+                AuthorityResolutionStatus.HOLD,
+                classification.authority,
+                classification.confidence,
+                hold.contradictionState,
                 candidateMemoryRefs = retrievalCandidateRefs(request),
-                ambiguityReasons = ambiguityReasons,
-                reasonCodes = baseReasons,
+                reasonCodes = reasons,
+                ambiguityReasons = ambiguity,
             )
         }
 
         if (classification.fatalStatus == AuthorityResolutionStatus.HOLD ||
             classification.authority.status != MipFieldStatus.PRESENT
         ) {
-            if (baseReasons.none { it == REASON_CLASSIFICATION_UNRESOLVED }) {
-                baseReasons += REASON_CLASSIFICATION_UNRESOLVED
-            }
-            return buildResolution(
-                request = request,
-                resolutionStatus = AuthorityResolutionStatus.HOLD,
-                authority = classification.authority,
-                authorityConfidence = classification.confidence,
-                contradictedMemoryRef = MipField.unresolved(),
+            reasons += REASON_CLASSIFICATION_UNRESOLVED
+            return resolution(
+                request,
+                AuthorityResolutionStatus.HOLD,
+                classification.authority,
+                classification.confidence,
+                MipField.unresolved(),
                 candidateMemoryRefs = retrievalCandidateRefs(request),
-                ambiguityReasons = ambiguityReasons.ifEmpty { listOf("authority classification unresolved") },
-                reasonCodes = baseReasons,
+                reasonCodes = reasons,
+                ambiguityReasons = ambiguity.ifEmpty { listOf("authority classification unresolved") },
             )
         }
 
-        val act = request.claim.dialogueAct.value?.uppercase()
-        if (act in NON_ASSERTIVE_DIALOGUE_ACTS) {
-            return buildResolution(
-                request = request,
-                resolutionStatus = AuthorityResolutionStatus.HOLD,
-                authority = classification.authority,
-                authorityConfidence = classification.confidence,
-                contradictedMemoryRef = MipField.notApplicable(),
-                candidateMemoryRefs = emptyList(),
-                ambiguityReasons = listOf("non-assertive dialogue act does not authorize contradiction targeting"),
-                reasonCodes = baseReasons + REASON_HOLD_NON_ASSERTIVE,
+        if (request.claim.dialogueAct.value?.uppercase() in NON_ASSERTIVE_DIALOGUE_ACTS) {
+            return resolution(
+                request,
+                AuthorityResolutionStatus.HOLD,
+                classification.authority,
+                classification.confidence,
+                MipField.notApplicable(),
+                reasonCodes = reasons + REASON_HOLD_NON_ASSERTIVE,
+                ambiguityReasons = listOf("non-assertive dialogue act does not produce a contradiction target"),
             )
         }
 
         val assessment = assessContradiction(request, classification.authority.value!!)
-        return buildResolution(
-            request = request,
-            resolutionStatus = assessment.resolutionStatus,
-            authority = classification.authority,
-            authorityConfidence = classification.confidence,
-            contradictedMemoryRef = assessment.contradictedMemoryRef,
+        return resolution(
+            request,
+            assessment.resolutionStatus,
+            classification.authority,
+            classification.confidence,
+            assessment.contradictedMemoryRef,
             candidateMemoryRefs = assessment.candidateMemoryRefs,
+            reasonCodes = reasons + assessment.reasonCodes,
             ambiguityReasons = assessment.ambiguityReasons,
-            reasonCodes = baseReasons + assessment.reasonCodes,
         )
     }
 
     private fun classify(request: AuthorityResolveRequest): ClassificationOutcome {
         val claim = request.claim
-        val reasons = mutableListOf<String>()
+        val prefixReasons = mutableListOf<String>()
 
         val explicitAuthority = claim.epistemicClass.value?.let { raw ->
             try {
@@ -123,86 +117,76 @@ class DeterministicAuthorityResolver(
             }
         }
 
-        if (explicitAuthority == EpistemicClass.WORLD_TRUTH) {
-            if (isTrustedWorldProvenance(request)) {
-                return resolvedClassification(EpistemicClass.WORLD_TRUTH, AuthorityReasonCode.RESOLVED_WORLD_TRUTH)
+        when (explicitAuthority) {
+            EpistemicClass.WORLD_TRUTH -> {
+                if (trustedWorld(request)) return classified(EpistemicClass.WORLD_TRUTH, AuthorityReasonCode.RESOLVED_WORLD_TRUTH)
+                prefixReasons += REASON_WORLD_TRUTH_PROVENANCE_REJECTED
             }
-            reasons += REASON_WORLD_TRUTH_PROVENANCE_REJECTED
-        }
-
-        if (explicitAuthority == EpistemicClass.OBSERVATION) {
-            if (isTrustedObservationProvenance(request)) {
-                return resolvedClassification(EpistemicClass.OBSERVATION, AuthorityReasonCode.RESOLVED_OBSERVATION)
+            EpistemicClass.OBSERVATION -> {
+                if (trustedObservation(request)) return classified(EpistemicClass.OBSERVATION, AuthorityReasonCode.RESOLVED_OBSERVATION)
+                prefixReasons += REASON_OBSERVATION_PROVENANCE_REJECTED
             }
-            reasons += REASON_OBSERVATION_PROVENANCE_REJECTED
-        }
-
-        if (explicitAuthority == EpistemicClass.INFERENCE) {
-            if (isTrustedInferenceProvenance(request)) {
-                return resolvedClassification(EpistemicClass.INFERENCE, AuthorityReasonCode.RESOLVED_INFERENCE)
+            EpistemicClass.INFERENCE -> {
+                if (trustedInference(request)) return classified(EpistemicClass.INFERENCE, AuthorityReasonCode.RESOLVED_INFERENCE)
+                return ClassificationOutcome(
+                    authority = MipField.unresolved(),
+                    confidence = MipField.unresolved(),
+                    reasonCodes = prefixReasons + REASON_INFERENCE_DERIVATION_MISSING,
+                    fatalStatus = AuthorityResolutionStatus.HOLD,
+                    ambiguityReasons = listOf("INFERENCE lacks explicit derived-from provenance"),
+                )
             }
-            return ClassificationOutcome(
-                authority = MipField.unresolved(),
-                confidence = MipField.unresolved(),
-                reasonCodes = reasons + REASON_INFERENCE_DERIVATION_MISSING,
-                fatalStatus = AuthorityResolutionStatus.HOLD,
-                ambiguityReasons = listOf("INFERENCE requested without explicit derived-from provenance"),
-            )
+            EpistemicClass.REPORT -> return classified(EpistemicClass.REPORT, AuthorityReasonCode.RESOLVED_REPORT, prefixReasons)
+            EpistemicClass.BELIEF -> return classified(EpistemicClass.BELIEF, AuthorityReasonCode.RESOLVED_BELIEF, prefixReasons)
+            null -> Unit
         }
 
-        if (explicitAuthority == EpistemicClass.REPORT) {
-            return resolvedClassification(EpistemicClass.REPORT, AuthorityReasonCode.RESOLVED_REPORT, reasons)
+        if (trustedObservation(request)) {
+            return classified(EpistemicClass.OBSERVATION, AuthorityReasonCode.RESOLVED_OBSERVATION, prefixReasons)
         }
-        if (explicitAuthority == EpistemicClass.BELIEF) {
-            return resolvedClassification(EpistemicClass.BELIEF, AuthorityReasonCode.RESOLVED_BELIEF, reasons)
-        }
-
-        if (isTrustedObservationProvenance(request)) {
-            return resolvedClassification(EpistemicClass.OBSERVATION, AuthorityReasonCode.RESOLVED_OBSERVATION, reasons)
-        }
-        if (isTrustedInferenceProvenance(request)) {
-            return resolvedClassification(EpistemicClass.INFERENCE, AuthorityReasonCode.RESOLVED_INFERENCE, reasons)
+        if (trustedInference(request)) {
+            return classified(EpistemicClass.INFERENCE, AuthorityReasonCode.RESOLVED_INFERENCE, prefixReasons)
         }
 
         val claimKind = claim.semanticMarkers[MARKER_CLAIM_KIND]
         if (claimKind?.status == MipFieldStatus.PRESENT) {
             when (claimKind.value?.uppercase()) {
-                "REPORT" -> return resolvedClassification(EpistemicClass.REPORT, AuthorityReasonCode.RESOLVED_REPORT, reasons)
-                "BELIEF", "HYPOTHESIS" -> return resolvedClassification(EpistemicClass.BELIEF, AuthorityReasonCode.RESOLVED_BELIEF, reasons)
+                "REPORT" -> return classified(EpistemicClass.REPORT, AuthorityReasonCode.RESOLVED_REPORT, prefixReasons)
+                "BELIEF", "HYPOTHESIS" -> return classified(EpistemicClass.BELIEF, AuthorityReasonCode.RESOLVED_BELIEF, prefixReasons)
             }
         } else if (claimKind != null && claimKind.status in UNCERTAIN_FIELD_STATES) {
-            reasons += REASON_CLAIM_KIND_UNRESOLVED
+            prefixReasons += REASON_CLAIM_KIND_UNRESOLVED
         }
 
         if (claim.sourceType.status == MipFieldStatus.PRESENT) {
             when (claim.sourceType.value?.uppercase()) {
                 "THIRD_PARTY_REPORT", "USER_ASSERTION", "SELF_REPORT", "REPORT", "NPC_ASSERTION" ->
-                    return resolvedClassification(EpistemicClass.REPORT, AuthorityReasonCode.RESOLVED_REPORT, reasons)
+                    return classified(EpistemicClass.REPORT, AuthorityReasonCode.RESOLVED_REPORT, prefixReasons)
                 "BELIEF", "OPINION", "HYPOTHESIS" ->
-                    return resolvedClassification(EpistemicClass.BELIEF, AuthorityReasonCode.RESOLVED_BELIEF, reasons)
+                    return classified(EpistemicClass.BELIEF, AuthorityReasonCode.RESOLVED_BELIEF, prefixReasons)
                 "INFERENCE" -> {
-                    if (isTrustedInferenceProvenance(request)) {
-                        return resolvedClassification(EpistemicClass.INFERENCE, AuthorityReasonCode.RESOLVED_INFERENCE, reasons)
+                    if (trustedInference(request)) {
+                        return classified(EpistemicClass.INFERENCE, AuthorityReasonCode.RESOLVED_INFERENCE, prefixReasons)
                     }
                     return ClassificationOutcome(
                         authority = MipField.unresolved(),
                         confidence = MipField.unresolved(),
-                        reasonCodes = reasons + REASON_INFERENCE_DERIVATION_MISSING,
+                        reasonCodes = prefixReasons + REASON_INFERENCE_DERIVATION_MISSING,
                         fatalStatus = AuthorityResolutionStatus.HOLD,
-                        ambiguityReasons = listOf("sourceType=INFERENCE without explicit derived-from provenance"),
+                        ambiguityReasons = listOf("sourceType=INFERENCE lacks explicit derived-from provenance"),
                     )
                 }
             }
         }
 
         if (claim.dialogueAct.status == MipFieldStatus.PRESENT && claim.dialogueAct.value?.uppercase() == "HYPOTHESIS") {
-            return resolvedClassification(EpistemicClass.BELIEF, AuthorityReasonCode.RESOLVED_BELIEF, reasons)
+            return classified(EpistemicClass.BELIEF, AuthorityReasonCode.RESOLVED_BELIEF, prefixReasons)
         }
 
         return ClassificationOutcome(
             authority = MipField.unresolved(),
             confidence = MipField.unresolved(),
-            reasonCodes = (reasons + REASON_CLASSIFICATION_UNRESOLVED).distinct(),
+            reasonCodes = (prefixReasons + REASON_CLASSIFICATION_UNRESOLVED).distinct(),
             fatalStatus = AuthorityResolutionStatus.HOLD,
             ambiguityReasons = listOf("no trusted structured evidence resolves EpistemicClass"),
         )
@@ -210,32 +194,16 @@ class DeterministicAuthorityResolver(
 
     private fun semanticHold(claim: MipClaimV1, authority: EpistemicClass?): SemanticHold? {
         if (claim.subject.resolutionStatus != MipEntityResolutionStatus.RESOLVED) {
-            return SemanticHold(
-                reasonCode = AuthorityReasonCode.SUBJECT_UNRESOLVED,
-                detail = "subject identity unresolved",
-                contradictionState = MipField.unresolved(),
-            )
+            return SemanticHold(AuthorityReasonCode.SUBJECT_UNRESOLVED, "subject identity unresolved", MipField.unresolved())
         }
         if (claim.owner.resolutionStatus in UNSAFE_ENTITY_STATES) {
-            return SemanticHold(
-                reasonCode = AuthorityReasonCode.OWNER_UNRESOLVED,
-                detail = "owner identity unresolved",
-                contradictionState = MipField.unresolved(),
-            )
+            return SemanticHold(AuthorityReasonCode.OWNER_UNRESOLVED, "owner identity unresolved", MipField.unresolved())
         }
         if (authority == EpistemicClass.REPORT && claim.source.resolutionStatus != MipEntityResolutionStatus.RESOLVED) {
-            return SemanticHold(
-                reasonCode = AuthorityReasonCode.SOURCE_UNRESOLVED,
-                detail = "REPORT source identity unresolved",
-                contradictionState = MipField.unresolved(),
-            )
+            return SemanticHold(AuthorityReasonCode.SOURCE_UNRESOLVED, "REPORT source identity unresolved", MipField.unresolved())
         }
         if (authority == EpistemicClass.BELIEF && claim.perspective.resolutionStatus != MipEntityResolutionStatus.RESOLVED) {
-            return SemanticHold(
-                reasonCode = REASON_PERSPECTIVE_UNRESOLVED,
-                detail = "BELIEF perspective identity unresolved",
-                contradictionState = MipField.unresolved(),
-            )
+            return SemanticHold(REASON_PERSPECTIVE_UNRESOLVED, "BELIEF perspective identity unresolved", MipField.unresolved())
         }
         return null
     }
@@ -243,35 +211,33 @@ class DeterministicAuthorityResolver(
     private fun assessContradiction(
         request: AuthorityResolveRequest,
         authority: EpistemicClass,
-    ): ContradictionAssessment {
-        return when (request.retrievalResult.status) {
-            MipFieldStatus.NOT_APPLICABLE -> ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.COMPLETE,
-                contradictedMemoryRef = MipField.notApplicable(),
-                reasonCodes = listOf(AuthorityReasonCode.CONTRADICTION_NONE),
-            )
-            MipFieldStatus.UNKNOWN -> unresolvedAssessment(AuthorityReasonCode.TEMPORAL_UNRESOLVED, "retrieval evidence unknown")
-            MipFieldStatus.UNRESOLVED -> unresolvedAssessment(REASON_RETRIEVAL_UNRESOLVED, "retrieval evidence unresolved")
-            MipFieldStatus.UNAVAILABLE -> ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.UNAVAILABLE,
-                contradictedMemoryRef = MipField.unavailable(),
-                reasonCodes = listOf(AuthorityReasonCode.RETRIEVAL_UNAVAILABLE),
-                ambiguityReasons = listOf("retrieval provider unavailable"),
-            )
-            MipFieldStatus.ERROR -> ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.ERROR,
-                contradictedMemoryRef = MipField.error(),
-                reasonCodes = listOf(REASON_RETRIEVAL_ERROR, AuthorityReasonCode.ERROR),
-                ambiguityReasons = listOf("retrieval failed"),
-            )
-            MipFieldStatus.PRESENT -> assessPresentRetrieval(request, authority, request.retrievalResult.value!!)
-            else -> ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.ERROR,
-                contradictedMemoryRef = MipField.error(),
-                reasonCodes = listOf(REASON_RETRIEVAL_ILLEGAL_STATE, AuthorityReasonCode.ERROR),
-                ambiguityReasons = listOf("illegal retrieval field state ${request.retrievalResult.status}"),
-            )
-        }
+    ): ContradictionAssessment = when (request.retrievalResult.status) {
+        MipFieldStatus.NOT_APPLICABLE -> ContradictionAssessment(
+            AuthorityResolutionStatus.COMPLETE,
+            MipField.notApplicable(),
+            reasonCodes = listOf(AuthorityReasonCode.CONTRADICTION_NONE),
+        )
+        MipFieldStatus.UNKNOWN -> partial(REASON_RETRIEVAL_UNRESOLVED, "retrieval evidence unknown")
+        MipFieldStatus.UNRESOLVED -> partial(REASON_RETRIEVAL_UNRESOLVED, "retrieval evidence unresolved")
+        MipFieldStatus.UNAVAILABLE -> ContradictionAssessment(
+            AuthorityResolutionStatus.UNAVAILABLE,
+            MipField.unavailable(),
+            reasonCodes = listOf(AuthorityReasonCode.RETRIEVAL_UNAVAILABLE),
+            ambiguityReasons = listOf("retrieval provider unavailable"),
+        )
+        MipFieldStatus.ERROR -> ContradictionAssessment(
+            AuthorityResolutionStatus.ERROR,
+            MipField.error(),
+            reasonCodes = listOf(REASON_RETRIEVAL_ERROR, AuthorityReasonCode.ERROR),
+            ambiguityReasons = listOf("retrieval failed"),
+        )
+        MipFieldStatus.PRESENT -> assessPresentRetrieval(request, authority, request.retrievalResult.value!!)
+        else -> ContradictionAssessment(
+            AuthorityResolutionStatus.ERROR,
+            MipField.error(),
+            reasonCodes = listOf(REASON_RETRIEVAL_ILLEGAL_STATE, AuthorityReasonCode.ERROR),
+            ambiguityReasons = listOf("illegal retrieval field state ${request.retrievalResult.status}"),
+        )
     }
 
     private fun assessPresentRetrieval(
@@ -281,144 +247,135 @@ class DeterministicAuthorityResolver(
     ): ContradictionAssessment {
         when (retrieval.status) {
             RetrievalStatus.NO_MATCH -> return ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.COMPLETE,
-                contradictedMemoryRef = MipField.notApplicable(),
+                AuthorityResolutionStatus.COMPLETE,
+                MipField.notApplicable(),
                 reasonCodes = listOf(AuthorityReasonCode.RETRIEVAL_NO_MATCH, AuthorityReasonCode.CONTRADICTION_NONE),
             )
             RetrievalStatus.INDEX_UNAVAILABLE -> return ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.UNAVAILABLE,
-                contradictedMemoryRef = MipField.unavailable(),
+                AuthorityResolutionStatus.UNAVAILABLE,
+                MipField.unavailable(),
                 reasonCodes = listOf(AuthorityReasonCode.RETRIEVAL_UNAVAILABLE),
                 ambiguityReasons = listOf("retrieval index unavailable"),
             )
             RetrievalStatus.ERROR -> return ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.ERROR,
-                contradictedMemoryRef = MipField.error(),
+                AuthorityResolutionStatus.ERROR,
+                MipField.error(),
                 reasonCodes = listOf(REASON_RETRIEVAL_ERROR, AuthorityReasonCode.ERROR),
                 ambiguityReasons = listOf("retrieval result reports ERROR"),
             )
-            RetrievalStatus.MATCHED,
-            RetrievalStatus.AMBIGUOUS -> Unit
+            RetrievalStatus.MATCHED, RetrievalStatus.AMBIGUOUS -> Unit
         }
 
         val refs = (if (retrieval.selectedRefs.isNotEmpty()) retrieval.selectedRefs else retrieval.candidateRefs)
             .map(::MemoryRef)
         val reasons = mutableListOf<String>()
         val ambiguity = mutableListOf<String>()
-        if (request.claim.dialogueAct.value?.uppercase() == "CORRECT") {
-            reasons += AuthorityReasonCode.CORRECTION_CANDIDATE
-        }
+        if (request.claim.dialogueAct.value?.uppercase() == "CORRECT") reasons += AuthorityReasonCode.CORRECTION_CANDIDATE
 
         val contradictions = mutableListOf<MemoryRef>()
-        var unresolvedEvidence = false
-        var unavailableEvidence = false
-        var ambiguousEvidence = false
-        var errorEvidence = false
+        var unresolved = false
+        var unavailable = false
+        var ambiguous = false
+        var error = false
 
         refs.forEach { ref ->
-            val evidenceField = candidateEvidencePort.read(ref, request.contextSnapshot)
-            when (evidenceField.status) {
+            val field = candidateEvidencePort.read(ref, request.contextSnapshot)
+            when (field.status) {
                 MipFieldStatus.PRESENT -> {
-                    val evidence = evidenceField.value!!
+                    val evidence = field.value!!
                     if (evidence.memoryRef != ref) {
-                        errorEvidence = true
+                        error = true
                         reasons += REASON_CANDIDATE_ID_MISMATCH
                     } else {
-                        when (val comparison = compareCandidate(request.claim, authority, evidence)) {
+                        when (val compared = compareCandidate(request.claim, authority, evidence)) {
                             is CandidateComparison.Contradiction -> {
                                 contradictions += ref
-                                reasons += comparison.reasonCode
+                                reasons += compared.reasonCode
                             }
-                            is CandidateComparison.NoContradiction -> reasons += comparison.reasonCode
+                            is CandidateComparison.NoContradiction -> reasons += compared.reasonCode
                             is CandidateComparison.Unresolved -> {
-                                unresolvedEvidence = true
-                                reasons += comparison.reasonCode
-                                ambiguity += comparison.detail
+                                unresolved = true
+                                reasons += compared.reasonCode
+                                ambiguity += compared.detail
                             }
                         }
                     }
                 }
                 MipFieldStatus.UNAVAILABLE -> {
-                    unavailableEvidence = true
+                    unavailable = true
                     reasons += REASON_CANDIDATE_EVIDENCE_UNAVAILABLE
                 }
                 MipFieldStatus.ERROR -> {
-                    errorEvidence = true
+                    error = true
                     reasons += REASON_CANDIDATE_EVIDENCE_ERROR
                 }
-                MipFieldStatus.AMBIGUOUS,
-                MipFieldStatus.CONFLICTED -> {
-                    ambiguousEvidence = true
+                MipFieldStatus.AMBIGUOUS, MipFieldStatus.CONFLICTED -> {
+                    ambiguous = true
                     reasons += AuthorityReasonCode.CONTRADICTION_AMBIGUOUS
-                    ambiguity += "candidate evidence ${ref.value} is ${evidenceField.status}"
+                    ambiguity += "candidate evidence ${ref.value} is ${field.status}"
                 }
                 else -> {
-                    unresolvedEvidence = true
+                    unresolved = true
                     reasons += REASON_CANDIDATE_EVIDENCE_UNRESOLVED
-                    ambiguity += "candidate evidence ${ref.value} is ${evidenceField.status}"
+                    ambiguity += "candidate evidence ${ref.value} is ${field.status}"
                 }
             }
         }
 
-        if (errorEvidence) {
-            return ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.ERROR,
-                contradictedMemoryRef = MipField.error(),
-                candidateMemoryRefs = refs,
-                ambiguityReasons = ambiguity.ifEmpty { listOf("candidate evidence error") },
-                reasonCodes = reasons + AuthorityReasonCode.ERROR,
-            ).deduplicated()
-        }
-        if (unavailableEvidence) {
-            return ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.UNAVAILABLE,
-                contradictedMemoryRef = MipField.unavailable(),
-                candidateMemoryRefs = refs,
-                ambiguityReasons = ambiguity.ifEmpty { listOf("candidate evidence unavailable") },
-                reasonCodes = reasons + AuthorityReasonCode.RETRIEVAL_UNAVAILABLE,
-            ).deduplicated()
-        }
-        if (contradictions.size > 1) {
-            return ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.HOLD,
-                contradictedMemoryRef = MipField.ambiguous(),
-                candidateMemoryRefs = refs,
-                ambiguityReasons = ambiguity + "multiple valid contradiction targets: ${contradictions.joinToString { it.value }}",
-                reasonCodes = reasons + AuthorityReasonCode.CONTRADICTION_AMBIGUOUS + AuthorityReasonCode.HOLD_AMBIGUOUS,
-            ).deduplicated()
-        }
-        if (ambiguousEvidence) {
+        if (error) return ContradictionAssessment(
+            AuthorityResolutionStatus.ERROR,
+            MipField.error(),
+            refs,
+            ambiguity.ifEmpty { listOf("candidate evidence error") },
+            reasons + AuthorityReasonCode.ERROR,
+        ).deduplicated()
+
+        if (unavailable) return ContradictionAssessment(
+            AuthorityResolutionStatus.UNAVAILABLE,
+            MipField.unavailable(),
+            refs,
+            ambiguity.ifEmpty { listOf("candidate evidence unavailable") },
+            reasons + AuthorityReasonCode.RETRIEVAL_UNAVAILABLE,
+        ).deduplicated()
+
+        if (contradictions.size > 1) return ContradictionAssessment(
+            AuthorityResolutionStatus.HOLD,
+            MipField.ambiguous(),
+            refs,
+            ambiguity + "multiple valid contradiction targets: ${contradictions.joinToString { it.value }}",
+            reasons + AuthorityReasonCode.CONTRADICTION_AMBIGUOUS + AuthorityReasonCode.HOLD_AMBIGUOUS,
+        ).deduplicated()
+
+        if (ambiguous) {
             val state: MipField<MemoryRef> = if (refs.size >= 2) MipField.ambiguous() else MipField.unresolved()
             return ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.HOLD,
-                contradictedMemoryRef = state,
-                candidateMemoryRefs = refs,
-                ambiguityReasons = ambiguity.ifEmpty { listOf("candidate evidence ambiguous") },
-                reasonCodes = reasons + AuthorityReasonCode.HOLD_AMBIGUOUS,
-            ).deduplicated()
-        }
-        if (unresolvedEvidence) {
-            return ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.PARTIAL,
-                contradictedMemoryRef = MipField.unresolved(),
-                candidateMemoryRefs = refs,
-                ambiguityReasons = ambiguity.ifEmpty { listOf("candidate evidence incomplete") },
-                reasonCodes = reasons + REASON_CONTRADICTION_INCOMPLETE,
-            ).deduplicated()
-        }
-        if (contradictions.size == 1) {
-            return ContradictionAssessment(
-                resolutionStatus = AuthorityResolutionStatus.COMPLETE,
-                contradictedMemoryRef = MipField.present(contradictions.single()),
-                candidateMemoryRefs = refs,
-                reasonCodes = reasons + AuthorityReasonCode.CONTRADICTION_IDENTIFIED,
+                AuthorityResolutionStatus.HOLD,
+                state,
+                refs,
+                ambiguity.ifEmpty { listOf("candidate evidence ambiguous") },
+                reasons + AuthorityReasonCode.HOLD_AMBIGUOUS,
             ).deduplicated()
         }
 
+        if (unresolved) return ContradictionAssessment(
+            AuthorityResolutionStatus.PARTIAL,
+            MipField.unresolved(),
+            refs,
+            ambiguity.ifEmpty { listOf("candidate evidence incomplete") },
+            reasons + REASON_CONTRADICTION_INCOMPLETE,
+        ).deduplicated()
+
+        if (contradictions.size == 1) return ContradictionAssessment(
+            AuthorityResolutionStatus.COMPLETE,
+            MipField.present(contradictions.single()),
+            refs,
+            reasonCodes = reasons + AuthorityReasonCode.CONTRADICTION_IDENTIFIED,
+        ).deduplicated()
+
         return ContradictionAssessment(
-            resolutionStatus = AuthorityResolutionStatus.COMPLETE,
-            contradictedMemoryRef = MipField.notApplicable(),
-            candidateMemoryRefs = refs,
+            AuthorityResolutionStatus.COMPLETE,
+            MipField.notApplicable(),
+            refs,
             reasonCodes = reasons + AuthorityReasonCode.CONTRADICTION_NONE,
         ).deduplicated()
     }
@@ -431,66 +388,63 @@ class DeterministicAuthorityResolver(
         if (candidate.validity.status != MipFieldStatus.PRESENT) {
             return CandidateComparison.Unresolved(REASON_CANDIDATE_VALIDITY_UNRESOLVED, "candidate validity unresolved")
         }
-        if (candidate.validity.value != "VALID") {
+        if (candidate.validity.value?.uppercase() != "VALID") {
             return CandidateComparison.NoContradiction(REASON_CANDIDATE_NOT_VALID)
         }
 
-        val subject = compareEntityRole(claim.subject, candidate.subject)
-        if (subject == RoleComparison.UNRESOLVED) {
-            return CandidateComparison.Unresolved(AuthorityReasonCode.SUBJECT_UNRESOLVED, "candidate subject identity unresolved")
-        }
-        if (subject == RoleComparison.MISMATCH) {
-            return CandidateComparison.NoContradiction(REASON_DIFFERENT_SEMANTIC_SLOT)
-        }
-
-        val normalizedClaimPredicate = normalizePredicate(claim.predicate)
-        val normalizedCandidatePredicate = normalizePredicate(candidate.predicate)
-        if (normalizedClaimPredicate != normalizedCandidatePredicate) {
-            return CandidateComparison.NoContradiction(AuthorityReasonCode.CONTRADICTION_UNRELATED_PREDICATE)
-        }
-
-        when (compareEntityRole(claim.owner, candidate.owner)) {
-            RoleComparison.UNRESOLVED -> return CandidateComparison.Unresolved(AuthorityReasonCode.OWNER_UNRESOLVED, "candidate owner identity unresolved")
+        when (compareRole(claim.subject, candidate.subject)) {
+            RoleComparison.UNRESOLVED -> return CandidateComparison.Unresolved(AuthorityReasonCode.SUBJECT_UNRESOLVED, "candidate subject unresolved")
             RoleComparison.MISMATCH -> return CandidateComparison.NoContradiction(REASON_DIFFERENT_SEMANTIC_SLOT)
             RoleComparison.MATCH -> Unit
         }
 
-        when (compareEntityRole(claim.target, candidate.target)) {
-            RoleComparison.UNRESOLVED -> return CandidateComparison.Unresolved(REASON_TARGET_UNRESOLVED, "candidate target identity unresolved")
+        val claimPredicate = normalizePredicate(claim.predicate)
+        val candidatePredicate = normalizePredicate(candidate.predicate)
+        if (claimPredicate != candidatePredicate) {
+            return CandidateComparison.NoContradiction(AuthorityReasonCode.CONTRADICTION_UNRELATED_PREDICATE)
+        }
+
+        when (compareRole(claim.owner, candidate.owner)) {
+            RoleComparison.UNRESOLVED -> return CandidateComparison.Unresolved(AuthorityReasonCode.OWNER_UNRESOLVED, "candidate owner unresolved")
+            RoleComparison.MISMATCH -> return CandidateComparison.NoContradiction(REASON_DIFFERENT_SEMANTIC_SLOT)
+            RoleComparison.MATCH -> Unit
+        }
+        when (compareRole(claim.target, candidate.target)) {
+            RoleComparison.UNRESOLVED -> return CandidateComparison.Unresolved(REASON_TARGET_UNRESOLVED, "candidate target unresolved")
             RoleComparison.MISMATCH -> return CandidateComparison.NoContradiction(REASON_DIFFERENT_SEMANTIC_SLOT)
             RoleComparison.MATCH -> Unit
         }
 
         if (authority == EpistemicClass.REPORT) {
-            when (compareEntityRole(claim.source, candidate.source)) {
+            when (compareRole(claim.source, candidate.source)) {
                 RoleComparison.UNRESOLVED -> return CandidateComparison.Unresolved(AuthorityReasonCode.SOURCE_UNRESOLVED, "candidate report source unresolved")
                 RoleComparison.MISMATCH -> return CandidateComparison.NoContradiction(REASON_DIFFERENT_SOURCE_SCOPE)
                 RoleComparison.MATCH -> Unit
             }
         }
         if (authority == EpistemicClass.BELIEF) {
-            when (compareEntityRole(claim.perspective, candidate.perspective)) {
+            when (compareRole(claim.perspective, candidate.perspective)) {
                 RoleComparison.UNRESOLVED -> return CandidateComparison.Unresolved(REASON_PERSPECTIVE_UNRESOLVED, "candidate belief perspective unresolved")
                 RoleComparison.MISMATCH -> return CandidateComparison.NoContradiction(REASON_DIFFERENT_PERSPECTIVE_SCOPE)
                 RoleComparison.MATCH -> Unit
             }
         }
 
-        when (val temporal = compareTemporal(claim, candidate)) {
+        when (compareTemporal(claim, candidate)) {
             TemporalComparison.MISMATCH -> return CandidateComparison.NoContradiction(AuthorityReasonCode.CONTRADICTION_TEMPORAL_MISMATCH)
-            TemporalComparison.UNRESOLVED -> return CandidateComparison.Unresolved(AuthorityReasonCode.TEMPORAL_UNRESOLVED, "temporal identity insufficient for contradiction")
+            TemporalComparison.UNRESOLVED -> return CandidateComparison.Unresolved(AuthorityReasonCode.TEMPORAL_UNRESOLVED, "temporal identity insufficient")
             TemporalComparison.MATCH -> Unit
         }
 
-        val candidatePolarity = candidate.polarity.value?.uppercase()
         val claimPolarity = claim.polarity.uppercase()
+        val candidatePolarity = candidate.polarity.value?.uppercase()
         if (candidate.polarity.status != MipFieldStatus.PRESENT ||
-            candidatePolarity !in RESOLVED_POLARITIES || claimPolarity !in RESOLVED_POLARITIES
+            claimPolarity !in RESOLVED_POLARITIES || candidatePolarity !in RESOLVED_POLARITIES
         ) {
             return CandidateComparison.Unresolved(REASON_POLARITY_UNRESOLVED, "polarity unresolved")
         }
 
-        val objectComparison = compareScalarField(claim.objectValue, candidate.objectValue)
+        val objectComparison = compareScalar(claim.objectValue, candidate.objectValue)
         if (objectComparison == ScalarComparison.UNRESOLVED) {
             return CandidateComparison.Unresolved(REASON_OBJECT_UNRESOLVED, "object/value identity unresolved")
         }
@@ -503,7 +457,7 @@ class DeterministicAuthorityResolver(
             }
         }
 
-        if (normalizedClaimPredicate in singleValuePredicates && objectComparison == ScalarComparison.MISMATCH) {
+        if (claimPredicate in singleValuePredicates && objectComparison == ScalarComparison.MISMATCH) {
             return CandidateComparison.Contradiction(REASON_SINGLE_VALUE_CONFLICT)
         }
 
@@ -511,34 +465,32 @@ class DeterministicAuthorityResolver(
     }
 
     private fun compareTemporal(claim: MipClaimV1, candidate: AuthorityCandidateEvidence): TemporalComparison {
-        val claimRelation = normalizeTemporalRelation(claim.temporalRelation)
-        val candidateRelation = candidate.temporalRelation.value?.let(::normalizeTemporalRelation)
-
-        if (claimRelation in UNRESOLVED_TEMPORAL_RELATIONS ||
+        val left = normalizeTemporal(claim.temporalRelation)
+        val right = candidate.temporalRelation.value?.let(::normalizeTemporal)
+        if (left in UNRESOLVED_TEMPORAL_RELATIONS ||
             candidate.temporalRelation.status != MipFieldStatus.PRESENT ||
-            candidateRelation == null || candidateRelation in UNRESOLVED_TEMPORAL_RELATIONS
-        ) {
-            return TemporalComparison.UNRESOLVED
-        }
-        if (claimRelation != candidateRelation) return TemporalComparison.MISMATCH
-        if (claimRelation in DIRECTLY_COMPARABLE_TEMPORAL_RELATIONS) return TemporalComparison.MATCH
+            right == null || right in UNRESOLVED_TEMPORAL_RELATIONS
+        ) return TemporalComparison.UNRESOLVED
 
-        val claimKey = claim.semanticMarkers[MARKER_TEMPORAL_REFERENCE_KEY]
-        val candidateKey = candidate.temporalReferenceKey
-        if (claimKey?.status != MipFieldStatus.PRESENT || candidateKey.status != MipFieldStatus.PRESENT) {
+        if (left != right) return TemporalComparison.MISMATCH
+        if (left in DIRECTLY_COMPARABLE_TEMPORAL_RELATIONS) return TemporalComparison.MATCH
+
+        val leftKey = claim.semanticMarkers[MARKER_TEMPORAL_REFERENCE_KEY]
+        val rightKey = candidate.temporalReferenceKey
+        if (leftKey?.status != MipFieldStatus.PRESENT || rightKey.status != MipFieldStatus.PRESENT) {
             return TemporalComparison.UNRESOLVED
         }
-        return if (claimKey.value == candidateKey.value) TemporalComparison.MATCH else TemporalComparison.MISMATCH
+        return if (leftKey.value == rightKey.value) TemporalComparison.MATCH else TemporalComparison.MISMATCH
     }
 
-    private fun buildResolution(
+    private fun resolution(
         request: AuthorityResolveRequest,
-        resolutionStatus: AuthorityResolutionStatus,
+        status: AuthorityResolutionStatus,
         authority: MipField<EpistemicClass>,
-        authorityConfidence: MipField<AuthorityResolutionConfidence>,
-        contradictedMemoryRef: MipField<MemoryRef>,
-        candidateMemoryRefs: List<MemoryRef>,
-        ambiguityReasons: List<String>,
+        confidence: MipField<AuthorityResolutionConfidence>,
+        contradicted: MipField<MemoryRef>,
+        candidateMemoryRefs: List<MemoryRef> = emptyList(),
+        ambiguityReasons: List<String> = emptyList(),
         reasonCodes: List<String>,
     ): AuthorityResolution {
         val resolutionId = "${request.requestId}:authority"
@@ -547,14 +499,14 @@ class DeterministicAuthorityResolver(
             claimId = request.claim.claimId,
             contextSnapshotId = request.contextSnapshot.snapshotId,
             retrievalQueryId = retrievalQueryId(request),
-            resolutionStatus = resolutionStatus,
+            resolutionStatus = status,
             authority = authority,
-            authorityResolutionConfidence = authorityConfidence,
+            authorityResolutionConfidence = confidence,
             sourceReliability = MipField.unavailable(),
-            contradictedMemoryRef = contradictedMemoryRef,
+            contradictedMemoryRef = contradicted,
             candidateMemoryRefs = candidateMemoryRefs.distinctBy { it.value },
-            ambiguityReasons = ambiguityReasons.filter { it.isNotBlank() }.distinct(),
-            reasonCodes = reasonCodes.filter { it.isNotBlank() }.distinct(),
+            ambiguityReasons = ambiguityReasons.filter(String::isNotBlank).distinct(),
+            reasonCodes = reasonCodes.filter(String::isNotBlank).distinct(),
             provenance = resolutionProvenance(request, resolutionId),
         )
     }
@@ -595,36 +547,28 @@ class DeterministicAuthorityResolver(
         return (if (result.selectedRefs.isNotEmpty()) result.selectedRefs else result.candidateRefs).map(::MemoryRef)
     }
 
-    private fun resolvedClassification(
+    private fun classified(
         authority: EpistemicClass,
         reason: String,
-        previousReasons: List<String> = emptyList(),
-    ): ClassificationOutcome = ClassificationOutcome(
+        previous: List<String> = emptyList(),
+    ) = ClassificationOutcome(
         authority = MipField.present(authority),
-        authorityConfidence = MipField.present(AuthorityResolutionConfidence(1.0)),
-        reasonCodes = (previousReasons + reason).distinct(),
+        confidence = MipField.present(AuthorityResolutionConfidence(1.0)),
+        reasonCodes = (previous + reason).distinct(),
     )
 
-    private fun isTrustedWorldProvenance(request: AuthorityResolveRequest): Boolean =
+    private fun trustedWorld(request: AuthorityResolveRequest): Boolean =
         request.provenance.generatedBy == ModuleId.WORLD &&
             request.provenance.originType.uppercase() in TRUSTED_WORLD_ORIGIN_TYPES
 
-    private fun isTrustedObservationProvenance(request: AuthorityResolveRequest): Boolean =
+    private fun trustedObservation(request: AuthorityResolveRequest): Boolean =
         request.provenance.generatedBy == ModuleId.PERCEPTION &&
             request.provenance.originType.uppercase() in TRUSTED_OBSERVATION_ORIGIN_TYPES
 
-    private fun isTrustedInferenceProvenance(request: AuthorityResolveRequest): Boolean =
-        request.provenance.originType.uppercase() == "INFERENCE" &&
-            request.provenance.derivedFromIds.isNotEmpty()
+    private fun trustedInference(request: AuthorityResolveRequest): Boolean =
+        request.provenance.originType.uppercase() == "INFERENCE" && request.provenance.derivedFromIds.isNotEmpty()
 
-    private fun normalizePredicate(value: String): String = PREDICATE_ALIASES[value] ?: value
-
-    private fun normalizeTemporalRelation(value: String): String = when (value.uppercase()) {
-        "PRESENT" -> "CURRENT"
-        else -> value.uppercase()
-    }
-
-    private fun compareEntityRole(left: MipEntityRef, right: MipEntityRef): RoleComparison {
+    private fun compareRole(left: MipEntityRef, right: MipEntityRef): RoleComparison {
         if (left.resolutionStatus == MipEntityResolutionStatus.NOT_APPLICABLE &&
             right.resolutionStatus == MipEntityResolutionStatus.NOT_APPLICABLE
         ) return RoleComparison.MATCH
@@ -637,7 +581,7 @@ class DeterministicAuthorityResolver(
         return if (left.entityId == right.entityId) RoleComparison.MATCH else RoleComparison.MISMATCH
     }
 
-    private fun compareScalarField(left: MipField<String>, right: MipField<String>): ScalarComparison {
+    private fun compareScalar(left: MipField<String>, right: MipField<String>): ScalarComparison {
         if (left.status == MipFieldStatus.NOT_APPLICABLE && right.status == MipFieldStatus.NOT_APPLICABLE) {
             return ScalarComparison.MATCH
         }
@@ -650,13 +594,15 @@ class DeterministicAuthorityResolver(
         return if (left.value == right.value) ScalarComparison.MATCH else ScalarComparison.MISMATCH
     }
 
-    private fun unresolvedAssessment(reason: String, detail: String): ContradictionAssessment =
-        ContradictionAssessment(
-            resolutionStatus = AuthorityResolutionStatus.PARTIAL,
-            contradictedMemoryRef = MipField.unresolved(),
-            reasonCodes = listOf(reason),
-            ambiguityReasons = listOf(detail),
-        )
+    private fun normalizePredicate(value: String): String = PREDICATE_ALIASES[value] ?: value
+    private fun normalizeTemporal(value: String): String = if (value.uppercase() == "PRESENT") "CURRENT" else value.uppercase()
+
+    private fun partial(reason: String, detail: String) = ContradictionAssessment(
+        AuthorityResolutionStatus.PARTIAL,
+        MipField.unresolved(),
+        reasonCodes = listOf(reason),
+        ambiguityReasons = listOf(detail),
+    )
 
     private data class ClassificationOutcome(
         val authority: MipField<EpistemicClass>,
@@ -679,10 +625,10 @@ class DeterministicAuthorityResolver(
         val ambiguityReasons: List<String> = emptyList(),
         val reasonCodes: List<String>,
     ) {
-        fun deduplicated(): ContradictionAssessment = copy(
+        fun deduplicated() = copy(
             candidateMemoryRefs = candidateMemoryRefs.distinctBy { it.value },
-            ambiguityReasons = ambiguityReasons.filter { it.isNotBlank() }.distinct(),
-            reasonCodes = reasonCodes.filter { it.isNotBlank() }.distinct(),
+            ambiguityReasons = ambiguityReasons.filter(String::isNotBlank).distinct(),
+            reasonCodes = reasonCodes.filter(String::isNotBlank).distinct(),
         )
     }
 
@@ -735,10 +681,7 @@ class DeterministicAuthorityResolver(
             "speech.unresolved" to "matrix.speech.unresolved",
         )
 
-        val DEFAULT_SINGLE_VALUE_PREDICATES = setOf(
-            "matrix.location.live_at",
-            "matrix.identity.age",
-        )
+        val DEFAULT_SINGLE_VALUE_PREDICATES = setOf("matrix.location.live_at", "matrix.identity.age")
 
         const val REASON_CLASSIFICATION_UNSUPPORTED = "AUTHORITY.CLASSIFICATION.UNSUPPORTED"
         const val REASON_CLASSIFICATION_UNRESOLVED = "AUTHORITY.CLASSIFICATION.UNRESOLVED"
