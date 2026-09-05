@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:56+02:00  
+Last updated: 2026-09-05T10:58+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-runtime-dtos-v1`  
-Continuity schema: `matrix.assembling.continuity.v40`
+Continuity schema: `matrix.assembling.continuity.v41`
 
 ## Mandatory continuity policy
 
@@ -45,76 +45,86 @@ Authority remains read-only over evidence, never Memory writer/admission owner. 
 branch = authority-runtime-dtos-v1
 base = 8dc6643e73c3ce6e569173a4922ec3a01e77e0ff
 task-start continuity = 6e76d3c5430f326cf419937c3baf3703e0b0ed4f
+PR = #13
 other repos modified = false
 ```
 
-### Checkpoint 1 — Authority runtime DTOs
+### Functional checkpoints
 
 ```text
-commit = 9f5b227de80c5f276eb029b64c1c563c1fbed6cd
-file = src/main/kotlin/matrix/assembling/authority/AuthorityContracts.kt
+9f5b227de80c5f276eb029b64c1c563c1fbed6cd
+= AuthorityResolveRequest + AuthorityResolution DTOs
+
+60176c46ea2599504d6ae6ce63a9044b5f25989f
+= initial MipClaimV1 wire support
+
+9265458cde29d021a71f7c944f181c7992cf33c9
+= pre-CI semanticMarkers decoder fix
+
+297491d62219a60cdaa3362d54b0fc632dc4eafb
+= AuthorityContractWire primitive codec
+
+9542ce6248abee5d95a1016d2c709ac5c2f418a9
+= Authority DTO/wire/fail-closed tests
 ```
 
-Added canonical contract-only `AuthorityResolveRequest` and `AuthorityResolution` using existing MIP claim/context/retrieval/provenance types and frozen Authority value types.
-
-### Checkpoint 2 — MipClaimV1 wire support
+Files added by this task:
 
 ```text
-initial commit = 60176c46ea2599504d6ae6ce63a9044b5f25989f
-self-review fix = 9265458cde29d021a71f7c944f181c7992cf33c9
-file = src/main/kotlin/matrix/assembling/mip/MipClaimWire.kt
+src/main/kotlin/matrix/assembling/authority/AuthorityContracts.kt
+src/main/kotlin/matrix/assembling/authority/AuthorityContractWire.kt
+src/main/kotlin/matrix/assembling/mip/MipClaimWire.kt
+src/test/kotlin/matrix/assembling/authority/AuthorityContractsTest.kt
 ```
 
-Claim wire is implemented as extension functions on the existing MipEvidenceWire codec. It preserves entity roles, MipField states, confidence map, spans and semantic markers. A semanticMarkers decoding-key defect was found and fixed before CI.
+Contract status:
 
-### Checkpoint 3 — Authority DTO primitive wire codec
+- request reuses MipClaimV1 + MatrixContextSnapshot + explicit MipField<RetrievalResult> + ProvenanceRef;
+- result uses frozen AUTHORITY-1.0 typed fields;
+- no nullable contradiction collapse;
+- COMPLETE requires resolved Authority classification/confidence and completed contradiction assessment;
+- concrete/ambiguous/no-match contradiction states are structurally constrained;
+- claim/provenance identity mismatches fail;
+- wire codecs are serialization only and delegate shared payloads to existing MIP evidence codec;
+- no legacy AuthorityDecision or MipBridge final migration.
+
+Test coverage includes claim/request/result round-trips, explicit RetrievalResult(NO_MATCH), malformed MipFields, semantic markers, provenance mismatches, contradiction candidate identity, ambiguity cardinality, COMPLETE fail-closed states, reason namespaces, confidence range and unknown enum rejection.
+
+### PR checkpoint
+
+PR #13:
+
+`Bind frozen Authority-1.0 runtime DTOs to MIP evidence`
+
+PR base:
+
+`8dc6643e73c3ce6e569173a4922ec3a01e77e0ff`
+
+PR-open head:
+
+`e2d9278dfb750177076fc67e3834679bdbcfe82d`
+
+Verified diff:
 
 ```text
-commit = 297491d62219a60cdaa3362d54b0fc632dc4eafb
-file = src/main/kotlin/matrix/assembling/authority/AuthorityContractWire.kt
+docs/WORK_CONTINUITY.md
+src/main/kotlin/matrix/assembling/authority/AuthorityContractWire.kt
+src/main/kotlin/matrix/assembling/authority/AuthorityContracts.kt
+src/main/kotlin/matrix/assembling/mip/MipClaimWire.kt
+src/test/kotlin/matrix/assembling/authority/AuthorityContractsTest.kt
 ```
 
-Serialization only. Shared MIP payloads delegate to MipEvidenceWire; Authority-owned fields use explicit typed codecs. Invalid enums/types/wrappers fail closed. No legacy AuthorityDecision mapping or MipBridge migration.
-
-### Checkpoint 4 — Authority DTO/wire/fail-closed tests
-
-```text
-commit = 9542ce6248abee5d95a1016d2c709ac5c2f418a9
-file = src/test/kotlin/matrix/assembling/authority/AuthorityContractsTest.kt
-```
-
-Coverage added:
-
-```text
-MipClaimV1 round-trip preserves roles/spans/semantic markers
-AuthorityResolveRequest round-trip preserves PRESENT RetrievalResult(NO_MATCH)
-field-level retrieval NO_MATCH rejected
-request provenance claim mismatch rejected
-COMPLETE no-contradiction AuthorityResolution round-trip
-legacy persistence-style fields absent from canonical Authority wire
-concrete contradiction must be among candidate refs
-AMBIGUOUS contradiction requires >=2 candidate refs
-COMPLETE fails if authority unresolved
-COMPLETE fails if resolver confidence unresolved
-COMPLETE fails if contradiction assessment is NO_MATCH instead of completed PRESENT/NOT_APPLICABLE
-Authority reason codes require AUTHORITY.* namespace + no duplicates/blanks
-resolution provenance claim mismatch rejected
-invalid confidence wire rejected
-unknown resolution status rejected
-malformed retrieval field rejected instead of collapsed
-semantic marker PRESENT-with-null rejected
-concrete contradiction MemoryRef round-trip preserves identity
-```
+No orchestrator, Memory, legacy compatibility path, NLU repo or other repository changed.
 
 ### Validation state
 
 ```text
-Authority DTO code = ADDED
-MipClaimV1 wire = ADDED + SELF-REVIEW FIX
-Authority DTO wire = ADDED
-new tests = ADDED / NOT YET CI-VALIDATED
-full regression CI = NEXT
+PR #13 = OPEN
+full regression CI = PENDING
+merge = FORBIDDEN UNTIL FINAL PR HEAD GREEN
 ```
+
+If CI fails, fix only task-introduced failures; do not weaken tests/contracts.
 
 ## Explicitly NOT IMPLEMENTED
 
@@ -141,13 +151,14 @@ real GGUF bridge
 ```text
 repo = MATRIXNEO23/assembling
 branch = authority-runtime-dtos-v1
+PR = #13
 base = 8dc6643e73c3ce6e569173a4922ec3a01e77e0ff
-last functional commit = 9542ce6248abee5d95a1016d2c709ac5c2f418a9
-Authority runtime DTO binding = CODE + TESTS ADDED / CI PENDING
+PR-open head = e2d9278dfb750177076fc67e3834679bdbcfe82d
+Authority runtime DTO binding = CODE + TESTS ADDED / PR OPEN / CI PENDING
 real AuthorityResolver = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = OPEN PR, RUN FULL CI, FIX ONLY TASK-INTRODUCED FAILURES, MERGE ONLY IF GREEN
+NEXT = INSPECT PR #13 CI; FIX ONLY TASK-INTRODUCED FAILURES; MERGE ONLY IF FINAL HEAD GREEN
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, Authority value types, or shared MIP evidence contracts.
