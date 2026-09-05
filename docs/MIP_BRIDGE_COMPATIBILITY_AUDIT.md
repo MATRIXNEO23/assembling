@@ -1,15 +1,19 @@
 # MIP Bridge — Repository Consolidation and Compatibility Audit
 
-Status: **SAFE CLEANUP APPLIED / REGRESSION VALIDATION PENDING**  
+Status: **CLEANUP COMPLETE / REGRESSION GREEN**  
 Date: 2026-09-05  
 Repository: `MATRIXNEO23/assembling`  
-Branch: `assembling-mip-cleanup`  
-Start HEAD: `ef433a3aed519b31efe9289a8df78ed974170510`  
-Canonical semantic source: `docs/MATRIX_INTERMODULE_PROTOCOL.md` (`MIP-1.0`)
+Canonical semantic source: `docs/MATRIX_INTERMODULE_PROTOCOL.md` (`MIP-1.0`)  
+Cleanup start HEAD: `ef433a3aed519b31efe9289a8df78ed974170510`  
+Cleanup PR: `#8`  
+Cleanup PR tested HEAD: `2e51e1b51df101d0fdb25f9cb567201839fc07d6`  
+Cleanup merge SHA: `ff38d09f73a1eec8b2a72a24571b92f1954c729c`  
+PR CI: `33951029064` — SUCCESS  
+Post-merge main CI: `33951548865` — SUCCESS
 
 ## 1. Scope
 
-This cleanup consolidates the Assembling repository around exactly one cross-module semantic authority and one interop layer:
+This cleanup consolidates Assembling around exactly one cross-module semantic authority and one common interop layer:
 
 ```text
 MIP-1.0
@@ -17,30 +21,18 @@ MIP-1.0
 src/main/kotlin/matrix/assembling/mip/MipBridge.kt
 ```
 
-It does not create another protocol, change business logic, rewire the orchestrator, implement Memory/Relationship/Reflection/BDI, or modify other repositories.
+It does not create a second protocol, rewrite module business logic, rewire the orchestrator, implement Authority Resolver, Memory, Relationship, Reflection, BDI/Decision, retrieval, Android integration or production GGUF integration.
 
-Hard boundary:
-
-```text
-NATIVE MODULE DTO
-        ↓ explicit mapping
-      MIP BRIDGE
-        ↓ explicit mapping
-NATIVE DESTINATION DTO
-```
-
-The bridge does not decide truth, authority, contradiction, Memory Admission, affective meaning or natural-language interpretation.
+Other repositories were not modified.
 
 ## 2. Canonical repository-structure rule
-
-Owner rule:
 
 ```text
 EVERY NEW FUNCTIONAL MODULE
 → DEDICATED DIRECTORY / PACKAGE
 ```
 
-Examples already consistent with the rule:
+Examples already consistent:
 
 ```text
 matrix/assembling/mip/
@@ -48,49 +40,49 @@ matrix/assembling/adapters/
 matrix/assembling/coherence/
 ```
 
-Future modules such as context, retrieval, diagnostics or decision adapters must use their own directory/package when explicitly authorized.
+Future modules such as `context/`, `retrieval/`, `diagnostics/` or decision adapters must use a dedicated directory/package when explicitly authorized.
 
-Existing root runtime files are not moved for aesthetics. Move/rename requires demonstrated ambiguity reduction, compatibility evidence and green regression tests.
+Existing root runtime files remain in place. Move/rename is not justified by aesthetics alone.
 
 ## 3. Repository map
 
-### Canonical runtime
+### CANONICAL_RUNTIME
 
 | Path | Role | Decision |
 |---|---|---|
-| `src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt` | runtime frame + current root DTOs + diagnostics | KEEP |
-| `src/main/kotlin/matrix/assembling/IntegrationPorts.kt` | authoritative runtime ports | KEEP |
-| `src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt` | authoritative turn orchestrator | KEEP |
-| `src/main/kotlin/matrix/assembling/SemanticFrameToPrompt.kt` | authoritative frame-based prompt builder | KEEP |
+| `src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt` | per-turn runtime frame + current DTOs + diagnostics | KEEP |
+| `src/main/kotlin/matrix/assembling/IntegrationPorts.kt` | runtime ports | KEEP |
+| `src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt` | turn orchestrator | KEEP |
+| `src/main/kotlin/matrix/assembling/SemanticFrameToPrompt.kt` | frame-based prompt builder | KEEP |
 | `src/main/kotlin/matrix/assembling/adapters/UnderstandingLabAdapter.kt` | NLU/Understanding adapter | KEEP |
-| `src/main/kotlin/matrix/assembling/adapters/AffectiveLabAdapter.kt` | affective lab adapter | KEEP |
-| `src/main/kotlin/matrix/assembling/adapters/NoPersistentMemoryAdmission.kt` | current non-durable Memory preflight adapter | KEEP |
-| `src/main/kotlin/matrix/assembling/adapters/BasicAdapters.kt` | placeholder/test adapters | KEEP / REVIEW LATER |
+| `src/main/kotlin/matrix/assembling/adapters/AffectiveLabAdapter.kt` | Affective adapter | KEEP |
+| `src/main/kotlin/matrix/assembling/adapters/NoPersistentMemoryAdmission.kt` | non-durable Memory preflight | KEEP |
+| `src/main/kotlin/matrix/assembling/adapters/BasicAdapters.kt` | conservative placeholders/test adapters | KEEP / REVIEW LATER |
 
-### MIP
+### MIP_CANONICAL / MIP_ADAPTER
 
 | Path | Role | Decision |
 |---|---|---|
-| `docs/MATRIX_INTERMODULE_PROTOCOL.md` | cross-module semantic authority | CANONICAL |
-| `src/main/kotlin/matrix/assembling/mip/MipBridge.kt` | sole common interop adapter layer | CANONICAL ADAPTER |
+| `docs/MATRIX_INTERMODULE_PROTOCOL.md` | single cross-module semantic authority | CANONICAL |
+| `src/main/kotlin/matrix/assembling/mip/MipBridge.kt` | single common interop adapter layer | CANONICAL ADAPTER |
 | `src/test/kotlin/matrix/assembling/mip/MipBridgeTest.kt` | round-trip/fail-closed gate | KEEP |
-| `docs/MIP_BRIDGE_COMPATIBILITY_AUDIT.md` | compatibility/consolidation audit | CURRENT AUDIT |
+| `docs/MIP_BRIDGE_COMPATIBILITY_AUDIT.md` | canonical cleanup/compatibility audit | CURRENT |
 
-### Compatibility-only
+### COMPATIBILITY_ONLY
 
 | Path | Decision |
 |---|---|
 | `src/main/kotlin/matrix/assembling/contracts/MatrixAssemblyContracts.kt` | KEEP_COMPATIBILITY |
-| `src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt` | KEEP_COMPATIBILITY / already deprecated |
-| `src/main/kotlin/matrix/assembling/prompt/SemanticFrameToPrompt.kt` | KEEP_COMPATIBILITY / explicitly deprecated in this cleanup |
-| `src/main/kotlin/matrix/assembling/coherence/CoherenceGuard.kt` | KEEP_COMPATIBILITY / explicitly deprecated in this cleanup |
+| `src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt` | KEEP_COMPATIBILITY / DEPRECATED |
+| `src/main/kotlin/matrix/assembling/prompt/SemanticFrameToPrompt.kt` | KEEP_COMPATIBILITY / DEPRECATED |
+| `src/main/kotlin/matrix/assembling/coherence/CoherenceGuard.kt` | KEEP_COMPATIBILITY / DEPRECATED |
 | `src/test/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipelineTest.kt` | compatibility regression gate |
 
-No compatibility file is deleted or moved in this checkpoint.
+No compatibility file was deleted, renamed or moved.
 
-### Tests
+### TEST
 
-All existing `*Test.kt` remain active regression gates:
+All existing `*Test.kt` remain active:
 
 ```text
 ArchitectureBoundaryTest.kt
@@ -103,7 +95,7 @@ mip/MipBridgeTest.kt
 pipeline/MatrixAssemblyPipelineTest.kt
 ```
 
-### Documentation/evidence
+### DOCUMENTATION / EVIDENCE
 
 Canonical/current:
 
@@ -125,26 +117,24 @@ docs/IMPORTED_COMPONENTS.md
 prompts/WORK_ASSEMBLING_M1_INTEGRATION.md
 ```
 
-Model baseline remains untouched:
-
-`models/matrix-nlu/matrix-nlu-student-4-v22a-mixed-head-protected-local-20260904T1440Z.zip`
+Model baseline remains untouched.
 
 ## 4. Boundary map
 
-| Producer | Native output | MIP equivalent | Consumer | Loss characteristics |
+| Producer | Native output | MIP equivalent | Consumer | Status |
 |---|---|---|---|---|
-| Matrix-NLU runtime | `MatrixNluInterpretation` / `MatrixNluClaim[]` | `MipClaimV1` | Understanding adapter | explicit mapping; native claimId absent |
-| NLU adapter | `NluOutput`, `TypedClaim[]` | `MipClaimV1` | Understanding/Coherence | TypedClaim alone lacks dialogueAct/domain marker |
-| Understanding | root `SemanticFrame`, `TypedClaim[]` | MIP claim concepts | Coherence | root SemanticFrame remains runtime DTO, not protocol |
-| Coherence | root enum `CoherenceDecision` | `MipCoherenceDecisionV1` | Authority | exact symbolic round-trip |
-| Authority | root `AuthorityDecision` | `MipAuthorityResolutionV1` | Memory preflight | current DTO lacks contradiction identity |
-| Python Authority reference seam | `contradicts_memory_id: Optional[int]` | opaque `contradictedMemoryId` | Kotlin Memory seam | width/nullability conversion explicit |
-| Memory preflight | `MemoryAdmissionResult` | `MipMemoryResultV1` | Affective/guard | pre-response stableWrite must remain false |
-| Affective | root `AffectiveState` | `MipAffectiveSnapshotV1` | Prompt Builder | relationship summary is compatibility-only |
-| Prompt Builder | `GgufPrompt` | no proven cross-language need | GGUF | codec deferred |
-| GGUF | `AssistantReply` | no proven cross-language need | Output Validator | codec deferred |
+| Matrix-NLU runtime | `MatrixNluInterpretation` / `MatrixNluClaim[]` | `MipClaimV1` | Understanding | explicit mapping |
+| NLU adapter | `NluOutput`, `TypedClaim[]` | `MipClaimV1` | Understanding/Coherence | partial native representation |
+| Understanding | root `SemanticFrame`, `TypedClaim[]` | MIP claim concepts | Coherence | runtime DTO, not protocol authority |
+| Coherence | root `CoherenceDecision` | `MipCoherenceDecisionV1` | Authority | exact symbolic round-trip |
+| Authority placeholder | root `AuthorityDecision` | `MipAuthorityResolutionV1` | Memory preflight | lacks contradiction identity |
+| Python Authority reference seam | `contradicts_memory_id: Optional[int]` | opaque `contradictedMemoryId` | future Kotlin Memory seam | explicit width/null handling |
+| Memory preflight | `MemoryAdmissionResult` | `MipMemoryResultV1` | Affective/guard | pre-response non-durable only |
+| Affective | root `AffectiveState` | `MipAffectiveSnapshotV1` | Prompt Builder | Relationship summary compatibility-only |
+| Prompt Builder | `GgufPrompt` | codec deferred | GGUF | no demonstrated interop need |
+| GGUF | `AssistantReply` | codec deferred | Output Validator | no demonstrated interop need |
 
-`MatrixTurnFrame` is the operational per-turn container. It is not a competing semantic protocol.
+`MatrixTurnFrame` is the operational turn container, not a competing semantic protocol.
 
 ## 5. Incompatibility matrix
 
@@ -153,24 +143,23 @@ Model baseline remains untouched:
 | Semantic | Native source | MIP | Current destination | Problem | Severity |
 |---|---|---|---|---|---|
 | claim identity | absent in `MatrixNluClaim` | `claimId` | required in `TypedClaim` | generated externally | P1 |
-| dialogue act | `String` | explicit field | absent in `TypedClaim` | lost if TypedClaim isolated | P1 |
-| predicate | `String` | PredicateId concept | `String` | stringly/open registry | P1 |
-| polarity | `String` | canonical semantic value | `String` | stringly/open registry | P1 |
-| temporal | `String` | target `TemporalRef` | `String` | full temporal model not represented | P1 |
-| resolved subject | `String?` | `EntityRef` | `String` + `UNKNOWN` sentinel | null/sentinel mismatch | P1 |
-| target | `String?` | `EntityRef` | `String?` | native null ambiguous | P1 |
+| dialogue act | `String` | explicit | absent in `TypedClaim` | isolated TypedClaim loses field | P1 |
+| predicate | `String` | PredicateId concept | `String` | open registry | P1 |
+| polarity | `String` | canonical value | `String` | open registry | P1 |
+| temporal | `String` | `TemporalRef` target | `String` | incomplete temporal model | P1 |
+| subject | `String?` | `EntityRef` | `String` + `UNKNOWN` | null/sentinel mismatch | P1 |
+| target | `String?` | `EntityRef` | `String?` | ambiguous native null | P1 |
 | owner | `String?` | `EntityRef` | `ownerId: String?` | naming/null semantics | P0/P1 |
 | perspective | `String?` | `EntityRef` | `String?` | null semantics | P0/P1 |
-| confidence overall | `Double` | `interpretationConfidence` | `confidence["overall"]` | structural mismatch | P1 |
-| per-head confidence | map | `confidenceByField` | map | naming mismatch | P2 |
-| spans | five `List<Int>?` | `MipSpan` map | `TextSpan` map | shape/type mismatch | P2 |
-| source type | `String?` | explicit MIP field | `String` | nullability mismatch | P1 |
-| world truth | `Boolean` | epistemic/source semantics | `Boolean` | semantic compression; must not become authority | P0/P1 |
-| adult/intimacy | `Boolean?` | semantic marker | absent in `TypedClaim` | loss in isolated TypedClaim | P1 |
+| confidence | `Double` + map | typed confidence taxonomy | map | structural/semantic mismatch | P1 |
+| spans | list pairs | `MipSpan` map | `TextSpan` map | shape mismatch | P2 |
+| source type | `String?` | explicit field | `String` | nullability | P1 |
+| world truth | `Boolean` | epistemic/source semantics | `Boolean` | must not self-grant authority | P0/P1 |
+| adult/intimacy | `Boolean?` | semantic marker | absent in isolated `TypedClaim` | potential loss | P1 |
 
 ### Authority / Memory
 
-Owner-provided real seam:
+Canonical seam:
 
 ```text
 Python: contradicts_memory_id: Optional[int]
@@ -180,75 +169,64 @@ future Kotlin Memory: contradictedMemoryId: Long?
 
 | Issue | Risk | Cleanup behavior |
 |---|---|---|
-| Python arbitrary int → Kotlin Long | overflow/corruption | explicit range validation; overflow throws |
-| Python `None` / Kotlin `null` | could mean several states | only MIP `NOT_APPLICABLE` may become native absence |
-| `UNRESOLVED`/`UNAVAILABLE`/`AMBIGUOUS`/etc. | silent semantic collapse | conversion now throws |
-| current root `AuthorityDecision` lacks contradiction field | contradiction identity loss | conversion only round-trips when canonical field is `UNAVAILABLE`; otherwise throws |
-| Python seam DTO only models contradiction field | dropping other canonical Authority fields | Python projection now requires all other canonical fields to be `UNAVAILABLE`; otherwise throws |
+| arbitrary Python int → Kotlin Long | overflow | explicit range check, overflow throws |
+| native `None/null` | ambiguous absence | only `NOT_APPLICABLE` may become absence |
+| `UNKNOWN/UNRESOLVED/AMBIGUOUS/CONFLICTED/UNAVAILABLE/NO_MATCH/ERROR` | silent collapse | conversion throws |
+| root `AuthorityDecision` lacks contradiction field | identity loss | conversion refuses non-`UNAVAILABLE` state |
+| partial Python Authority projection | dropping other canonical fields | projection requires other fields `UNAVAILABLE` |
 
 ### Memory preflight / Affective
 
-| Field | Current type | Risk | Status |
-|---|---|---|---|
-| `MemoryAdmissionResult.status` | `String` | open vocabulary | P1/P2 remaining |
-| `stableWrite` | `Boolean` | pre-response persistence violation | guarded by orchestrator |
-| `memoryIds` | `List<String>` | durable ID before response | guarded by orchestrator |
-| `AffectiveState.relationshipSummary` | `String` | mistaken Relationship authority | documented compatibility-only |
-| `persistentDeltaAllowed` | `Boolean` | persistence without admission | existing boundary tests guard |
+| Field | Risk | Status |
+|---|---|---|
+| `MemoryAdmissionResult.status: String` | open vocabulary | P1/P2 remaining |
+| `stableWrite` | pre-response persistence | orchestrator guard |
+| `memoryIds` | durable ID pre-response | orchestrator guard |
+| `AffectiveState.relationshipSummary` | accidental Relationship ownership | compatibility-only |
+| `persistentDeltaAllowed` | persistence without admission | regression-guarded |
 
-## 6. Duplicate concepts
-
-### SemanticFrame
-
-```text
-matrix.assembling.SemanticFrame
-matrix.assembling.contracts.SemanticFrame
-```
-
-Decision:
+## 6. Duplicate concepts and disposition
 
 ```text
 root SemanticFrame = current runtime DTO
-contracts.SemanticFrame = compatibility-only
+contracts.SemanticFrame = COMPATIBILITY_ONLY
 MIP = shared semantic authority
 ```
 
-### Coherence
-
 ```text
-matrix.assembling.CoherenceDecision
-matrix.assembling.contracts.CoherenceDecision
-adapters.BasicCoherenceGuard
-coherence.CoherenceGuard
+root CoherenceDecision = current runtime enum
+contracts.CoherenceDecision = COMPATIBILITY_ONLY
+adapters.BasicCoherenceGuard = current placeholder
+coherence.CoherenceGuard = COMPATIBILITY_ONLY / DEPRECATED
 ```
 
-`coherence.CoherenceGuard` consumes only legacy `contracts.*`; it is explicitly deprecated compatibility-only despite the generic package name.
-
-### Prompt
-
 ```text
-matrix.assembling.SemanticFrameToPrompt
-matrix.assembling.prompt.SemanticFrameToPrompt
+root SemanticFrameToPrompt = current runtime prompt builder
+prompt.SemanticFrameToPrompt = COMPATIBILITY_ONLY / DEPRECATED
 ```
 
-Root implementation is the current frame runtime. `prompt.SemanticFrameToPrompt` is explicitly deprecated compatibility-only.
-
-### Memory preflight placeholders
-
-`NoPersistentMemoryAdmission` and `BasicMemoryAdmission` both provide non-durable preflight behavior. The current integration test uses `NoPersistentMemoryAdmission`.
-
-Decision:
-
 ```text
-NoPersistentMemoryAdmission = current temporary integration adapter
-BasicMemoryAdmission = obsolete candidate / KEEP until complete caller proof
+NoPersistentMemoryAdmission = current temporary integration preflight
+BasicMemoryAdmission = obsolete candidate / KEEP until caller proof
 ```
 
-## 7. Safe fixes applied
+## 7. MIP Bridge audit result
 
-### SAFE_ADAPTER
+PASS:
+- explicit mappings only;
+- no reflection/magic;
+- no business logic;
+- schema version explicit;
+- Python memory ID preserved as opaque decimal string;
+- Kotlin Long overflow fails closed;
+- lossy contradiction conversions fail closed;
+- partial Python projection cannot silently discard populated canonical fields.
 
-1. Added a distinct `MipEntityResolutionStatus`:
+Fixes applied:
+
+### Entity resolution
+
+`MipEntityResolutionStatus` is distinct from field presence:
 
 ```text
 RESOLVED
@@ -259,9 +237,7 @@ CONFLICTED
 NOT_APPLICABLE
 ```
 
-This removes the previous ambiguity where generic field `PRESENT` was also used as entity-resolution state.
-
-2. Completed `MipFieldStatus` with MIP-1.0 result states:
+### General field status
 
 ```text
 PRESENT
@@ -275,109 +251,138 @@ NO_MATCH
 ERROR
 ```
 
-3. Hardened Authority contradiction conversion:
+### Contradiction nullable conversion
 
 ```text
 PRESENT -> concrete ID
 NOT_APPLICABLE -> null / None
-all other statuses -> MipContractException
+all other states -> MipContractException
 ```
 
-4. Hardened partial Python Authority projection so non-modeled canonical fields cannot be silently dropped.
+No Authority Resolver was implemented. `BasicAuthorityResolver` remains a conservative placeholder and does not perform semantic contradiction detection.
 
-### SAFE_STRUCTURAL
+## 8. Structural cleanup
 
-- `pipeline.MatrixAssemblyPipeline` remains deprecated compatibility-only.
-- `prompt.SemanticFrameToPrompt` now has explicit `@Deprecated` compatibility annotation.
-- `coherence.CoherenceGuard` now has explicit `@Deprecated` compatibility annotation.
-- no files moved;
-- no files renamed;
-- no files deleted.
+Result:
 
-### SAFE_DOCUMENTATION
+```text
+FILES MOVED = 0
+FILES RENAMED = 0
+FILES DELETED = 0
+```
 
-- dedicated-directory/package rule added to `PROJECT_WORK_RULES.md`;
-- `docs/README.md` updated with MIP status vocabulary and compatibility paths;
-- this audit updated as the single consolidation audit.
+No mass package refactor was performed. Existing runtime root files remain stable. New functional modules are now required to use dedicated directories/packages.
 
-## 8. Tests added/strengthened
+## 9. Legacy path
 
-`MipBridgeTest` now additionally verifies:
+```text
+contracts/* = KEEP_COMPATIBILITY
+pipeline/* = KEEP_COMPATIBILITY / DEPRECATED
+prompt/* = KEEP_COMPATIBILITY / DEPRECATED
+coherence/CoherenceGuard.kt = KEEP_COMPATIBILITY / DEPRECATED
+```
 
-- resolved entity state is `RESOLVED`, not generic `PRESENT`;
-- invalid unresolved entity carrying `entityId` fails;
-- `NO_MATCH` and `ERROR` exist without fake values;
-- unresolved contradiction cannot collapse to Kotlin `null`;
-- unavailable contradiction cannot collapse to Python `None`;
-- Python partial projection cannot discard populated canonical Authority fields;
-- current Assembling Authority cannot represent even a known `NOT_APPLICABLE` contradiction state without semantic loss.
+No legacy code was deleted without caller proof.
 
-Existing round-trip, overflow, wire-map, Memory, Affective and Coherence tests remain.
+## 10. Round-trip / incompatibility tests
 
-## 9. Deferred work — intentionally NOT implemented
+`MipBridgeTest` covers and preserves:
+- Matrix-NLU claim round-trip;
+- current TypedClaim round-trip;
+- Python Authority contradiction round-trip;
+- Python → MIP → Kotlin contradiction seam;
+- nullable no-contradiction mapping;
+- Assembling Authority round-trip when representable;
+- fail-closed contradiction loss;
+- Kotlin Long overflow;
+- primitive wire-map round-trip;
+- missing fields;
+- illegal status/value combinations;
+- MemoryResult round-trip;
+- AffectiveState round-trip;
+- Coherence enum round-trip;
+- `RESOLVED` entity semantics;
+- `NO_MATCH` and `ERROR` explicit states;
+- unresolved/unavailable contradiction cannot collapse to native null;
+- partial Python projection cannot discard canonical data.
 
-The following remain outside cleanup scope:
+Existing tests were not weakened or removed.
 
-- adding contradiction identity to root `AuthorityDecision`;
-- implementing real contextual Authority/Belief resolution;
-- full frozen/reference Python Authority contract adapter;
-- complete MIP `TypedClaim` parity (`claimKind`, `modality`, `TemporalRef`, `ProvenanceRef`);
-- full `MatrixEnvelope<T>` runtime integration;
-- PredicateId registry implementation;
-- `MatrixContextSnapshot` runtime;
-- Memory index/retrieval;
-- Kotlin/Room Memory Foundation;
-- Relationship;
-- Reflection;
-- Decision/BDI;
-- Android/GGUF production integration.
+## 11. Regression / CI evidence
 
-No field is invented to pretend these components already exist.
+```text
+cleanup PR #8
+head = 2e51e1b51df101d0fdb25f9cb567201839fc07d6
+CI run = 33951029064
+result = SUCCESS
 
-## 10. Residual risks
+merge SHA = ff38d09f73a1eec8b2a72a24571b92f1954c729c
+post-merge main CI run = 33951548865
+Run tests = SUCCESS
+job result = SUCCESS
+```
+
+## 12. Residual risks
 
 ### P0 remaining
 
-1. **Current root `AuthorityDecision` lacks contradiction identity.** Real memory-backed Authority/Admission cannot be wired through that DTO without an authorized richer boundary/adapter.
-2. **Complete Python frozen/reference Authority contract is not available in this repository.** Only the owner-provided contradiction field is cross-language grounded here.
-3. **Owner/perspective remain nullable/sentinel-rich in native DTOs.** Existing guards mitigate, but final MIP-native runtime types are still needed before production integration.
-4. **`worldTruth: Boolean` remains in compatibility DTOs.** It must never be interpreted as self-granted Authority; MIP/World source remains authoritative.
+1. Root `AuthorityDecision` lacks contradiction identity; it is not the final Authority contract.
+2. Complete frozen/reference Python `AuthorityResolution` is not stored in Assembling; only the confirmed contradiction seam is cross-language grounded here.
+3. Owner/perspective remain nullable/sentinel-rich in native DTOs.
+4. `worldTruth: Boolean` remains a compatibility representation and must never self-grant Authority.
+5. `BasicAuthorityResolver` does not detect semantic contradictions; real Authority work is explicitly deferred.
 
 ### P1 remaining
 
 1. `TypedClaim` lacks dialogue act and explicit semantic-domain marker.
-2. Native `null`/`UNKNOWN`/`NONE` sentinels remain outside the bridge.
-3. Predicate/dialogue/source/status values remain mostly stringly typed.
-4. Full temporal/provenance/modality/claimKind parity is not yet represented in `MipClaimV1`.
-5. Runtime does not yet carry all intermodule payloads in `MatrixEnvelope<T>`.
-6. Legacy duplicate vocabulary remains, though now quarantined/deprecated.
-7. Only the high-risk Authority seam currently has an explicit primitive wire-map codec.
+2. Native `null` / `UNKNOWN` / `NONE` remain outside MIP.
+3. Predicate/dialogue/source/status remain mostly stringly typed.
+4. Full `TemporalRef`, `ProvenanceRef`, modality and claimKind parity is deferred.
+5. Runtime does not yet wrap all boundaries in `MatrixEnvelope<T>`.
+6. Legacy duplicate vocabulary remains, but is quarantined/deprecated.
+7. Only the high-risk Authority seam has an explicit primitive wire codec.
 
 ### P2
 
-1. Python snake_case vs Kotlin camelCase remains an adapter concern.
+1. Python snake_case vs Kotlin camelCase is an adapter concern.
 2. `MemoryAdmissionResult.status` remains a string.
-3. semantic marker registry remains an open string map.
-4. current root runtime package is not physically split into runtime/ports/diagnostics; moving it now has higher risk than benefit.
+3. Semantic marker registry remains an open string map.
+4. Root runtime is not physically split into runtime/ports/diagnostics because current migration risk exceeds cleanup benefit.
 
-## 11. Acceptance criteria for this cleanup
+## 13. Acceptance result
 
 ```text
-MIP = single cross-module semantic authority
-MipBridge = single common interop adapter layer
-MatrixTurnFrame = runtime frame, not competing protocol
-future module = dedicated directory/package
-legacy path = explicitly quarantined/deprecated
-silent contradiction-state loss = blocked
-business logic in bridge = false
-existing module DTOs modified = false
-other repositories modified = false
-files moved = 0
-files renamed = 0
-files deleted = 0
-new strict tests = added
-full regression = REQUIRED
-CI = REQUIRED
+MIP = single cross-module semantic authority        PASS
+MipBridge = single common interop adapter layer     PASS
+MatrixTurnFrame = runtime frame only                PASS
+future module = dedicated directory/package         PASS
+legacy path = quarantined/deprecated                 PASS
+silent contradiction-state loss = blocked           PASS
+business logic added to bridge = false              PASS
+existing module DTOs modified = false               PASS
+other repositories modified = false                 PASS
+files moved = 0                                      PASS
+files renamed = 0                                    PASS
+files deleted = 0                                    PASS
+round-trip / strict tests = PASS                     PASS
+full regression = PASS                               PASS
+CI = GREEN                                            PASS
 ```
 
-The cleanup is not complete until the full Gradle suite and CI are green.
+## 14. STOP
+
+Cleanup complete.
+
+Do not automatically start:
+- Authority Resolver implementation;
+- Memory implementation/retrieval/persistence;
+- Relationship;
+- Reflection;
+- Decision/BDI;
+- Intimacy/Consent resolver;
+- Android integration;
+- orchestrator rewiring.
+
+```text
+NEXT = AWAIT OWNER REVIEW
+```
