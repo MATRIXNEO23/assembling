@@ -56,7 +56,7 @@ class AuthorityTypesTest {
 
     @Test
     fun frozenReasonCodesRemainInAuthorityNamespaceWithoutDuplicates() {
-        assertEquals(18, AuthorityReasonCode.frozenV1.size)
+        assertEquals(19, AuthorityReasonCode.frozenV1.size)
         assertTrue(AuthorityReasonCode.frozenV1.all(AuthorityReasonCode::isAuthorityCode))
         assertTrue(AuthorityReasonCode.CONTRADICTION_IDENTIFIED in AuthorityReasonCode.frozenV1)
         assertTrue(AuthorityReasonCode.CONTRADICTION_NONE in AuthorityReasonCode.frozenV1)
