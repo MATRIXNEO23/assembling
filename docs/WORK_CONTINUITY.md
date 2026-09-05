@@ -1,307 +1,151 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:14+02:00  
+Last updated: 2026-09-05T10:40+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v28`
+Active branch: `mip-evidence-contracts-v1`  
+Continuity schema: `matrix.assembling.continuity.v34`
 
 ## Mandatory continuity policy
 
 This is the single canonical restart file for Assembling. Update it after every significant checkpoint: task/branch start, architecture/contract decision, code checkpoint, test/CI result, strategy change, before risky operations, and before every STOP/session end.
 
-## Global work rules
+## Hard work rules
 
 ```text
-writable repository = MATRIXNEO23/assembling only unless owner explicitly switches
+writable repo = MATRIXNEO23/assembling only unless owner explicitly switches
 MIP = single cross-module semantic authority
 MipBridge = single common interop bridge
 new functional module = dedicated directory/package
 parallel protocol/context/adapter family = forbidden
-cosmetic mass refactor = forbidden
 gate/test weakening = forbidden
+cosmetic mass refactor = forbidden
+other repositories = read-only
 ```
 
-Other repositories remain read-only.
-
-## Completed Assembling cleanup
+## Baseline already complete — DO NOT REDO
 
 ```text
-cleanup start = ef433a3aed519b31efe9289a8df78ed974170510
-PR #8 merge = ff38d09f73a1eec8b2a72a24571b92f1954c729c
-PR #8 CI = 33951029064 SUCCESS
-post-merge CI = 33951548865 SUCCESS
-PR #9 merge = afc5cd7e535dc08d09455339a056c71ba5dc6ea2
-final cleanup CI = 33951808519 SUCCESS
+Assembling cleanup PR #8 merge = ff38d09f73a1eec8b2a72a24571b92f1954c729c
+cleanup finalization PR #9 merge = afc5cd7e535dc08d09455339a056c71ba5dc6ea2
+MIP = docs/MATRIX_INTERMODULE_PROTOCOL.md / MIP-1.0
+AUTHORITY-1.0 contract commit = a3c7bf9bb4cd01f8032fd32c4e3f4ce3dc293f9b
+AUTHORITY freeze PR #10 merge = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
+Kotlin Authority types PR #11 merge = b87dadf376300587511a7dbce594b0fe88695798
+Authority post-merge CI = 33954180260 SUCCESS
+pre-task main HEAD = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
+pre-task continuity CI = 33954352500 SUCCESS
 ```
 
-Inventory, contract map, incompatibility matrix, MipBridge audit, structural cleanup, legacy quarantine, round-trip tests and documentation are complete. No files were moved/renamed/deleted.
+Authority remains read-only over evidence, never Memory writer/admission owner. `BasicAuthorityResolver` remains placeholder-only. Hard MIP distinctions and explicit status vocabulary remain unchanged.
 
-Compatibility-only legacy paths remain quarantined:
+## ACTIVE TASK — SHARED MIP EVIDENCE CONTRACT TYPES ONLY
 
 ```text
-contracts/MatrixAssemblyContracts.kt
-pipeline/MatrixAssemblyPipeline.kt
-prompt/SemanticFrameToPrompt.kt
-coherence/CoherenceGuard.kt
+branch = mip-evidence-contracts-v1
+base = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
+PR = #12
+task-start continuity = 9bc0545a392f0875f3ede6509b2b384b91f8a455
+other repos modified = false
 ```
 
-## Canonical MIP state
-
-`docs/MATRIX_INTERMODULE_PROTOCOL.md` = `MIP-1.0`.
-
-Canonical bridge:
-
-`src/main/kotlin/matrix/assembling/mip/MipBridge.kt`
-
-MIP field states:
+### Functional checkpoints
 
 ```text
-PRESENT
-NOT_APPLICABLE
-UNKNOWN
-UNRESOLVED
-AMBIGUOUS
-CONFLICTED
-UNAVAILABLE
-NO_MATCH
-ERROR
+402b6611daa4b0a7804f176e99135752f555b684
+= add src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt
+
+b237e1e22b98f480eaf39e7fcb108715855592e4
+= add src/main/kotlin/matrix/assembling/mip/MipEvidenceWire.kt
+
+43858f686ba383bc7fa79e3a40f811b021ef69e1
+= add src/test/kotlin/matrix/assembling/mip/MipEvidenceContractsTest.kt
 ```
 
-Authority contradiction mapping is fail-closed. Python arbitrary integer -> Kotlin Long uses checked range conversion.
-
-Hard distinctions remain:
+Shared types:
 
 ```text
-TypedClaim != Belief != Memory
-Memory != State != Context
-Relationship != Affective != Intimacy
-SexualInterest != CurrentDesire != Consent
-Contradiction != Supersession
-InterpretationConfidence != SourceReliability != Authority != BeliefConfidence != RetrievalRelevance
-```
-
-Roles remain distinct: speaker, observer, source, subject, target, owner, perspective.
-
-## AUTHORITY-1.0 contract freeze — COMPLETE
-
-Canonical file:
-
-`docs/MIP_AUTHORITY_CONTRACT.md`
-
-```text
-contract = MIP-1.0 / AUTHORITY-1.0
-status = FROZEN
-contract commit = a3c7bf9bb4cd01f8032fd32c4e3f4ce3dc293f9b
-freeze continuity = 9210773030afc96f631d0e0c0a3a669bf6a6c2f5
-PR #10 merge = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
-post-merge CI = 33952808037 SUCCESS
-```
-
-Frozen boundary:
-
-```text
-TypedClaim
--> Authority Resolver
--> AuthorityResolution
--> Memory Admission
--> MemoryRepository
-```
-
-Authority may read evidence but never writes Memory and never owns SAVE/SUPERSEDE/REJECT/IGNORE.
-
-Frozen `EpistemicClass`:
-
-```text
-WORLD_TRUTH
-OBSERVATION
-REPORT
-INFERENCE
-BELIEF
-```
-
-Frozen `AuthorityResolutionStatus`:
-
-```text
-COMPLETE
-PARTIAL
-HOLD
-UNAVAILABLE
-ERROR
-```
-
-Authority, AuthorityResolutionConfidence, SourceReliability, BeliefConfidence and RetrievalRelevance remain separate.
-
-Concrete contradiction identity requires:
-
-1. candidate exists;
-2. candidate is VALID;
-3. same resolved semantic slot;
-4. same normalized predicate;
-5. compatible/overlapping temporal scope or same relevant event;
-6. truly incompatible value/target/polarity;
-7. one uniquely safe target.
-
-Same actor/entity mention, different text, lexical similarity or confidence/authority rank alone never proves contradiction. Temporal change is not contradiction by default. Correction is strong candidate evidence but not automatic contradiction/supersession.
-
-Historical Python Authority material remains oracle/compatibility evidence only. MIP owns the canonical contract. Current root `AuthorityDecision` remains compatibility-only. `BasicAuthorityResolver` remains a conservative placeholder and does not perform semantic contradiction detection.
-
-## Kotlin Authority contract value types — COMPLETE / INTEGRATED
-
-Phase branch:
-
-`authority-kotlin-contracts-v1`
-
-Phase base:
-
-`bf8ef4aadcc6a73e85e920968a926bf4b838a0fa`
-
-PR:
-
-`#11`
-
-Merge SHA:
-
-`b87dadf376300587511a7dbce594b0fe88695798`
-
-Files introduced:
-
-```text
-src/main/kotlin/matrix/assembling/authority/AuthorityTypes.kt
-src/test/kotlin/matrix/assembling/authority/AuthorityTypesTest.kt
-```
-
-Kotlin types now present:
-
-```text
-EpistemicClass
-AuthorityResolutionStatus
-AuthorityResolutionConfidence
-SourceReliability
-MemoryRef
-AuthorityReasonCode
-```
-
-Properties:
-
-- exact AUTHORITY-1.0 enum vocabulary;
-- confidence wrappers normalized `[0,1]` and reject NaN/out-of-range values;
-- MemoryRef is opaque/nonblank, not a numeric protocol type;
-- frozen `AUTHORITY.*` reason codes centralized;
-- no resolver/business logic;
-- no Memory access;
-- no semantic contradiction algorithm;
-- no Context/Retrieval/Provenance duplicates;
-- no MipBridge/root DTO/orchestrator migration.
-
-### Test history
-
-Initial new-test gate:
-
-```text
-CI 33953927557
-compile = PASS
-53 tests = 1 FAIL
-failure = Authority reason-code count expected 18 but frozen contract contains 19
-```
-
-This was a test-only counting error. Contract/runtime constants were NOT changed to force a pass.
-
-Test-only correction commit:
-
-`831229d9bb77728782ffb84e60a4cfc5f3567c55`
-
-Correction:
-
-```text
-expected reason-code count 18 -> 19
-```
-
-Subsequent green PR gates:
-
-```text
-33954038866 = SUCCESS
-33954114182 = SUCCESS on final PR head
-```
-
-Post-merge main gate:
-
-```text
-33954180260 = SUCCESS
-```
-
-Continuity-finalization commit before this update:
-
-`faf03c0d50e216e4ed8d8e1ada364f9125163d33`
-
-CI for that continuity checkpoint:
-
-```text
-33954269908 = SUCCESS
-```
-
-No gate was lowered and no pre-existing test was modified to hide a runtime failure.
-
-## Shared MIP evidence types — NEXT, NOT STARTED
-
-AUTHORITY-1.0 needs universal shared runtime evidence types that still do not exist:
-
-```text
-MatrixContextSnapshot / ContextEntry
-RetrievalQuery / RetrievalResult
+ModuleId
 ProvenanceRef
+ContextDomain
+ContextScope
+DomainAvailability
+ContextDomainAvailability
+TypedContextValue
+ContextEntry
+MatrixContextSnapshot
+RetrievalPurpose
+RetrievalStatus
+RetrievalQuery
+RetrievalScore
+RetrievalResult
 ```
 
-These must be implemented as shared MIP runtime contracts, NOT as Authority-private substitutes.
+Key invariants implemented:
 
-Because they are not implemented yet, the following remain intentionally deferred:
+- shared types live only in existing MIP package;
+- all reserved domains declare availability exactly once;
+- NOT_WIRED/UNAVAILABLE/ERROR domains cannot carry fake context entries;
+- immutable snapshot lineage uses explicit IDs; parent cannot equal current snapshot;
+- optional provenance states use MipField;
+- normalized finite context/retrieval confidence;
+- includeSuperseded requires includeHistorical;
+- selected refs subset candidates;
+- retrieval score identity is ref-bound;
+- MATCHED requires evidence;
+- NO_MATCH cannot carry candidate evidence;
+- AMBIGUOUS requires >=2 candidates;
+- INDEX_UNAVAILABLE/ERROR cannot carry fake candidates;
+- NO_MATCH != INDEX_UNAVAILABLE != ERROR structurally and across wire round-trip.
+
+Wire codec:
+
+- reflection-free primitive maps/lists;
+- Provenance, Context snapshot/entries, Retrieval query/result round trips;
+- explicit MipField status preservation;
+- malformed values/unknown enums/bad timestamps fail closed;
+- ISO-8601 Instant timestamps;
+- no second bridge/protocol introduced.
+
+Test coverage includes vocabulary, round trips, domain availability, fake-content rejection, retrieval status distinctions, superseded/history constraints, malformed PRESENT fields, unknown enum rejection, normalized score validation and selected-ref integrity.
+
+### PR / CI evidence
+
+PR #12 opened from verified four-file diff only:
 
 ```text
-AuthorityResolveRequest runtime DTO
-full AuthorityResolution runtime DTO
-real AuthorityResolver
-semantic contradiction algorithm
+docs/WORK_CONTINUITY.md
+src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt
+src/main/kotlin/matrix/assembling/mip/MipEvidenceWire.kt
+src/test/kotlin/matrix/assembling/mip/MipEvidenceContractsTest.kt
 ```
 
-Next bounded task should therefore be:
+Green full-suite gate on PR head `7857b268e2b2ce78ce40b3ba300733b9e793acea`:
 
 ```text
-SHARED MIP EVIDENCE CONTRACT TYPES ONLY
+CI run = 33955741385
+job = kotlin-tests
+Run tests = SUCCESS
+job conclusion = SUCCESS
 ```
 
-Scope of that future task:
+No task-introduced failure required repair.
 
-- define minimal runtime `MatrixContextSnapshot`/`ContextEntry` contract types required by existing MIP semantics;
-- define minimal `RetrievalQuery`/`RetrievalResult` contract types required by Authority and future modules;
-- define shared `ProvenanceRef` runtime type;
-- add structural/serialization/fail-closed tests;
-- no retrieval engine;
-- no Memory implementation;
-- no Authority resolver/business logic;
-- no orchestrator rewiring.
-
-Only after that checkpoint may Assembling implement:
-
-```text
-AuthorityResolveRequest
-AuthorityResolution
-AuthorityResolver
-```
+This continuity update is documentation-only and creates the final pre-merge head. Merge remains forbidden until the CI for that final head is also green.
 
 ## Explicitly NOT IMPLEMENTED
 
 ```text
+retrieval engine
+Memory Kotlin/Room
 real AuthorityResolver
 semantic contradiction algorithm
-AuthorityResolveRequest runtime
+AuthorityResolveRequest runtime DTO
 full AuthorityResolution runtime DTO
-MatrixContextSnapshot runtime
-ContextEntry runtime
-RetrievalQuery/Result runtime
-ProvenanceRef runtime
+PersistentConsolidation
 MipBridge final Authority migration
 root AuthorityDecision migration
-Memory Kotlin/Room
-PersistentConsolidation
+orchestrator rewiring
 Relationship
 Reflection
 BDI/Decision
@@ -310,26 +154,22 @@ Android integration
 real GGUF bridge
 ```
 
-Other repositories modified:
-
-`false`
-
-## STOP / exact restart point
+## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
-branch = main
-integrated Authority types merge = b87dadf376300587511a7dbce594b0fe88695798
-post-merge Authority CI = 33954180260 SUCCESS
-previous continuity checkpoint = faf03c0d50e216e4ed8d8e1ada364f9125163d33
-previous continuity CI = 33954269908 SUCCESS
+branch = mip-evidence-contracts-v1
+PR = #12
+base = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
+last green tested head before continuity update = 7857b268e2b2ce78ce40b3ba300733b9e793acea
+CI = 33955741385 SUCCESS
 AUTHORITY-1.0 = FROZEN
 Kotlin Authority value types = COMPLETE / INTEGRATED / TESTED
+shared MIP evidence contracts = IMPLEMENTED / TESTED GREEN
 real AuthorityResolver = NOT_STARTED
-shared Context/Retrieval/Provenance runtime = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = SHARED MIP EVIDENCE CONTRACT TYPES ONLY
+NEXT = VERIFY FINAL DOC-ONLY PR HEAD CI; MERGE PR #12 ONLY IF GREEN; THEN VERIFY MAIN CI + FINALIZE CONTINUITY
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, or Kotlin Authority value-type work.
