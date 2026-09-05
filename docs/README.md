@@ -33,6 +33,21 @@ It defines terms shared across modules such as:
 
 Module repositories may implement or extend their own internal details, but their public Matrix boundary must conform to the applicable MIP version and must not redefine shared terms independently.
 
+## MIP adapter implementation status
+
+`src/main/kotlin/matrix/assembling/mip/MipBridge.kt` is the explicit adapter-only implementation candidate for translating existing native DTOs to/from MIP-1.0.
+
+Its compatibility audit is:
+
+`docs/MIP_BRIDGE_COMPATIBILITY_AUDIT.md`
+
+Hard rules:
+- MIP Bridge does not replace module-owned DTOs;
+- no business logic belongs in MIP Bridge;
+- mappings are explicit, never reflection/magic;
+- lossy conversion fails explicitly rather than silently dropping data;
+- the current orchestrator is not rewired to the bridge by this checkpoint.
+
 ## Document classes
 
 ### CANONICAL / CURRENT
@@ -46,6 +61,7 @@ Module repositories may implement or extend their own internal details, but thei
 - `docs/WORK_CONTINUITY.md`
 
 ### AUDIT / EVIDENCE
+- `docs/MIP_BRIDGE_COMPATIBILITY_AUDIT.md`
 - `docs/COMPONENT_MAPPING_AUDIT_2026-09-04.md`
 - `docs/IMPORTED_COMPONENTS.md`
 
@@ -69,7 +85,7 @@ Rules:
 - changing the active repository requires an explicit user instruction;
 - if a project-wide decision affects other repositories, record the dependency/action needed in the current repository continuity/backlog and apply it only when that repository becomes the active work target.
 
-Current temporary active repository for the universal-protocol clarification workstream: `MATRIXNEO23/assembling`.
+Current temporary active repository for the universal-protocol clarification/bridge workstream: `MATRIXNEO23/assembling`.
 
 This temporary architecture checkpoint does not authorize implementation work in `memoria`, NLU, Affective, Relationship or other repositories.
 
