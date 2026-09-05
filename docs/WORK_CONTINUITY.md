@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:00+02:00  
+Last updated: 2026-09-05T10:03+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-kotlin-contracts-v1`  
-Continuity schema: `matrix.assembling.continuity.v24`
+Continuity schema: `matrix.assembling.continuity.v25`
 
 ## Mandatory continuity policy
 
@@ -24,7 +24,7 @@ gate/test weakening = forbidden
 
 Other repositories remain read-only.
 
-## Stable completed baseline
+## Stable baseline
 
 ```text
 cleanup start = ef433a3aed519b31efe9289a8df78ed974170510
@@ -35,12 +35,10 @@ cleanup docs PR #9 merge = afc5cd7e535dc08d09455339a056c71ba5dc6ea2
 cleanup final CI = 33951808519 SUCCESS
 ```
 
-MIP cleanup/inventory/contract-map/legacy quarantine/round-trip gates are complete. No files were moved/renamed/deleted.
-
-Canonical protocol: `docs/MATRIX_INTERMODULE_PROTOCOL.md` = MIP-1.0.
+Canonical protocol: `docs/MATRIX_INTERMODULE_PROTOCOL.md` = MIP-1.0.  
 Canonical bridge: `src/main/kotlin/matrix/assembling/mip/MipBridge.kt`.
 
-MIP keeps explicit field states:
+MIP field states remain:
 
 ```text
 PRESENT
@@ -54,7 +52,7 @@ NO_MATCH
 ERROR
 ```
 
-Authority contradiction mapping remains fail-closed; Python arbitrary integer -> Kotlin Long remains range checked.
+Authority contradiction mapping remains fail-closed; Python arbitrary int -> Kotlin Long remains range checked.
 
 ## AUTHORITY-1.0 freeze — COMPLETE
 
@@ -76,43 +74,31 @@ TypedClaim -> Authority Resolver -> AuthorityResolution -> Memory Admission -> M
 
 Authority never writes Memory and never owns SAVE/SUPERSEDE/REJECT/IGNORE.
 
-Frozen `EpistemicClass`:
+Frozen enums:
 
 ```text
-WORLD_TRUTH
-OBSERVATION
-REPORT
-INFERENCE
-BELIEF
+EpistemicClass = WORLD_TRUTH, OBSERVATION, REPORT, INFERENCE, BELIEF
+AuthorityResolutionStatus = COMPLETE, PARTIAL, HOLD, UNAVAILABLE, ERROR
 ```
 
-Frozen `AuthorityResolutionStatus`:
+Authority/confidence/source reliability/belief confidence/retrieval relevance remain separate.
+Concrete contradiction identity requires a VALID same-slot candidate, same normalized predicate, compatible temporal scope, actual incompatible value/target/polarity and one unique safe target. Same actor/entity or different text alone is insufficient.
 
-```text
-COMPLETE
-PARTIAL
-HOLD
-UNAVAILABLE
-ERROR
-```
-
-Authority/confidence/source reliability/belief confidence/retrieval relevance remain separate concepts.
-Concrete contradiction identity requires a VALID same-slot candidate, same normalized predicate, compatible temporal scope, actual incompatible value/target/polarity and one uniquely safe target. Shared actor/entity/text difference alone is insufficient.
-
-Historical Python Authority material is compatibility/oracle evidence only; MIP owns semantics. Current root `AuthorityDecision` is compatibility-only. `BasicAuthorityResolver` remains a placeholder without semantic contradiction detection.
+Historical Python Authority material remains oracle/compatibility evidence only. MIP owns semantics. Current root `AuthorityDecision` remains compatibility-only. `BasicAuthorityResolver` remains a placeholder without semantic contradiction detection.
 
 ## Current phase — Kotlin Authority contract types only
 
 ```text
 branch = authority-kotlin-contracts-v1
 phase base/main = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
+PR = #11
 resolver = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 orchestrator rewiring = false
 other repositories modified = false
 ```
 
-Shared runtime dependencies intentionally remain absent:
+Shared runtime dependencies remain intentionally absent:
 
 ```text
 MatrixContextSnapshot = NOT_IMPLEMENTED
@@ -130,7 +116,7 @@ No Authority-private replacements may be invented. `AuthorityResolveRequest` and
 
 Functional commit: `177cf9db9031f5416d01399318df01c788275f43`
 
-Added `src/main/kotlin/matrix/assembling/authority/AuthorityTypes.kt` with only:
+Added `src/main/kotlin/matrix/assembling/authority/AuthorityTypes.kt` containing only:
 
 ```text
 EpistemicClass
@@ -149,55 +135,24 @@ Continuity checkpoint: `8f399ec430c1f1ecbe518b5620bd03152f842b3c`.
 
 Functional commit: `0f4c719d26b28f206f71bb797e84e8fa724acbf8`
 
-Added `src/test/kotlin/matrix/assembling/authority/AuthorityTypesTest.kt`.
-
-Tests cover exact enum vocabularies, confidence range + NaN rejection, SourceReliability range, opaque/nonblank MemoryRef and frozen AUTHORITY reason-code namespace.
+Added `src/test/kotlin/matrix/assembling/authority/AuthorityTypesTest.kt` for exact enum vocabulary, normalized confidence ranges + NaN rejection, SourceReliability, MemoryRef and frozen AUTHORITY reason-code namespace.
 
 Continuity checkpoint: `e0b0c6b8eb62a0f3ed2d44bb67e6db453a964c7e`.
 
-### Checkpoint 3 — PR opened / scope verified
+### Checkpoint 3 — PR/scope
 
-PR #11 opened against main.
+PR #11 opened. Verified changed paths were only continuity + new Authority type/test files. Continuity commit: `d1f329b8e06cf622b9f727a448c91f3ec9b968c7`.
 
-PR head before continuity update: `e0b0c6b8eb62a0f3ed2d44bb67e6db453a964c7e`.
+### Checkpoint 4 — first full CI failure
 
-Changed paths verified:
-
-```text
-docs/WORK_CONTINUITY.md
-src/main/kotlin/matrix/assembling/authority/AuthorityTypes.kt
-src/test/kotlin/matrix/assembling/authority/AuthorityTypesTest.kt
-```
-
-No unrelated runtime or other repository file changed.
-
-Continuity commit: `d1f329b8e06cf622b9f727a448c91f3ec9b968c7`.
-
-### Checkpoint 4 — first full CI gate FAILED
-
-CI run:
-
-`33953927557`
-
-Result at `Run tests`:
+CI run `33953927557` compiled successfully but `Run tests` failed:
 
 ```text
-53 tests completed
-1 failed
-AuthorityTypesTest > frozenReasonCodesRemainInAuthorityNamespaceWithoutDuplicates()
-line = AuthorityTypesTest.kt:59
+53 tests completed, 1 failed
+AuthorityTypesTest.frozenReasonCodesRemainInAuthorityNamespaceWithoutDuplicates
 ```
 
-Compilation succeeded. Existing deprecation warnings are pre-existing compatibility warnings.
-
-Root cause identified from the new test/contract constants:
-
-```text
-frozen AUTHORITY-1.0 reason codes actually present = 19
-new test expected = 18
-```
-
-Count breakdown:
+Root cause: the new test expected 18 frozen AUTHORITY-1.0 reason codes, but the frozen set contains 19:
 
 ```text
 5 RESOLVED
@@ -210,26 +165,28 @@ Count breakdown:
 = 19
 ```
 
-Therefore:
+This was a new-test counting error, not a runtime/contract failure. No gate was lowered. Failure continuity commit: `290b9c9b6f0f8a447b1fbe979639edbdd14c11b7`.
+
+### Checkpoint 5 — test-only correction
+
+Commit:
+
+`831229d9bb77728782ffb84e60a4cfc5f3567c55`
+
+Only change:
 
 ```text
-contract implementation = not disproven
-new test assertion = incorrect
-fix scope = test-only expected count 18 -> 19
-no production/runtime change required
-no gate lowering allowed
+AuthorityTypesTest expected frozenV1 size: 18 -> 19
 ```
 
-Do NOT merge PR #11 in failed state.
+No production/runtime file changed. Contract constants were not altered to satisfy the test.
 
-## Immediate next action
+Current next action:
 
 ```text
-change only AuthorityTypesTest expected frozenV1 size from 18 to 19
-commit fix
-update continuity
-rerun full CI
-merge only if all tests green
+rerun full PR #11 CI on latest head
+if green: checkpoint CI, merge, verify post-merge main CI, checkpoint continuity, STOP before next phase
+if failure: diagnose only actual phase regression, checkpoint continuity, no merge
 ```
 
 ## Explicitly NOT IMPLEMENTED
@@ -261,8 +218,9 @@ repo = MATRIXNEO23/assembling
 branch = authority-kotlin-contracts-v1
 PR = #11
 phase base = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
-last CI = 33953927557 FAILED due new-test count assertion only
-next action = fix AuthorityTypesTest expected 18 -> 19
+last functional commit = 831229d9bb77728782ffb84e60a4cfc5f3567c55
+last failed CI = 33953927557 (test count assertion only)
+current action = inspect latest PR CI after test-only fix
 resolver = NOT_STARTED
 other repos = READ-ONLY
 ```
