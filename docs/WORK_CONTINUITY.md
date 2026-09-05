@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:44+02:00  
+Last updated: 2026-09-05T10:47+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-runtime-dtos-v1`  
-Continuity schema: `matrix.assembling.continuity.v36`
+Continuity schema: `matrix.assembling.continuity.v37`
 
 ## Mandatory continuity policy
 
@@ -69,46 +69,42 @@ Hard evidence invariants include domain availability completeness, no fake conte
 
 ## ACTIVE TASK — AUTHORITY RUNTIME DTO BINDING ONLY
 
-Branch:
-
-`authority-runtime-dtos-v1`
-
-Base/start HEAD:
-
-`8dc6643e73c3ce6e569173a4922ec3a01e77e0ff`
-
-Pre-task CI:
-
-`33955971985 = SUCCESS`
-
-Task scope:
-
-- implement canonical `AuthorityResolveRequest` using MIP claim + shared `MatrixContextSnapshot` + explicit retrieval evidence state + `ProvenanceRef`;
-- implement canonical `AuthorityResolution` using frozen AUTHORITY-1.0 value types;
-- preserve contradiction identity/status without nullable collapse;
-- add explicit primitive wire round-trip support using existing MIP evidence codec rather than creating a second intermodule bridge;
-- add structural and fail-closed tests;
-- keep runtime DTOs in dedicated `matrix.assembling.authority` package;
-- no resolver algorithm;
-- no semantic contradiction detection;
-- no Memory access/write/admission;
-- no root `AuthorityDecision` migration;
-- no final `MipBridge` migration;
-- no orchestrator rewiring;
-- no writes to other repositories.
-
-Design decisions for this checkpoint:
-
 ```text
-request claim type = existing canonical MIP runtime claim (`MipClaimV1`)
-retrieval evidence absence/state = explicit `MipField<RetrievalResult>`, not nullable
-retrieval NO_MATCH = PRESENT RetrievalResult(status=NO_MATCH), not field-level nullable absence
-AuthorityResolution contradiction identity = MipField<MemoryRef>
-candidate memories = opaque MemoryRef list
-reason codes = AUTHORITY.* observable codes only
+branch = authority-runtime-dtos-v1
+base = 8dc6643e73c3ce6e569173a4922ec3a01e77e0ff
+pre-task CI = 33955971985 SUCCESS
+task-start continuity = 6e76d3c5430f326cf419937c3baf3703e0b0ed4f
+other repos modified = false
 ```
 
-Expected `AuthorityResolveRequest` contract:
+Task boundaries:
+
+- canonical request/result DTO binding only;
+- no resolver algorithm;
+- no semantic contradiction detection;
+- no Memory read/write/admission;
+- no root AuthorityDecision migration;
+- no final MipBridge migration;
+- no orchestrator rewiring.
+
+### Checkpoint 1 — canonical Authority runtime DTOs added
+
+Functional commit:
+
+`9f5b227de80c5f276eb029b64c1c563c1fbed6cd`
+
+File:
+
+`src/main/kotlin/matrix/assembling/authority/AuthorityContracts.kt`
+
+Types added:
+
+```text
+AuthorityResolveRequest
+AuthorityResolution
+```
+
+`AuthorityResolveRequest` fields:
 
 ```text
 requestId
@@ -118,7 +114,16 @@ retrievalResult: MipField<RetrievalResult>
 provenance: ProvenanceRef
 ```
 
-Expected `AuthorityResolution` contract:
+Request decisions/invariants:
+
+- reuses existing MIP claim DTO; no second TypedClaim model;
+- retrieval evidence is explicit `MipField`, never nullable;
+- field-level `NO_MATCH` / `AMBIGUOUS` / `CONFLICTED` are rejected because those are result-level retrieval states when retrieval actually ran;
+- allowed retrieval field states are PRESENT / NOT_APPLICABLE / UNKNOWN / UNRESOLVED / UNAVAILABLE / ERROR;
+- `PRESENT RetrievalResult(status=NO_MATCH)` is the canonical successful-no-result representation;
+- if request provenance explicitly contains claimId, it must equal `claim.claimId`.
+
+`AuthorityResolution` fields:
 
 ```text
 resolutionId
@@ -136,18 +141,30 @@ reasonCodes[]
 provenance
 ```
 
-Fail-closed target invariants:
+Resolution invariants:
 
 - IDs nonblank;
-- request claim/context IDs must be coherent with request provenance when explicitly referenced;
-- candidate refs unique;
-- reason/ambiguity lists nonblank and duplicate-free;
-- every reason code must use AUTHORITY.* namespace;
-- concrete contradictedMemoryRef must be among candidateMemoryRefs;
-- AMBIGUOUS contradiction state requires >=2 candidates;
-- NO_MATCH contradiction state cannot carry candidates;
-- COMPLETE requires authority + authorityResolutionConfidence PRESENT and contradiction assessment completed as PRESENT or NOT_APPLICABLE;
-- no DTO state means persistence approval.
+- candidate MemoryRefs unique;
+- ambiguity reasons and reason codes nonblank/duplicate-free;
+- every reason code must be `AUTHORITY.*`;
+- explicit provenance claimId must match resolution claimId;
+- PRESENT contradictedMemoryRef must appear in candidateMemoryRefs;
+- AMBIGUOUS contradictedMemoryRef requires at least two candidate refs;
+- NO_MATCH contradictedMemoryRef cannot carry candidates;
+- COMPLETE requires authority=PRESENT;
+- COMPLETE requires authorityResolutionConfidence=PRESENT;
+- COMPLETE requires contradiction assessment state PRESENT or NOT_APPLICABLE;
+- COMPLETE is still not persistence/admission authorization.
+
+### Current validation state
+
+```text
+DTO code = ADDED / NOT YET CI-VALIDATED
+MipClaimV1 wire support = NEXT
+Authority request/result wire codec = NEXT
+contract/fail-closed tests = NEXT
+full regression CI = NOT YET RUN ON CURRENT TASK
+```
 
 ## Explicitly NOT IMPLEMENTED
 
@@ -169,24 +186,21 @@ Android integration
 real GGUF bridge
 ```
 
-Other repositories modified:
-
-`false`
-
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
 branch = authority-runtime-dtos-v1
 base = 8dc6643e73c3ce6e569173a4922ec3a01e77e0ff
+last functional commit = 9f5b227de80c5f276eb029b64c1c563c1fbed6cd
 AUTHORITY-1.0 = FROZEN
 Kotlin Authority value types = COMPLETE / INTEGRATED / TESTED
 shared MIP evidence contracts = COMPLETE / INTEGRATED / TESTED
-Authority runtime DTO task = STARTED / NO DTO CODE YET
+Authority runtime DTOs = CODE ADDED / UNTESTED
 real AuthorityResolver = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = IMPLEMENT AUTHORITY DTOs + MIP CLAIM WIRE SUPPORT + CONTRACT TESTS
+NEXT = EXTEND EXISTING MIP EVIDENCE WIRE WITH MipClaimV1 ROUND-TRIP, THEN AUTHORITY DTO WIRE + TESTS
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, Kotlin Authority value types, or shared MIP evidence contracts.
