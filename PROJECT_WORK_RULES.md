@@ -1,7 +1,7 @@
 # Regole canoniche di lavoro
 
 Stato: CANONICO
-Data: 2026-09-04
+Data: 2026-09-05
 
 ## Una repository alla volta
 
@@ -13,6 +13,31 @@ Salvo indicazione esplicita del proprietario, si lavora su una sola repository a
 - Il cambio di repository attiva richiede istruzione esplicita.
 - Se una modifica di un componente richiede aggiornamenti di codice, test, documentazione o continuità nella repository attiva, tali aggiornamenti vanno mantenuti coerenti nello stesso workstream.
 - Non creare specifiche parallele quando esiste già un documento canonico aggiornabile.
+
+## Nuovi moduli = directory/package dedicata
+
+Ogni nuovo modulo funzionale introdotto nella repository deve vivere in una propria directory/package dedicata.
+
+Regola:
+
+```text
+NEW FUNCTIONAL MODULE
+→ dedicated directory/package
+```
+
+Esempi corretti:
+
+```text
+matrix/assembling/mip/
+matrix/assembling/adapters/
+matrix/assembling/coherence/
+```
+
+Per futuri moduli, usare analogamente directory/package dedicate (`context/`, `retrieval/`, `diagnostics/`, ecc.) quando e solo quando tali moduli vengono esplicitamente autorizzati.
+
+Non aggiungere nuovi moduli come file scollegati direttamente nel root `matrix/assembling`.
+
+Questa regola è prospettica: i file runtime root già esistenti non vengono spostati solo per estetica. Move/rename è consentito solo quando riduce un'ambiguità reale, mantiene compatibilità verificabile e supera i gate di regressione.
 
 ## Repository storiche = backup
 
