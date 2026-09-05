@@ -110,14 +110,7 @@ private fun <T> Map<String, Any?>.claimRequireField(
     decode: (Any?) -> T?,
 ): MipField<T> {
     val raw = claimRequireObject(key)
-    val status = raw.claimRequireEnum("status", MipFieldStatus::valueOf)
-    val rawValue = raw["value"]
-    if (status == MipFieldStatus.PRESENT) {
-        val value = decode(rawValue) ?: throw MipContractException("claim.$key.value missing or wrong type")
-        return MipField.present(value)
-    }
-    if (rawValue != null) throw MipContractException("claim.$key has value while status=$status")
-    return MipField(status)
+    return raw.claimRequireFieldSelf(decode)
 }
 
 private fun Map<String, Any?>.claimRequireDoubleMap(key: String): Map<String, Double> {
@@ -154,7 +147,7 @@ private fun Map<String, Any?>.claimRequireFieldMap(key: String): Map<String, Mip
     return raw.mapValues { (name, value) ->
         val encoded = value.claimAsStringAnyMapOrNull()
             ?: throw MipContractException("claim.$key.$name must be an object")
-        encoded.claimRequireField("valueField") { it as? String }
+        encoded.claimRequireFieldSelf { it as? String }
     }
 }
 
