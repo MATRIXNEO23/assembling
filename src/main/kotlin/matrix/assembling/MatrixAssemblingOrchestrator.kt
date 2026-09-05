@@ -4,18 +4,18 @@ package matrix.assembling
  * Integration orchestrator for Matrix/Luna components.
  *
  * All modules communicate through MatrixTurnFrame. Concrete implementations may
- * live in separate repositories and are connected through adapters implementing
- * IntegrationPorts.kt.
+ * live in separate repositories and are connected through public ports.
  */
 class MatrixAssemblingOrchestrator(
     private val nlu: NluPort,
     private val understanding: UnderstandingPort,
     private val coherence: CoherenceGuardPort,
     private val authority: AuthorityResolverPort,
-    private val memory: MemoryAdmissionPort,
+    private val memory: MemoryPreflightPort,
     private val affective: AffectivePort,
     private val promptBuilder: SemanticFrameToPromptPort,
     private val gguf: GgufPort,
+    private val outputValidator: OutputValidatorPort? = null,
 ) {
     fun handle(input: UserMessage, turnId: String, sessionId: String): AssistantReply {
         val initial = MatrixTurnFrame(
@@ -38,11 +38,12 @@ class MatrixAssemblingOrchestrator(
             .let(understanding::understand)
             .let(coherence::check)
             .let(authority::resolve)
-            .let(memory::admit)
+            .let(memory::evaluate)
             .let(::enforcePreResponseMemoryBoundary)
             .let(affective::update)
             .let(promptBuilder::buildPrompt)
             .let(gguf::generate)
+            .let(::validateOutputOrMarkNotWired)
             .let { completed -> completed.copy(diagnostics = completed.diagnostics.add("turn.completed")) }
     }
 
@@ -71,6 +72,26 @@ class MatrixAssemblingOrchestrator(
             diagnostics = turn.diagnostics
                 .reason("MEMORY_PRE_RESPONSE_BOUNDARY_OK")
                 .add("memory.pre_response_boundary.ok"),
+        )
+    }
+
+    private fun validateOutputOrMarkNotWired(turn: MatrixTurnFrame): MatrixTurnFrame {
+        val validator = outputValidator
+        if (validator != null) {
+            return validator.validate(turn).let { validated ->
+                validated.copy(
+                    diagnostics = validated.diagnostics
+                        .reason("OUTPUT_VALIDATOR_EXECUTED")
+                        .add("output.validation.executed")
+                        .tag("output.validation", "EXECUTED"),
+                )
+            }
+        }
+        return turn.copy(
+            diagnostics = turn.diagnostics
+                .reason("OUTPUT_VALIDATOR_NON_CABLATO")
+                .add("output.validation.non_cablato")
+                .tag("output.validation", "NON_CABLATO"),
         )
     }
 }
