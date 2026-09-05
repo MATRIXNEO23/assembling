@@ -1,57 +1,67 @@
 # Memory integration status
 
-Status: `NOT_IMPLEMENTED_YET / PORT_ONLY`
+Status: `NOT_IMPLEMENTED_YET / PREFLIGHT_ONLY`
 
-The assembling repository does not currently contain the real Matrix memory
-system. Memory is represented only by an integration port and a no-persistent
-adapter so the rest of the pipeline can be connected and smoke-tested without
-pretending that durable memory exists.
+The assembling repository does not currently contain the real Matrix Long-Term
+Memory system. The current memory boundary is a non-persistent preflight used to
+keep the canonical pipeline testable without pretending that durable storage
+exists.
 
 ## Current truth
 
-- Real persistent memory: not implemented here yet.
-- Memory Foundation repository: external work item, expected from
-  `MATRIXNEO23/memoria` or a future imported module.
-- Current assembling behavior: no stable database write, no real recall, no
-  supersede lineage, no Room/SQLite persistence.
-- Current memory adapter purpose: preserve the module boundary and prevent NLU,
-  Affective Engine or GGUF from writing memory directly.
+- Real persistent memory: not connected.
+- Real Memory Admission SAVE/SUPERSEDE: not connected.
+- Real recall/retrieval: not connected.
+- Supersede lineage and atomic repository transaction: not executed here.
+- Current pre-response contract: `MemoryPreflightPort`.
+- Future post-validation write contract: `PersistentConsolidationPort`.
 
-## Allowed temporary behavior
+## Current behavior
 
-Until Memory Foundation exists, the assembling layer may use
-`NoPersistentMemoryAdmission`:
+`NoPersistentMemoryAdmission` and `BasicMemoryAdmission` are compatibility-named
+preflight adapters. They:
 
-- it returns `PROVISIONAL_CLAIM` or `REJECTED`;
-- it never returns real memory IDs;
-- it never writes stable memory;
-- it allows Affective and Prompt Builder integration to be tested safely;
-- it records diagnostics showing memory persistence is disabled.
+- return `PROVISIONAL_CLAIM`, `NO_MEMORY_BACKEND`, or `REJECTED`;
+- always return `stableWrite=false`;
+- always return an empty `memoryIds` list;
+- never call a MemoryRepository;
+- expose the decision in `DiagnosticTrace`;
+- mark the actual durable-memory stage `NOT_EXECUTED`.
+
+The orchestrator rejects any preflight result that attempts:
+
+```text
+stableWrite=true
+or
+memoryIds not empty
+```
+
+with:
+
+```text
+firstDivergence = MEMORY_PREFLIGHT.UNAUTHORIZED_STABLE_WRITE
+```
 
 ## Required future replacement
 
-The temporary adapter must later be replaced by a real memory component exposing
-this behavior:
+After output validation, a real consolidation adapter must connect:
 
 ```text
-MemoryAdmissionPort
-→ validates CoherenceDecision + AuthorityDecision
-→ writes only admitted claims
-→ stores provenance
-→ supports RAW / PROVISIONAL / ADMITTED / SUPERSEDED / REJECTED
-→ supports validAt / invalidAt / supersedesId
-→ supports recall/search for prompt context
-→ never allows GGUF direct writes
+resolved TypedClaim / AuthorityResolution
+→ Memory Admission
+→ MemoryRepository public API
+→ atomic commit or rollback
 ```
+
+It must support provenance, validity, conflicts and supersession lineage. It
+must not turn the existing pre-response preflight into a write path.
 
 ## Integration rule
 
-The assembling pipeline may proceed with placeholder memory for end-to-end
-wiring, but any build using it must be marked:
+The current pipeline may proceed for wiring and smoke tests, but every build
+using this state remains:
 
 ```text
 MEMORY_PERSISTENCE_DISABLED
 NOT_PRODUCTION_APPROVED
 ```
-
-This avoids confusing a smoke-test pipeline with a real cognitive memory system.
