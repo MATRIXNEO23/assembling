@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:22+02:00  
+Last updated: 2026-09-05T10:26+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `mip-evidence-contracts-v1`  
-Continuity schema: `matrix.assembling.continuity.v31`
+Continuity schema: `matrix.assembling.continuity.v32`
 
 ## Mandatory continuity policy
 
@@ -61,7 +61,7 @@ other repos modified = false
 
 ### Checkpoint 1 — shared evidence contracts
 
-Functional commit:
+Commit:
 
 `402b6611daa4b0a7804f176e99135752f555b684`
 
@@ -69,7 +69,7 @@ File:
 
 `src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt`
 
-Types added:
+Types:
 
 ```text
 ModuleId
@@ -88,27 +88,21 @@ RetrievalScore
 RetrievalResult
 ```
 
-Key invariants:
+Key structural invariants:
 
-- shared types live only in existing `matrix.assembling.mip`;
 - every reserved ContextDomain declares availability exactly once;
-- NOT_WIRED/UNAVAILABLE/ERROR domains cannot carry fake entries;
+- unavailable/not-wired/error domains cannot carry fake entries;
 - snapshot/entry IDs are validated and entry IDs unique;
-- parent snapshot cannot equal current snapshot;
-- optional provenance semantics use `MipField`;
-- context confidence and retrieval relevance are finite `[0,1]`;
-- `includeSuperseded` requires `includeHistorical`;
-- selected refs are subset of candidates;
-- scores carry explicit ref identity, avoiding positional ambiguity;
-- MATCHED requires candidate evidence;
-- NO_MATCH carries no candidates/scores;
-- AMBIGUOUS requires >=2 candidates;
-- INDEX_UNAVAILABLE/ERROR carry no fake candidates;
-- NO_MATCH, INDEX_UNAVAILABLE and ERROR cannot collapse.
+- optional provenance states use MipField;
+- normalized context/retrieval confidence;
+- includeSuperseded requires includeHistorical;
+- selected refs subset candidates;
+- score identity is ref-bound, not positional;
+- MATCHED/NO_MATCH/AMBIGUOUS/INDEX_UNAVAILABLE/ERROR have distinct fail-closed list rules.
 
 ### Checkpoint 2 — explicit primitive wire codec
 
-Functional commit:
+Commit:
 
 `b237e1e22b98f480eaf39e7fcb108715855592e4`
 
@@ -116,25 +110,53 @@ File:
 
 `src/main/kotlin/matrix/assembling/mip/MipEvidenceWire.kt`
 
-Purpose:
+Codec:
 
-- reflection-free primitive Map/List/String/Number/Boolean wire projection;
-- serialize/deserialize `ProvenanceRef`;
-- serialize/deserialize `MatrixContextSnapshot` and nested ContextEntry/domain availability;
-- serialize/deserialize `RetrievalQuery`;
-- serialize/deserialize `RetrievalResult` and scores;
-- preserve all `MipFieldStatus` states across wire boundaries;
-- reject unsupported enum values, malformed typed fields, invalid timestamps and wrong primitive types;
-- use ISO-8601 `Instant` for timestamps;
-- this codec belongs to the MIP contract package and is NOT a second intermodule bridge.
+- reflection-free primitive Map/List/String/Number/Boolean representation;
+- Provenance, Context snapshot/entries, Retrieval query/result round-trip support;
+- MipField statuses preserved;
+- unknown enums, malformed fields, bad timestamps and wrong primitive types fail closed;
+- ISO-8601 Instant timestamps;
+- codec remains inside MIP package and is not a parallel bridge.
 
-### Current validation state
+### Checkpoint 3 — structural/wire/fail-closed tests
+
+Commit:
+
+`43858f686ba383bc7fa79e3a40f811b021ef69e1`
+
+File:
+
+`src/test/kotlin/matrix/assembling/mip/MipEvidenceContractsTest.kt`
+
+Coverage added:
+
+```text
+reserved ModuleId/Context vocabulary
+exact RetrievalPurpose/Status vocabulary
+Provenance wire round-trip with UNKNOWN/UNRESOLVED/NOT_APPLICABLE preservation
+all-domain availability requirement
+unavailable domain cannot carry fake ContextEntry
+Context snapshot wire round-trip
+context confidence finite [0,1]
+RetrievalQuery wire round-trip
+includeSuperseded requires includeHistorical
+NO_MATCH != INDEX_UNAVAILABLE != ERROR across wire round-trip
+invalid status/list combinations rejected
+MATCHED score identity preserved
+malformed PRESENT-with-null wire field rejected
+unknown enum rejected
+invalid retrieval relevance rejected
+unknown selected ref rejected
+```
+
+### Validation state
 
 ```text
 contracts code = ADDED
 wire codec = ADDED
-new contract tests = NOT YET ADDED
-full regression CI = NOT YET RUN ON CURRENT HEAD
+tests = ADDED / NOT YET CI-VALIDATED
+full regression CI = NEXT
 ```
 
 ## Explicitly NOT IMPLEMENTED
@@ -164,15 +186,14 @@ real GGUF bridge
 repo = MATRIXNEO23/assembling
 branch = mip-evidence-contracts-v1
 base = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
-last functional commit = b237e1e22b98f480eaf39e7fcb108715855592e4
+last functional commit = 43858f686ba383bc7fa79e3a40f811b021ef69e1
 AUTHORITY-1.0 = FROZEN
 Kotlin Authority value types = COMPLETE / INTEGRATED / TESTED
-shared MIP evidence contracts = CODE ADDED / UNTESTED
-wire codec = CODE ADDED / UNTESTED
+shared MIP evidence contracts = CODE + TESTS ADDED / UNVALIDATED
 real AuthorityResolver = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = ADD CONTRACT/WIRE/FAIL-CLOSED TESTS, THEN OPEN PR + FULL CI
+NEXT = OPEN PR, RUN FULL CI, FIX ONLY TASK-INTRODUCED FAILURES, THEN MERGE IF GREEN
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, or Kotlin Authority value-type work.
