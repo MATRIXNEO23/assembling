@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T14:02+02:00  
+Last updated: 2026-09-05T14:14+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `understanding-v3-contract-v1`  
-Continuity schema: `matrix.assembling.continuity.v67`
+Continuity schema: `matrix.assembling.continuity.v68`
 
 ## Mandatory policy
 
@@ -54,21 +54,9 @@ CURRENT MIP/RUNTIME LOSSLESS FOR MATRIX_NLU_CONTRACT_V3 = NO
 CP-U2 REQUIRED = YES
 ```
 
-P0 findings preserved:
-
-```text
-P0-U1-01 legacy NLU can carry worldTruth
-P0-U1-02 independent sourceReferent lost
-P0-U1-03 plural spans collapse
-P0-U1-04 temporalAnchorRef absent
-P0-U1-05 structuralStatus / interpretationStatus absent
-P0-U1-06 candidate identity / alternatives absent
-P0-U1-07 legacy source category synthesized from dialogueAct
-```
-
 ## ACTIVE CHECKPOINT — CP-U2 UNDERSTANDING/MIP CONTRACT EXTENSION
 
-Owner approval to proceed received in current conversation.
+Owner approval to proceed was received.
 
 Branch:
 
@@ -78,57 +66,144 @@ Base:
 
 `8278ea0b94c6500b3afc511bf21230c9c51679b9`
 
-### CP-U2 design direction
+PR:
 
-Do NOT mutate frozen `MATRIX_NLU_CONTRACT_V3`.
-Do NOT force frozen V3 evidence into legacy `MipClaimV1`.
-Do NOT remove legacy DTOs in this checkpoint.
+`#18 — Add lossless MIP Understanding V3 profile`
 
-Add a new additive/versioned MIP Understanding V3 profile that preserves the complete frozen linguistic evidence envelope.
+### Contract/profile
 
-Proposed profile identity:
+Document:
+
+`docs/MIP_UNDERSTANDING_V3_PROFILE.md`
+
+Profile:
 
 ```text
-MIP-1.0 / UNDERSTANDING-V3-1.0
+MIP-1.0/UNDERSTANDING-V3-1.0
 ```
 
-Canonical profile must preserve:
+Profile doc commit:
+
+`d1c55206653e58c48562dbcfc4aecb3a2484abc3`
+
+### Kotlin contract types
+
+File:
+
+`src/main/kotlin/matrix/assembling/mip/MipUnderstandingV3Contracts.kt`
+
+Commit:
+
+`1d0f71049d409252962eddc749550b5ca31fef1a`
+
+Implemented additive types preserving:
 
 ```text
-upstream contract version + fingerprint
-observationSourceId + MIP provenance
+upstream contract identity + SHA-256 fingerprint
+observationSourceId
+NLU observation provenance
 speaker / observer
 mentions[]
 referentCandidates[]
-original claimIds
+original claim IDs
+claim provenance
 sourceSpan
 subjectSpans[]
 objectSpans[]
 negationCueSpans[]
 temporalEvidence[]
 entityMentionIds[]
-dialogueAct / predicate / five referent roles / polarity / temporalRelation / claimKind
-per-field value + confidence + V3 fieldStatus + alternatives[]
+dialogueAct / predicate / five role fields / polarity / temporalRelation / claimKind
+V3 value + confidence + fieldStatus + ranked alternatives
+fieldStatusByField
 confidenceByField
 overallInterpretationConfidence
 structuralStatus
 interpretationStatus
-claim diagnostics[]
+diagnostics[]
 temporal anchor identity
 ```
 
-The new profile MUST NOT expose NLU-owned `worldTruth`, Memory Admission, Authority, BeliefConfidence, persistent consent/goal, RelationshipState, AffectiveState or behavior decision.
+The canonical profile intentionally exposes no `worldTruth`, Authority, Memory Admission, BeliefConfidence, persistent consent/goal, RelationshipState, AffectiveState or behavior-decision ownership.
 
-### Compatibility strategy
+Legacy `MipClaimV1` is unchanged.
+
+### Tests
+
+File:
+
+`src/test/kotlin/matrix/assembling/mip/MipUnderstandingV3ContractsTest.kt`
+
+Commit:
+
+`1ce78ee5bc3896bc66f7373768f0e6845f858c63`
+
+Coverage includes:
 
 ```text
-MipClaimV1 = unchanged legacy/downstream compatibility claim
-Understanding V3 profile = new canonical lossless linguistic evidence envelope
-no automatic lossy V3 -> legacy conversion
-any later projection to Authority input must be explicit, validated and owned by CP-U3/CP-A1
+independent source vs perspective
+plural negation evidence
+original claim ID preservation
+ambiguous UNKNOWN primary + ranked alternatives
+invalid role candidate rejection
+NONE/UNKNOWN role-status invariants
+required temporal anchor
+unknown temporal/claim anchor rejection
+multi-claim claim-anchor identity
+INVALID => ABSTAINED
+observation/claim provenance binding
+mention-candidate evidence consistency
+non-overlapping / in-source plural spans
+exact upstream contract/fingerprint validation
+absence of forbidden worldTruth/Authority/Memory fields
+legacy MipClaimV1 remains independently constructible
 ```
 
-### Hard boundaries for CP-U2
+### Diff audit
+
+Diff from CP-U2 base contains exactly:
+
+```text
+docs/MIP_UNDERSTANDING_V3_PROFILE.md
+docs/WORK_CONTINUITY.md
+src/main/kotlin/matrix/assembling/mip/MipUnderstandingV3Contracts.kt
+src/test/kotlin/matrix/assembling/mip/MipUnderstandingV3ContractsTest.kt
+```
+
+No orchestrator, Understanding runtime adapter, Authority implementation, Memory component or other repository changed.
+
+### CI evidence
+
+PR head before this continuity update:
+
+`1ce78ee5bc3896bc66f7373768f0e6845f858c63`
+
+Full repository CI:
+
+```text
+run = 33965360537
+job = kotlin-tests
+Run tests = SUCCESS
+job conclusion = SUCCESS
+```
+
+No task-introduced fix was required.
+
+This continuity update creates a new final PR head. Merge remains forbidden until CI for that exact final head is green.
+
+## CP-U2 current verdict
+
+```text
+PROFILE DESIGN = COMPLETE
+KOTLIN CONTRACT TYPES = COMPLETE
+INVARIANT TESTS = COMPLETE
+FULL REGRESSION = GREEN
+FINAL DOC HEAD CI = PENDING
+CP-U2 = PASS PENDING FINAL-HEAD CI / MERGE / POST-MERGE CI
+CP-U3 = NOT STARTED
+```
+
+## Hard boundaries still enforced
 
 ```text
 no matrix-understanding-lab writes
@@ -144,37 +219,20 @@ no Reflection
 no other repo writes
 ```
 
-### CP-U2 gates
-
-```text
-versioned contract doc
-Kotlin value types with constructor invariants
-source != perspective independently representable
-plural evidence preserved
-candidate IDs/alternatives preserved
-V3 statuses preserved exactly
-required temporal anchors structurally validated
-original V3 claim IDs preserved
-MIP provenance bound to observation
-no authority/worldTruth field in canonical profile
-legacy MipClaimV1 unchanged
-unit/boundary regression tests
-full Kotlin suite green
-final-head CI green
-```
-
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
 branch = understanding-v3-contract-v1
+PR = #18
 base = 8278ea0b94c6500b3afc511bf21230c9c51679b9
+last green functional/test head = 1ce78ee5bc3896bc66f7373768f0e6845f858c63
+CI = 33965360537 SUCCESS
 ACTIVE = CP-U2
-last completed operation = CP-U1 closure CI SUCCESS
-current operation = define/freeze additive Understanding V3 MIP profile before adapter code
+current operation = verify final continuity-only PR head CI
 CP-U3 = NOT STARTED
 Authority orchestrator rewire = NOT STARTED
 Memory = NOT STARTED
 other repos = READ-ONLY
-NEXT = write CP-U2 profile spec -> implement Kotlin contract types -> add invariant tests -> full CI
+NEXT = final-head CI -> merge PR #18 if green -> post-merge main CI -> close CP-U2 -> start CP-U3 only after green main baseline
 ```
