@@ -3,10 +3,10 @@
 Last updated: 2026-09-05T05:45+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v11`  
-Current integrated HEAD before this continuity commit: `a26cdcb8116f6cc96ba02a0f1e717b70cf45fb11`  
+Continuity schema: `matrix.assembling.continuity.v12`  
+Current integrated HEAD before this continuity commit: `b4a93d26062ca9fe5f6f123110c77a84e5ecc97d`  
 PR `#6`: MERGED — remaining integration boundary fixes  
-Final main CI: `33942262278` — `Matrix Assembling CI` — SUCCESS
+Final main CI before documentation-only Memory policy note: `33942262278` — `Matrix Assembling CI` — SUCCESS
 
 ## Canonical work rules
 
@@ -60,7 +60,7 @@ Completed and regression-tested:
 Evidence:
 - PR #4 merged as `a46919d925824e12d66d074a77c231aa2b4b7a1b`;
 - PR #6 merged as `1c603ac94d62d0e79d14fd455481c7a487d89ea4`;
-- final main continuity commit before this note: `a26cdcb8116f6cc96ba02a0f1e717b70cf45fb11`;
+- final main continuity commit before Memory policy note: `0d5e7533f37a654865d1fe55f07b3c334bf1f1a2`;
 - final main CI run `33942262278` — SUCCESS.
 
 ## Current hard boundaries
@@ -112,6 +112,45 @@ Full artifact SHA-256:
 
 No Frozen access, retraining, quantization change or gate reduction occurred in the completed hardening workstream.
 
+## Memory Foundation migration decisions — SAVED / IMPLEMENTATION DEFERRED
+
+The following decisions are now part of the active Assembling plan, but implementation must not start until the owner resumes this backlog.
+
+```text
+Python Memory Foundation v3
+= frozen reference/oracle
+        ↓ contract parity
+Kotlin / Room Memory Foundation
+= future production implementation
+        ↓ fault-injection + regression gates
+PersistentConsolidationPort
+= only allowed durable runtime integration boundary
+```
+
+Preserve these invariants:
+- `revisionOf` points to the lineage root;
+- `supersededBy` is the sequential revision chain;
+- semantic changes use `supersede()`;
+- contradiction identity is explicit from Authority resolution, not inferred from text difference;
+- Authority identifies `contradictsMemoryId`; Memory Admission consumes it and owns SAVE/SUPERSEDE/REJECT/IGNORE;
+- atomic rollback and lineage protection require fault-injection tests;
+- Kotlin/Room must pass parity tests against the frozen Python oracle before integration;
+- maintain a fast core test gate plus the full extended regression suite;
+- if there is no real legacy Android database, the future Room implementation may begin directly from the current canonical schema instead of recreating historical migrations;
+- destructive migration is not an accepted normal fallback for Luna persistent memory;
+- prefer structured Matrix-NLU authority/source evidence over regex parsing when the structured fields exist.
+
+Do NOT treat these implementation details as canonical yet; audit them before coding:
+- exact Room entities and DAO signatures;
+- exact memory-category enum;
+- FTS design;
+- JSON versus normalized actors/entities representation;
+- transaction-manager/API shape;
+- concrete self-FK/delete policy;
+- timestamp units.
+
+Source rationale came from external advice reviewed on 2026-09-05; only the validated architectural subset above was accepted into the project.
+
 ## Still NON_CABLATO
 
 - explicit Working Context / context-read port;
@@ -131,6 +170,7 @@ No Frozen access, retraining, quantization change or gate reduction occurred in 
 2. The output-validation port exists, but the real semantic validator is absent.
 3. Persistence remains disabled; SAVE/SUPERSEDE/rollback are not yet exercised end-to-end in Assembling.
 4. The adult/intimacy keyword fallback remains until every runtime emits the explicit marker.
+5. The future Kotlin/Room Memory Foundation contract still requires a dedicated implementation audit before coding.
 
 ## DEFERRED BACKLOG — DO NOT START YET
 
@@ -166,10 +206,11 @@ When this architecture work is resumed, continue in this order unless the owner 
    - validate at least negation, referents, temporal meaning, unsupported facts and resolved consent/intimacy semantics where relevant;
    - failure must populate `DiagnosticTrace.firstDivergence` without overwriting an earlier divergence.
 
-6. **Persistent Consolidation**
+6. **Persistent Consolidation / Memory Foundation**
+   - before coding Kotlin/Room, audit the concrete persistence contract against the frozen Python oracle and the saved migration decisions above;
    - connect real Memory Foundation only through `PersistentConsolidationPort`;
    - durable Memory Admission/Repository operations happen only after accepted output/action result;
-   - preserve SAVE/SUPERSEDE semantics, lineage and atomic rollback;
+   - preserve SAVE/SUPERSEDE semantics, lineage, contract parity and atomic rollback;
    - persistent affect and RelationshipState commits remain separately owned.
 
 7. **Later cognitive/runtime modules**
@@ -188,4 +229,4 @@ Resume from Working Context / read-only context boundaries only when the owner e
 
 ## Current pause state
 
-Architecture backlog recorded and intentionally paused by owner request. The next user task may be unrelated; do not automatically start any deferred item above.
+Architecture backlog and Memory Foundation production-migration decisions recorded and intentionally paused by owner request. The next user task may be unrelated; do not automatically start any deferred item above.
