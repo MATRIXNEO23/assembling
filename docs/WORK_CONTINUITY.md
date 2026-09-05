@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T11:16+02:00  
+Last updated: 2026-09-05T11:24+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-resolver-v1`  
-Continuity schema: `matrix.assembling.continuity.v45`
+Continuity schema: `matrix.assembling.continuity.v46`
 
 ## Mandatory continuity policy
 
@@ -23,7 +23,7 @@ pre-resolver continuity = 3e413509ea60f4ea60ee2fe2382c6f37e892da6d
 pre-resolver continuity CI = 33957143955 SUCCESS
 ```
 
-Hard rules remain: MIP is the single cross-module semantic authority; other repos are read-only; no gate weakening; no orchestrator/Memory write changes in this task.
+Hard rules remain: one writable repo (`assembling`); MIP is the single semantic protocol; no gate weakening; no Memory writes/admission/orchestrator rewiring in this task.
 
 ## ACTIVE TASK — REAL AUTHORITY RESOLVER ONLY
 
@@ -35,69 +35,124 @@ other repos modified = false
 
 ### Checkpoint 1 — read-only candidate evidence projection
 
-Commit:
+```text
+commit = 389872dd24bd485a4873d0d8de6ccea63171248a
+file = src/main/kotlin/matrix/assembling/authority/AuthorityCandidateEvidence.kt
+```
 
-`389872dd24bd485a4873d0d8de6ccea63171248a`
+Added `AuthorityCandidateEvidence` and `AuthorityCandidateEvidencePort`. The port exposes read-only `read(memoryRef, contextSnapshot)` and no persistence mutation API. The projection is explicitly not a MemoryRecord/admission DTO.
+
+### Checkpoint 2 — deterministic AUTHORITY-1.0 resolver
+
+Initial implementation commit:
+
+`0015c36020f196258d2936a5731bbf7bb2cf5022`
+
+Pre-CI self-review correction:
+
+`88f5f4945fc265318abdcf96121d1340c45c5894`
 
 File:
 
-`src/main/kotlin/matrix/assembling/authority/AuthorityCandidateEvidence.kt`
+`src/main/kotlin/matrix/assembling/authority/AuthorityResolver.kt`
 
 Added:
 
 ```text
-AuthorityCandidateEvidence
-AuthorityCandidateEvidencePort
+AuthorityResolver
+DeterministicAuthorityResolver
 ```
 
-Properties:
-
-- projection is explicitly NOT a MemoryRecord/persistence/admission DTO;
-- port exposes only `read(memoryRef, contextSnapshot)`;
-- no save/update/delete/supersede/admit operation exists;
-- projection carries memory identity, validity, subject/predicate/object/target/owner/perspective/source, polarity, temporal relation/reference key and provenance;
-- validity remains an observed `MipField<String>`; Authority does not own Memory lifecycle vocabulary;
-- only `PRESENT("VALID")` may become an active contradiction target in resolver logic;
-- resolved/unresolved entity semantics remain MIP entity semantics.
-
-### Resolver policy to implement next
-
-Authority classification precedence:
+Classification behavior:
 
 ```text
 trusted WORLD provenance + explicit WORLD_TRUTH -> WORLD_TRUTH
-explicit PERCEPTION/OBSERVATION provenance -> OBSERVATION
+trusted PERCEPTION provenance -> OBSERVATION
 explicit derived INFERENCE provenance -> INFERENCE
-structured REPORT/source evidence -> REPORT
-structured BELIEF/HYPOTHESIS evidence -> BELIEF
-ordinary USER_ASSERTION/self-report -> REPORT
-otherwise -> HOLD/UNRESOLVED
+structured REPORT / USER_ASSERTION / THIRD_PARTY_REPORT -> REPORT
+structured BELIEF / HYPOTHESIS -> BELIEF
+otherwise -> HOLD / unresolved
 ```
 
-WORLD_TRUTH must never be granted from compatibility boolean/string alone without trusted WORLD provenance.
+Hard classification rules:
 
-Contradiction remains conservative:
+- compatibility WORLD_TRUTH cannot self-grant without trusted WORLD provenance;
+- OBSERVATION cannot self-grant without PERCEPTION provenance;
+- INFERENCE requires explicit derived-from evidence;
+- REPORT requires resolved source identity before safe resolution;
+- BELIEF requires resolved perspective identity;
+- questions/requests/commands remain non-assertive HOLDs rather than persistence candidates;
+- `SourceReliability` remains UNAVAILABLE when no real provider exists; it is not copied from NLU confidence.
 
-- candidate must be VALID;
-- exact resolved subject + normalized predicate required;
-- owner/source/perspective scope compared when applicable;
-- different predicates are unrelated even with same actor;
-- temporal change is not contradiction by default;
-- broad historical/reference labels without stable temporal identity remain unresolved rather than guessed;
-- opposite polarity on same semantic value may contradict;
-- different values contradict only for registered single-value predicates;
-- multiple concrete contradiction targets -> AMBIGUOUS/HOLD;
-- any unresolved candidate that could affect uniqueness prevents selecting a concrete ID;
-- correction adds candidate-priority diagnostics only; never automatic contradiction/supersession.
+Contradiction behavior:
 
-## Explicitly NOT authorized
+- only `VALID` candidate evidence may be an active target;
+- subject + normalized predicate + owner/target scope must match;
+- REPORT source scope and BELIEF perspective scope must match;
+- CURRENT/ATEMPORAL are directly comparable;
+- broad PAST/FUTURE/reference relations require stable temporal reference identity or remain unresolved;
+- temporal mismatch produces no contradiction by default;
+- opposite polarity on the same value can contradict;
+- different values contradict only for explicitly registered single-value predicates (`matrix.location.live_at`, `matrix.identity.age` initially);
+- same actor with unrelated predicate cannot contradict;
+- multiple concrete targets -> AMBIGUOUS/HOLD;
+- unresolved evidence prevents choosing an otherwise concrete target;
+- correction adds candidate-priority diagnostics but never bypasses semantic verification;
+- retrieval score is never used to select truth/contradiction.
+
+Resolver output provenance is generated by `BELIEF_AUTHORITY`; reason codes are deterministic `AUTHORITY.*` facts only.
+
+The self-review correction fixed an internal named-parameter compile defect before CI; no semantic policy changed.
+
+### Checkpoint 3 — P0 resolver tests
+
+```text
+commit = 8657a3041121df03b16ab35408c4665afcb0e7c3
+file = src/test/kotlin/matrix/assembling/authority/AuthorityResolverTest.kt
+```
+
+Coverage includes:
+
+```text
+trusted WORLD -> WORLD_TRUTH
+fake WORLD_TRUTH without trusted provenance -> rejected/fallback
+PERCEPTION -> OBSERVATION
+third-party statement -> REPORT
+explicit derived evidence -> INFERENCE
+BELIEF claim kind -> BELIEF
+Authority class != source reliability/confidence semantics
+same actor + unrelated predicate -> no contradiction
+same current single-value slot + different value -> concrete contradiction
+opposite polarity same value -> contradiction
+PAST vs CURRENT -> no false contradiction
+same broad PAST without reference identity -> PARTIAL/UNRESOLVED
+CORRECT does not bypass predicate check
+SUPERSEDED candidate cannot target
+multiple concrete contradiction targets -> AMBIGUOUS/HOLD
+unresolved candidate evidence prevents concrete target selection
+NO_MATCH != UNAVAILABLE
+unresolved REPORT source stops before candidate read
+AuthorityCandidateEvidencePort exposes read-only `read` API only
+```
+
+### Current validation state
+
+```text
+resolver code = ADDED
+candidate evidence port = ADDED
+P0 tests = ADDED
+full repository regression = NOT YET RUN
+PR = NOT YET OPEN
+```
+
+## Explicitly NOT implemented / not authorized
 
 ```text
 MemoryRepository dependency
 Memory writes
-Memory Admission decisions
+Memory Admission SAVE/SUPERSEDE/REJECT/IGNORE
 PersistentConsolidation
-BasicAuthorityResolver replacement in orchestrator
+BasicAuthorityResolver replacement
 root AuthorityDecision migration
 final MipBridge migration
 orchestrator rewiring
@@ -110,11 +165,12 @@ other repo writes
 ```text
 repo = MATRIXNEO23/assembling
 branch = authority-resolver-v1
-last functional commit = 389872dd24bd485a4873d0d8de6ccea63171248a
-read-only candidate evidence port = IMPLEMENTED / UNTESTED
-real AuthorityResolver = NEXT / NOT YET CODED
+base = 3e413509ea60f4ea60ee2fe2382c6f37e892da6d
+last resolver code commit = 88f5f4945fc265318abdcf96121d1340c45c5894
+last test commit = 8657a3041121df03b16ab35408c4665afcb0e7c3
+real AuthorityResolver = CODE + TESTS ADDED / CI PENDING
 MipBridge final Authority migration = NOT_STARTED
 orchestrator rewiring = NOT_STARTED
 other repos = READ-ONLY
-NEXT = IMPLEMENT DETERMINISTIC AUTHORITY RESOLVER + P0 TESTS
+NEXT = VERIFY DIFF; OPEN PR; RUN FULL CI; FIX ONLY TASK-INTRODUCED FAILURES
 ```
