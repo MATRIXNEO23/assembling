@@ -1,10 +1,9 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T12:56+02:00  
+Last updated: 2026-09-05T13:00+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Active branch: `authority-runtime-adapter-v1`  
-Continuity schema: `matrix.assembling.continuity.v56`
+Continuity schema: `matrix.assembling.continuity.v57`
 
 ## Mandatory continuity policy
 
@@ -50,23 +49,56 @@ historical Python contradiction projection
 
 Legacy `MipAuthorityResolutionV1` and root `AuthorityDecision` remain quarantined because they cannot losslessly represent canonical AUTHORITY-1.0.
 
-## ACTIVE TASK — CANONICAL AUTHORITY RUNTIME ADAPTER ONLY
+## CANONICAL AUTHORITY RUNTIME ADAPTER — COMPLETE / INTEGRATED / TESTED
+
+Branch:
+
+`authority-runtime-adapter-v1`
+
+PR:
+
+`#16 — Add standalone canonical Authority runtime adapter`
+
+Functional commits:
 
 ```text
-branch = authority-runtime-adapter-v1
-base = 70e761de23e9c162c2415054e8662881590b2753
-PR = #16
-other repos modified = false
+2e0b46636d95526491fd68e76e220523826388bf
+= standalone canonical/legacy runtime adapter
+
+7dde24a59ff2f1bb218142bf89e15d3befec477e
+= standalone adapter regression gates
 ```
 
-### Checkpoint 1 — standalone runtime adapter
+Final tested PR head:
+
+`898b31f83168e0277042b67b0660d381ff7a09b0`
+
+PR final-head CI:
 
 ```text
-commit = 2e0b46636d95526491fd68e76e220523826388bf
-file = src/main/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapter.kt
+33961583602 = SUCCESS
 ```
 
-Added canonical and legacy-facing standalone adapter types:
+Merge SHA:
+
+`7a772412570237260130bd4062555c6449feaf46`
+
+Post-merge main CI:
+
+```text
+33961639272 = SUCCESS
+job = kotlin-tests
+Run tests = SUCCESS
+```
+
+Integrated files:
+
+```text
+src/main/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapter.kt
+src/test/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapterTest.kt
+```
+
+Integrated runtime adapter types:
 
 ```text
 CanonicalAuthorityRuntimeInput
@@ -76,109 +108,100 @@ LegacyAuthorityRuntimeOutcome
 CanonicalAuthorityRuntimeAdapter
 ```
 
-Properties:
+Properties now proven:
 
-- dedicated package `matrix.assembling.authority.runtime`;
-- adapter does NOT implement legacy `AuthorityResolverPort`;
-- canonical path constructs `AuthorityResolveRequest` and returns full canonical `AuthorityResolution`;
-- legacy path requires an explicitly selected `TypedClaim` and never chooses first claim implicitly;
-- existing `MipBridge.fromAssemblingTypedClaim` is reused; no second bridge/protocol is created;
-- missing legacy semantics are surfaced as typed compatibility gaps, never guessed;
-- root `AuthorityDecision` is never produced because that conversion is inherently lossy;
-- turn/session/claim/provenance structural mismatches block with deterministic `AUTHORITY.RUNTIME.*` reason codes;
-- MatrixTurnFrame is immutable/unmodified;
-- no persistence or Memory API exists.
+- canonical runtime adapter output equals direct `DeterministicAuthorityResolver` output exactly;
+- canonical REPORT with resolved source can resolve COMPLETE/REPORT;
+- legacy USER_ASSERTION preserves source as UNKNOWN and reaches canonical HOLD instead of guessing;
+- trusted WORLD legacy evidence resolves only with independently trusted WORLD provenance;
+- context turn/session/claim/provenance mismatches block before resolver;
+- multi-claim turns require explicit claim selection; no implicit first-claim behavior;
+- MatrixTurnFrame remains unmodified and `authorityDecision` remains untouched;
+- adapter does not implement legacy `AuthorityResolverPort`;
+- adapter exposes no persistence mutation API;
+- no root `AuthorityDecision` is emitted because canonical AUTHORITY-1.0 cannot be represented there losslessly.
 
-Legacy gaps surfaced:
+## Current runtime gap
+
+The canonical adapter exists and is tested, but the current runtime frame still has no lossless slots for canonical shared evidence/output:
 
 ```text
-SOURCE_IDENTITY_NOT_REPRESENTED
-DIALOGUE_ACT_NOT_REPRESENTED
-CLAIM_KIND_NOT_REPRESENTED
-OWNER_UNRESOLVED
-PERSPECTIVE_UNRESOLVED
+MatrixContextSnapshot
+RetrievalResult / explicit MipField state
+AuthorityResolution
 ```
 
-### Checkpoint 2 — standalone runtime gates
+Current legacy frame still exposes:
 
 ```text
-commit = 7dde24a59ff2f1bb218142bf89e15d3befec477e
-file = src/test/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapterTest.kt
+typedClaims: List<TypedClaim>
+authorityDecision: AuthorityDecision?
 ```
 
-Coverage:
+This means the orchestrator cannot yet be safely rewired to canonical Authority without either dropping fields or inventing parallel hidden state.
+
+## NEXT BOUNDED CHECKPOINT — RUNTIME FRAME MIP EVIDENCE SLOTS ONLY
+
+Next safe task:
 
 ```text
-canonical adapter output == direct resolver AuthorityResolution exactly
-canonical REPORT with resolved source -> COMPLETE / REPORT
-legacy USER_ASSERTION -> source UNKNOWN + canonical HOLD, never guessed
-trusted WORLD legacy evidence resolves only with independent trusted WORLD provenance
-context turn mismatch -> BLOCKED
-claim not explicitly in frame -> BLOCKED
-multi-claim invocation preserves explicitly selected claim identity
-MatrixTurnFrame.authorityDecision remains null
-adapter is not AuthorityResolverPort
-adapter has no persistence mutation API
+RUNTIME FRAME MIP EVIDENCE SLOTS ONLY
 ```
 
-### Diff / PR / CI evidence
+Goal:
 
-Verified diff from base contains exactly:
+- add additive canonical runtime slots to `MatrixTurnFrame` for shared MIP context/retrieval/Authority output;
+- use explicit `MipField` status semantics rather than ambiguous nullable values;
+- preserve all legacy fields for compatibility;
+- do not automatically synchronize or collapse canonical `AuthorityResolution` into legacy `AuthorityDecision`;
+- add tests proving old callers remain source-compatible and canonical statuses survive copies/turn transitions;
+- no orchestrator stage replacement yet;
+- no BasicAuthorityResolver replacement yet;
+- no Memory writes/admission.
+
+Proposed additive fields to validate in that task:
 
 ```text
-docs/WORK_CONTINUITY.md
-src/main/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapter.kt
-src/test/kotlin/matrix/assembling/authority/runtime/CanonicalAuthorityRuntimeAdapterTest.kt
+contextSnapshot: MipField<MatrixContextSnapshot>
+retrievalResult: MipField<RetrievalResult>
+canonicalAuthorityResolution: MipField<AuthorityResolution>
 ```
 
-PR #16:
+Default state must be explicit (normally `UNAVAILABLE`/`NOT_APPLICABLE` as semantically appropriate), never fake empty context or fake NO_MATCH.
 
-`Add standalone canonical Authority runtime adapter`
+Only after this checkpoint is green should the orchestrator canonical Authority rewire be attempted.
 
-Green tested PR head before this documentation update:
-
-`0254367261adbc92e3215e4aacd7667000770763`
-
-Full regression gate:
+## Explicitly NOT implemented / not authorized yet
 
 ```text
-run = 33961506698
-job = kotlin-tests
-Run tests = SUCCESS
-job conclusion = SUCCESS
-```
-
-No task-introduced CI fix was required.
-
-This documentation update creates a new final PR head. Merge is forbidden until CI for that exact final head is also green.
-
-## Hard boundaries still enforced
-
-```text
-no MatrixAssemblingOrchestrator modification
-no IntegrationPorts.AuthorityResolverPort replacement
-no BasicAuthorityResolver replacement/removal
-no MatrixTurnFrame redesign
-no root AuthorityDecision redesign/write
-no MemoryRepository dependency/write
-no Memory Admission implementation
-no PersistentConsolidation
-no other repo writes
+orchestrator canonical Authority rewire
+BasicAuthorityResolver removal/replacement
+legacy AuthorityResolverPort removal
+root AuthorityDecision redesign/removal
+Memory Admission SAVE/SUPERSEDE/REJECT/IGNORE
+MemoryRepository implementation/dependency
+PersistentConsolidation
+end-to-end durable Memory write
+other repo writes
 ```
 
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
-branch = authority-runtime-adapter-v1
-PR = #16
-base = 70e761de23e9c162c2415054e8662881590b2753
-last green tested head before doc update = 0254367261adbc92e3215e4aacd7667000770763
-CI = 33961506698 SUCCESS
-canonical runtime adapter = IMPLEMENTED / TESTED GREEN / FINAL DOC HEAD CI PENDING
+branch = main
+runtime adapter merge = 7a772412570237260130bd4062555c6449feaf46
+runtime adapter post-merge CI = 33961639272 SUCCESS
+AUTHORITY-1.0 = FROZEN
+Authority value types = COMPLETE / INTEGRATED / TESTED
+shared MIP evidence contracts = COMPLETE / INTEGRATED / TESTED
+Authority runtime DTO binding = COMPLETE / INTEGRATED / TESTED
+real DeterministicAuthorityResolver = COMPLETE / INTEGRATED / P0 TESTED
+canonical compatibility projections = COMPLETE / INTEGRATED / TESTED
+canonical runtime adapter = COMPLETE / INTEGRATED / TESTED
 orchestrator uses canonical resolver = false
-legacy BasicAuthorityResolver = STILL PRESENT / COMPATIBILITY
+MatrixTurnFrame canonical MIP slots = NOT STARTED
 Memory writes/admission = NOT TOUCHED
 other repos = READ-ONLY
-NEXT = VERIFY FINAL DOC-ONLY HEAD CI; MERGE PR #16 ONLY IF GREEN; THEN VERIFY MAIN CI + FINALIZE CONTINUITY
+NEXT = RUNTIME FRAME MIP EVIDENCE SLOTS ONLY
 ```
