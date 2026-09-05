@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:53+02:00  
+Last updated: 2026-09-05T10:56+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-runtime-dtos-v1`  
-Continuity schema: `matrix.assembling.continuity.v39`
+Continuity schema: `matrix.assembling.continuity.v40`
 
 ## Mandatory continuity policy
 
@@ -57,9 +57,7 @@ file = src/main/kotlin/matrix/assembling/authority/AuthorityContracts.kt
 
 Added canonical contract-only `AuthorityResolveRequest` and `AuthorityResolution` using existing MIP claim/context/retrieval/provenance types and frozen Authority value types.
 
-Fail-closed invariants include explicit retrieval evidence states, provenance claim identity, unique candidates/reasons, AUTHORITY.* reason namespace, contradiction target/candidate coherence, ambiguous-target candidate count, and COMPLETE resolution requirements.
-
-### Checkpoint 2 — MipClaimV1 primitive wire support
+### Checkpoint 2 — MipClaimV1 wire support
 
 ```text
 initial commit = 60176c46ea2599504d6ae6ce63a9044b5f25989f
@@ -67,7 +65,7 @@ self-review fix = 9265458cde29d021a71f7c944f181c7992cf33c9
 file = src/main/kotlin/matrix/assembling/mip/MipClaimWire.kt
 ```
 
-`MipEvidenceWire.claimToWire/claimFromWire` are extension functions on the existing MIP evidence codec; no new bridge or claim model was introduced. All MipClaimV1 roles, MipFields, confidence map, spans and semantic markers are represented. A semanticMarkers decoding-key defect was detected and fixed before CI.
+Claim wire is implemented as extension functions on the existing MipEvidenceWire codec. It preserves entity roles, MipField states, confidence map, spans and semantic markers. A semanticMarkers decoding-key defect was found and fixed before CI.
 
 ### Checkpoint 3 — Authority DTO primitive wire codec
 
@@ -76,26 +74,46 @@ commit = 297491d62219a60cdaa3362d54b0fc632dc4eafb
 file = src/main/kotlin/matrix/assembling/authority/AuthorityContractWire.kt
 ```
 
-Codec design:
+Serialization only. Shared MIP payloads delegate to MipEvidenceWire; Authority-owned fields use explicit typed codecs. Invalid enums/types/wrappers fail closed. No legacy AuthorityDecision mapping or MipBridge migration.
 
-- serialization only; no Authority business logic;
-- request wire delegates claim/context/retrieval/provenance to existing MIP codecs;
-- resolution wire serializes only Authority-owned typed fields;
-- EpistemicClass, AuthorityResolutionStatus, typed confidence/reliability and opaque MemoryRef are decoded explicitly;
-- MipField status/value legality is preserved;
-- invalid typed confidence/reliability/MemoryRef values fail closed as MipContractException;
-- unknown enums, wrong primitive types and malformed MipField wrappers fail closed;
-- no mapping to legacy root AuthorityDecision;
-- no final MipBridge Authority migration.
-
-### Current validation state
+### Checkpoint 4 — Authority DTO/wire/fail-closed tests
 
 ```text
-Authority DTO code = ADDED / UNTESTED
-MipClaimV1 wire = ADDED + SELF-REVIEW FIX / UNTESTED
-Authority DTO wire = ADDED / UNTESTED
-contract/fail-closed tests = NEXT
-full regression CI = NOT YET RUN
+commit = 9542ce6248abee5d95a1016d2c709ac5c2f418a9
+file = src/test/kotlin/matrix/assembling/authority/AuthorityContractsTest.kt
+```
+
+Coverage added:
+
+```text
+MipClaimV1 round-trip preserves roles/spans/semantic markers
+AuthorityResolveRequest round-trip preserves PRESENT RetrievalResult(NO_MATCH)
+field-level retrieval NO_MATCH rejected
+request provenance claim mismatch rejected
+COMPLETE no-contradiction AuthorityResolution round-trip
+legacy persistence-style fields absent from canonical Authority wire
+concrete contradiction must be among candidate refs
+AMBIGUOUS contradiction requires >=2 candidate refs
+COMPLETE fails if authority unresolved
+COMPLETE fails if resolver confidence unresolved
+COMPLETE fails if contradiction assessment is NO_MATCH instead of completed PRESENT/NOT_APPLICABLE
+Authority reason codes require AUTHORITY.* namespace + no duplicates/blanks
+resolution provenance claim mismatch rejected
+invalid confidence wire rejected
+unknown resolution status rejected
+malformed retrieval field rejected instead of collapsed
+semantic marker PRESENT-with-null rejected
+concrete contradiction MemoryRef round-trip preserves identity
+```
+
+### Validation state
+
+```text
+Authority DTO code = ADDED
+MipClaimV1 wire = ADDED + SELF-REVIEW FIX
+Authority DTO wire = ADDED
+new tests = ADDED / NOT YET CI-VALIDATED
+full regression CI = NEXT
 ```
 
 ## Explicitly NOT IMPLEMENTED
@@ -124,14 +142,12 @@ real GGUF bridge
 repo = MATRIXNEO23/assembling
 branch = authority-runtime-dtos-v1
 base = 8dc6643e73c3ce6e569173a4922ec3a01e77e0ff
-last functional commit = 297491d62219a60cdaa3362d54b0fc632dc4eafb
-Authority DTOs = ADDED / UNTESTED
-MipClaimV1 wire = ADDED / FIXED / UNTESTED
-Authority DTO wire = ADDED / UNTESTED
+last functional commit = 9542ce6248abee5d95a1016d2c709ac5c2f418a9
+Authority runtime DTO binding = CODE + TESTS ADDED / CI PENDING
 real AuthorityResolver = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = ADD AUTHORITY DTO/WIRE/FAIL-CLOSED TESTS, THEN OPEN PR + FULL CI
+NEXT = OPEN PR, RUN FULL CI, FIX ONLY TASK-INTRODUCED FAILURES, MERGE ONLY IF GREEN
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, Authority value types, or shared MIP evidence contracts.
