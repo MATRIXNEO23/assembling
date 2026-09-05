@@ -1,70 +1,95 @@
 # Memory Integration Policy
 
-Status: MEMORY FOUNDATION NOT YET IMPLEMENTED
+Status: CANONICAL — MEMORY FOUNDATION NOT YET CONNECTED  
 Date: 2026-09-04
 
 ## Decision
 
-The assembling repository must not pretend that a production memory module exists.
-Until `MATRIXNEO23/memoria` contains a real Memory Foundation, assembling may only use a safe placeholder memory adapter.
+`assembling` must not pretend that durable memory exists. The current memory step is a **pre-response preflight**, not Memory Admission and not a repository write.
 
-## Current rule
-
-- No stable memory writes.
-- No fake persistence.
-- No direct GGUF-to-memory access.
-- No Affective persistent deltas based on unadmitted memory.
-- Memory output must explicitly say `NO_MEMORY_BACKEND` or `TRANSIENT_ONLY`.
-
-## Temporary component
-
-Use a `NoMemoryAdapter` during integration tests.
-
-Expected behavior:
+## Canonical split
 
 ```text
-input: MatrixTurnFrame
-output:
-  status = NO_MEMORY_BACKEND
-  stableWrite = false
-  memoryIds = []
-  reason = Memory Foundation not yet connected
-```
+PRE-RESPONSE
+Coherence + Authority
+→ MemoryPreflightPort.evaluate
+→ PROVISIONAL_CLAIM / NO_MEMORY_BACKEND / REJECTED
+→ stableWrite=false
+→ memoryIds=[]
 
-This allows the pipeline to be tested end-to-end without corrupting future persistence.
-
-## Future replacement
-
-When `MATRIXNEO23/memoria` is implemented, replace `NoMemoryAdapter` with a real adapter that connects to:
-
-```text
-MemoryObservation
-MemoryClaim
-MemoryRepository
-MemoryAdmission
-```
-
-Required contract:
-
-```text
-NLU / Understanding
-→ Coherence Guard
-→ Authority Resolver
-→ Memory Admission
+POST-OUTPUT-VALIDATION
+PersistentConsolidationPort
+→ real Memory Admission
 → MemoryRepository
+→ optional durable write
 ```
 
-The GGUF must never write memory directly.
+The second path is not yet connected.
 
-## Integration order
+## Current hard rules
 
-1. Assemble NLU output into `MatrixTurnFrame`.
-2. Run Coherence/Authority.
-3. Use `NoMemoryAdapter` while memory is missing.
-4. Let Affective Engine receive only transient-safe signals.
-5. Build GGUF prompt with explicit `NO_MEMORY_BACKEND` status.
-6. Replace adapter later with real Memory Foundation.
+- No stable memory writes before output validation.
+- `MemoryPreflightPort` must return `stableWrite=false` and no memory IDs.
+- The orchestrator fails closed on any attempted pre-response durable write.
+- No fake persistence or fake memory IDs.
+- No direct NLU, Understanding, Affective or GGUF access to MemoryRepository.
+- Affective persistent deltas cannot be accepted without an actually admitted event.
+- Working Memory/current `MatrixTurnFrame` is temporary and is not Long-Term Memory.
+
+## Current implementations
+
+- `NoPersistentMemoryAdmission`: compatibility name, implements non-persistent preflight.
+- `BasicMemoryAdmission`: compatibility name, implements non-persistent preflight.
+- `MemoryAdmissionPort`: deprecated compatibility facade.
+- `MemoryPreflightPort`: authoritative pre-response contract.
+- `PersistentConsolidationPort`: reserved durable-write boundary; not wired.
+
+Allowed preflight statuses:
+
+```text
+PROVISIONAL_CLAIM
+NO_MEMORY_BACKEND
+REJECTED
+```
+
+Required invariants:
+
+```text
+stableWrite = false
+memoryIds = []
+```
+
+## Future real integration
+
+After semantic output validation, a real consolidation implementation may execute:
+
+```text
+TypedClaim / resolved context
+→ AuthorityResolution
+→ Memory Admission decision
+→ MemoryRepository public API
+→ atomic commit / rollback
+```
+
+The durable implementation must preserve provenance, owner, perspective, validity, conflicts and supersession lineage. It must not reuse the current pre-response preflight as a write path.
+
+## Diagnostic requirements
+
+`DiagnosticTrace` must expose:
+
+```text
+MEMORY_ADMISSION = preflight decision
+MEMORY = NOT_EXECUTED / NO_DURABLE_WRITE
+firstDivergence = MEMORY_PREFLIGHT.UNAUTHORIZED_STABLE_WRITE
+```
+
+when a pre-response component attempts persistence.
 
 ## Production status
 
-This is not production memory. It is an integration placeholder only.
+Any build using the current adapter remains:
+
+```text
+MEMORY_PERSISTENCE_DISABLED
+NOT_PRODUCTION_APPROVED
+```
