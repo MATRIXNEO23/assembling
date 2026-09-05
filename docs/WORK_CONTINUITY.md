@@ -1,10 +1,9 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:40+02:00  
+Last updated: 2026-09-05T10:42+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Active branch: `mip-evidence-contracts-v1`  
-Continuity schema: `matrix.assembling.continuity.v34`
+Continuity schema: `matrix.assembling.continuity.v35`
 
 ## Mandatory continuity policy
 
@@ -23,7 +22,7 @@ cosmetic mass refactor = forbidden
 other repositories = read-only
 ```
 
-## Baseline already complete — DO NOT REDO
+## Completed baseline — DO NOT REDO
 
 ```text
 Assembling cleanup PR #8 merge = ff38d09f73a1eec8b2a72a24571b92f1954c729c
@@ -33,36 +32,39 @@ AUTHORITY-1.0 contract commit = a3c7bf9bb4cd01f8032fd32c4e3f4ce3dc293f9b
 AUTHORITY freeze PR #10 merge = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
 Kotlin Authority types PR #11 merge = b87dadf376300587511a7dbce594b0fe88695798
 Authority post-merge CI = 33954180260 SUCCESS
-pre-task main HEAD = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
-pre-task continuity CI = 33954352500 SUCCESS
+pre-evidence main HEAD = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
+pre-evidence continuity CI = 33954352500 SUCCESS
 ```
 
 Authority remains read-only over evidence, never Memory writer/admission owner. `BasicAuthorityResolver` remains placeholder-only. Hard MIP distinctions and explicit status vocabulary remain unchanged.
 
-## ACTIVE TASK — SHARED MIP EVIDENCE CONTRACT TYPES ONLY
+## Shared MIP evidence contracts — COMPLETE / INTEGRATED
+
+Phase branch:
+
+`mip-evidence-contracts-v1`
+
+Phase base:
+
+`05ff921d33e3f9c133ef7ea4fd9026c4966c67b7`
+
+PR:
+
+`#12`
+
+Merge SHA:
+
+`8f45a631b70c283169d058d98d1c880b5e37e554`
+
+Files integrated:
 
 ```text
-branch = mip-evidence-contracts-v1
-base = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
-PR = #12
-task-start continuity = 9bc0545a392f0875f3ede6509b2b384b91f8a455
-other repos modified = false
+src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt
+src/main/kotlin/matrix/assembling/mip/MipEvidenceWire.kt
+src/test/kotlin/matrix/assembling/mip/MipEvidenceContractsTest.kt
 ```
 
-### Functional checkpoints
-
-```text
-402b6611daa4b0a7804f176e99135752f555b684
-= add src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt
-
-b237e1e22b98f480eaf39e7fcb108715855592e4
-= add src/main/kotlin/matrix/assembling/mip/MipEvidenceWire.kt
-
-43858f686ba383bc7fa79e3a40f811b021ef69e1
-= add src/test/kotlin/matrix/assembling/mip/MipEvidenceContractsTest.kt
-```
-
-Shared types:
+Types integrated:
 
 ```text
 ModuleId
@@ -81,57 +83,54 @@ RetrievalScore
 RetrievalResult
 ```
 
-Key invariants implemented:
+Key invariants now enforced:
 
-- shared types live only in existing MIP package;
-- all reserved domains declare availability exactly once;
-- NOT_WIRED/UNAVAILABLE/ERROR domains cannot carry fake context entries;
-- immutable snapshot lineage uses explicit IDs; parent cannot equal current snapshot;
-- optional provenance states use MipField;
-- normalized finite context/retrieval confidence;
+- every reserved ContextDomain declares availability exactly once;
+- NOT_WIRED/UNAVAILABLE/ERROR domains cannot carry fake ContextEntry content;
+- snapshot and entry IDs are explicit/validated; entry IDs unique;
+- parent snapshot cannot equal current snapshot;
+- optional provenance states use MipField instead of ambiguous null;
+- context confidence and retrieval relevance are finite `[0,1]`;
 - includeSuperseded requires includeHistorical;
-- selected refs subset candidates;
-- retrieval score identity is ref-bound;
-- MATCHED requires evidence;
-- NO_MATCH cannot carry candidate evidence;
-- AMBIGUOUS requires >=2 candidates;
-- INDEX_UNAVAILABLE/ERROR cannot carry fake candidates;
-- NO_MATCH != INDEX_UNAVAILABLE != ERROR structurally and across wire round-trip.
+- selected retrieval refs must be subset of candidates;
+- score identity is explicitly ref-bound, not positional;
+- MATCHED requires candidate evidence;
+- NO_MATCH carries no candidate evidence;
+- AMBIGUOUS requires at least two candidates;
+- INDEX_UNAVAILABLE and ERROR cannot carry fake candidates;
+- NO_MATCH != INDEX_UNAVAILABLE != ERROR is preserved structurally and on wire round-trip.
 
-Wire codec:
+Wire support:
 
-- reflection-free primitive maps/lists;
+- reflection-free primitive Map/List/String/Number/Boolean representation;
 - Provenance, Context snapshot/entries, Retrieval query/result round trips;
-- explicit MipField status preservation;
-- malformed values/unknown enums/bad timestamps fail closed;
+- all MipField states preserved;
+- unknown enums, malformed PRESENT fields, bad timestamps and wrong primitive types fail closed;
 - ISO-8601 Instant timestamps;
 - no second bridge/protocol introduced.
 
-Test coverage includes vocabulary, round trips, domain availability, fake-content rejection, retrieval status distinctions, superseded/history constraints, malformed PRESENT fields, unknown enum rejection, normalized score validation and selected-ref integrity.
-
-### PR / CI evidence
-
-PR #12 opened from verified four-file diff only:
+Functional commits:
 
 ```text
-docs/WORK_CONTINUITY.md
-src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt
-src/main/kotlin/matrix/assembling/mip/MipEvidenceWire.kt
-src/test/kotlin/matrix/assembling/mip/MipEvidenceContractsTest.kt
+402b6611daa4b0a7804f176e99135752f555b684 = shared contracts
+b237e1e22b98f480eaf39e7fcb108715855592e4 = MIP evidence wire codec
+43858f686ba383bc7fa79e3a40f811b021ef69e1 = contract/wire/fail-closed tests
 ```
 
-Green full-suite gate on PR head `7857b268e2b2ce78ce40b3ba300733b9e793acea`:
+PR CI evidence:
 
 ```text
-CI run = 33955741385
-job = kotlin-tests
-Run tests = SUCCESS
-job conclusion = SUCCESS
+33955741385 = SUCCESS
+33955809007 = SUCCESS on final PR head
 ```
 
-No task-introduced failure required repair.
+Post-merge main CI:
 
-This continuity update is documentation-only and creates the final pre-merge head. Merge remains forbidden until the CI for that final head is also green.
+```text
+33955886389 = SUCCESS
+```
+
+No task-introduced failure required repair. No existing gate/test was weakened.
 
 ## Explicitly NOT IMPLEMENTED
 
@@ -154,22 +153,46 @@ Android integration
 real GGUF bridge
 ```
 
+Other repositories modified:
+
+`false`
+
+## Next bounded task
+
+The shared evidence contracts required by AUTHORITY-1.0 now exist. The next safe task is deliberately narrower than implementing the resolver:
+
+```text
+AUTHORITY RUNTIME DTO BINDING ONLY
+```
+
+Scope:
+
+- implement canonical `AuthorityResolveRequest` using existing MIP `TypedClaim`/claim identity, `MatrixContextSnapshot`, optional `RetrievalResult`, and `ProvenanceRef`;
+- implement canonical `AuthorityResolution` DTO using frozen AUTHORITY-1.0 fields and shared MIP evidence types;
+- preserve explicit contradiction field/status semantics end-to-end;
+- add structural/wire/fail-closed tests;
+- no AuthorityResolver algorithm;
+- no semantic contradiction detection logic;
+- no Memory writes/admission;
+- no orchestrator rewiring;
+- no final MipBridge migration yet.
+
+Only after this DTO-binding checkpoint is green may the real resolver implementation begin.
+
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
-branch = mip-evidence-contracts-v1
-PR = #12
-base = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
-last green tested head before continuity update = 7857b268e2b2ce78ce40b3ba300733b9e793acea
-CI = 33955741385 SUCCESS
+branch = main
+main functional merge = 8f45a631b70c283169d058d98d1c880b5e37e554
+post-merge CI = 33955886389 SUCCESS
 AUTHORITY-1.0 = FROZEN
 Kotlin Authority value types = COMPLETE / INTEGRATED / TESTED
-shared MIP evidence contracts = IMPLEMENTED / TESTED GREEN
+shared MIP evidence contracts = COMPLETE / INTEGRATED / TESTED
 real AuthorityResolver = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = VERIFY FINAL DOC-ONLY PR HEAD CI; MERGE PR #12 ONLY IF GREEN; THEN VERIFY MAIN CI + FINALIZE CONTINUITY
+NEXT = AUTHORITY RUNTIME DTO BINDING ONLY
 ```
 
-Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, or Kotlin Authority value-type work.
+Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, Kotlin Authority value-type work, or shared MIP evidence contract work.
