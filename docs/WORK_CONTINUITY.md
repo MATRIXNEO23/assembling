@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T11:27+02:00  
+Last updated: 2026-09-05T11:31+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-resolver-v1`  
-Continuity schema: `matrix.assembling.continuity.v47`
+Continuity schema: `matrix.assembling.continuity.v48`
 
 ## Mandatory continuity policy
 
@@ -34,37 +34,54 @@ PR = #14
 other repos modified = false
 ```
 
-### Checkpoint 1 — read-only candidate evidence projection
+### Functional checkpoints
 
 ```text
-commit = 389872dd24bd485a4873d0d8de6ccea63171248a
-file = src/main/kotlin/matrix/assembling/authority/AuthorityCandidateEvidence.kt
+389872dd24bd485a4873d0d8de6ccea63171248a
+= read-only AuthorityCandidateEvidence + AuthorityCandidateEvidencePort
+
+0015c36020f196258d2936a5731bbf7bb2cf5022
+= initial deterministic Authority resolver
+
+88f5f4945fc265318abdcf96121d1340c45c5894
+= pre-CI resolver factory/compile self-review correction
+
+8657a3041121df03b16ab35408c4665afcb0e7c3
+= P0 Authority resolver tests
 ```
 
-`AuthorityCandidateEvidencePort` exposes `read(memoryRef, contextSnapshot)` only; there is no persistence mutation API. `AuthorityCandidateEvidence` is a normalized read projection, not a MemoryRecord/admission DTO.
+Resolver semantics:
 
-### Checkpoint 2 — deterministic AUTHORITY-1.0 resolver
+- trusted WORLD provenance + explicit WORLD_TRUTH -> WORLD_TRUTH;
+- trusted PERCEPTION provenance -> OBSERVATION;
+- explicit derived INFERENCE provenance -> INFERENCE;
+- structured report/self-report -> REPORT;
+- structured belief/hypothesis -> BELIEF;
+- unresolved authority -> HOLD;
+- SourceReliability remains unavailable unless a real provider exists;
+- no natural-language reparsing or retrieval-score truth heuristic.
 
-```text
-initial = 0015c36020f196258d2936a5731bbf7bb2cf5022
-pre-CI self-review fix = 88f5f4945fc265318abdcf96121d1340c45c5894
-file = src/main/kotlin/matrix/assembling/authority/AuthorityResolver.kt
-```
+Contradiction semantics:
 
-Implemented `AuthorityResolver` + `DeterministicAuthorityResolver` with structured classification, conservative same-slot contradiction detection, explicit retrieval/error/ambiguity handling, deterministic AUTHORITY.* reasons, and BELIEF_AUTHORITY output provenance. No natural-language reparsing or retrieval-score truth heuristic exists.
+- only VALID candidate evidence can be a target;
+- same resolved subject/predicate/owner/target scope required;
+- REPORT source and BELIEF perspective scopes remain distinct;
+- temporal changes are not contradictions by default;
+- unresolved historical/reference identity stays unresolved;
+- opposite polarity on same value can contradict;
+- different values contradict only for explicitly registered single-value predicates;
+- unrelated predicates never contradict solely because actors overlap;
+- multiple concrete targets -> AMBIGUOUS/HOLD;
+- unresolved evidence prevents choosing a concrete target;
+- correction never bypasses semantic verification.
 
-### Checkpoint 3 — P0 resolver tests
+### P0 regression coverage
 
-```text
-commit = 8657a3041121df03b16ab35408c4665afcb0e7c3
-file = src/test/kotlin/matrix/assembling/authority/AuthorityResolverTest.kt
-```
+Tests cover trusted/fake WORLD_TRUTH, OBSERVATION, REPORT, INFERENCE, BELIEF, unrelated predicates, same-slot conflicts, opposite polarity, temporal change, unresolved historical identity, correction, SUPERSEDED exclusion, multi-target ambiguity, unresolved-evidence uniqueness protection, NO_MATCH vs UNAVAILABLE, unresolved-source short circuit, and read-only evidence-port API.
 
-Coverage includes WORLD provenance, false WORLD self-grant, OBSERVATION, REPORT, INFERENCE, BELIEF, unrelated predicates, same-slot conflicts, opposite polarity, temporal change, historical unresolved identity, correction semantics, SUPERSEDED exclusion, ambiguity, unresolved evidence uniqueness protection, NO_MATCH vs UNAVAILABLE, unresolved source short-circuit, and read-only port surface.
+### PR / CI evidence
 
-### Diff / PR checkpoint
-
-Verified diff from base to pre-PR continuity head contains exactly:
+Verified task diff contains only:
 
 ```text
 docs/WORK_CONTINUITY.md
@@ -73,17 +90,26 @@ src/main/kotlin/matrix/assembling/authority/AuthorityResolver.kt
 src/test/kotlin/matrix/assembling/authority/AuthorityResolverTest.kt
 ```
 
-No orchestrator, BasicAdapters, MipBridge, Memory file or other repository changed.
-
 PR #14:
 
 `Implement deterministic AUTHORITY-1.0 resolver`
 
-PR-open head before this documentation update:
+Final green tested head before this documentation-only update:
 
-`aa55032ae33cacfecd288c38b3dc5b0ecc422105`
+`08efb0bdca44303c0a8d052a50ba52cbf0ea3a8c`
 
-Full repository CI is the merge gate. Merge remains forbidden until the exact final PR head is green.
+Full regression CI:
+
+```text
+run = 33957745559
+job = kotlin-tests
+Run tests = SUCCESS
+job conclusion = SUCCESS
+```
+
+No test/gate was weakened. No task-introduced CI repair was needed after the pre-CI self-review correction.
+
+This documentation update creates a new final PR head. Merge remains forbidden until CI for that exact head is also green.
 
 ## Explicitly NOT implemented / not authorized
 
@@ -107,10 +133,11 @@ repo = MATRIXNEO23/assembling
 branch = authority-resolver-v1
 PR = #14
 base = 3e413509ea60f4ea60ee2fe2382c6f37e892da6d
-PR-open head = aa55032ae33cacfecd288c38b3dc5b0ecc422105
-real AuthorityResolver = CODE + TESTS ADDED / PR OPEN / CI PENDING
+last green tested head before doc update = 08efb0bdca44303c0a8d052a50ba52cbf0ea3a8c
+CI = 33957745559 SUCCESS
+real AuthorityResolver = IMPLEMENTED / P0 TESTED GREEN
 MipBridge final Authority migration = NOT_STARTED
 orchestrator rewiring = NOT_STARTED
 other repos = READ-ONLY
-NEXT = INSPECT PR #14 CI; FIX ONLY TASK-INTRODUCED FAILURES; MERGE ONLY IF FINAL HEAD GREEN
+NEXT = VERIFY FINAL DOC-ONLY HEAD CI; MERGE PR #14 ONLY IF GREEN; THEN VERIFY MAIN CI + FINALIZE CONTINUITY
 ```
