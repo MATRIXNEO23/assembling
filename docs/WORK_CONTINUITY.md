@@ -1,9 +1,9 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T13:29+02:00  
+Last updated: 2026-09-05T13:34+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v64`
+Continuity schema: `matrix.assembling.continuity.v66`
 
 ## Mandatory continuity policy
 
@@ -17,7 +17,7 @@ Canonical checkpoint roadmap:
 
 `docs/MATRIX_ENGINE_CHECKPOINT_ROADMAP.md`
 
-Hard rules now explicitly include:
+Hard rules:
 
 ```text
 CONTRACT BEFORE CODE
@@ -32,33 +32,14 @@ ONE WRITE REPO AT A TIME
 NO NEXT MODULE UNTIL CURRENT SUITE IS 100% GREEN
 SAVE EXACT CONTINUITY BEFORE ANY PRIORITY SWITCH OR INTERRUPTION
 SEMANTIC QUALITY IS MEASURED AND MAXIMIZED, NOT FROZEN AS ONE GLOBAL PERCENTAGE
+PROPOSE PIVOTS WITH EVIDENCE; CHANGE DIRECTION ONLY AFTER OWNER APPROVAL
 ```
 
-## Quality metric policy — owner decision
+Owner-approved work-method pivot rule commit:
 
-Owner decision on 2026-09-05:
+`d23d08159695045dcb1cd2c7ecbf7365ac365795`
 
-```text
-NO GLOBAL CANONICAL SEMANTIC SUCCESS PERCENTAGE
-```
-
-This does NOT lower the quality target. Required interpretation:
-
-```text
-measure semantic quality
-compare against baseline and previous best
-perform error analysis
-fix concrete causes
-preserve already-strong capabilities
-push accuracy/retrieval/admission quality as high as reasonably achievable
-never accept an avoidable regression merely because a fixed numeric threshold was crossed
-```
-
-Percentages such as NLU accuracy, role resolution, Memory Admission correctness, retrieval Top-1/Top-k and device success rate remain mandatory metrics when relevant. They are evidence for engineering decisions, not one universal project-wide promotion number.
-
-Checkpoint-specific benchmark thresholds may still be used when explicitly justified for a bounded experiment or regression gate. They do not become global canonical percentages automatically.
-
-Deterministic/structural properties remain hard gates: all required tests for those invariants must pass. Examples include contract validity, lossless adapters, atomic rollback, lineage preservation, no pre-response persistent writes, state-status distinctions, ownership boundaries and task-specific regression tests.
+Any change of method/module/architecture/model/strategy/priority must be discussed with the owner before execution. The assistant may identify and recommend alternatives but may not execute a pivot autonomously.
 
 ## Completed Authority / MIP baseline — DO NOT REDO
 
@@ -79,25 +60,9 @@ frame-slot continuity CI = 33962208689 SUCCESS
 
 Other repos = READ-ONLY. Memory writes/admission = NOT TOUCHED.
 
-## Canonical work-method checkpoint
+## Canonical checkpoint roadmap
 
-Document:
-
-`docs/MATRIX_ENGINE_WORK_METHOD.md`
-
-Initial commit:
-
-`c0e49e91a6d89563a080e1aea28df1bc3d872dea`
-
-Quality-metric policy update:
-
-`72fbccff439b73a9e0daa8d4ccd5348f36882c76`
-
-The method is binding for future Matrix Engine work. In particular, a downstream integration checkpoint must not start while an upstream canonical semantic boundary is still incomplete.
-
-## Canonical checkpoint roadmap — FROZEN FOR CURRENT EXECUTION ORDER
-
-Document:
+Roadmap:
 
 `docs/MATRIX_ENGINE_CHECKPOINT_ROADMAP.md`
 
@@ -105,12 +70,12 @@ Roadmap commit:
 
 `140cd6837dacc7e008e84b642291dfa86ae0072a`
 
-Execution order:
+Execution order remains:
 
 ```text
 PHASE U — UNDERSTANDING V3
-  CP-U1 V3 lossless contract audit                       ACTIVE
-  CP-U2 Understanding/MIP contract extension             CONDITIONAL
+  CP-U1 V3 lossless contract audit                       COMPLETE
+  CP-U2 Understanding/MIP contract extension             RECOMMENDED / AWAIT OWNER APPROVAL
   CP-U3 Canonical Understanding V3 adapter/runtime        LOCKED
   CP-U4 Understanding cross-module freeze                 LOCKED
 
@@ -143,21 +108,77 @@ PHASE R — REFLECTION
   CP-R4 Reflection freeze                                 LOCKED
 ```
 
-No LOCKED checkpoint may preempt the ACTIVE checkpoint unless the owner explicitly changes priority after an exact continuity save.
+## CP-U1 — UNDERSTANDING V3 LOSSLESS CONTRACT AUDIT — COMPLETE
 
-If interrupted mid-checkpoint, continuity MUST record:
+Audit document:
+
+`docs/UNDERSTANDING_V3_LOSSLESS_AUDIT.md`
+
+Audit commit:
+
+`fd23526be154863f840ef373bbb0635242d10ff5`
+
+Read-only source contract:
+
+`MATRIXNEO23/matrix-understanding-lab` / `MATRIX_NLU_CONTRACT_V3`
+
+No write was made to `matrix-understanding-lab`.
+
+### CP-U1 verdict
 
 ```text
-checkpoint ID
-last completed operation
-operation in progress
-last green commit
-current HEAD/branch
-changed files
-known risks
-what must not be repeated
-exact restart action
+CP-U1 = PASS
+AUDIT COMPLETE = YES
+CURRENT MIP/RUNTIME LOSSLESS FOR MATRIX_NLU_CONTRACT_V3 = NO
+CP-U3 DIRECT START = BLOCKED
+CP-U2 REQUIRED = YES
 ```
+
+The current boundary is structurally insufficient for frozen V3 semantics.
+
+### Critical findings
+
+```text
+P0-U1-01 legacy MatrixNluClaim contains worldTruth and bridge can map it to WORLD_TRUTH
+P0-U1-02 sourceReferent is absent from legacy MatrixNluClaim and current bridge writes source=UNKNOWN
+P0-U1-03 plural subject/object/negation/temporal evidence collapses to one span
+P0-U1-04 temporalAnchorRef has no canonical runtime representation
+P0-U1-05 structuralStatus and interpretationStatus do not survive current claim boundary
+P0-U1-06 candidate identity and ranked ambiguity alternatives are absent
+P0-U1-07 legacy adapter derives source category from dialogueAct instead of consuming V3 claimKind/sourceReferent
+```
+
+Other missing/lossy V3 evidence includes:
+
+```text
+upstream NLU contract identity/fingerprint
+observationSourceId / claim provenance
+mentions[]
+referentCandidates[]
+entityMentionIds[]
+per-field alternatives[]
+complete fieldStatusByField
+V3 validator diagnostics linkage
+original V3 claim identity preservation
+```
+
+### Reusable current work
+
+CP-U1 does NOT recommend discarding the current architecture. Reusable pieces include:
+
+```text
+MipField / MipFieldStatus
+MipEntityRef / MipEntityResolutionStatus
+MipSpan primitive
+MatrixTurnFrame canonical multi-claim slots
+DiagnosticTrace infrastructure
+CanonicalAuthorityRuntimeAdapter
+DeterministicAuthorityResolver
+Authority reason-code system
+legacy adapters as compatibility/quarantine paths
+```
+
+The structural gap can be addressed with a bounded contract extension/version rather than rebuilding the engine from zero.
 
 ## Current architecture state
 
@@ -168,63 +189,40 @@ Canonical AuthorityResolution slot = READY / MULTI-CLAIM
 CanonicalAuthorityRuntimeAdapter = READY
 DeterministicAuthorityResolver = READY
 legacy AuthorityDecision = COMPATIBILITY-ONLY
+Understanding V3 lossless audit = COMPLETE
+Understanding V3 canonical runtime contract = INSUFFICIENT / REQUIRES CP-U2
 orchestrator uses canonical resolver = false
 Memory Admission = NOT IMPLEMENTED HERE
 MemoryRepository = NOT TOUCHED
 ```
 
-## ACTIVE CHECKPOINT — CP-U1 UNDERSTANDING V3 LOSSLESS CONTRACT AUDIT
+## STOP / OWNER DECISION REQUIRED BEFORE CP-U2
 
-Owner priority is explicit: finish Understanding before canonical Authority orchestrator rewire, then Memory immediately after Authority integration.
+Per owner rule, CP-U2 is not started automatically.
 
-CP-U1 must compare every frozen V3 field against current `MipClaimV1` and Assembling runtime types and classify it as:
-
-```text
-LOSSLESS
-REPRESENTABLE_WITH_EXISTING_MIP_FIELD
-MISSING_FROM_MIP_RUNTIME
-LEGACY_ONLY_LOSS
-NOT_APPLICABLE_DOWNSTREAM
-```
-
-Mandatory audit coverage:
+Recommended next checkpoint:
 
 ```text
-speaker / observer / source / subject / target / owner / perspective
-dialogueAct / predicate / claimKind / polarity
-subjectSpans[] / objectSpans[] / negationCueSpans[] / temporalEvidence[]
-entityMentionIds / referentCandidates
-fieldStatus / alternatives / confidenceByField
-temporalRelation + temporalAnchorRef
-structuralStatus / interpretationStatus / overallInterpretationConfidence
-multi-claim identity and provenance
+CP-U2 — UNDERSTANDING/MIP CONTRACT EXTENSION
 ```
 
-Decision after CP-U1:
+Purpose of CP-U2 would be a minimal, versioned extension that preserves frozen V3 semantics without changing NLU ownership or rewriting already-working Authority/MatrixTurnFrame infrastructure.
+
+Before CP-U2 implementation the owner must explicitly approve proceeding with that contract extension after reviewing the CP-U1 findings.
+
+## Explicitly NOT started
 
 ```text
-if current MIP/runtime is lossless -> CP-U3
-if frozen V3 semantics cannot be represented losslessly -> CP-U2 first
+CP-U2 implementation = NOT STARTED
+CP-U3 adapter = NOT STARTED
+Authority orchestrator rewire = NOT STARTED
+Memory Admission = NOT STARTED
+MemoryRepository integration = NOT STARTED
+PersistentConsolidation = NOT STARTED
+APK work = NOT STARTED
+Reflection = NOT STARTED
+other repo writes = false
 ```
-
-No implementation shortcut is allowed.
-
-## Explicitly NOT authorized during CP-U1
-
-```text
-no matrix-understanding-lab writes
-no Student-5 training changes
-no orchestrator Authority rewire
-no BasicAuthorityResolver replacement
-no Memory Admission
-no MemoryRepository write/dependency
-no PersistentConsolidation
-no APK work
-no Reflection
-no other repo writes
-```
-
-The existing Student-5 Path A ONNX INT8 runtime probe is reserved for CP-APK1/runtime loop closure only. It does not preempt CP-U1 and is not the final Matrix-NLU V3.
 
 ## Exact restart point
 
@@ -232,19 +230,15 @@ The existing Student-5 Path A ONNX INT8 runtime probe is reserved for CP-APK1/ru
 repo = MATRIXNEO23/assembling
 branch = main
 work method = docs/MATRIX_ENGINE_WORK_METHOD.md
-work-method quality-policy commit = 72fbccff439b73a9e0daa8d4ccd5348f36882c76
+work-method pivot-rule commit = d23d08159695045dcb1cd2c7ecbf7365ac365795
 checkpoint roadmap = docs/MATRIX_ENGINE_CHECKPOINT_ROADMAP.md
 roadmap commit = 140cd6837dacc7e008e84b642291dfa86ae0072a
-frame-slot continuity CI = 33962208689 SUCCESS
-AUTHORITY-1.0 = FROZEN
-shared MIP evidence = COMPLETE / TESTED
-DeterministicAuthorityResolver = COMPLETE / TESTED
-CanonicalAuthorityRuntimeAdapter = COMPLETE / TESTED
-MatrixTurnFrame canonical MIP slots = COMPLETE / TESTED
-ACTIVE CHECKPOINT = CP-U1
-Understanding V3 canonical boundary = AUDIT IN PROGRESS
+CP-U1 audit = docs/UNDERSTANDING_V3_LOSSLESS_AUDIT.md
+CP-U1 audit commit = fd23526be154863f840ef373bbb0635242d10ff5
+CP-U1 = COMPLETE / PASS
+CP-U2 = RECOMMENDED / AWAIT OWNER APPROVAL
 orchestrator uses canonical resolver = false
 Memory writes/admission = NOT TOUCHED
 other repos = READ-ONLY
-NEXT = COMPLETE CP-U1 LOSSLESS FIELD-BY-FIELD AUDIT; DO NOT START CP-U2/U3 UNTIL CP-U1 VERDICT
+NEXT = OWNER REVIEW OF CP-U1; DO NOT START CP-U2 UNTIL EXPLICIT APPROVAL
 ```
