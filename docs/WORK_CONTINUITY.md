@@ -1,17 +1,17 @@
 # Work Continuity — Matrix Assembling Lab
 
-Last updated: 2026-09-05T07:34+02:00  
+Last updated: 2026-09-05T08:14+02:00  
 Repository: `MATRIXNEO23/assembling`  
-Branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v14`  
-Current integrated HEAD before this continuity commit: `f25185e1529c55eeb91bf499fe3acb25635e8d71`  
-PR `#6`: MERGED — remaining integration boundary fixes  
-Last full runtime CI before documentation-only architecture work: `33942262278` — SUCCESS
+Branch: `main` with PR `#7` head `mip-bridge-v1` pending merge at this checkpoint  
+Continuity schema: `matrix.assembling.continuity.v15`  
+Current tested PR HEAD before this continuity commit: `a70e75d4ce82de125ceae1a6ab4bd7ee26d0a6b3`  
+PR `#7`: OPEN — explicit MIP bridge adapters and compatibility audit  
+PR CI run `33949127818`: `Matrix Assembling CI` — SUCCESS
 
 ## Canonical work rules
 
 - work on one repository at a time unless the owner explicitly says otherwise;
-- temporary active repository for this architecture clarification checkpoint is `MATRIXNEO23/assembling`;
+- temporary active repository for this architecture clarification/bridge checkpoint is `MATRIXNEO23/assembling`;
 - historical repositories are backup/checkpoint sources, not active targets;
 - do not write other repositories without explicit authorization;
 - when a component changes, keep code, tests, active documents and continuity coherent in the same workstream;
@@ -25,9 +25,130 @@ Do not use this as authorization to begin Memory implementation or other deferre
 After the protocol is clear, Memory can be designed against it in its own repository when explicitly selected.
 ```
 
-## Canonical universal protocol — NEW
+## MIP Bridge implementation checkpoint — TESTED
 
-Assembling now owns the canonical Matrix Intermodule Protocol:
+The owner requested an explicit adapter layer between existing module formats without modifying the existing modules.
+
+Implementation candidate:
+
+```text
+src/main/kotlin/matrix/assembling/mip/MipBridge.kt
+```
+
+Compatibility audit:
+
+```text
+docs/MIP_BRIDGE_COMPATIBILITY_AUDIT.md
+```
+
+Tests:
+
+```text
+src/test/kotlin/matrix/assembling/mip/MipBridgeTest.kt
+```
+
+PR:
+
+```text
+#7 Add explicit MIP bridge adapters and compatibility audit
+base = main @ 10cea71af56427b81aa15c7bfcdf3be38823a4ee
+head = mip-bridge-v1
+```
+
+Relevant branch commits before this continuity update:
+
+```text
+4754854b106131c7e368641ece662f09ba4605f3  initial bridge
+c50118f992b2c269191bbd157193a26eaed6695b  compile-safe explicit mappings
+bfd50eefc1f9d30eb327061762f4dc3cdc69ed60  round-trip/incompatibility tests
+d3e6c254baabf18795fa0a1d7b7dc6dfd2149bb9  field-level compatibility audit
+a70e75d4ce82de125ceae1a6ab4bd7ee26d0a6b3  docs index alignment
+```
+
+CI evidence:
+
+```text
+run = 33949127818
+job = kotlin-tests
+result = SUCCESS
+Run tests = SUCCESS
+```
+
+Hard result:
+
+```text
+existingModuleDTOsModified = false
+orchestratorRewired = false
+businessLogicAddedToBridge = false
+reflectionMagicUsed = false
+crossRepositoryWrites = false
+roundTripTests = PASS
+missingFieldFailClosed = PASS
+lossyConversionFailClosed = PASS
+KotlinLongOverflowFailClosed = PASS
+fullExistingRegressionSuite = PASS
+```
+
+### Bridge mappings implemented
+
+```text
+MatrixNluClaim <-> MipClaimV1
+Assembling TypedClaim <-> MipClaimV1
+Assembling CoherenceDecision <-> MipCoherenceDecisionV1
+Assembling AuthorityDecision <-> MipAuthorityResolutionV1
+owner-provided Python AuthorityResolution contradiction field <-> MipAuthorityResolutionV1
+MipAuthorityResolutionV1 -> Kotlin Memory contradictedMemoryId wire
+Assembling MemoryAdmissionResult <-> MipMemoryResultV1
+Assembling AffectiveState <-> MipAffectiveSnapshotV1
+```
+
+For the owner-provided cross-language incompatibility:
+
+```text
+Python:
+contradicts_memory_id: Optional[int]
+
+MIP:
+contradictedMemoryId: explicit MipField<String>
+
+Kotlin Memory boundary:
+contradictedMemoryId: Long?
+```
+
+MIP uses an opaque decimal string for this identifier so Python integer width is preserved; conversion to Kotlin `Long` is explicit and overflow fails closed.
+
+Current Assembling `AuthorityDecision` does not contain contradiction identity. The bridge MUST throw instead of dropping a PRESENT canonical contradiction ID when converting back to that current DTO.
+
+### Residual bridge risks
+
+P0:
+- current Assembling `AuthorityDecision` still lacks contradiction identity required for real memory-backed Authority/Admission;
+- the complete frozen/reference Python `AuthorityResolution` source contract is not stored in this repository, so only the owner-provided `contradicts_memory_id` field is cross-language-grounded here.
+
+P1:
+- `TypedClaim` does not independently carry dialogue act or explicit semantic-domain marker;
+- null/sentinel native formats remain outside the bridge;
+- current predicate/source/status domains are still mostly stringly typed;
+- `worldTruth: Boolean` remains a compatibility representation;
+- legacy `contracts/*` remains a duplicate vocabulary but is quarantined as compatibility-only;
+- primitive wire codec is implemented for the current high-risk Authority seam; additional cross-process codecs should be added only when a real boundary requires them.
+
+P2:
+- snake_case/camelCase naming differences remain native-format concerns handled explicitly by adapters;
+- `MemoryAdmissionResult.status` is still a string;
+- semantic marker registry needs future versioning with PredicateId registry.
+
+This checkpoint does NOT authorize:
+- changing existing module DTOs;
+- rewiring `MatrixAssemblingOrchestrator` to MIP Bridge;
+- implementing Memory;
+- implementing Relationship;
+- implementing Reflection;
+- implementing BDI/Decision.
+
+## Canonical universal protocol
+
+Assembling owns the canonical Matrix Intermodule Protocol:
 
 ```text
 docs/MATRIX_INTERMODULE_PROTOCOL.md
@@ -40,7 +161,7 @@ Protocol creation commit:
 524eddd160fffae5425f06db2b7a44fe78abfb19
 ```
 
-Aligned documentation commits in this workstream:
+Aligned documentation commits in the original MIP definition workstream:
 
 ```text
 7f1f3b73555bb88e64a5a2f9e01cc5c0cf2846ac  docs index / MIP authority
@@ -48,9 +169,10 @@ df8803c81059e58eb77b92c33e8095ed5c871754  module wiring aligned to MIP
 2c20e0b4dce5b061bc07dbee250586ffa4462990  assembly plan aligned to MIP
 bc58f21eecf4a7d29930a451c9be0a015d8a3796  memory integration policy aligned
 f25185e1529c55eeb91bf499fe3acb25635e8d71  memory integration status aligned
+10cea71af56427b81aa15c7bfcdf3be38823a4ee  canonical MIP architecture checkpoint
 ```
 
-No Kotlin runtime code was changed in this architecture checkpoint.
+No Kotlin runtime code was changed in the original architecture-definition checkpoint; the later PR #7 adds the isolated adapter layer described above without changing existing modules or orchestrator wiring.
 
 ## MIP-1.0 canonical principles
 
@@ -169,7 +291,7 @@ Retrieval is universal and not Reflection-specific. Future Reflection will use t
 
 ## Relationship / affective / intimacy separation
 
-MIP now reserves these as distinct state domains:
+MIP reserves these as distinct state domains:
 
 ```text
 RELATIONSHIP
@@ -271,7 +393,7 @@ Missing target phases remain explicitly `NON_CABLATO` / `NOT_WIRED`.
 
 ## Integrated hardening status
 
-Completed and regression-tested before this documentation-only MIP checkpoint:
+Completed and regression-tested before the MIP bridge checkpoint:
 - all NLU claims preserved;
 - critical confidence fail-closed on every claim;
 - unresolved subject remains `UNKNOWN`;
@@ -291,9 +413,10 @@ Completed and regression-tested before this documentation-only MIP checkpoint:
 Evidence:
 - PR #4 merged as `a46919d925824e12d66d074a77c231aa2b4b7a1b`;
 - PR #6 merged as `1c603ac94d62d0e79d14fd455481c7a487d89ea4`;
-- main CI run `33942262278` — SUCCESS.
+- prior main CI run `33942262278` — SUCCESS;
+- MIP Bridge PR CI run `33949127818` — SUCCESS.
 
-No existing P0/P1/P2 gate was weakened or re-opened by MIP documentation work.
+No existing P0/P1/P2 gate was weakened or re-opened by MIP Bridge work.
 
 ## Memory Foundation migration decisions — PRESERVED
 
@@ -322,9 +445,9 @@ Exact Room entities/DAO/index/storage details remain to be designed/audited in t
 
 ## Still NON_CABLATO
 
-- formal Kotlin `MatrixEnvelope<T>`;
-- typed `EntityRef`, `TemporalRef`, `ProvenanceRef`;
-- typed confidence wrappers;
+- full formal Kotlin `MatrixEnvelope<T>` integration;
+- full typed `TemporalRef` / `ProvenanceRef` integration;
+- typed confidence wrappers across existing module DTOs;
 - Predicate registry implementation;
 - explicit `TurnWorkspace` migration;
 - `MatrixContextSnapshot` / `ContextEntry` runtime types;
@@ -345,12 +468,13 @@ Exact Room entities/DAO/index/storage details remain to be designed/audited in t
 
 ## Current architecture checkpoint decision
 
-The ambiguity-resolution task in Assembling is documentation/specification only.
+MIP-1.0 is canonical. PR #7 adds an isolated tested bridge implementation candidate without changing existing module ownership or runtime order.
 
 Do NOT start the following automatically:
 
 ```text
-Kotlin MIP rewrite
+orchestrator rewiring to MIP Bridge
+full Kotlin MIP rewrite
 Working Context implementation
 Memory retrieval implementation
 Memory persistence
@@ -361,21 +485,18 @@ Decision/BDI
 Reflection
 ```
 
-The universal protocol has been defined first so these components can later be designed against one stable language.
-
 ## Next repository/work decision
 
-The owner intends to begin detailed Memory design after the universal ambiguity is resolved.
+After PR #7 is reviewed/merged, the next architecture choice remains owner-controlled.
 
-When explicitly switching to `MATRIXNEO23/memoria`:
+If explicitly switching to `MATRIXNEO23/memoria`:
 - treat the current Memory README as historical/approximate material, not authoritative where it conflicts with MIP;
-- design Memory Foundation against `MIP-1.0`;
+- design Memory Foundation against `MIP-1.0` and the tested bridge semantics;
 - do not modify Assembling while Memory is active;
 - do not implement Reflection merely because `REFLECTION` exists as a Memory kind;
 - preserve always-on lightweight index-probe requirement;
-- preserve post-validation durable write boundary.
-
-Until that explicit switch, Assembling remains checkpointed after MIP-1.0 clarification.
+- preserve post-validation durable write boundary;
+- audit the complete Python reference `AuthorityResolution` before relying on fields beyond the owner-provided contradiction ID.
 
 ## Exact restart rule
 
@@ -385,5 +506,6 @@ If returning to Assembling implementation later:
 DO NOT restart architecture audit.
 DO NOT redo completed P0/P1/P2 hardening.
 DO NOT invent another context/protocol model.
-Start from MIP-1.0 and migrate current runtime incrementally only when explicitly authorized.
+DO NOT bypass MIP Bridge with ad-hoc cross-module field mapping.
+Start from MIP-1.0 + PR #7 bridge checkpoint and migrate runtime incrementally only when explicitly authorized.
 ```
