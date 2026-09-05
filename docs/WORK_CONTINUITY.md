@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:50+02:00  
+Last updated: 2026-09-05T10:53+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-runtime-dtos-v1`  
-Continuity schema: `matrix.assembling.continuity.v38`
+Continuity schema: `matrix.assembling.continuity.v39`
 
 ## Mandatory continuity policy
 
@@ -55,57 +55,45 @@ commit = 9f5b227de80c5f276eb029b64c1c563c1fbed6cd
 file = src/main/kotlin/matrix/assembling/authority/AuthorityContracts.kt
 ```
 
-Added canonical contract-only:
+Added canonical contract-only `AuthorityResolveRequest` and `AuthorityResolution` using existing MIP claim/context/retrieval/provenance types and frozen Authority value types.
 
-```text
-AuthorityResolveRequest
-AuthorityResolution
-```
-
-Request uses `MipClaimV1`, `MatrixContextSnapshot`, explicit `MipField<RetrievalResult>`, `ProvenanceRef`; no duplicate claim/context types.
-
-Resolution uses frozen AUTHORITY-1.0 fields with typed EpistemicClass/confidence/reliability/MemoryRef and explicit MipField states.
-
-Fail-closed invariants include claim provenance identity, unique candidates/reasons, AUTHORITY.* reason namespace, concrete contradiction included among candidates, ambiguous contradiction requires >=2 candidates, NO_MATCH cannot carry candidates, and COMPLETE requires resolved authority/confidence + completed contradiction assessment.
+Fail-closed invariants include explicit retrieval evidence states, provenance claim identity, unique candidates/reasons, AUTHORITY.* reason namespace, contradiction target/candidate coherence, ambiguous-target candidate count, and COMPLETE resolution requirements.
 
 ### Checkpoint 2 — MipClaimV1 primitive wire support
 
-Initial claim-wire commit:
-
-`60176c46ea2599504d6ae6ce63a9044b5f25989f`
-
-Immediate pre-CI defect detected during self-review:
-
 ```text
-semanticMarkers decoder attempted nonexistent nested key `valueField`
+initial commit = 60176c46ea2599504d6ae6ce63a9044b5f25989f
+self-review fix = 9265458cde29d021a71f7c944f181c7992cf33c9
+file = src/main/kotlin/matrix/assembling/mip/MipClaimWire.kt
 ```
 
-Fix commit:
+`MipEvidenceWire.claimToWire/claimFromWire` are extension functions on the existing MIP evidence codec; no new bridge or claim model was introduced. All MipClaimV1 roles, MipFields, confidence map, spans and semantic markers are represented. A semanticMarkers decoding-key defect was detected and fixed before CI.
 
-`9265458cde29d021a71f7c944f181c7992cf33c9`
+### Checkpoint 3 — Authority DTO primitive wire codec
 
-File:
+```text
+commit = 297491d62219a60cdaa3362d54b0fc632dc4eafb
+file = src/main/kotlin/matrix/assembling/authority/AuthorityContractWire.kt
+```
 
-`src/main/kotlin/matrix/assembling/mip/MipClaimWire.kt`
+Codec design:
 
-Design:
-
-- extension functions on existing `MipEvidenceWire`, NOT a new bridge object;
-- `MipEvidenceWire.claimToWire(MipClaimV1)`;
-- `MipEvidenceWire.claimFromWire(Map)`;
-- round-trip covers all current MipClaimV1 fields: entity roles, object/dialogue/source/epistemic MipFields, confidence map, source spans and semantic markers;
-- malformed field/status/enum/span/numeric structures fail closed;
-- schemaVersion remains enforced by MipClaimV1 constructor;
-- no native `TypedClaim` mapping change and no `MipBridge` migration.
-
-The semanticMarkers defect was fixed before tests/CI and did not change contract semantics.
+- serialization only; no Authority business logic;
+- request wire delegates claim/context/retrieval/provenance to existing MIP codecs;
+- resolution wire serializes only Authority-owned typed fields;
+- EpistemicClass, AuthorityResolutionStatus, typed confidence/reliability and opaque MemoryRef are decoded explicitly;
+- MipField status/value legality is preserved;
+- invalid typed confidence/reliability/MemoryRef values fail closed as MipContractException;
+- unknown enums, wrong primitive types and malformed MipField wrappers fail closed;
+- no mapping to legacy root AuthorityDecision;
+- no final MipBridge Authority migration.
 
 ### Current validation state
 
 ```text
 Authority DTO code = ADDED / UNTESTED
-MipClaimV1 wire support = ADDED + SELF-REVIEW FIX / UNTESTED
-Authority DTO wire codec = NEXT
+MipClaimV1 wire = ADDED + SELF-REVIEW FIX / UNTESTED
+Authority DTO wire = ADDED / UNTESTED
 contract/fail-closed tests = NEXT
 full regression CI = NOT YET RUN
 ```
@@ -136,13 +124,14 @@ real GGUF bridge
 repo = MATRIXNEO23/assembling
 branch = authority-runtime-dtos-v1
 base = 8dc6643e73c3ce6e569173a4922ec3a01e77e0ff
-last functional/fix commit = 9265458cde29d021a71f7c944f181c7992cf33c9
+last functional commit = 297491d62219a60cdaa3362d54b0fc632dc4eafb
 Authority DTOs = ADDED / UNTESTED
 MipClaimV1 wire = ADDED / FIXED / UNTESTED
+Authority DTO wire = ADDED / UNTESTED
 real AuthorityResolver = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = ADD AUTHORITY CONTRACT WIRE CODEC + TESTS, THEN FULL CI
+NEXT = ADD AUTHORITY DTO/WIRE/FAIL-CLOSED TESTS, THEN OPEN PR + FULL CI
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, Authority value types, or shared MIP evidence contracts.
