@@ -1,226 +1,180 @@
-# Component Mapping Audit — 2026-09-04
+# Component Mapping Audit — Integration Hardening
 
-Scope: verify compatibility between currently connected assembly modules in `MATRIXNEO23/assembling`.
+Date: 2026-09-05  
+Repository: `MATRIXNEO23/assembling`  
+Scope: authoritative `MatrixTurnFrame` path only.
 
-Audited links:
-
-```text
-A1: Matrix Understanding / NLU runtime output
-B1: MatrixTurnFrame / SemanticFrame / TypedClaim
-
-A2: MatrixTurnFrame semantic + memory result
-B2: AffectiveRuntimeRequest
-```
-
-## Checklist requested
-
-1. Every field of X must be mappable to a field of Y.
-2. Types must be compatible: enum-like values, strings, integers, booleans, maps.
-3. Defaults must be coherent.
-4. Y must not require fields that X cannot produce.
-5. Naming conventions must be consistent.
-
-## Source facts
-
-The Understanding source contract exposes an `UnderstandingEngine` that returns a `Domain.Interpretation` for `(caseId, language, text, context)`.
-
-The source domain has `Domain.Claim` fields including:
+## Contracts audited
 
 ```text
-speaker, subject, target, owner, perspective,
-dialogueAct, predicate, objectValue, polarity,
-negationScope, temporalRelation, temporalExpression,
-entities, claimKind, confidence, sourceSpans,
-sourceIds, worldTruth
+Matrix-NLU
+→ UnderstandingLabAdapter
+→ MatrixTurnFrame / TypedClaim
+→ BasicCoherenceGuard
+→ BasicAuthorityResolver
+→ MemoryPreflightPort
+→ AffectiveLabAdapter
+→ SemanticFrameToPrompt
+→ GgufPort
 ```
 
-The Affective source prototype exposes transient emotions, PAD/mood and persistent affect fields:
+## P0 findings and minimal fixes
+
+### P0-01 — Secondary claims were discarded
+
+**Files:** `MatrixTurnFrame.kt`, `UnderstandingLabAdapter.kt`, `BasicAdapters.kt`  
+**Cause:** the adapter used only `claims.firstOrNull()` and emitted one `TypedClaim`.
+
+**Minimal justified multi-file fix:**
+- add backward-compatible `nluClaims` to the turn envelope;
+- retain `nlu` as the primary compatibility view;
+- map every runtime claim to `TypedClaim`;
+- hold multi-claim input transiently until per-claim Authority is wired.
+
+**Result:** no claim is silently discarded; stable admission remains blocked for partially resolved multi-claim turns.
+
+### P0-02 — Missing critical confidence failed open
+
+**File:** `BasicAdapters.kt`  
+**Cause:** missing confidence keys defaulted to `1.0`.
+
+**Fix:** require all critical keys:
 
 ```text
-trust, attachment, affection, attraction,
-resentment, respect, admiration, aversion
+token.negation
+sequence.predicate
+sequence.subjectReferent
+sequence.targetReferent
 ```
 
-## Finding 1 — Resolved Understanding fields were lossy
-
-Status: FIXED.
-
-Problem:
-
-The first `UnderstandingLabAdapter` bridge normalized the claim mainly through referent labels and spans:
+Missing keys now produce:
 
 ```text
-subjectReferent
-targetReferent
-ownerReferent
-perspectiveReferent
-objectSpan
+LOW_CONFIDENCE_HOLD
+firstDivergence = COHERENCE.MISSING_CRITICAL_CONFIDENCE
 ```
 
-That was not enough because the source Understanding contract already has resolved fields:
+### P0-03 — Memory Admission contract was placed before response
+
+**Files:** `IntegrationPorts.kt`, `MatrixAssemblingOrchestrator.kt`, non-persistent memory adapters, memory docs  
+**Reason multi-file was necessary:** the bug was in the public boundary and orchestration order, not in one adapter.
+
+**Fix:**
+- introduce `MemoryPreflightPort` for pre-response evaluation;
+- deprecate `MemoryAdmissionPort` as compatibility only;
+- reserve `PersistentConsolidationPort` for future post-validation durable writes;
+- orchestrator rejects `stableWrite=true` or non-empty memory IDs during preflight.
+
+**Result:** a future durable backend cannot be inserted legitimately into the pre-response slot.
+
+## P1 findings and minimal fixes
+
+### P1-01 — Affective could impersonate RelationshipState
+
+**File:** `AffectiveLabAdapter.kt`  
+**Fix:** ignore runtime `relationshipSummary`; expose `RelationshipState NON_CABLATO` and retain external ownership.
+
+### P1-02 — Affective trusted an unauthorized persistent result
+
+**File:** `AffectiveLabAdapter.kt`  
+**Fix:** accept persistence only when both upstream authorization and runtime result are true. A violating runtime is clamped and traced as:
 
 ```text
-subject
-target
-owner
-perspective
-objectValue
-worldTruth
+AFFECTIVE.PERSISTENCE_WITHOUT_ADMISSION
 ```
 
-Risk:
+### P1-03 — Unknown subject became the speaker
+
+**File:** `UnderstandingLabAdapter.kt`  
+**Fix:** preserve `UNKNOWN`; Coherence holds it rather than inventing identity.
+
+### P1-04 — Memory documentation contradicted the new commit boundary
+
+**Files:** `MEMORY_INTEGRATION_POLICY.md`, `MEMORY_INTEGRATION_STATUS.md`  
+**Fix:** document preflight vs final consolidation and canonical placeholder statuses.
+
+### P1-05 — Prompt Builder contained hidden decision logic
+
+**File:** `SemanticFrameToPrompt.kt`  
+**Fix:** retain only semantic realization invariants. Behavioral deliberation remains owned by the future Matrix Decision layer.
+
+### P1-06 — Output validator boundary absent
+
+**Files:** `IntegrationPorts.kt`, `MatrixAssemblingOrchestrator.kt`  
+**Fix:** add optional `OutputValidatorPort`; when absent, trace `NON_CABLATO` explicitly. Full semantic validation remains a residual risk.
+
+## P2 findings and minimal fixes
+
+### P2-01 — Compatibility pipeline appeared authoritative
+
+**File:** `pipeline/MatrixAssemblyPipeline.kt`  
+**Fix:** mark class deprecated for new callers; preserve existing tests and behavior.
+
+### P2-02 — Adult/intimacy marker depended only on local keywords
+
+**Files:** `MatrixTurnFrame.kt`, `UnderstandingLabAdapter.kt`  
+**Fix:** add an optional explicit NLU marker and prefer it. Keep the legacy fallback until the runtime always emits the field.
+
+## DiagnosticTrace implementation
+
+`DiagnosticTrace` now records typed snapshots for:
 
 ```text
-Domain.Claim.target = "Marco"
+INPUT
+OBSERVATION / NLU
+UNDERSTANDING
+COHERENCE
+AUTHORITY
+MEMORY PREFLIGHT
+MEMORY
+AFFECTIVE
+PROMPT
+GGUF
+OUTPUT VALIDATION
 ```
 
-could degrade into:
+Each snapshot contains observable input/output metadata, decision, status and deterministic reason codes. `reasoningChain` is not private chain-of-thought. `firstDivergence` is write-once.
+
+Pipeline exceptions carry the failed `MatrixTurnFrame`, allowing tests to inspect the exact stage and first broken contract.
+
+## Tests added/updated
+
+`ComponentMappingCompatibilityTest` covers:
+- resolved field preservation;
+- third-party report handling;
+- multi-claim preservation;
+- missing confidence fail-closed;
+- canonical negation confidence;
+- unresolved subject preservation;
+- affective persistence gates;
+- relationship projection rejection.
+
+`MatrixAssemblingOrchestratorTest` covers:
+- complete implemented-stage trace;
+- pre-response write rejection;
+- module-exception first divergence;
+- first-divergence immutability.
+
+Local compile and direct execution result before CI:
 
 ```text
-targetReferent = KNOWN_ENTITY
+13 targeted tests PASS
+main Kotlin sources compile PASS
 ```
 
-without preserving the actual target value.
+## Architectural boundary verdict
 
-Impact:
+- NLU/Understanding direct memory write: **not introduced**.
+- Authority direct repository write: **not introduced**.
+- Affective Relationship ownership: **blocked**.
+- Pre-response durable memory: **blocked/fail-closed**.
+- Legacy pipeline as new authority: **deprecated**.
 
-- entity/owner loss;
-- wrong memory admission risk;
-- third-party/report risk;
-- affective module could receive generic referents instead of concrete target IDs;
-- prompt builder could produce weaker or wrong instructions.
+## Residual risks
 
-Minimal fix applied:
+1. Real per-claim Authority/Belief resolution is not yet wired; multi-claim turns are preserved but transient.
+2. Real semantic Output Validator remains `NON_CABLATO`.
+3. Real Persistent Consolidation and Memory Foundation remain `NON_CABLATO`.
+4. Adult/intimacy explicit marker depends on the future runtime contract; keyword fallback remains temporary.
 
-- extended `NluOutput` with optional resolved fields:
-
-```text
-resolvedSubject
-resolvedTarget
-resolvedOwner
-resolvedPerspective
-objectValue
-sourceType
-worldTruth
-```
-
-- updated only `UnderstandingLabAdapter` to preserve those fields;
-- kept existing label fields untouched;
-- all new fields have safe defaults, so existing callers remain compatible.
-
-Commits:
-
-```text
-bd612ee386443e06711137281eaa6d01e85830ad
-5f3a5db748f4490e99b0d4e653025b7456a70bfc
-```
-
-## Finding 2 — Third-party/report could be over-stabilized
-
-Status: FIXED in the same adapter.
-
-Problem:
-
-A high-confidence claim was not enough to distinguish direct user assertion from report/indirect source in the stable memory decision.
-
-Minimal fix applied:
-
-`SemanticFrame.stableMemoryAllowed` now requires:
-
-```text
-dialogueAct in ASSERT/CORRECT
-predicate != speech.unresolved
-sourceType != THIRD_PARTY_REPORT
-worldTruth == true
-overall confidence >= 0.75
-```
-
-This preserves the interface and only tightens the adapter's admission precondition.
-
-## Finding 3 — Affective persistence needs a stable memory gate
-
-Status: ALREADY CORRECT / COVERED BY TEST.
-
-`AffectiveLabAdapter` already computes:
-
-```text
-persistentAllowed = memory.stableWrite == true && semantic.stableMemoryAllowed
-```
-
-That is correct because the memory backend does not exist yet and emotional persistent deltas must not be written from transient or unresolved semantics.
-
-Added tests verify:
-
-- no persistent target when memory is not stable;
-- persistent target is present only after stable semantic + stable memory admission.
-
-## Finding 4 — Memory placeholder could still admit stable memory
-
-Status: FIXED.
-
-Problem:
-
-`BasicMemoryAdmission` could return:
-
-```text
-status = ADMITTED
-stableWrite = true
-```
-
-That was incompatible with the real system status because the memory backend does not exist yet.
-
-Minimal fix applied:
-
-- modified only `BasicMemoryAdmission`;
-- no interface changes;
-- it now always returns `stableWrite=false` and empty `memoryIds`;
-- safe status is now `NO_MEMORY_BACKEND` or `REJECTED`.
-
-Commit:
-
-```text
-9cd0df38f2e2dcf53c418b2246c30fc99d9461e0
-```
-
-## Finding 5 — Memory is intentionally absent
-
-Status: OK.
-
-The real memory backend is not implemented. The correct current behavior remains:
-
-```text
-NoPersistentMemoryAdmission / BasicMemoryAdmission
-status = NO_MEMORY_BACKEND, PROVISIONAL_CLAIM or REJECTED
-stableWrite = false
-memoryIds = emptyList()
-```
-
-No fake durable memory should be added in this repo.
-
-## Tests added
-
-File:
-
-```text
-src/test/kotlin/matrix/assembling/adapters/ComponentMappingCompatibilityTest.kt
-```
-
-Coverage:
-
-1. `understandingAdapterPreservesResolvedClaimFields`
-2. `thirdPartyReportCannotBecomeStableMemoryByDefault`
-3. `affectiveAdapterDoesNotApplyPersistentDeltaWithoutStableMemory`
-4. `affectiveAdapterMapsStableSemanticMemoryToPersistentTarget`
-
-## Current verdict
-
-```text
-Understanding → MatrixTurnFrame: FIXED / TESTED BY NEW CONTRACT TESTS
-MatrixTurnFrame → Affective: COMPATIBLE / TESTED
-Memory: ABSENT BY DESIGN / SAFE PLACEHOLDER ONLY
-GGUF: STILL PLACEHOLDER / PROMPT CONTRACT PRESENT
-```
-
-## Next minimum step
-
-Run CI and fix only actual compile/test failures. Do not rewrite tests to hide mismatches.
+CI status: pending final branch run.
