@@ -1,13 +1,32 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T13:20+02:00  
+Last updated: 2026-09-05T13:26+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v61`
+Continuity schema: `matrix.assembling.continuity.v62`
 
 ## Mandatory continuity policy
 
 Single canonical restart file. Update at every meaningful checkpoint/CI/architecture decision and before STOP.
+
+Canonical work method:
+
+`docs/MATRIX_ENGINE_WORK_METHOD.md`
+
+Hard rules now explicitly include:
+
+```text
+CONTRACT BEFORE CODE
+ONE OWNER PER STATE
+ADAPTER BEFORE DIRECT COUPLING
+FAIL CLOSED BEFORE GUESSING
+UNIT + CROSS-MODULE + E2E
+DIAGNOSTIC TRACE EVERYWHERE
+FIX CAUSE, NOT SYMPTOM
+NEVER LOWER A GATE
+ONE WRITE REPO AT A TIME
+NO NEXT MODULE UNTIL CURRENT SUITE IS 100% GREEN
+```
 
 ## Completed Authority / MIP baseline — DO NOT REDO
 
@@ -19,124 +38,26 @@ shared MIP evidence PR #12 = MERGED/GREEN
 Authority runtime DTO PR #13 = MERGED/GREEN
 real Authority resolver PR #14 = MERGED/GREEN
 Authority compatibility PR #15 = MERGED/GREEN
-canonical Authority runtime adapter PR #16 merge = 7a772412570237260130bd4062555c6449feaf46
-runtime adapter post-merge CI = 33961639272 SUCCESS
-runtime adapter continuity = 65d3b9b407d0b861454bc66ba2d010da28d14a4f
-runtime adapter continuity CI = 33961726792 SUCCESS
+canonical Authority runtime adapter PR #16 = MERGED/GREEN
+runtime frame canonical MIP slots PR #17 merge = 566751798d5ea2dc93db5a01039715f785b04d00
+post-merge frame-slot CI = 33962117105 SUCCESS
+frame-slot continuity commit = 4efcd9a1d275fa6cf2d5546ea0b0e76f51800897
+frame-slot continuity CI = 33962208689 SUCCESS
 ```
 
 Other repos = READ-ONLY. Memory writes/admission = NOT TOUCHED.
 
-## RUNTIME FRAME MIP EVIDENCE SLOTS — COMPLETE / INTEGRATED / TESTED
+## Canonical work-method checkpoint
 
-PR:
+Document created:
 
-`#17 — Add multi-claim-safe canonical MIP slots to MatrixTurnFrame`
+`docs/MATRIX_ENGINE_WORK_METHOD.md`
 
-Final PR head:
+Commit:
 
-`998ebd8ca86ed6bc03091dba126747d47589dd36`
+`c0e49e91a6d89563a080e1aea28df1bc3d872dea`
 
-PR final-head CI:
-
-```text
-33962069458 = SUCCESS
-```
-
-Merge SHA:
-
-`566751798d5ea2dc93db5a01039715f785b04d00`
-
-Post-merge main CI:
-
-```text
-33962117105 = SUCCESS
-job = kotlin-tests SUCCESS
-Run tests = SUCCESS
-```
-
-Functional commits:
-
-```text
-0b5e1643604a87066006715e9e2da65df1d37965
-= cardinality correction / task start
-
-c6c7f8b734dfe9fb94124a6149e016ee92a27abb
-= add canonical MatrixTurnFrame slots + invariants/helpers
-
-77402674b7ba4851b8334687f895b441b2edbc01
-= add MatrixTurnFrameCanonicalSlotsTest
-
-1a670a1dc5c818f21cda9143cdf0f44581b18e36
-= self-review fix preserving historical positional constructor parameter order
-```
-
-Integrated additive canonical runtime slots:
-
-```text
-contextSnapshot: MipField<MatrixContextSnapshot>
-retrievalResults: MipField<List<RetrievalResult>>
-canonicalAuthorityResolutions: MipField<List<AuthorityResolution>>
-```
-
-All three new fields are appended after the historical `diagnostics` constructor parameter and have defaults, preserving legacy constructor source compatibility.
-
-Canonical defaults:
-
-```text
-contextSnapshot = UNAVAILABLE
-retrievalResults = UNAVAILABLE
-canonicalAuthorityResolutions = UNAVAILABLE
-```
-
-Successful no-match is represented only as:
-
-```text
-retrievalResults = PRESENT([
-  RetrievalResult(status = NO_MATCH, ...)
-])
-```
-
-not as outer NO_MATCH/UNAVAILABLE collapse.
-
-Integrated invariants:
-
-- PRESENT context must match frame turnId/sessionId;
-- context outer NO_MATCH forbidden;
-- retrieval outer NO_MATCH/AMBIGUOUS/CONFLICTED forbidden;
-- PRESENT retrieval requires PRESENT context, non-empty explicit results, unique query IDs;
-- PRESENT canonical Authority requires PRESENT context;
-- claim IDs unique while canonical Authority is present;
-- resolution IDs unique;
-- at most one current Authority resolution per claim;
-- canonical Authority resolutions cover exactly current typedClaims;
-- all Authority resolutions reference current contextSnapshotId;
-- legacy `authorityDecision` and canonical Authority are independent; no synchronization/collapse.
-
-Integrated helpers:
-
-```text
-requireCanonicalContextSnapshot()
-requireCanonicalRetrievalResults()
-requireCanonicalAuthorityResolutions()
-requireCanonicalAuthorityForClaim(claimId)
-```
-
-Regression coverage proves:
-
-```text
-old/minimal constructors still compile and default canonical slots to UNAVAILABLE
-context mismatch rejected
-outer vs inner NO_MATCH distinction preserved
-retrieval requires context and explicit result
-multi-claim frame preserves claim-wise AuthorityResolution values
-missing/unknown Authority claim coverage rejected
-snapshot mismatch rejected
-legacy and canonical Authority remain independent
-copy() preserves canonical slots/statuses
-```
-
-No orchestrator, BasicAuthorityResolver, AuthorityResolverPort, Memory component or other repository was modified.
+The method is now binding for future Matrix Engine work. In particular, a downstream integration checkpoint must not start while an upstream canonical semantic boundary is still incomplete.
 
 ## Current architecture state
 
@@ -146,44 +67,82 @@ Canonical Retrieval results slot = READY / MULTI-RESULT
 Canonical AuthorityResolution slot = READY / MULTI-CLAIM
 CanonicalAuthorityRuntimeAdapter = READY
 DeterministicAuthorityResolver = READY
-legacy AuthorityDecision = STILL COMPATIBILITY-ONLY
+legacy AuthorityDecision = COMPATIBILITY-ONLY
 orchestrator uses canonical resolver = false
 Memory Admission = NOT IMPLEMENTED HERE
 MemoryRepository = NOT TOUCHED
 ```
 
-## NEXT BOUNDED CHECKPOINT — ORCHESTRATOR CANONICAL AUTHORITY REWIRE DESIGN/IMPLEMENTATION
+## PRIORITY CORRECTION — UNDERSTANDING BEFORE ORCHESTRATOR REWIRE
 
-This is the next controlled task, but it has NOT started.
+Previous continuity proposed the canonical Authority orchestrator rewire as the next task.
 
-Required approach:
+Owner review clarified that Understanding V3 still needs canonical implementation/integration before the first Memory/APK path.
 
-- preserve compatibility path until canonical prerequisites are present;
-- add a canonical Authority stage that consumes the new frame Context/Retrieval slots and resolves every current claim explicitly;
-- no implicit first-claim selection;
-- write only `canonicalAuthorityResolutions`, not legacy `AuthorityDecision` as a lossy projection;
-- legacy `BasicAuthorityResolver` may remain as fallback/compatibility during migration until tests prove safe retirement;
-- no Memory Admission SAVE/SUPERSEDE/REJECT/IGNORE in same checkpoint;
-- no MemoryRepository writes;
-- add integration tests proving `NLU/Understanding -> frame context/retrieval -> canonical Authority` while pre-response Memory boundary remains unchanged.
+Under the canonical work method, the next task is therefore corrected to:
 
-Before starting that task, review whether the canonical stage belongs behind a new dedicated runtime port rather than mutating legacy `AuthorityResolverPort` semantics in place.
+```text
+CANONICAL UNDERSTANDING V3 BOUNDARY / LOSSLESS CONTRACT AUDIT
+```
+
+Reason:
+
+- `matrix-understanding-lab` now has frozen/implemented `MATRIX_NLU_CONTRACT_V3` structure;
+- current Assembling `UnderstandingLabAdapter` is still a compatibility adapter using older `MatrixNluClaim`, legacy `NluOutput`, `SemanticFrame`, root `TypedClaim` and partial inference/fallback behavior;
+- current legacy mapping can lose or fail to represent V3 information such as independent `sourceReferent`, claimKind, field status/alternatives, plural evidence spans and temporal anchor semantics;
+- canonical Authority must not be rewired on top of a lossy Understanding boundary.
+
+## NEXT BOUNDED CHECKPOINT — UNDERSTANDING V3 LOSSLESS AUDIT FIRST
+
+Before writing implementation code:
+
+1. read `MATRIX_NLU_CONTRACT_V3` and V3 output schema read-only from `MATRIXNEO23/matrix-understanding-lab`;
+2. compare every V3 field against current `MipClaimV1` and Assembling runtime types;
+3. classify each field as:
+
+```text
+LOSSLESS
+REPRESENTABLE_WITH_EXISTING_MIP_FIELD
+MISSING_FROM_MIP_RUNTIME
+LEGACY_ONLY_LOSS
+NOT_APPLICABLE_DOWNSTREAM
+```
+
+4. STOP implementation if `MipClaimV1` cannot carry frozen V3 semantics without loss;
+5. if contract extension is required, make that a separate explicit contract checkpoint before adapter implementation;
+6. do not modify `matrix-understanding-lab` from this chat;
+7. do not rewire orchestrator or Memory in the same checkpoint.
+
+## Explicitly NOT authorized in the next audit
+
+```text
+no matrix-understanding-lab writes
+no Student-5 training changes
+no orchestrator Authority rewire
+no BasicAuthorityResolver replacement
+no Memory Admission
+no MemoryRepository write/dependency
+no PersistentConsolidation
+no Reflection
+no other repo writes
+```
 
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
 branch = main
-runtime frame MIP slots merge = 566751798d5ea2dc93db5a01039715f785b04d00
-post-merge frame-slot CI = 33962117105 SUCCESS
+work method = docs/MATRIX_ENGINE_WORK_METHOD.md
+work-method commit = c0e49e91a6d89563a080e1aea28df1bc3d872dea
+frame-slot continuity CI = 33962208689 SUCCESS
 AUTHORITY-1.0 = FROZEN
-shared MIP evidence = COMPLETE / INTEGRATED / TESTED
-DeterministicAuthorityResolver = COMPLETE / INTEGRATED / P0 TESTED
-Authority compatibility projections = COMPLETE / TESTED
+shared MIP evidence = COMPLETE / TESTED
+DeterministicAuthorityResolver = COMPLETE / TESTED
 CanonicalAuthorityRuntimeAdapter = COMPLETE / TESTED
-MatrixTurnFrame canonical MIP slots = COMPLETE / INTEGRATED / TESTED
+MatrixTurnFrame canonical MIP slots = COMPLETE / TESTED
+Understanding V3 canonical boundary = NOT STARTED
 orchestrator uses canonical resolver = false
 Memory writes/admission = NOT TOUCHED
 other repos = READ-ONLY
-NEXT = OWNER REVIEW / ORCHESTRATOR CANONICAL AUTHORITY REWIRE AS SEPARATE CHECKPOINT
+NEXT = UNDERSTANDING V3 LOSSLESS CONTRACT AUDIT ONLY
 ```
