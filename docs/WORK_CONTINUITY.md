@@ -1,10 +1,9 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T14:14+02:00  
+Last updated: 2026-09-05T14:18+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Active branch: `understanding-v3-contract-v1`  
-Continuity schema: `matrix.assembling.continuity.v68`
+Continuity schema: `matrix.assembling.continuity.v69`
 
 ## Mandatory policy
 
@@ -24,14 +23,15 @@ NEVER LOWER A GATE
 ONE WRITE REPO AT A TIME
 NO NEXT MODULE UNTIL CURRENT REQUIRED SUITE IS GREEN
 PIVOT ONLY AFTER OWNER DISCUSSION/APPROVAL
+SAVE EXACT CONTINUITY BEFORE PRIORITY/DEPENDENCY CORRECTION
 ```
 
-## Completed baseline — DO NOT REDO
+## Completed Assembling baseline — DO NOT REDO
 
 ```text
 MIP = MIP-1.0
-AUTHORITY-1.0 = FROZEN
-Authority value types / shared evidence / DTO / resolver / compatibility / runtime adapter = MERGED/GREEN
+AUTHORITY-1.0 Kotlin = FROZEN
+Authority Kotlin value types / shared evidence / DTO / resolver / compatibility / runtime adapter = MERGED/GREEN
 MatrixTurnFrame canonical Context/Retrieval/Authority slots = MERGED/GREEN
 frame-slot merge = 566751798d5ea2dc93db5a01039715f785b04d00
 frame-slot post-merge CI = 33962117105 SUCCESS
@@ -40,199 +40,113 @@ CP-U1 closure = 8278ea0b94c6500b3afc511bf21230c9c51679b9
 CP-U1 closure CI = 33964635851 SUCCESS
 ```
 
-Other repositories remain READ-ONLY. Memory writes/admission remain untouched.
+## CP-U2 — COMPLETE / MERGED / GREEN
 
-## CP-U1 — COMPLETE
+Profile:
 
-Document: `docs/UNDERSTANDING_V3_LOSSLESS_AUDIT.md`
-
-Verdict:
-
-```text
-CP-U1 = PASS
-CURRENT MIP/RUNTIME LOSSLESS FOR MATRIX_NLU_CONTRACT_V3 = NO
-CP-U2 REQUIRED = YES
-```
-
-## ACTIVE CHECKPOINT — CP-U2 UNDERSTANDING/MIP CONTRACT EXTENSION
-
-Owner approval to proceed was received.
-
-Branch:
-
-`understanding-v3-contract-v1`
-
-Base:
-
-`8278ea0b94c6500b3afc511bf21230c9c51679b9`
+`MIP-1.0/UNDERSTANDING-V3-1.0`
 
 PR:
 
 `#18 — Add lossless MIP Understanding V3 profile`
 
-### Contract/profile
+Final PR head:
 
-Document:
+`d39fd8033692d32ffd6b12e94b47a33852d05820`
 
-`docs/MIP_UNDERSTANDING_V3_PROFILE.md`
+Final PR CI:
 
-Profile:
+`33965444928 = SUCCESS`
 
-```text
-MIP-1.0/UNDERSTANDING-V3-1.0
-```
+Merge SHA:
 
-Profile doc commit:
+`accb1e7ac47738bc5d658ca44808c220e16dad32`
 
-`d1c55206653e58c48562dbcfc4aecb3a2484abc3`
+Post-merge main CI:
 
-### Kotlin contract types
+`33965518114 = SUCCESS`
 
-File:
-
-`src/main/kotlin/matrix/assembling/mip/MipUnderstandingV3Contracts.kt`
-
-Commit:
-
-`1d0f71049d409252962eddc749550b5ca31fef1a`
-
-Implemented additive types preserving:
-
-```text
-upstream contract identity + SHA-256 fingerprint
-observationSourceId
-NLU observation provenance
-speaker / observer
-mentions[]
-referentCandidates[]
-original claim IDs
-claim provenance
-sourceSpan
-subjectSpans[]
-objectSpans[]
-negationCueSpans[]
-temporalEvidence[]
-entityMentionIds[]
-dialogueAct / predicate / five role fields / polarity / temporalRelation / claimKind
-V3 value + confidence + fieldStatus + ranked alternatives
-fieldStatusByField
-confidenceByField
-overallInterpretationConfidence
-structuralStatus
-interpretationStatus
-diagnostics[]
-temporal anchor identity
-```
-
-The canonical profile intentionally exposes no `worldTruth`, Authority, Memory Admission, BeliefConfidence, persistent consent/goal, RelationshipState, AffectiveState or behavior-decision ownership.
-
-Legacy `MipClaimV1` is unchanged.
-
-### Tests
-
-File:
-
-`src/test/kotlin/matrix/assembling/mip/MipUnderstandingV3ContractsTest.kt`
-
-Commit:
-
-`1ce78ee5bc3896bc66f7373768f0e6845f858c63`
-
-Coverage includes:
-
-```text
-independent source vs perspective
-plural negation evidence
-original claim ID preservation
-ambiguous UNKNOWN primary + ranked alternatives
-invalid role candidate rejection
-NONE/UNKNOWN role-status invariants
-required temporal anchor
-unknown temporal/claim anchor rejection
-multi-claim claim-anchor identity
-INVALID => ABSTAINED
-observation/claim provenance binding
-mention-candidate evidence consistency
-non-overlapping / in-source plural spans
-exact upstream contract/fingerprint validation
-absence of forbidden worldTruth/Authority/Memory fields
-legacy MipClaimV1 remains independently constructible
-```
-
-### Diff audit
-
-Diff from CP-U2 base contains exactly:
+Integrated files:
 
 ```text
 docs/MIP_UNDERSTANDING_V3_PROFILE.md
-docs/WORK_CONTINUITY.md
 src/main/kotlin/matrix/assembling/mip/MipUnderstandingV3Contracts.kt
 src/test/kotlin/matrix/assembling/mip/MipUnderstandingV3ContractsTest.kt
 ```
 
-No orchestrator, Understanding runtime adapter, Authority implementation, Memory component or other repository changed.
+CP-U2 preserved complete V3 linguistic evidence without modifying legacy `MipClaimV1`, orchestrator, Authority behavior or Memory.
 
-### CI evidence
+## OWNER DEPENDENCY CORRECTION — CONTROLLED STOP
 
-PR head before this continuity update:
-
-`1ce78ee5bc3896bc66f7373768f0e6845f858c63`
-
-Full repository CI:
+Owner reminded the intended prerequisite sequence:
 
 ```text
-run = 33965360537
-job = kotlin-tests
-Run tests = SUCCESS
-job conclusion = SUCCESS
+1. fix Python Authority Resolver P0 bugs
+2. complete gates A / B / C
+3. only after those gates proceed with Understanding V3 and Memory Kotlin/Room
 ```
 
-No task-introduced fix was required.
+Current verified state does NOT prove that this prerequisite sequence was completed.
 
-This continuity update creates a new final PR head. Merge remains forbidden until CI for that exact final head is green.
-
-## CP-U2 current verdict
+### What is verified
 
 ```text
-PROFILE DESIGN = COMPLETE
-KOTLIN CONTRACT TYPES = COMPLETE
-INVARIANT TESTS = COMPLETE
-FULL REGRESSION = GREEN
-FINAL DOC HEAD CI = PENDING
-CP-U2 = PASS PENDING FINAL-HEAD CI / MERGE / POST-MERGE CI
-CP-U3 = NOT STARTED
+Kotlin DeterministicAuthorityResolver in assembling = IMPLEMENTED / TESTED / GREEN
+CP-U1 Understanding V3 audit = COMPLETE
+CP-U2 Understanding V3 lossless contract profile = COMPLETE / MERGED / GREEN
+Memory Kotlin/Room = NOT STARTED
+CP-U3 Understanding runtime adapter = NOT STARTED
 ```
 
-## Hard boundaries still enforced
+### What is NOT verified / must be resolved before further work
 
 ```text
-no matrix-understanding-lab writes
-no Student-5 training changes
-no Understanding runtime adapter implementation yet
-no MatrixAssemblingOrchestrator rewire
-no BasicAuthorityResolver changes
-no Memory Admission
-no MemoryRepository
-no PersistentConsolidation
-no APK
-no Reflection
-no other repo writes
+Python Authority Resolver P0 fixes = NOT VERIFIED COMPLETE
+Gate A = NOT VERIFIED COMPLETE
+Gate B = NOT VERIFIED COMPLETE
+Gate C = NOT VERIFIED COMPLETE
+```
+
+Known prior Python Authority audit risks included:
+
+```text
+owner hardcoded
+fragile property extraction
+false conflicts
+```
+
+Do NOT confuse the completed Kotlin AUTHORITY-1.0 resolver in `assembling` with completion of the earlier Python Authority Resolver workstream.
+
+## STOP RULE
+
+```text
+CP-U3 = DO NOT START
+Memory Kotlin/Room = DO NOT START
+Authority orchestrator rewire = DO NOT START
+```
+
+until the Python Authority Resolver P0 work and gates A/B/C are located, verified, and their owner-required ordering reconciled.
+
+No rollback of merged CP-U2 is authorized automatically. CP-U2 is additive, green, and did not modify Memory or orchestrator; leave it in place unless the owner explicitly requests a rollback/change.
+
+## Repository scope
+
+```text
+assembling = current written repository
+matrix-understanding-lab = no writes from this chat
+memoria = no writes from this chat
+other repositories = READ-ONLY
 ```
 
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
-branch = understanding-v3-contract-v1
-PR = #18
-base = 8278ea0b94c6500b3afc511bf21230c9c51679b9
-last green functional/test head = 1ce78ee5bc3896bc66f7373768f0e6845f858c63
-CI = 33965360537 SUCCESS
-ACTIVE = CP-U2
-current operation = verify final continuity-only PR head CI
+branch = main
+HEAD baseline after CP-U2 merge = accb1e7ac47738bc5d658ca44808c220e16dad32
+CP-U2 post-merge CI = 33965518114 SUCCESS
+CONTROLLED STOP = ACTIVE
 CP-U3 = NOT STARTED
-Authority orchestrator rewire = NOT STARTED
-Memory = NOT STARTED
-other repos = READ-ONLY
-NEXT = final-head CI -> merge PR #18 if green -> post-merge main CI -> close CP-U2 -> start CP-U3 only after green main baseline
+Memory Kotlin/Room = NOT STARTED
+NEXT = LOCATE/VERIFY Python Authority Resolver P0 fixes + Gate A/B/C evidence; discuss result with owner before resuming Understanding or Memory
 ```
