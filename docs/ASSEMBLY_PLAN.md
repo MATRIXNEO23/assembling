@@ -1,14 +1,12 @@
 # Matrix Assembly Plan
 
-Status: CANONICAL ASSEMBLING PLAN
-Date: 2026-09-04
+Status: CANONICAL ASSEMBLING PLAN  
+Date: 2026-09-05  
 Global architecture source: `MATRIXNEO23/8.10.9evo3-solo-gpt/ARCHITETTURA_MATRIX_ENGINE.md`
 
 ## Goal
 
 Preserve the modules already built while converging on one authoritative runtime direction.
-
-The frame-based path is canonical:
 
 ```text
 User / World observation
@@ -16,14 +14,15 @@ User / World observation
 → Working Memory of the current turn
 → context retrieval
 → Coherence / Authority / Belief resolution
+→ MemoryPreflightPort
 → Affective appraisal
 → Matrix decision layer
 → Prompt / GGUF realization
-→ output validation
-→ persistent consolidation
+→ OutputValidatorPort
+→ PersistentConsolidationPort
 ```
 
-The older `contracts/pipeline/prompt` path remains a compatibility facade only. It must not evolve into a competing architecture.
+The older `contracts/pipeline/prompt` path remains a deprecated compatibility facade only.
 
 ## Fundamental separation
 
@@ -31,34 +30,43 @@ The older `contracts/pipeline/prompt` path remains a compatibility facade only. 
 UNDERSTAND ≠ BELIEVE ≠ REMEMBER ≠ FEEL ≠ DECIDE ≠ RESPOND
 ```
 
-- Understanding extracts semantic evidence.
-- Belief/Authority decide how that evidence is interpreted.
-- Memory Admission decides durable persistence.
+- Understanding extracts semantic evidence and preserves every claim.
+- Belief/Authority decide how evidence is interpreted.
+- `MemoryPreflightPort` is non-persistent current-turn evaluation.
+- durable Memory Admission belongs only to future `PersistentConsolidationPort`.
 - Affective evaluates emotional consequences but does not own RelationshipState.
 - Matrix decision logic owns behavioral choice.
 - GGUF realizes language; it does not own truth, memory or decisions.
 
 ## Phase 1 — Ingress / Understanding
 
+Status: **WIRED / REGRESSION-TESTED**.
+
 Input:
 - raw user/world observation;
 - language/session/speaker metadata.
 
 Output:
-- NLU predictions;
-- `SemanticFrame`;
-- `TypedClaim` candidates;
-- provenance/confidence/source spans.
+- primary compatibility `NluOutput`;
+- all `TypedClaim` candidates;
+- primary `SemanticFrame`;
+- provenance/confidence/source spans;
+- optional explicit adult/intimacy semantic marker.
 
-Hard rule:
-Understanding must not authorize stable memory or create World Truth.
+Hard rules:
+- Understanding does not authorize stable memory or create World Truth;
+- no secondary claim is discarded;
+- unresolved subject remains `UNKNOWN`;
+- explicit adult/intimacy marker is preferred over the compatibility fallback.
 
 ## Phase 2 — Working Memory and context read
 
+Status: **TURN FRAME WIRED / EXTERNAL READ PORTS NON_CABLATO**.
+
 Working Memory is temporary operational state for the current turn. It is not durable storage.
 
-Read in parallel where possible:
-- relevant long-term memories;
+Future bounded reads:
+- relevant Long-Term memories;
 - RelationshipState snapshot;
 - AffectiveState snapshot;
 - World/perceived-state snapshot;
@@ -66,103 +74,101 @@ Read in parallel where possible:
 
 ## Phase 3 — Contextual resolution
 
-Run bounded resolution using semantic evidence plus context:
-- referents/ownership/perspective;
-- temporal interpretation;
-- report/source handling;
-- contradiction/conflict checks;
-- consent/intimacy context when relevant;
-- Coherence and Authority decisions.
+Status: **BASIC COHERENCE/AUTHORITY WIRED**.
 
-Adult/intimacy is normal semantic content, not an automatic block and not a reason to forbid affective persistence by itself.
+Current behavior:
+- critical confidence keys are checked on every `TypedClaim`;
+- a missing/low key in a secondary claim also fails closed;
+- third-party reports remain indirect;
+- multi-claim turns preserve every claim, remain transient, and expose `sourceType=MULTI_CLAIM`;
+- unresolved subjects/owners remain held.
 
-## Phase 4 — Internal appraisal and decision
+Still `NON_CABLATO`:
+- memory-backed contradiction checks;
+- per-claim final AuthorityResolution;
+- complete contextual consent/intimacy resolver.
 
-Affective Engine:
-- transient emotion/appraisal;
-- mood/persistent affect proposals;
-- no direct RelationshipState ownership.
+## Phase 4 — Memory preflight
 
-Matrix decision layer:
-- integrates beliefs, relationship, affect, goals/intentions and context;
-- owns behavioral choice;
-- eventually exposes an immutable `DecisionSnapshot`.
-
-The current Assembling prototype does not yet implement the complete BDI-lite + Utility layer; missing pieces must be marked non-wired rather than simulated.
-
-## Phase 5 — Response realization
+Status: **WIRED / NON-PERSISTENT**.
 
 ```text
-Decision/context package
-→ SemanticFrameToPrompt
-→ GGUF
-→ draft reply
+MemoryPreflightPort.evaluate
+→ PROVISIONAL_CLAIM / NO_MEMORY_BACKEND / REJECTED
+→ stableWrite=false
+→ memoryIds=[]
 ```
 
-GGUF receives natural-language summaries, not unrestricted internal state.
+`MemoryAdmissionPort` remains deprecated compatibility only. The orchestrator rejects attempted pre-response persistence.
 
-## Phase 6 — Output validation
+## Phase 5 — Affective appraisal
 
-Target validator checks at least:
-- negation;
-- referents/target;
-- temporal meaning;
-- unsupported facts;
-- contradiction with resolved decision/context;
-- consent/intimacy decision when relevant.
+Status: **WIRED / GUARDED**.
 
-Until implemented, this phase is `NON_CABLATO`; prompt instructions are not considered equivalent to semantic validation.
+- RelationshipState remains external;
+- runtime relationship projections are ignored;
+- unauthorized persistent affect is clamped and diagnosed;
+- adult/intimacy is not a blanket persistence penalty.
 
-## Phase 7 — Persistent consolidation
+## Phase 6 — Matrix decision
 
-Only after the turn has been understood and the output accepted:
+Status: **NON_CABLATO**.
+
+The future Matrix Decision layer owns behavioral choice. Prompt Builder remains realization-only.
+
+## Phase 7 — Response realization and validation
+
+Prompt/GGUF status: **WIRED WITH PLACEHOLDER GGUF**.
+
+`OutputValidatorPort` is now an explicit optional boundary after GGUF:
+- supplied validator executes after generation;
+- absence is recorded as `output.validation=NON_CABLATO`;
+- real semantic validation remains future work.
+
+## Phase 8 — Persistent consolidation
+
+Status: **PORT DEFINED / IMPLEMENTATION NON_CABLATO**.
+
+Only after accepted output may `PersistentConsolidationPort` later coordinate:
 - Memory Admission / Long-Term write;
-- persistent affect update;
-- RelationshipState update through its own owner/controller;
+- persistent affect commit;
+- RelationshipState update through its owner/controller;
 - causal trace / lifecycle records.
 
-Current Assembling memory adapters remain non-persistent placeholders. A future real memory adapter must not turn the existing pre-response placeholder call into an uncontrolled durable write.
+## DiagnosticTrace
 
-## Memory model
+Status: **WIRED THROUGH IMPLEMENTED COGNITIVE MODULES**.
 
-```text
-WORKING MEMORY
-- temporary current-turn/context state
-- bounded / evictable
-- no durable truth authority
+It records observable input/output/decision/reason-code evidence and preserves the first divergence. No private chain-of-thought is stored.
 
-LONG-TERM MEMORY
-- EPISODIC
-- SEMANTIC
-- REFLECTION
-- optional CORE priority subset
-```
+## Completed hardening
 
-## Compatibility preservation
+1. Understanding no longer owns durable memory admission.
+2. All NLU claims are preserved.
+3. Critical confidence is fail-closed on every claim.
+4. Third-party and multi-claim authority are explicit.
+5. Pre-response memory is a named non-persistent preflight contract.
+6. Durable memory output before validation is rejected.
+7. Affective cannot own RelationshipState or exceed persistence authorization.
+8. Prompt Builder is realization-only.
+9. Legacy pipeline is deprecated for new callers.
+10. Optional output-validation and future consolidation boundaries are named explicitly.
+11. Explicit adult/intimacy NLU marker is supported without removing the compatibility fallback.
 
-Do not delete healthy work solely to clean architecture.
+## Next work after this gate
 
-- `MatrixTurnFrame` path = authoritative integration path.
-- `contracts/pipeline/prompt` path = compatibility/testing facade.
-- migrate callers progressively;
-- remove compatibility path only when its tests/callers have been migrated.
-
-## Immediate alignment tasks
-
-1. remove stable-memory authority from Understanding;
-2. use canonical NLU confidence-head names in gates;
-3. make third-party/report handling reach Authority correctly;
-4. keep Affective separate from Relationship ownership;
-5. remove adult/intimacy-specific persistence penalty;
-6. keep memory backend disabled until the real foundation is connected;
-7. add end-to-end smoke tests around the canonical orchestrator;
-8. later add explicit output validation and commit-phase ports.
+1. keep the full CI suite green;
+2. introduce explicit Working Context/read ports without persistence;
+3. implement per-claim contextual resolution;
+4. implement a real semantic `OutputValidatorPort`;
+5. connect Memory Foundation only through `PersistentConsolidationPort`;
+6. preserve current regression and DiagnosticTrace invariants.
 
 ## Change-control rule
 
 Any approved component change must update, in the same workstream:
-- canonical architecture/spec;
 - module wiring;
+- code/adapter contracts;
 - tests;
 - continuity;
-- conflicting documentation.
+- conflicting active documentation.
