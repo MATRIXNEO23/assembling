@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:03+02:00  
+Last updated: 2026-09-05T10:06+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `authority-kotlin-contracts-v1`  
-Continuity schema: `matrix.assembling.continuity.v25`
+Continuity schema: `matrix.assembling.continuity.v26`
 
 ## Mandatory continuity policy
 
@@ -38,21 +38,7 @@ cleanup final CI = 33951808519 SUCCESS
 Canonical protocol: `docs/MATRIX_INTERMODULE_PROTOCOL.md` = MIP-1.0.  
 Canonical bridge: `src/main/kotlin/matrix/assembling/mip/MipBridge.kt`.
 
-MIP field states remain:
-
-```text
-PRESENT
-NOT_APPLICABLE
-UNKNOWN
-UNRESOLVED
-AMBIGUOUS
-CONFLICTED
-UNAVAILABLE
-NO_MATCH
-ERROR
-```
-
-Authority contradiction mapping remains fail-closed; Python arbitrary int -> Kotlin Long remains range checked.
+MIP field states remain explicit and Authority contradiction mapping remains fail-closed.
 
 ## AUTHORITY-1.0 freeze — COMPLETE
 
@@ -74,15 +60,27 @@ TypedClaim -> Authority Resolver -> AuthorityResolution -> Memory Admission -> M
 
 Authority never writes Memory and never owns SAVE/SUPERSEDE/REJECT/IGNORE.
 
-Frozen enums:
+Frozen `EpistemicClass`:
 
 ```text
-EpistemicClass = WORLD_TRUTH, OBSERVATION, REPORT, INFERENCE, BELIEF
-AuthorityResolutionStatus = COMPLETE, PARTIAL, HOLD, UNAVAILABLE, ERROR
+WORLD_TRUTH
+OBSERVATION
+REPORT
+INFERENCE
+BELIEF
 ```
 
-Authority/confidence/source reliability/belief confidence/retrieval relevance remain separate.
-Concrete contradiction identity requires a VALID same-slot candidate, same normalized predicate, compatible temporal scope, actual incompatible value/target/polarity and one unique safe target. Same actor/entity or different text alone is insufficient.
+Frozen `AuthorityResolutionStatus`:
+
+```text
+COMPLETE
+PARTIAL
+HOLD
+UNAVAILABLE
+ERROR
+```
+
+Authority/confidence/source reliability/belief confidence/retrieval relevance remain separate. Concrete contradiction identity requires a VALID same-slot candidate, same normalized predicate, compatible temporal scope, true incompatible value/target/polarity and one unique safe target. Same actor/entity or different text alone is insufficient.
 
 Historical Python Authority material remains oracle/compatibility evidence only. MIP owns semantics. Current root `AuthorityDecision` remains compatibility-only. `BasicAuthorityResolver` remains a placeholder without semantic contradiction detection.
 
@@ -129,64 +127,50 @@ AuthorityReasonCode
 
 No resolver/business logic/Memory access/contradiction algorithm/shared-type duplication/DTO migration/bridge migration/orchestrator change.
 
-Continuity checkpoint: `8f399ec430c1f1ecbe518b5620bd03152f842b3c`.
-
 ### Checkpoint 2 — contract tests
 
 Functional commit: `0f4c719d26b28f206f71bb797e84e8fa724acbf8`
 
-Added `src/test/kotlin/matrix/assembling/authority/AuthorityTypesTest.kt` for exact enum vocabulary, normalized confidence ranges + NaN rejection, SourceReliability, MemoryRef and frozen AUTHORITY reason-code namespace.
-
-Continuity checkpoint: `e0b0c6b8eb62a0f3ed2d44bb67e6db453a964c7e`.
+Added `src/test/kotlin/matrix/assembling/authority/AuthorityTypesTest.kt`.
 
 ### Checkpoint 3 — PR/scope
 
-PR #11 opened. Verified changed paths were only continuity + new Authority type/test files. Continuity commit: `d1f329b8e06cf622b9f727a448c91f3ec9b968c7`.
+PR #11 opened; changed paths verified as continuity + new Authority type/test files only.
 
-### Checkpoint 4 — first full CI failure
+### Checkpoint 4 — first CI failure
 
-CI run `33953927557` compiled successfully but `Run tests` failed:
+CI `33953927557`: compile PASS, 53 tests executed, 1 new test failed because frozen reason-code count was expected as 18 while the frozen set contains 19. No runtime/contract failure.
 
-```text
-53 tests completed, 1 failed
-AuthorityTypesTest.frozenReasonCodesRemainInAuthorityNamespaceWithoutDuplicates
-```
-
-Root cause: the new test expected 18 frozen AUTHORITY-1.0 reason codes, but the frozen set contains 19:
-
-```text
-5 RESOLVED
-4 unresolved-role/time
-2 RETRIEVAL
-5 CONTRADICTION
-1 CORRECTION
-1 HOLD
-1 ERROR
-= 19
-```
-
-This was a new-test counting error, not a runtime/contract failure. No gate was lowered. Failure continuity commit: `290b9c9b6f0f8a447b1fbe979639edbdd14c11b7`.
+Failure continuity: `290b9c9b6f0f8a447b1fbe979639edbdd14c11b7`.
 
 ### Checkpoint 5 — test-only correction
 
-Commit:
+Commit: `831229d9bb77728782ffb84e60a4cfc5f3567c55`
 
-`831229d9bb77728782ffb84e60a4cfc5f3567c55`
+Only change: test expected reason-code count `18 -> 19`. Production contract constants unchanged. No gate lowering.
 
-Only change:
+Continuity after fix: `637e3356cee3da99bcff40c5392f8abfdc69ad26`.
+
+### Checkpoint 6 — full CI GREEN
+
+Latest PR CI:
 
 ```text
-AuthorityTypesTest expected frozenV1 size: 18 -> 19
+run = 33954038866
+job = kotlin-tests
+Run tests = SUCCESS
+job conclusion = SUCCESS
 ```
 
-No production/runtime file changed. Contract constants were not altered to satisfy the test.
+The original failed gate was corrected by fixing only the incorrect new test expectation. Full existing regression + new Authority tests now pass.
 
 Current next action:
 
 ```text
-rerun full PR #11 CI on latest head
-if green: checkpoint CI, merge, verify post-merge main CI, checkpoint continuity, STOP before next phase
-if failure: diagnose only actual phase regression, checkpoint continuity, no merge
+merge PR #11 only if current PR head is mergeable
+verify post-merge main CI
+update continuity with merge/main CI evidence
+STOP before resolver/shared Context-Retrieval implementation
 ```
 
 ## Explicitly NOT IMPLEMENTED
@@ -218,9 +202,9 @@ repo = MATRIXNEO23/assembling
 branch = authority-kotlin-contracts-v1
 PR = #11
 phase base = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
-last functional commit = 831229d9bb77728782ffb84e60a4cfc5f3567c55
-last failed CI = 33953927557 (test count assertion only)
-current action = inspect latest PR CI after test-only fix
+last functional fix = 831229d9bb77728782ffb84e60a4cfc5f3567c55
+latest green CI = 33954038866
+current action = merge PR #11 if mergeable, then verify main CI
 resolver = NOT_STARTED
 other repos = READ-ONLY
 ```
