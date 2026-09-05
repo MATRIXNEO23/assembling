@@ -20,6 +20,14 @@ data class MatrixTurnFrame(
     val nlu: NluOutput? = null,
     val semantic: SemanticFrame? = null,
     val typedClaims: List<TypedClaim> = emptyList(),
+    val coherenceDecision: CoherenceDecision? = null,
+    /** Legacy compatibility-only Authority surface; never auto-synchronized from canonical Authority. */
+    val authorityDecision: AuthorityDecision? = null,
+    val memoryResult: MemoryAdmissionResult? = null,
+    val affectiveState: AffectiveState? = null,
+    val prompt: GgufPrompt? = null,
+    val reply: AssistantReply? = null,
+    val diagnostics: DiagnosticTrace = DiagnosticTrace(),
     /** Current immutable canonical MIP context snapshot. Legacy runtime defaults to UNAVAILABLE. */
     val contextSnapshot: MipField<MatrixContextSnapshot> = MipField.unavailable(),
     /**
@@ -29,14 +37,6 @@ data class MatrixTurnFrame(
     val retrievalResults: MipField<List<RetrievalResult>> = MipField.unavailable(),
     /** Current claim-wise canonical AUTHORITY-1.0 resolutions. */
     val canonicalAuthorityResolutions: MipField<List<AuthorityResolution>> = MipField.unavailable(),
-    val coherenceDecision: CoherenceDecision? = null,
-    /** Legacy compatibility-only Authority surface; never auto-synchronized from canonical Authority. */
-    val authorityDecision: AuthorityDecision? = null,
-    val memoryResult: MemoryAdmissionResult? = null,
-    val affectiveState: AffectiveState? = null,
-    val prompt: GgufPrompt? = null,
-    val reply: AssistantReply? = null,
-    val diagnostics: DiagnosticTrace = DiagnosticTrace(),
 ) {
     init {
         validateCanonicalRuntimeSlots()
