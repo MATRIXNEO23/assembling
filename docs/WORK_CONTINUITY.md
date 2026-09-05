@@ -1,10 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T10:26+02:00  
+Last updated: 2026-09-05T10:37+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active branch: `mip-evidence-contracts-v1`  
-Continuity schema: `matrix.assembling.continuity.v32`
+Continuity schema: `matrix.assembling.continuity.v33`
 
 ## Mandatory continuity policy
 
@@ -61,13 +61,10 @@ other repos modified = false
 
 ### Checkpoint 1 — shared evidence contracts
 
-Commit:
-
-`402b6611daa4b0a7804f176e99135752f555b684`
-
-File:
-
-`src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt`
+```text
+commit = 402b6611daa4b0a7804f176e99135752f555b684
+file = src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt
+```
 
 Types:
 
@@ -88,76 +85,90 @@ RetrievalScore
 RetrievalResult
 ```
 
-Key structural invariants:
+Key invariants:
 
 - every reserved ContextDomain declares availability exactly once;
 - unavailable/not-wired/error domains cannot carry fake entries;
-- snapshot/entry IDs are validated and entry IDs unique;
+- snapshot/entry IDs valid and entry IDs unique;
 - optional provenance states use MipField;
 - normalized context/retrieval confidence;
 - includeSuperseded requires includeHistorical;
 - selected refs subset candidates;
-- score identity is ref-bound, not positional;
+- score identity ref-bound, not positional;
 - MATCHED/NO_MATCH/AMBIGUOUS/INDEX_UNAVAILABLE/ERROR have distinct fail-closed list rules.
 
-### Checkpoint 2 — explicit primitive wire codec
+### Checkpoint 2 — primitive wire codec
 
-Commit:
-
-`b237e1e22b98f480eaf39e7fcb108715855592e4`
-
-File:
-
-`src/main/kotlin/matrix/assembling/mip/MipEvidenceWire.kt`
-
-Codec:
+```text
+commit = b237e1e22b98f480eaf39e7fcb108715855592e4
+file = src/main/kotlin/matrix/assembling/mip/MipEvidenceWire.kt
+```
 
 - reflection-free primitive Map/List/String/Number/Boolean representation;
 - Provenance, Context snapshot/entries, Retrieval query/result round-trip support;
-- MipField statuses preserved;
+- MipField states preserved;
 - unknown enums, malformed fields, bad timestamps and wrong primitive types fail closed;
 - ISO-8601 Instant timestamps;
-- codec remains inside MIP package and is not a parallel bridge.
+- codec remains inside MIP package; no parallel bridge introduced.
 
-### Checkpoint 3 — structural/wire/fail-closed tests
+### Checkpoint 3 — tests
 
-Commit:
+```text
+commit = 43858f686ba383bc7fa79e3a40f811b021ef69e1
+file = src/test/kotlin/matrix/assembling/mip/MipEvidenceContractsTest.kt
+```
 
-`43858f686ba383bc7fa79e3a40f811b021ef69e1`
-
-File:
-
-`src/test/kotlin/matrix/assembling/mip/MipEvidenceContractsTest.kt`
-
-Coverage added:
+Coverage:
 
 ```text
 reserved ModuleId/Context vocabulary
 exact RetrievalPurpose/Status vocabulary
-Provenance wire round-trip with UNKNOWN/UNRESOLVED/NOT_APPLICABLE preservation
+Provenance round-trip preserving explicit states
 all-domain availability requirement
-unavailable domain cannot carry fake ContextEntry
-Context snapshot wire round-trip
+unavailable domain cannot carry fake entry
+Context snapshot round-trip
 context confidence finite [0,1]
-RetrievalQuery wire round-trip
+RetrievalQuery round-trip
 includeSuperseded requires includeHistorical
-NO_MATCH != INDEX_UNAVAILABLE != ERROR across wire round-trip
+NO_MATCH != INDEX_UNAVAILABLE != ERROR
 invalid status/list combinations rejected
 MATCHED score identity preserved
-malformed PRESENT-with-null wire field rejected
+malformed PRESENT-with-null rejected
 unknown enum rejected
 invalid retrieval relevance rejected
 unknown selected ref rejected
 ```
 
+### Checkpoint 4 — PR opened / merge gate active
+
+PR:
+
+`#12 — Add shared MIP context, provenance and retrieval contracts`
+
+PR head at open:
+
+`4d699a93608a3f602fa7121cda22d04681a02cc0`
+
+Diff verified against base:
+
+```text
+docs/WORK_CONTINUITY.md
+src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt
+src/main/kotlin/matrix/assembling/mip/MipEvidenceWire.kt
+src/test/kotlin/matrix/assembling/mip/MipEvidenceContractsTest.kt
+```
+
+No Authority, Memory, orchestrator, legacy runtime or other-repository file changed.
+
 ### Validation state
 
 ```text
-contracts code = ADDED
-wire codec = ADDED
-tests = ADDED / NOT YET CI-VALIDATED
-full regression CI = NEXT
+PR #12 = OPEN
+full regression CI = PENDING
+merge = FORBIDDEN UNTIL GREEN
 ```
+
+If CI fails, fix only failures introduced by this task; do not weaken gates or existing tests.
 
 ## Explicitly NOT IMPLEMENTED
 
@@ -185,15 +196,16 @@ real GGUF bridge
 ```text
 repo = MATRIXNEO23/assembling
 branch = mip-evidence-contracts-v1
+PR = #12
 base = 05ff921d33e3f9c133ef7ea4fd9026c4966c67b7
-last functional commit = 43858f686ba383bc7fa79e3a40f811b021ef69e1
+PR-open head = 4d699a93608a3f602fa7121cda22d04681a02cc0
 AUTHORITY-1.0 = FROZEN
 Kotlin Authority value types = COMPLETE / INTEGRATED / TESTED
-shared MIP evidence contracts = CODE + TESTS ADDED / UNVALIDATED
+shared MIP evidence contracts = CODE + TESTS ADDED / PR OPEN / CI PENDING
 real AuthorityResolver = NOT_STARTED
 MipBridge final Authority migration = NOT_STARTED
 other repos = READ-ONLY
-NEXT = OPEN PR, RUN FULL CI, FIX ONLY TASK-INTRODUCED FAILURES, THEN MERGE IF GREEN
+NEXT = INSPECT PR #12 CI; FIX ONLY TASK-INTRODUCED FAILURES; MERGE ONLY IF FULL SUITE GREEN
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, or Kotlin Authority value-type work.
