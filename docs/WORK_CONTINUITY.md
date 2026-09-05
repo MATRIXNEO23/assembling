@@ -1,16 +1,15 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T13:15+02:00  
+Last updated: 2026-09-05T13:20+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Active branch: `runtime-frame-mip-slots-v1`  
-Continuity schema: `matrix.assembling.continuity.v60`
+Continuity schema: `matrix.assembling.continuity.v61`
 
 ## Mandatory continuity policy
 
 Single canonical restart file. Update at every meaningful checkpoint/CI/architecture decision and before STOP.
 
-## Completed Authority baseline — DO NOT REDO
+## Completed Authority / MIP baseline — DO NOT REDO
 
 ```text
 MIP = MIP-1.0
@@ -28,28 +27,35 @@ runtime adapter continuity CI = 33961726792 SUCCESS
 
 Other repos = READ-ONLY. Memory writes/admission = NOT TOUCHED.
 
-## ACTIVE TASK — RUNTIME FRAME MIP EVIDENCE SLOTS ONLY
+## RUNTIME FRAME MIP EVIDENCE SLOTS — COMPLETE / INTEGRATED / TESTED
+
+PR:
+
+`#17 — Add multi-claim-safe canonical MIP slots to MatrixTurnFrame`
+
+Final PR head:
+
+`998ebd8ca86ed6bc03091dba126747d47589dd36`
+
+PR final-head CI:
 
 ```text
-branch = runtime-frame-mip-slots-v1
-base = 65d3b9b407d0b861454bc66ba2d010da28d14a4f
-PR = #17
-orchestrator rewiring = NOT AUTHORIZED
+33962069458 = SUCCESS
 ```
 
-### Canonical additive slot contract
+Merge SHA:
 
-Multi-claim-safe cardinality:
+`566751798d5ea2dc93db5a01039715f785b04d00`
+
+Post-merge main CI:
 
 ```text
-contextSnapshot: MipField<MatrixContextSnapshot>
-retrievalResults: MipField<List<RetrievalResult>>
-canonicalAuthorityResolutions: MipField<List<AuthorityResolution>>
+33962117105 = SUCCESS
+job = kotlin-tests SUCCESS
+Run tests = SUCCESS
 ```
 
-Defaults = `UNAVAILABLE`. Successful retrieval with no match = outer PRESENT containing `RetrievalResult(status=NO_MATCH)`, never outer NO_MATCH/UNAVAILABLE collapse.
-
-### Functional checkpoints
+Functional commits:
 
 ```text
 0b5e1643604a87066006715e9e2da65df1d37965
@@ -62,31 +68,52 @@ c6c7f8b734dfe9fb94124a6149e016ee92a27abb
 = add MatrixTurnFrameCanonicalSlotsTest
 
 1a670a1dc5c818f21cda9143cdf0f44581b18e36
-= self-review fix: append new fields after historical constructor parameters to preserve positional source compatibility
+= self-review fix preserving historical positional constructor parameter order
 ```
 
-Changed functional files:
+Integrated additive canonical runtime slots:
 
 ```text
-src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt
-src/test/kotlin/matrix/assembling/MatrixTurnFrameCanonicalSlotsTest.kt
+contextSnapshot: MipField<MatrixContextSnapshot>
+retrievalResults: MipField<List<RetrievalResult>>
+canonicalAuthorityResolutions: MipField<List<AuthorityResolution>>
 ```
 
-Frame invariants:
+All three new fields are appended after the historical `diagnostics` constructor parameter and have defaults, preserving legacy constructor source compatibility.
 
-- historical parameter order preserved exactly; new fields appended with defaults;
-- context PRESENT must match frame turn/session;
+Canonical defaults:
+
+```text
+contextSnapshot = UNAVAILABLE
+retrievalResults = UNAVAILABLE
+canonicalAuthorityResolutions = UNAVAILABLE
+```
+
+Successful no-match is represented only as:
+
+```text
+retrievalResults = PRESENT([
+  RetrievalResult(status = NO_MATCH, ...)
+])
+```
+
+not as outer NO_MATCH/UNAVAILABLE collapse.
+
+Integrated invariants:
+
+- PRESENT context must match frame turnId/sessionId;
 - context outer NO_MATCH forbidden;
 - retrieval outer NO_MATCH/AMBIGUOUS/CONFLICTED forbidden;
-- retrieval PRESENT requires PRESENT context, non-empty explicit results, unique query IDs;
-- canonical Authority PRESENT requires PRESENT context;
-- typed claim IDs unique when canonical Authority present;
-- Authority resolution IDs unique and at most one current resolution per claim;
-- Authority resolutions cover exactly current typedClaims;
-- Authority resolution contextSnapshotId must equal current snapshot;
-- legacy `authorityDecision` and canonical Authority remain independent/no auto-sync.
+- PRESENT retrieval requires PRESENT context, non-empty explicit results, unique query IDs;
+- PRESENT canonical Authority requires PRESENT context;
+- claim IDs unique while canonical Authority is present;
+- resolution IDs unique;
+- at most one current Authority resolution per claim;
+- canonical Authority resolutions cover exactly current typedClaims;
+- all Authority resolutions reference current contextSnapshotId;
+- legacy `authorityDecision` and canonical Authority are independent; no synchronization/collapse.
 
-Helpers:
+Integrated helpers:
 
 ```text
 requireCanonicalContextSnapshot()
@@ -95,62 +122,68 @@ requireCanonicalAuthorityResolutions()
 requireCanonicalAuthorityForClaim(claimId)
 ```
 
-Tests cover legacy default UNAVAILABLE, context mismatch, inner/outer NO_MATCH semantics, retrieval context/nonempty requirements, multi-claim Authority preservation, exact claim coverage, snapshot identity, legacy/canonical independence and copy preservation.
-
-### PR / CI evidence
-
-Verified diff contains exactly:
+Regression coverage proves:
 
 ```text
-docs/WORK_CONTINUITY.md
-src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt
-src/test/kotlin/matrix/assembling/MatrixTurnFrameCanonicalSlotsTest.kt
+old/minimal constructors still compile and default canonical slots to UNAVAILABLE
+context mismatch rejected
+outer vs inner NO_MATCH distinction preserved
+retrieval requires context and explicit result
+multi-claim frame preserves claim-wise AuthorityResolution values
+missing/unknown Authority claim coverage rejected
+snapshot mismatch rejected
+legacy and canonical Authority remain independent
+copy() preserves canonical slots/statuses
 ```
 
-PR #17:
+No orchestrator, BasicAuthorityResolver, AuthorityResolverPort, Memory component or other repository was modified.
 
-`Add multi-claim-safe canonical MIP slots to MatrixTurnFrame`
-
-Green tested PR head before this doc update:
-
-`6888be62a25337eca8c528c5ee768b66827d3958`
-
-Full regression:
+## Current architecture state
 
 ```text
-CI = 33961999192 SUCCESS
-job = kotlin-tests SUCCESS
-Run tests = SUCCESS
+Canonical Context slot in MatrixTurnFrame = READY
+Canonical Retrieval results slot = READY / MULTI-RESULT
+Canonical AuthorityResolution slot = READY / MULTI-CLAIM
+CanonicalAuthorityRuntimeAdapter = READY
+DeterministicAuthorityResolver = READY
+legacy AuthorityDecision = STILL COMPATIBILITY-ONLY
+orchestrator uses canonical resolver = false
+Memory Admission = NOT IMPLEMENTED HERE
+MemoryRepository = NOT TOUCHED
 ```
 
-The green full suite confirms existing legacy call sites still compile after the positional-order compatibility fix.
+## NEXT BOUNDED CHECKPOINT — ORCHESTRATOR CANONICAL AUTHORITY REWIRE DESIGN/IMPLEMENTATION
 
-This documentation update creates a new final PR head. Merge only after CI for that exact head is green.
+This is the next controlled task, but it has NOT started.
 
-## Hard boundaries
+Required approach:
 
-```text
-no MatrixAssemblingOrchestrator behavior change
-no BasicAuthorityResolver replacement/removal
-no AuthorityResolverPort replacement/removal
-no root AuthorityDecision redesign/removal
-no Memory Admission
-no MemoryRepository dependency/write
-no PersistentConsolidation
-no other repo writes
-```
+- preserve compatibility path until canonical prerequisites are present;
+- add a canonical Authority stage that consumes the new frame Context/Retrieval slots and resolves every current claim explicitly;
+- no implicit first-claim selection;
+- write only `canonicalAuthorityResolutions`, not legacy `AuthorityDecision` as a lossy projection;
+- legacy `BasicAuthorityResolver` may remain as fallback/compatibility during migration until tests prove safe retirement;
+- no Memory Admission SAVE/SUPERSEDE/REJECT/IGNORE in same checkpoint;
+- no MemoryRepository writes;
+- add integration tests proving `NLU/Understanding -> frame context/retrieval -> canonical Authority` while pre-response Memory boundary remains unchanged.
+
+Before starting that task, review whether the canonical stage belongs behind a new dedicated runtime port rather than mutating legacy `AuthorityResolverPort` semantics in place.
 
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
-branch = runtime-frame-mip-slots-v1
-PR = #17
-base = 65d3b9b407d0b861454bc66ba2d010da28d14a4f
-last green tested head before doc update = 6888be62a25337eca8c528c5ee768b66827d3958
-CI = 33961999192 SUCCESS
-runtime MIP slots = IMPLEMENTED / TESTED GREEN / FINAL DOC HEAD CI PENDING
+branch = main
+runtime frame MIP slots merge = 566751798d5ea2dc93db5a01039715f785b04d00
+post-merge frame-slot CI = 33962117105 SUCCESS
+AUTHORITY-1.0 = FROZEN
+shared MIP evidence = COMPLETE / INTEGRATED / TESTED
+DeterministicAuthorityResolver = COMPLETE / INTEGRATED / P0 TESTED
+Authority compatibility projections = COMPLETE / TESTED
+CanonicalAuthorityRuntimeAdapter = COMPLETE / TESTED
+MatrixTurnFrame canonical MIP slots = COMPLETE / INTEGRATED / TESTED
 orchestrator uses canonical resolver = false
 Memory writes/admission = NOT TOUCHED
-NEXT = VERIFY FINAL DOC HEAD CI; MERGE #17 ONLY IF GREEN; POST-MERGE MAIN CI; FINALIZE CONTINUITY; STOP BEFORE ORCHESTRATOR REWIRE
+other repos = READ-ONLY
+NEXT = OWNER REVIEW / ORCHESTRATOR CANONICAL AUTHORITY REWIRE AS SEPARATE CHECKPOINT
 ```
