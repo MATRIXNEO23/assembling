@@ -1,9 +1,10 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-05T11:06+02:00  
+Last updated: 2026-09-05T11:12+02:00  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Continuity schema: `matrix.assembling.continuity.v43`
+Active branch: `authority-resolver-v1`  
+Continuity schema: `matrix.assembling.continuity.v44`
 
 ## Mandatory continuity policy
 
@@ -28,116 +29,111 @@ cleanup PR #8 merge = ff38d09f73a1eec8b2a72a24571b92f1954c729c
 cleanup PR #9 merge = afc5cd7e535dc08d09455339a056c71ba5dc6ea2
 MIP = docs/MATRIX_INTERMODULE_PROTOCOL.md / MIP-1.0
 AUTHORITY-1.0 contract commit = a3c7bf9bb4cd01f8032fd32c4e3f4ce3dc293f9b
-AUTHORITY contract freeze PR #10 merge = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
+Authority freeze PR #10 merge = bf8ef4aadcc6a73e85e920968a926bf4b838a0fa
 Authority value types PR #11 merge = b87dadf376300587511a7dbce594b0fe88695798
 shared MIP evidence PR #12 merge = 8f45a631b70c283169d058d98d1c880b5e37e554
-shared evidence post-merge CI = 33955886389 SUCCESS
+Authority runtime DTO PR #13 merge = 6841d916ba8a28a5bfc16ab4b0fa679e40c555fc
+post-merge DTO CI = 33956522738 SUCCESS
+pre-resolver continuity commit = 3e413509ea60f4ea60ee2fe2382c6f37e892da6d
+pre-resolver continuity CI = 33957143955 SUCCESS
 ```
 
-Authority remains read-only over evidence, never Memory writer/admission owner. Hard MIP distinctions and explicit status vocabulary remain unchanged.
-
-## Authority runtime DTO binding — COMPLETE / INTEGRATED / TESTED
-
-PR #13:
-
-`Bind frozen Authority-1.0 runtime DTOs to MIP evidence`
-
-Merge SHA:
-
-`6841d916ba8a28a5bfc16ab4b0fa679e40c555fc`
-
-Integrated files:
+## ACTIVE TASK — REAL AUTHORITY RESOLVER ONLY
 
 ```text
-src/main/kotlin/matrix/assembling/authority/AuthorityContracts.kt
-src/main/kotlin/matrix/assembling/authority/AuthorityContractWire.kt
-src/main/kotlin/matrix/assembling/mip/MipClaimWire.kt
-src/test/kotlin/matrix/assembling/authority/AuthorityContractsTest.kt
+branch = authority-resolver-v1
+base = 3e413509ea60f4ea60ee2fe2382c6f37e892da6d
+AUTHORITY-1.0 = FROZEN
+Authority runtime DTOs = COMPLETE / INTEGRATED / TESTED
+other repos modified = false
 ```
-
-Integrated contracts:
-
-```text
-AuthorityResolveRequest
-AuthorityResolution
-MipClaimV1 primitive wire support
-Authority primitive wire support
-```
-
-Contract properties:
-
-- request reuses MipClaimV1, MatrixContextSnapshot, explicit MipField<RetrievalResult>, ProvenanceRef;
-- result uses frozen AUTHORITY-1.0 typed fields;
-- COMPLETE does not mean persistence approval;
-- contradiction identity/status cannot collapse to nullable absence;
-- concrete/ambiguous/no-match contradiction states are structurally constrained;
-- claim/provenance identity mismatch fails closed;
-- shared payload serialization delegates to existing MIP evidence codec;
-- no legacy AuthorityDecision or final MipBridge migration.
-
-PR final-head CI:
-
-```text
-33956466243 = SUCCESS
-```
-
-Post-merge main CI:
-
-```text
-33956522738 = SUCCESS
-```
-
-No gate was weakened. No task-introduced post-merge failure required repair.
-
-## NEXT ACTIVE TASK — REAL AUTHORITY RESOLVER
-
-This is now the next bounded task.
 
 Scope:
 
-- implement real deterministic `AuthorityResolver` under `src/main/kotlin/matrix/assembling/authority/`;
-- consume only `AuthorityResolveRequest` structured claim/context/retrieval evidence;
-- classify `EpistemicClass` according to frozen AUTHORITY-1.0 rules;
-- perform conservative semantic contradiction detection over read-only retrieved candidate evidence;
-- output canonical `AuthorityResolution` with explicit contradiction identity/status;
-- preserve `NO_MATCH != UNAVAILABLE != ERROR`;
-- deterministic observable reason codes only; no hidden chain-of-thought dependency;
-- add P0 tests for WORLD_TRUTH provenance, OBSERVATION, REPORT, INFERENCE, BELIEF, unrelated predicates, temporal change, same-slot contradiction, ambiguity, invalid/superseded targets, correction semantics, and no-write behavior.
+- implement `AuthorityResolver` + deterministic production implementation under `matrix.assembling.authority`;
+- classify WORLD_TRUTH / OBSERVATION / REPORT / INFERENCE / BELIEF from structured MIP evidence only;
+- perform conservative contradiction detection against retrieved candidate evidence;
+- output canonical `AuthorityResolution`;
+- deterministic `AUTHORITY.*` reason codes only;
+- no natural-language reparsing;
+- no repository writes/admission decisions.
 
-Explicitly NOT authorized in this task:
+### Read-only candidate evidence decision
+
+`RetrievalResult` intentionally contains candidate IDs/scores, not durable MemoryRecord content. AUTHORITY-1.0 section 13 permits a future read-only evidence port when needed. Therefore this task will add an Authority-owned **read-only projection port**, not a MemoryRepository dependency:
 
 ```text
+AuthorityCandidateEvidencePort
+read(candidate MemoryRef, MatrixContextSnapshot)
+-> MipField<AuthorityCandidateEvidence>
+```
+
+Rules:
+
+- port exposes reads only; no save/supersede/delete/update methods;
+- `AuthorityCandidateEvidence` is a normalized read projection for contradiction comparison, NOT a second MemoryRecord model and NOT persistence state ownership;
+- later integration may back the port from hydrated Context/Retrieval evidence or a read-only Memory adapter;
+- universal MIP does not depend on a concrete repository implementation.
+
+Candidate projection must preserve at least:
+
+```text
+memoryRef
+validity status
+subject
+predicate
+object/value
+target
+owner
+perspective
+source
+polarity
+temporal relation
+temporal reference key when available
+provenance
+```
+
+### Conservative contradiction policy
+
+- candidate must be VALID;
+- subject and normalized predicate must match;
+- owner/scope and source/perspective are compared when semantically applicable;
+- temporal scopes must be safely compatible;
+- opposite polarity on the same semantic value/target may contradict;
+- different values contradict only for explicitly registered single-value predicates;
+- different text/shared actor/retrieval score never prove contradiction;
+- CURRENT/ATEMPORAL can compare directly; historical/reference relations require enough temporal identity, otherwise assessment remains unresolved;
+- multiple concrete contradiction targets -> AMBIGUOUS/HOLD;
+- unresolved candidate evidence prevents claiming a unique contradiction;
+- correction prioritizes evidence but never bypasses same-slot/VALID/temporal checks.
+
+### Explicitly NOT authorized
+
+```text
+MemoryRepository dependency
 Memory writes
 Memory Admission SAVE/SUPERSEDE/REJECT/IGNORE
-MemoryRepository dependency
 PersistentConsolidation
 root AuthorityDecision migration
+BasicAuthorityResolver replacement in orchestrator
 final MipBridge migration
 orchestrator rewiring
-retrieval engine implementation
-Relationship
-Reflection
-BDI/Decision
-Intimacy/Consent resolver
-Android integration
-real GGUF bridge
+retrieval engine
+other repo writes
 ```
 
 ## Exact restart point
 
 ```text
 repo = MATRIXNEO23/assembling
-branch = main
-main HEAD functional merge = 6841d916ba8a28a5bfc16ab4b0fa679e40c555fc
-post-merge CI = 33956522738 SUCCESS
-AUTHORITY-1.0 = FROZEN
-Authority value types = COMPLETE / INTEGRATED / TESTED
-shared MIP evidence contracts = COMPLETE / INTEGRATED / TESTED
-Authority runtime DTO binding = COMPLETE / INTEGRATED / TESTED
-real AuthorityResolver = NOT_STARTED
+branch = authority-resolver-v1
+base = 3e413509ea60f4ea60ee2fe2382c6f37e892da6d
+real AuthorityResolver = TASK STARTED / NO RESOLVER CODE YET
+read-only candidate evidence port = DESIGN DECIDED / NOT YET CODED
 MipBridge final Authority migration = NOT_STARTED
+orchestrator rewiring = NOT_STARTED
 other repos = READ-ONLY
-NEXT = REAL AUTHORITY RESOLVER ONLY
+NEXT = IMPLEMENT READ-ONLY EVIDENCE PROJECTION + RESOLVER + P0 TESTS
 ```
 
 Do not redo cleanup, MIP audit, AUTHORITY-1.0 freeze, Authority value types, shared MIP evidence contracts, or Authority DTO binding.
