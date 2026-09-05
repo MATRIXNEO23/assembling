@@ -3,6 +3,10 @@ package matrix.assembling
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+import matrix.assembling.adapters.BasicAuthorityResolver
+import matrix.assembling.adapters.BasicCoherenceGuard
 import matrix.assembling.adapters.MatrixNluClaim
 import matrix.assembling.adapters.MatrixNluInterpretation
 import matrix.assembling.adapters.MatrixNluRequest
@@ -35,12 +39,17 @@ class ArchitectureBoundaryTest {
             ),
         )
 
-        val result = adapter.understand(adapter.analyze(input))
+        var result = adapter.understand(adapter.analyze(input))
+        result = BasicCoherenceGuard().check(result)
+        result = BasicAuthorityResolver().resolve(result)
 
         assertEquals(2, result.typedClaims.size)
         assertEquals("Marco", result.typedClaims[0].subject)
         assertEquals("Sara", result.typedClaims[1].subject)
         assertEquals("NEGATIVE", result.typedClaims[1].polarity)
+        assertEquals(CoherenceDecision.SAFE_TRANSIENT_ONLY, result.requireCoherence())
+        assertEquals("MULTI_CLAIM", result.requireAuthority().sourceType)
+        assertFalse(result.requireAuthority().accepted)
     }
 
     @Test
@@ -77,9 +86,76 @@ class ArchitectureBoundaryTest {
             ),
         )
 
-        val checked = matrix.assembling.adapters.BasicCoherenceGuard().check(turn)
+        val checked = BasicCoherenceGuard().check(turn)
 
         assertEquals(CoherenceDecision.LOW_CONFIDENCE_HOLD, checked.requireCoherence())
+        assertEquals("COHERENCE.MISSING_CRITICAL_CONFIDENCE", checked.diagnostics.firstDivergence)
+    }
+
+    @Test
+    fun secondaryClaimMissingCriticalConfidenceAlsoFailsClosed() {
+        val complete = criticalConfidence()
+        val incomplete = complete - "token.negation"
+        val runtime = object : MatrixNluRuntimeBridge {
+            override fun interpret(request: MatrixNluRequest): MatrixNluInterpretation = MatrixNluInterpretation(
+                engine = "boundary-test",
+                status = "OK",
+                claims = listOf(
+                    claim(subject = "Marco", polarity = "POSITIVE", objectValue = "domani", confidenceByHead = complete),
+                    claim(subject = "Sara", polarity = "NEGATIVE", objectValue = "domani", confidenceByHead = incomplete),
+                ),
+            )
+        }
+        val adapter = UnderstandingLabAdapter(runtime)
+        var turn = adapter.understand(
+            adapter.analyze(
+                MatrixTurnFrame(
+                    turnId = "turn-secondary-confidence",
+                    sessionId = "session-test",
+                    input = UserMessage("Marco viene, Sara non viene", "alberto", timestampMillis = 0L),
+                ),
+            ),
+        )
+
+        turn = BasicCoherenceGuard().check(turn)
+
+        assertEquals(CoherenceDecision.LOW_CONFIDENCE_HOLD, turn.requireCoherence())
+        assertEquals("COHERENCE.MISSING_CRITICAL_CONFIDENCE", turn.diagnostics.firstDivergence)
+        assertTrue(
+            turn.diagnostics.tags["coherence.missing_critical_confidence"]
+                ?.contains("claim[1].token.negation") == true,
+        )
+    }
+
+    @Test
+    fun explicitAdultIntimacyMarkerIsPreferredOverKeywordFallback() {
+        val runtime = object : MatrixNluRuntimeBridge {
+            override fun interpret(request: MatrixNluRequest): MatrixNluInterpretation = MatrixNluInterpretation(
+                engine = "boundary-test",
+                status = "OK",
+                claims = listOf(
+                    claim(
+                        subject = "alberto",
+                        polarity = "POSITIVE",
+                        objectValue = "messaggio neutro",
+                        adultOrIntimacy = true,
+                    ),
+                ),
+            )
+        }
+        val adapter = UnderstandingLabAdapter(runtime)
+        val turn = adapter.understand(
+            adapter.analyze(
+                MatrixTurnFrame(
+                    turnId = "turn-adult-marker",
+                    sessionId = "session-test",
+                    input = UserMessage("messaggio neutro", "alberto", timestampMillis = 0L),
+                ),
+            ),
+        )
+
+        assertTrue(turn.requireSemantic().adultOrIntimacy)
+        assertEquals("NLU_EXPLICIT", turn.diagnostics.tags["understanding_lab.adult_intimacy_source"])
     }
 
     @Test
@@ -95,13 +171,7 @@ class ArchitectureBoundaryTest {
                     targetReferent = "NONE",
                     ownerReferent = "SPEAKER",
                     perspectiveReferent = "SPEAKER",
-                    confidence = mapOf(
-                        "overall" to 0.95,
-                        "token.negation" to 0.99,
-                        "sequence.predicate" to 0.95,
-                        "sequence.subjectReferent" to 0.95,
-                        "sequence.targetReferent" to 0.95,
-                    ),
+                    confidence = criticalConfidence(),
                     spans = emptyMap(),
                 )
             )
@@ -152,8 +222,8 @@ class ArchitectureBoundaryTest {
                 )
             )
         }
-        val memory = object : MemoryAdmissionPort {
-            override fun admit(turn: MatrixTurnFrame): MatrixTurnFrame = turn.copy(
+        val memory = object : MemoryPreflightPort {
+            override fun evaluate(turn: MatrixTurnFrame): MatrixTurnFrame = turn.copy(
                 memoryResult = MemoryAdmissionResult(
                     status = "ADMITTED",
                     memoryIds = listOf("illegal-pre-response-id"),
@@ -184,7 +254,7 @@ class ArchitectureBoundaryTest {
             gguf,
         )
 
-        assertFailsWith<IllegalStateException> {
+        assertFailsWith<MatrixBoundaryViolationException> {
             orchestrator.handle(
                 UserMessage("Vivo a Padova", "alberto", timestampMillis = 0L),
                 "turn-stable-write",
@@ -193,26 +263,36 @@ class ArchitectureBoundaryTest {
         }
     }
 
-    private fun claim(subject: String, polarity: String, objectValue: String): MatrixNluClaim = MatrixNluClaim(
+    private fun claim(
+        subject: String,
+        polarity: String,
+        objectValue: String,
+        confidenceByHead: Map<String, Double> = criticalConfidence(),
+        adultOrIntimacy: Boolean? = null,
+    ): MatrixNluClaim = MatrixNluClaim(
         dialogueAct = "ASSERT",
         predicate = "presence.reported",
         polarity = polarity,
         temporalRelation = "FUTURE",
-        subjectReferent = "KNOWN_ENTITY",
+        subjectReferent = if (subject == "alberto") "SPEAKER" else "KNOWN_ENTITY",
         targetReferent = "NONE",
         ownerReferent = "SPEAKER",
         perspectiveReferent = "SPEAKER",
         confidence = 0.95,
-        confidenceByHead = mapOf(
-            "token.negation" to 0.95,
-            "sequence.predicate" to 0.95,
-            "sequence.subjectReferent" to 0.95,
-            "sequence.targetReferent" to 0.95,
-        ),
+        confidenceByHead = confidenceByHead,
         subject = subject,
         owner = "alberto",
         perspective = "alberto",
         objectValue = objectValue,
         sourceType = "USER_ASSERTION",
+        adultOrIntimacy = adultOrIntimacy,
+    )
+
+    private fun criticalConfidence(): Map<String, Double> = mapOf(
+        "overall" to 0.95,
+        "token.negation" to 0.99,
+        "sequence.predicate" to 0.95,
+        "sequence.subjectReferent" to 0.95,
+        "sequence.targetReferent" to 0.95,
     )
 }

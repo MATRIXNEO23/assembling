@@ -112,6 +112,7 @@ class MatrixAssemblingOrchestratorIntegrationTest {
                 subject = "alberto",
                 target = "luna",
                 objectValue = "consenso",
+                adultOrIntimacy = true,
             ),
         )
 
@@ -119,10 +120,43 @@ class MatrixAssemblingOrchestratorIntegrationTest {
         assertTrue(result.requireCoherence() != CoherenceDecision.REJECTED_UNSAFE)
         assertFalse(result.requireMemory().stableWrite)
         assertNotNull(result.reply)
+        assertEquals("NLU_EXPLICIT", result.diagnostics.tags["understanding_lab.adult_intimacy_source"])
         assertTraceCompleteThroughAffective(result)
     }
 
-    private fun runTurn(text: String, claim: MatrixNluClaim): MatrixTurnFrame {
+    @Test
+    fun outputValidatorRunsAfterGgufWhenProvided() {
+        var observedReply: String? = null
+        val validator = object : OutputValidatorPort {
+            override fun validate(turn: MatrixTurnFrame): MatrixTurnFrame {
+                observedReply = turn.reply?.text
+                return turn.copy(
+                    diagnostics = turn.diagnostics.tag("test.output_validator", "PASS"),
+                )
+            }
+        }
+
+        val result = runTurn(
+            text = "Vivo a Padova",
+            claim = claim(
+                predicate = "residence.place",
+                subject = "alberto",
+                objectValue = "Padova",
+            ),
+            outputValidator = validator,
+        )
+
+        assertNotNull(observedReply)
+        assertEquals("PASS", result.diagnostics.tags["test.output_validator"])
+        assertEquals("EXECUTED", result.diagnostics.tags["output.validation"])
+        assertTrue("OUTPUT_VALIDATOR_EXECUTED" in result.diagnostics.reasoningChain)
+    }
+
+    private fun runTurn(
+        text: String,
+        claim: MatrixNluClaim,
+        outputValidator: OutputValidatorPort? = null,
+    ): MatrixTurnFrame {
         val understanding = UnderstandingLabAdapter(
             object : MatrixNluRuntimeBridge {
                 override fun interpret(request: MatrixNluRequest): MatrixNluInterpretation = MatrixNluInterpretation(
@@ -141,6 +175,7 @@ class MatrixAssemblingOrchestratorIntegrationTest {
             affective = BasicAffectiveAdapter(),
             promptBuilder = SemanticFrameToPrompt(),
             gguf = EchoGgufAdapter(),
+            outputValidator = outputValidator,
         )
         return orchestrator.handle(
             MatrixTurnFrame(
@@ -162,6 +197,7 @@ class MatrixAssemblingOrchestratorIntegrationTest {
         assertTrue(result.diagnostics.reasoningChain.isNotEmpty())
         assertTrue("turn.completed" in result.diagnostics.events)
         assertNull(result.diagnostics.memoryId)
+        assertEquals("NON_CABLATO", result.diagnostics.tags["output.validation"])
     }
 
     private fun claim(
@@ -174,6 +210,7 @@ class MatrixAssemblingOrchestratorIntegrationTest {
         perspective: String = owner,
         objectValue: String? = null,
         sourceType: String = "USER_ASSERTION",
+        adultOrIntimacy: Boolean? = null,
     ): MatrixNluClaim = MatrixNluClaim(
         dialogueAct = dialogueAct,
         predicate = predicate,
@@ -202,5 +239,6 @@ class MatrixAssemblingOrchestratorIntegrationTest {
         objectValue = objectValue,
         sourceType = sourceType,
         worldTruth = false,
+        adultOrIntimacy = adultOrIntimacy,
     )
 }

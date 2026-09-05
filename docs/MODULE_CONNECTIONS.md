@@ -1,7 +1,7 @@
 # Matrix Assembling — Module Connections
 
-Status: CANONICAL MODULE WIRING
-Date: 2026-09-04
+Status: CANONICAL MODULE WIRING  
+Date: 2026-09-05  
 Global source: `MATRIXNEO23/8.10.9evo3-solo-gpt/ARCHITETTURA_MATRIX_ENGINE.md`
 
 ## Core rule
@@ -31,6 +31,8 @@ Context read
   ↓
 Coherence / Authority / belief resolution
   ↓
+MemoryPreflightPort.evaluate
+  ↓
 Affective appraisal
   ↓
 Matrix decision layer
@@ -39,14 +41,14 @@ SemanticFrameToPrompt
   ↓
 GgufPort
   ↓
-Output validation
+OutputValidatorPort
   ↓
 AssistantReply / ActionIntent
   ↓
-Persistent consolidation
+PersistentConsolidationPort
 ```
 
-The current code does not yet implement every future stage. Missing stages must be reported as `NON_CABLATO`, never simulated.
+Only the currently implemented phases run. Missing stages must be reported as `NON_CABLATO`, never simulated.
 
 ## Current authoritative implementation path
 
@@ -57,115 +59,155 @@ MatrixTurnFrame
 + root SemanticFrameToPrompt.kt
 ```
 
-The older `contracts/*`, `pipeline/*`, `prompt/*` path is compatibility/testing only and must not receive new independent authority.
+The older `contracts/*`, `pipeline/*`, `prompt/*` path is compatibility/testing only and is deprecated for new callers.
 
 ## Cross-cutting DiagnosticTrace
 
-The existing `MatrixTurnFrame.diagnostics` is the single diagnostic path. Do not create a parallel trace system.
+`MatrixTurnFrame.diagnostics` is the single diagnostic path. Do not create a parallel trace system.
 
-`DiagnosticTrace` may record:
-- original input;
-- NLU observation snapshot;
-- Understanding result;
-- Authority resolution;
-- Memory Admission result;
-- Memory result / memory ID when real persistence exists;
-- Affective stimulus/result;
-- deterministic reason codes;
-- `firstDivergence`.
+It records observable boundary facts such as original input, module snapshots, decisions, confidence, metadata, deterministic reason codes and `firstDivergence`.
 
-`reasoningChain` contains observable reason codes only, never private chain-of-thought.
-
-`firstDivergence` is write-once: later violations are recorded but cannot replace the first broken boundary.
+`reasoningChain` contains reason codes only, never private chain-of-thought. `firstDivergence` is write-once.
 
 ## Module responsibilities
 
 ### NLU
-Produces learned/structured semantic evidence and confidence. It does not own truth, memory, affective persistence or policy.
+
+Produces learned/structured semantic evidence and confidence.
+
+Allowed:
+- multiple claims;
+- dialogue act, predicate, polarity, temporal relation;
+- subject/target/owner/perspective evidence;
+- confidence by head;
+- explicit adult/intimacy semantic marker when available.
+
+Forbidden:
+- truth decisions;
+- memory persistence;
+- affective persistence;
+- censorship policy.
 
 ### Understanding
-Produces `SemanticFrame` and all `TypedClaim` drafts while preserving provenance and uncertainty.
+
+Produces a primary compatibility `SemanticFrame` and preserves **all** NLU claims as `TypedClaim` drafts.
 
 Hard rules:
 - never silently drop later claims;
 - unresolved subject remains `UNKNOWN`, never defaults to speaker;
 - does not authorize durable memory;
-- does not turn a report/user claim into World Truth.
+- does not turn a report/user claim into World Truth;
+- explicit NLU adult/intimacy marker takes precedence over the temporary keyword fallback.
 
-Until claim-wise Coherence/Authority is fully wired, multi-claim turns remain transient-only.
+Until claim-wise contextual resolution is implemented:
+
+```text
+multi-claim turn
+→ all TypedClaim values preserved
+→ Coherence SAFE_TRANSIENT_ONLY
+→ Authority sourceType MULTI_CLAIM
+→ direct authority rejected
+```
 
 ### Working Memory / Context
+
 Temporary current-turn state only; not durable storage.
 
 ### Coherence
-Validates semantic invariants.
 
-Critical confidence keys include:
+Validates semantic invariants for **every TypedClaim**, not only the primary `SemanticFrame`.
+
+Critical confidence keys:
 - `token.negation`;
 - `sequence.predicate`;
 - `sequence.subjectReferent`;
 - `sequence.targetReferent`.
 
-Critical confidence is fail-closed. Missing critical confidence or unresolved subject produces a hold rather than an inferred certainty.
-
-### Authority Resolver
-Resolves source/owner/perspective and direct-vs-indirect authority. It consumes actual claim source metadata and does not write memory.
-
-### Memory
-Two roles remain separate:
+Missing or sub-threshold confidence in any claim fails closed. Diagnostics identify the exact claim/key, for example:
 
 ```text
-READ / RETRIEVAL before contextual decision
-WRITE only in post-validation Persistent Consolidation
+claim[1].token.negation
 ```
 
-Current adapters are non-persistent placeholders.
+Coherence does not own durable persistence.
 
-Hard pre-response invariant:
+### Authority Resolver
+
+Resolves source/owner/perspective and direct-vs-indirect authority. It does not write memory.
+
+For multiple claims, the current basic adapter exposes `sourceType=MULTI_CLAIM` and holds direct authority until claim-wise resolution exists.
+
+### Memory preflight
+
+Authoritative pre-response API:
+
+```text
+MemoryPreflightPort.evaluate
+```
+
+Purpose:
+- evaluate/provisionally classify current-turn candidates;
+- expose non-persistent status to downstream modules;
+- never write durable memory.
+
+Hard invariant:
 
 ```text
 stableWrite == false
 memoryIds == []
 ```
 
-Any violation is rejected by `MatrixAssemblingOrchestrator` and appears in `DiagnosticTrace` as `MEMORY.PRE_RESPONSE_STABLE_WRITE`.
+Any violation is rejected by `MatrixAssemblingOrchestrator` and traced as `MEMORY.PRE_RESPONSE_STABLE_WRITE`.
+
+`MemoryAdmissionPort` remains deprecated compatibility only.
 
 ### Affective Engine
+
 Owns appraisal/emotional state, not RelationshipState.
 
 Hard rules:
 - runtime-provided relationship summaries cannot become canonical RelationshipState;
 - persistent affect is clamped to upstream persistence authorization;
-- an attempted persistent delta without authorization is blocked and traced as `AFFECTIVE.PERSISTENCE_WITHOUT_ADMISSION`;
+- unauthorized persistent output is blocked and traced as `AFFECTIVE.PERSISTENCE_WITHOUT_ADMISSION`;
 - does not write memory directly.
 
 ### RelationshipState owner/controller
+
 Separate authority. Currently `NON_CABLATO` in Assembling.
 
 ### Matrix Decision Layer
-Canonical behavior owner. Full BDI-lite + Utility layer remains `NON_CABLATO`; Prompt/Affective/GGUF must not silently become the decision owner.
+
+Canonical behavior owner. Full BDI-lite + Utility remains `NON_CABLATO`; Prompt/Affective/GGUF must not silently become the decision owner.
 
 ### Prompt Builder
-Translates resolved state/constraints to short GGUF-readable instructions. It must not acquire new truth/memory/relationship authority.
+
+Realization-only translator. It may preserve resolved semantic invariants but cannot select behavioral policy or acquire truth, memory or relationship authority.
 
 ### GGUF
+
 Natural-language realization only. It cannot write memory, mutate relationship state or override resolved semantic constraints.
 
 ### Output Validator
-Target semantic response validator; currently `NON_CABLATO`.
+
+`OutputValidatorPort` is now an explicit post-GGUF boundary.
+
+- when supplied, it executes after generation;
+- when absent, `DiagnosticTrace.tags["output.validation"] = "NON_CABLATO"`;
+- the real semantic validator implementation remains `NON_CABLATO`.
 
 ### Persistent Consolidation
-Target final durable stage after accepted output/action result:
+
+`PersistentConsolidationPort` names the future final durable stage after accepted output/action result:
 - Memory Admission/write;
 - persistent affect commit;
 - Relationship update;
 - lifecycle/causal trace.
 
-Currently `NON_CABLATO`.
+No implementation is currently connected.
 
 ## Adult/intimacy rule
 
-Adult/intimacy is a first-class semantic domain, not an automatic block or persistence penalty. Normal meaning/context/source/confidence/admission rules apply.
+Adult/intimacy is a first-class semantic domain, not an automatic block or persistence penalty. The explicit NLU marker is preferred; the local keyword fallback exists only for compatibility with older runtimes.
 
 ## Change-control
 

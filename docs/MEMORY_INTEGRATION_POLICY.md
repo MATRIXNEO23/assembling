@@ -1,12 +1,12 @@
 # Memory Integration Policy
 
-Status: MEMORY FOUNDATION NOT YET CONNECTED
-Date: 2026-09-04
+Status: MEMORY FOUNDATION NOT YET CONNECTED  
+Date: 2026-09-05
 
 ## Decision
 
 The assembling repository must not pretend that production memory persistence exists.
-Until a real Memory Foundation is connected, assembling uses only non-persistent adapters and must reject any durable result on the pre-response path.
+Until a real Memory Foundation is connected, assembling uses only non-persistent preflight adapters and rejects any durable result on the pre-response path.
 
 ## Canonical separation
 
@@ -14,18 +14,20 @@ Memory has two different integration roles:
 
 ```text
 PRE-RESPONSE READ / EVALUATION
+- MemoryPreflightPort.evaluate
 - retrieve relevant Long-Term context when available
 - create/evaluate memory candidates
 - never perform durable write
 
 POST-VALIDATION CONSOLIDATION
+- PersistentConsolidationPort
 - Memory Admission durable decision
 - MemoryRepository write/supersede
 - persistent state commit
 - atomic transaction / lifecycle trace
 ```
 
-The current `MemoryAdmissionPort` call in the prototype is compatibility/preflight only. It must not be replaced in place by a real persistent writer.
+`MemoryAdmissionPort` remains only as a deprecated compatibility facade for adapters created before this separation became explicit. It must never be implemented by a durable writer.
 
 ## Current hard rules
 
@@ -52,8 +54,8 @@ They describe integration state only and are not durable persistence results.
 Allowed adapters:
 
 ```text
-NoPersistentMemoryAdmission
-BasicMemoryAdmission
+NoPersistentMemoryAdmission : MemoryPreflightPort
+BasicMemoryAdmission : MemoryPreflightPort
 ```
 
 Required behavior:
@@ -63,18 +65,11 @@ stableWrite = false
 memoryIds = []
 ```
 
-`NoPersistentMemoryAdmission` may preserve a claim provisionally inside the current `MatrixTurnFrame`; this is Working/turn state, not Long-Term storage.
+The provisional claim may exist only in the current `MatrixTurnFrame`; this is Working/turn state, not Long-Term storage.
 
 ## Future real integration
 
-A future Memory Foundation integration must expose separate boundaries for:
-
-```text
-Long-Term retrieval/read
-MemoryCandidate / admission evaluation
-final durable admission/commit
-MemoryRepository public API
-```
+The additive contract `PersistentConsolidationPort` now names the only future durable-write boundary, but no implementation is connected.
 
 Logical flow:
 
@@ -83,27 +78,28 @@ INPUT
 → Understanding
 → context/read retrieval
 → Coherence / Authority
+→ MemoryPreflightPort
 → appraisal / decision
 → response generation
-→ output validation
-→ Persistent Consolidation
+→ OutputValidatorPort
+→ PersistentConsolidationPort
      └→ Memory Admission
           └→ MemoryRepository
 ```
 
 The GGUF must never write memory directly.
-Understanding, Coherence, Authority and Affective must never bypass the public memory contracts.
+Understanding, Coherence, Authority and Affective must never bypass public memory contracts.
 
 ## Diagnostics
 
 The canonical `DiagnosticTrace` records separately:
-- `admissionDecision`;
+- `admissionDecision` for the current preflight result;
 - `memoryResult`;
 - `memoryId` when a real durable commit eventually exists;
-- reason codes;
+- deterministic reason codes;
 - first boundary divergence.
 
-A placeholder memory result must explicitly expose that persistence is disabled.
+A placeholder result must explicitly expose that persistence is disabled.
 
 ## Production status
 

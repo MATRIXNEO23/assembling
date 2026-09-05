@@ -66,6 +66,12 @@ data class NluOutput(
      * It is never, by itself, authorization for Belief or Memory persistence.
      */
     val worldTruth: Boolean = false,
+    /**
+     * Optional explicit semantic-domain marker emitted by the NLU runtime.
+     * Null means the compatibility fallback may still be used; this is never a
+     * censorship or persistence decision.
+     */
+    val adultOrIntimacy: Boolean? = null,
 )
 
 data class TextSpan(val start: Int, val end: Int)

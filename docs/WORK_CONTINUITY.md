@@ -1,20 +1,23 @@
 # Work Continuity — Matrix Assembling Lab
 
-Last updated: 2026-09-04T21:10+02:00
-Repository: `MATRIXNEO23/assembling`
-Branch: `main`
-Continuity schema: `matrix.assembling.continuity.v8`
-Current integrated HEAD before this continuity commit: `b899740a0f9519f2e2b00ac9de2195d104dc8a26`
-PR `#3`: MERGED — P1 hardening + DiagnosticTrace + canonical smoke tests
-Final PR CI: `33908146792` — `Matrix Assembling CI` — SUCCESS
+Last updated: 2026-09-05T05:35+02:00  
+Repository: `MATRIXNEO23/assembling`  
+Active work branch: `remaining-integration-boundaries-20260905`  
+Continuity schema: `matrix.assembling.continuity.v9`  
+Base main for this workstream: `a46919d925824e12d66d074a77c231aa2b4b7a1b`  
+Branch tip before this continuity update: `7d718fc1b7941427e90daec50f55337b4a9cbf76`  
+Pull request: `#6` — `Finish remaining integration boundary fixes`
 
 ## Canonical work rules
 
-- one repository at a time unless the owner explicitly says otherwise;
-- active repository: `MATRIXNEO23/assembling`;
+- work on one repository at a time unless the owner explicitly says otherwise;
+- active repository is `MATRIXNEO23/assembling`;
 - historical repositories are backup/checkpoint sources, not active targets;
 - do not write other repositories without explicit authorization;
-- component changes must keep code, tests, active docs and continuity coherent in the same workstream.
+- when a component changes, keep code, tests, active documents and continuity coherent in the same workstream;
+- do not create parallel specifications when an active canonical document can be updated.
+
+No other repository was modified in this workstream.
 
 ## Canonical direction
 
@@ -27,225 +30,248 @@ Input
 → NLU / Understanding
 → Working Context / context read
 → Coherence / Authority
+→ MemoryPreflightPort
 → Affective appraisal
 → Matrix decision layer
 → Prompt / GGUF
-→ Output Validation
-→ Persistent Consolidation
+→ OutputValidatorPort
+→ PersistentConsolidationPort
 ```
 
-Missing target phases remain `NON_CABLATO`; they must not be simulated as real authority.
+Missing target phases remain explicitly `NON_CABLATO`.
 
-## P0 hardening — merged
+## Prior integrated hardening preserved
 
-PR `#2` merged to main as:
-`0a2f9191428e7cf8246eacb06ebd5256bf58fd53`
+### P0 — integrated before this workstream
 
-Resolved:
-1. all NLU claims preserved; no silent multi-claim loss;
-2. critical confidence fail-closed;
-3. pre-response durable memory results rejected.
+- all NLU claims preserved in `typedClaims`;
+- missing critical confidence fails closed;
+- illegal pre-response stable-memory result is rejected;
+- CI evidence: `33906844505`, `33907038217` — SUCCESS.
 
-Evidence:
-- pre-fix CI `33906637932`: 12 tests, exactly 3 expected failures;
-- post-fix CI `33906844505`: SUCCESS;
-- final P0 CI `33907038217`: SUCCESS.
+### P1 + DiagnosticTrace — integrated before this workstream
 
-## P1 hardening — merged
+- Affective cannot own RelationshipState;
+- Affective persistence cannot exceed upstream authorization;
+- unresolved subject remains `UNKNOWN`;
+- typed `DiagnosticTrace` with write-once `firstDivergence`;
+- canonical end-to-end smoke tests through Affective;
+- CI evidence: `33907887621`, `33908146792` — SUCCESS.
 
-PR `#3` merged to main as:
-`b899740a0f9519f2e2b00ac9de2195d104dc8a26`
+### Prompt/compatibility cleanup — integrated immediately before this branch
 
-### P1-01 — Affective cannot own RelationshipState
+PR `#4` was merged to main as:
+
+```text
+a46919d925824e12d66d074a77c231aa2b4b7a1b
+```
+
+It keeps `SemanticFrameToPrompt` realization-only, deprecates the legacy pipeline for new callers and adds `PromptBoundaryTest`.
+
+PR `#5` was closed without merge because it was based on stale main and overlapped newer hardening. No code from that divergent PR is authoritative.
+
+## Current workstream — remaining minimal fixes
+
+### 1. Claim-wide confidence validation
 
 Before:
-Affective runtime could provide `relationshipSummary`, which the adapter passed downstream as relationship state.
+`BasicCoherenceGuard` inspected only primary `SemanticFrame.confidence`, so a secondary claim could lack or fail a critical head without being detected.
 
-Fix:
-`AffectiveLabAdapter` ignores runtime relationship authority and always exposes the explicit external-owner compatibility summary.
+Now:
+- every `TypedClaim` is checked;
+- missing/low critical values in any claim fail closed;
+- diagnostics identify exact claim/key, for example `claim[1].token.negation`;
+- no threshold was lowered.
 
-Regression:
-`P1BoundaryTest.affectiveRuntimeCannotProvideRelationshipAuthority`
+Critical heads:
 
-### P1-02 — Persistent affect is fail-closed
+```text
+token.negation
+sequence.predicate
+sequence.subjectReferent
+sequence.targetReferent
+```
+
+### 2. Explicit multi-claim Authority state
 
 Before:
-Affective runtime could report `persistentDeltaApplied=true` even if upstream persistence was not authorized.
+multiple claims were preserved, but Authority still exposed the first claim's source type.
 
-Fix:
-
-```text
-persistentApplied = output.persistentDeltaApplied && persistentAllowed
-```
-
-Unauthorized attempts are blocked and tagged:
-`affective_lab.persistence_violation=BLOCKED`.
-
-Structured divergence:
-`AFFECTIVE.PERSISTENCE_WITHOUT_ADMISSION`.
-
-Regression:
-`P1BoundaryTest.affectivePersistenceIsClampedWhenAdmissionDidNotAuthorizeIt`
-
-### P1-03 — unresolved subject must remain unresolved
-
-Before:
-unknown subject could silently fall back to speaker.
-
-Fix:
-- unresolved subject maps to literal `UNKNOWN`;
-- Coherence returns `LOW_CONFIDENCE_HOLD`;
-- diagnostic tag: `coherence.subject=UNRESOLVED`.
-
-Regression:
-`P1BoundaryTest.unresolvedSubjectDoesNotSilentlyBecomeSpeaker`
-
-P1 pre-fix evidence:
-- CI `33907204697`;
-- 15 tests;
-- exactly 3 expected failures matching P1-01/02/03.
-
-P1 final evidence:
-- code + DiagnosticTrace + smoke CI `33907887621` — SUCCESS;
-- final documented PR head CI `33908146792` — SUCCESS.
-
-No gate/threshold was lowered and no regression test was weakened to obtain PASS.
-
-## DiagnosticTrace — integrated
-
-The existing `MatrixTurnFrame.diagnostics` was extended; no parallel diagnostic system was created.
-
-Structured fields:
-- `inputOriginale`;
-- `observation`;
-- `understandingResult`;
-- `authorityResolution`;
-- `admissionDecision`;
-- `memoryResult`;
-- `memoryId`;
-- `affectiveStimulus`;
-- `firstDivergence`;
-- `reasoningChain`;
-- existing `events` and `tags`.
-
-`DiagnosticSnapshot` records observable boundary data such as module, input/output summary, decision/status, reason codes, confidence and metadata.
-
-`reasoningChain` contains deterministic diagnostic reason codes only, never private chain-of-thought.
-
-`firstDivergence` is write-once:
+Now:
 
 ```text
-first divergence wins;
-later violations remain visible but do not overwrite it.
+multiple claims
+→ SAFE_TRANSIENT_ONLY
+→ sourceType=MULTI_CLAIM
+→ direct authority rejected
 ```
 
-Boundary snapshots are wired through:
+Per-claim final contextual Authority remains future work.
+
+### 3. Memory preflight vs durable commit
+
+Authoritative pre-response API:
 
 ```text
-INPUT
-→ NLU
-→ Understanding
-→ Coherence reason codes
-→ Authority
-→ Memory Admission placeholder
-→ Memory result
-→ Affective
+MemoryPreflightPort.evaluate
 ```
 
-Pre-response memory boundary failures carry the trace through `MatrixBoundaryViolationException`.
-
-Diagnostic tests:
-`src/test/kotlin/matrix/assembling/DiagnosticTraceTest.kt`
-
-Coverage:
-- first divergence is immutable;
-- unauthorized persistent affect is blocked/traced;
-- illegal pre-response stable memory result carries exact divergence.
-
-## Canonical end-to-end integration smoke test
-
-File:
-`src/test/kotlin/matrix/assembling/MatrixAssemblingOrchestratorIntegrationTest.kt`
-
-Actual tested path:
+Compatibility:
 
 ```text
-UnderstandingLabAdapter(fake runtime)
-→ BasicCoherenceGuard
-→ BasicAuthorityResolver
-→ NoPersistentMemoryAdmission
-→ BasicAffectiveAdapter
-→ SemanticFrameToPrompt
-→ EchoGgufAdapter
-→ MatrixAssemblingOrchestrator
+MemoryAdmissionPort
+= deprecated facade only
 ```
 
-Cases:
-1. negation/refusal;
-2. third-party report;
-3. request;
-4. direct assertion with persistence disabled;
-5. adult/intimacy semantic signal without automatic block.
-
-Each smoke case verifies the structured trace through Affective and confirms no durable memory write.
-
-## Memory integration documents aligned
-
-`docs/MEMORY_INTEGRATION_POLICY.md` and `docs/MEMORY_INTEGRATION_STATUS.md` now separate:
+Future durable boundary:
 
 ```text
-READ / RETRIEVAL before decision
-EVALUATE / PROPOSE during contextual processing
-FINAL DURABLE COMMIT only after output validation
+PersistentConsolidationPort
 ```
 
-A real future persistent adapter must not replace the current pre-response placeholder in place.
+The existing orchestrator fail-closed invariant remains:
 
-`docs/COMPONENT_MAPPING_AUDIT_2026-09-04.md` was refreshed in place and no competing audit/spec document was created.
+```text
+before output validation:
+stableWrite == false
+memoryIds == []
+```
+
+Current adapters `NoPersistentMemoryAdmission` and `BasicMemoryAdmission` now implement `MemoryPreflightPort` directly. Their old `admit()` methods remain only deprecated helper methods.
+
+### 4. Output validation boundary
+
+`OutputValidatorPort` is now an optional post-GGUF boundary.
+
+- if supplied, it executes after GGUF generation;
+- if absent, diagnostics record `output.validation=NON_CABLATO`;
+- no fake validator was implemented;
+- no persistent consolidation runs automatically.
+
+### 5. Explicit adult/intimacy NLU marker
+
+`MatrixNluClaim` and `NluOutput` now support:
+
+```text
+adultOrIntimacy: Boolean?
+```
+
+Understanding prefers this explicit semantic marker. The existing local keyword fallback remains only for older runtimes that do not supply the field.
+
+Adult/intimacy remains semantic context, not censorship and not an automatic persistence penalty.
+
+## Files changed in PR #6
+
+Code/contracts:
+- `src/main/kotlin/matrix/assembling/IntegrationPorts.kt`;
+- `src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt`;
+- `src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt`;
+- `src/main/kotlin/matrix/assembling/adapters/BasicAdapters.kt`;
+- `src/main/kotlin/matrix/assembling/adapters/NoPersistentMemoryAdmission.kt`;
+- `src/main/kotlin/matrix/assembling/adapters/UnderstandingLabAdapter.kt`.
+
+Tests:
+- `src/test/kotlin/matrix/assembling/ArchitectureBoundaryTest.kt`;
+- `src/test/kotlin/matrix/assembling/MatrixAssemblingOrchestratorIntegrationTest.kt`.
+
+Active documents updated in place:
+- `docs/MEMORY_INTEGRATION_POLICY.md`;
+- `docs/MEMORY_INTEGRATION_STATUS.md`;
+- `docs/MODULE_CONNECTIONS.md`;
+- `docs/ASSEMBLY_PLAN.md`;
+- `docs/COMPONENT_MAPPING_AUDIT_2026-09-04.md`;
+- `docs/WORK_CONTINUITY.md`.
+
+No new competing architecture document was created.
+
+## Tests added/extended
+
+- secondary claim with missing critical confidence fails closed;
+- exact missing key is visible in diagnostics;
+- multi-claim Authority exposes `MULTI_CLAIM` and cannot be directly accepted;
+- pre-response durable result is rejected through `MemoryPreflightPort`;
+- explicit NLU adult/intimacy marker reaches `SemanticFrame`;
+- output validator sees an already-generated GGUF reply;
+- absent validator remains explicitly `NON_CABLATO`;
+- all earlier P0/P1/DiagnosticTrace/Prompt tests remain active.
+
+## CI evidence
+
+Current code and test head:
+
+```text
+72689f7eb28f6612dd6ae0be7432a3be484ed3fb
+```
+
+CI:
+
+```text
+run 33942024450
+workflow Matrix Assembling CI
+job kotlin-tests
+conclusion SUCCESS
+```
+
+Later documentation-only branch runs were triggered after that green code/test result. Before merge, verify the latest PR head remains green.
 
 ## Current hard boundaries
 
 - NLU/Understanding do not write memory;
 - Understanding does not own durable admission;
 - all NLU claims are preserved;
-- missing critical confidence fails closed;
+- every claim must carry valid critical confidence;
 - unresolved subject remains unresolved;
 - Authority does not write persistence;
-- current memory adapters cannot produce durable writes;
-- orchestrator rejects pre-response stable write/memory IDs;
+- multi-claim turns cannot masquerade as one direct authority;
+- pre-response memory is preflight only;
+- durable memory requires future post-validation consolidation;
 - Affective cannot own RelationshipState;
-- Affective persistence cannot exceed upstream authorization;
+- Affective persistence cannot exceed authorization;
+- Prompt Builder remains realization-only;
 - GGUF remains language realization only;
-- adult/intimacy is semantic context, not automatic block/persistence penalty.
+- adult/intimacy is first-class semantic context.
 
-## Current model state
+## Model/artifact state
 
-Student-4-v2.2A remains controlled runtime candidate / not production approved.
+Student-4-v2.2A remains a controlled runtime candidate and is not production approved.
+
 Mixed-head-protected artifact remains available through Git LFS.
-Full artifact SHA-256:
-`4998ce2f44dd8553d75f86b8d7975529f6a5f779de9107eef393648022d6ccb5`
 
-No Frozen access or gate reduction is authorized.
+Full artifact SHA-256:
+
+```text
+4998ce2f44dd8553d75f86b8d7975529f6a5f779de9107eef393648022d6ccb5
+```
+
+No Frozen access, retraining, quantization change or gate reduction occurred in this workstream.
 
 ## Still NON_CABLATO
 
-- explicit Working Context / read port;
+- explicit Working Context / context-read port;
 - real Long-Term retrieval;
-- real Memory Foundation adapter and final atomic commit;
-- canonical RelationshipState controller/port;
+- per-claim final contextual Authority/Belief resolution;
+- real semantic `OutputValidatorPort` implementation;
+- real `PersistentConsolidationPort` implementation;
+- real Memory Foundation adapter and atomic commit;
+- canonical RelationshipState controller;
 - BDI-lite + Utility Decision layer;
-- Output Semantic Validator;
-- Persistent Consolidation port;
 - real llama.cpp/MLC GGUF bridge;
 - Android application integration.
 
-## Next exact work target
+## Residual risks
 
-Continue only in `MATRIXNEO23/assembling`.
+1. Multi-claim turns are preserved and safely held, but not yet resolved claim-by-claim against context/memory.
+2. The output-validation port exists, but the real semantic validator is absent.
+3. Persistence remains disabled; no end-to-end SAVE/SUPERSEDE/rollback can be tested in Assembling yet.
+4. The adult/intimacy compatibility keyword fallback remains until every runtime emits the explicit marker.
 
-Next architectural checkpoint:
-1. introduce explicit Working Context / context-read boundaries without persistence;
-2. add Long-Term retrieval port only as a read contract when the dependency is ready;
-3. keep real durable Memory Admission/Repository writes blocked until a post-validation `PersistentConsolidation` boundary exists;
-4. add `OutputValidatorPort` and `PersistentConsolidationPort` as separate controlled workstreams when their contracts are ready;
-5. preserve current P0/P1 regression suite and DiagnosticTrace invariants.
+## Next exact work target after PR #6 merge
+
+Continue only in `MATRIXNEO23/assembling`:
+
+1. introduce explicit Working Context and read-only context ports;
+2. add bounded Long-Term retrieval contract only when its dependency is ready;
+3. implement per-claim contextual resolution before any multi-claim persistence;
+4. implement a real semantic output validator as a separate controlled workstream;
+5. connect real Memory Foundation only through `PersistentConsolidationPort`;
+6. preserve all current regression and DiagnosticTrace invariants.

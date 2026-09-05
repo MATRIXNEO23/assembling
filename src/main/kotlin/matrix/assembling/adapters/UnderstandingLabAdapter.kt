@@ -142,6 +142,7 @@ class UnderstandingLabAdapter(
                         "perspective" to (perspective ?: "UNRESOLVED"),
                         "sourceType" to sourceType,
                         "claimCount" to claims.size.toString(),
+                        "adultOrIntimacySource" to if (nlu.adultOrIntimacy == null) "COMPATIBILITY_FALLBACK" else "NLU_EXPLICIT",
                     ),
                 )
             )
@@ -151,6 +152,7 @@ class UnderstandingLabAdapter(
             .tag("understanding_lab.world_truth_observed", nlu.worldTruth.toString())
             .tag("understanding_lab.subject_resolution", if (subjectUnresolved) "UNRESOLVED" else "RESOLVED")
             .tag("understanding_lab.memory_authority", "DEFERRED")
+            .tag("understanding_lab.adult_intimacy_source", if (nlu.adultOrIntimacy == null) "COMPATIBILITY_FALLBACK" else "NLU_EXPLICIT")
         if (subjectUnresolved) {
             trace = trace.diverge("UNDERSTANDING.UNRESOLVED_SUBJECT")
         }
@@ -185,6 +187,7 @@ class UnderstandingLabAdapter(
         objectValue = objectValue,
         sourceType = sourceType,
         worldTruth = worldTruth,
+        adultOrIntimacy = adultOrIntimacy,
     )
 
     private fun MatrixNluClaim.toTypedClaim(turn: MatrixTurnFrame, index: Int): TypedClaim {
@@ -259,11 +262,11 @@ class UnderstandingLabAdapter(
     }
 
     /**
-     * Compatibility fallback only until the NLU contract exposes the complete
-     * adult/intimacy semantic marker directly. This marker never censors and is
-     * not a persistence gate by itself.
+     * Prefer the explicit NLU marker. The fallback remains only for runtimes
+     * that have not yet adopted the optional field.
      */
     private fun isAdultOrIntimacy(nlu: NluOutput, objectValue: String?): Boolean {
+        nlu.adultOrIntimacy?.let { return it }
         if (nlu.predicate in setOf("consent.grant", "consent.refuse")) return true
         val text = objectValue?.lowercase().orEmpty()
         return listOf("intimo", "intimacy", "consenso", "limite").any { it in text }
@@ -336,4 +339,5 @@ data class MatrixNluClaim(
     val objectValue: String? = null,
     val sourceType: String? = null,
     val worldTruth: Boolean = false,
+    val adultOrIntimacy: Boolean? = null,
 )

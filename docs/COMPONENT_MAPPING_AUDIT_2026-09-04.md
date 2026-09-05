@@ -1,157 +1,195 @@
-# Component Mapping Audit — 2026-09-04
+# Component Mapping Audit — 2026-09-05
 
-Status: CURRENT EVIDENCE / UPDATED AFTER P0+P1 HARDENING
+Status: CURRENT EVIDENCE / P0+P1+P2 LOCAL FIXES VERIFIED  
 Scope: `MATRIXNEO23/assembling` only.
 
-This audit records the verified integration state. Canonical wiring remains in `docs/MODULE_CONNECTIONS.md`.
+Canonical wiring remains in `docs/MODULE_CONNECTIONS.md`.
 
 ## Audited boundaries
 
 ```text
 Matrix-NLU runtime
 → UnderstandingLabAdapter
-→ MatrixTurnFrame / TypedClaim
+→ MatrixTurnFrame / all TypedClaim values
 → Coherence
 → Authority
-→ non-persistent Memory boundary
+→ MemoryPreflightPort
 → Affective
 → Prompt / GGUF placeholder
+→ optional OutputValidatorPort
+→ future PersistentConsolidationPort
 ```
 
-## Current findings
+## Findings and current status
 
 ### F1 — Resolved semantic fields preservation
 Status: FIXED / TESTED.
 
-`NluOutput` preserves resolved subject/target/owner/perspective/object/source metadata and `UnderstandingLabAdapter` maps them into `TypedClaim`.
+Resolved subject/target/owner/perspective/object/source metadata is preserved in `TypedClaim`.
 
-### F2 — Multi-claim preservation
+### F2 — Multi-claim preservation and authority
 Status: FIXED / TESTED.
 
-All claims emitted by the NLU runtime are retained in `MatrixTurnFrame.typedClaims`. Later claims are not silently discarded.
+All NLU claims remain in `MatrixTurnFrame.typedClaims`.
 
-Until claim-wise Coherence/Authority is fully implemented:
+Current bounded behavior:
 
 ```text
-multi-claim turn → SAFE_TRANSIENT_ONLY
+multiple claims
+→ all claims preserved
+→ SAFE_TRANSIENT_ONLY
+→ Authority sourceType=MULTI_CLAIM
+→ direct authority rejected
 ```
+
+This avoids both silent claim loss and misleading first-claim authority while per-claim final resolution remains `NON_CABLATO`.
 
 ### F3 — Understanding memory authority
 Status: FIXED.
 
-`UnderstandingLabAdapter` does not authorize durable memory. `SemanticFrame.stableMemoryAllowed` is compatibility-only and the real adapter sets it false.
+Understanding preserves evidence but never authorizes durable memory. `SemanticFrame.stableMemoryAllowed` remains compatibility-only and is false in the real adapter.
 
 ### F4 — Third-party report authority
 Status: FIXED / TESTED.
 
-`TypedClaim.sourceType=THIRD_PARTY_REPORT` reaches Coherence/Authority and cannot become direct authority merely because confidence is high.
+`THIRD_PARTY_REPORT` reaches Coherence/Authority and cannot become direct authority merely because confidence is high.
 
-### F5 — Critical confidence missing
-Status: FIXED / TESTED.
+### F5 — Critical confidence missing or low
+Status: FIXED / TESTED FOR PRIMARY AND SECONDARY CLAIMS.
 
-Critical confidence is fail-closed. Missing canonical head confidence produces `LOW_CONFIDENCE_HOLD` rather than default confidence 1.0.
+The guard validates these keys on every `TypedClaim`:
+
+```text
+token.negation
+sequence.predicate
+sequence.subjectReferent
+sequence.targetReferent
+```
+
+A missing or low key in any claim produces a hold and identifies the exact source, for example:
+
+```text
+claim[1].token.negation
+```
+
+No missing critical value defaults to certainty.
 
 ### F6 — Unresolved subject
 Status: FIXED / TESTED.
 
-An unresolved subject remains `UNKNOWN`; it is not silently converted to the speaker. Coherence holds the turn.
+An unresolved subject remains `UNKNOWN`; it is not converted to the speaker.
 
-### F7 — Pre-response persistent memory
-Status: FIXED / TESTED.
+### F7 — Pre-response persistent memory boundary
+Status: FIXED / TESTED / CONTRACT NAMED EXPLICITLY.
 
-The current compatibility memory call may only return non-persistent state.
+Authoritative pre-response contract:
 
-Before response/output validation:
+```text
+MemoryPreflightPort.evaluate
+```
+
+Invariant:
 
 ```text
 stableWrite == false
 memoryIds == []
 ```
 
-`MatrixAssemblingOrchestrator` rejects a violation as `MEMORY.PRE_RESPONSE_STABLE_WRITE`.
+The orchestrator rejects violations as `MEMORY.PRE_RESPONSE_STABLE_WRITE`.
+
+`MemoryAdmissionPort` is deprecated compatibility only. `PersistentConsolidationPort` names the future post-validation durable boundary and has no current implementation.
 
 ### F8 — Affective vs Relationship ownership
 Status: FIXED / TESTED.
 
-Affective runtime output cannot override canonical RelationshipState. Relationship ownership remains external/`NON_CABLATO`.
+Affective runtime output cannot override canonical RelationshipState.
 
 ### F9 — Unauthorized persistent affect
 Status: FIXED / TESTED.
 
-If the Affective runtime reports a persistent delta when upstream persistence is not authorized, the adapter clamps it to false and records:
-
-```text
-AFFECTIVE.PERSISTENCE_WITHOUT_ADMISSION
-```
+Persistent affect is clamped to upstream authorization. Violations are traced as `AFFECTIVE.PERSISTENCE_WITHOUT_ADMISSION`.
 
 ### F10 — DiagnosticTrace
 Status: IMPLEMENTED / INTEGRATION TESTED THROUGH AFFECTIVE.
 
-The existing `MatrixTurnFrame.diagnostics` now records structured snapshots for:
-- input;
-- NLU observation;
-- Understanding;
-- Authority;
-- Memory Admission;
-- Memory result;
-- Affective;
-- deterministic reason codes;
-- first divergence.
+The existing trace records structured observable snapshots, reason codes and a write-once `firstDivergence`. No parallel trace or hidden chain-of-thought storage was introduced.
 
-`reasoningChain` contains diagnostic reason codes only, not private chain-of-thought.
+### F11 — Output validation boundary
+Status: PORT WIRED / REAL VALIDATOR NON_CABLATO.
 
-`firstDivergence` is write-once.
+`OutputValidatorPort` executes after GGUF when supplied. Without an implementation, the turn records:
+
+```text
+output.validation=NON_CABLATO
+```
+
+This makes the missing validator explicit without simulating one.
+
+### F12 — Adult/intimacy signal source
+Status: IMPROVED / TESTED.
+
+The NLU contract may now emit an explicit `adultOrIntimacy` semantic marker. Understanding prefers that marker and retains the local keyword logic only as backward-compatible fallback.
+
+Adult/intimacy remains semantic context, not a censorship or persistence gate.
+
+### F13 — Prompt and legacy pipeline authority
+Status: FIXED / TESTED.
+
+`SemanticFrameToPrompt` is realization-only. The old `MatrixAssemblyPipeline` is deprecated for new callers and remains compatibility/testing material.
 
 ## Test evidence
 
-P0 regression file:
-`src/test/kotlin/matrix/assembling/ArchitectureBoundaryTest.kt`
+Files:
+- `ArchitectureBoundaryTest.kt`;
+- `P1BoundaryTest.kt`;
+- `DiagnosticTraceTest.kt`;
+- `MatrixAssemblingOrchestratorIntegrationTest.kt`;
+- `PromptBoundaryTest.kt`;
+- existing adapter and compatibility tests.
 
-P1 regression file:
-`src/test/kotlin/matrix/assembling/P1BoundaryTest.kt`
+New/extended coverage:
+- secondary-claim missing confidence fails closed;
+- multi-claim Authority exposes `MULTI_CLAIM` and rejects direct authority;
+- authoritative `MemoryPreflightPort` boundary rejects durable output;
+- explicit NLU adult/intimacy marker is preserved;
+- output validator executes only after a GGUF reply exists;
+- absent validator is explicitly `NON_CABLATO`.
 
-Diagnostic contract tests:
-`src/test/kotlin/matrix/assembling/DiagnosticTraceTest.kt`
+## CI evidence
 
-Canonical end-to-end smoke tests:
-`src/test/kotlin/matrix/assembling/MatrixAssemblingOrchestratorIntegrationTest.kt`
+Relevant earlier green runs:
+- P0: `33906844505`, `33907038217`;
+- P1 + DiagnosticTrace: `33907887621`, `33908146792`;
+- realization-only prompt cleanup: `33908498023`.
 
-Smoke coverage includes:
-- negation/refusal;
-- third-party report;
-- request;
-- direct assertion with persistence disabled;
-- adult/intimacy semantic handling.
+Current remaining-boundary code/test run:
+- `33942024450` — `Matrix Assembling CI` — SUCCESS.
 
-## Verified CI evidence
+No threshold or test assertion was weakened to obtain PASS.
 
-P0 pre-fix:
-- run `33906637932`;
-- 12 tests, exactly 3 expected failures.
+## Dependency/coupling result
 
-P0 post-fix:
-- run `33906844505` — SUCCESS;
-- final P0 run `33907038217` — SUCCESS.
+- no direct NLU/Understanding → MemoryRepository dependency;
+- no Authority → repository write;
+- no Affective → Relationship authority;
+- no GGUF → persistence dependency;
+- no durable writer accepted by the pre-response port;
+- compatibility interfaces are preserved but explicitly deprecated;
+- no new external library or runtime dependency introduced.
 
-P1 pre-fix:
-- run `33907204697`;
-- 15 tests, exactly 3 expected P1 failures.
+## Residual risks / NON_CABLATO
 
-P1 + DiagnosticTrace + canonical smoke code:
-- run `33907887621` — SUCCESS.
-
-## Remaining architectural gaps
-
-These are `NON_CABLATO`, not hidden authorities:
 - explicit Working Context/read layer;
 - real Long-Term retrieval;
-- real Persistent Consolidation;
-- canonical RelationshipState port/controller;
+- per-claim final contextual Authority/Belief resolution;
+- real semantic OutputValidator implementation;
+- real PersistentConsolidation implementation;
+- real Memory Foundation adapter and atomic commit;
+- canonical RelationshipState controller;
 - BDI-lite + Utility Decision layer;
-- Output Semantic Validator;
 - real GGUF bridge;
 - Android runtime integration.
 
 ## Verdict
 
-Current connected boundaries are substantially hardened and regression-tested. No real persistent memory backend is present, and no component is authorized to bypass the declared boundaries.
+All locally actionable P0/P1/P2 findings identified in this audit block are fixed with bounded changes and covered by tests. Missing large modules remain explicit `NON_CABLATO` boundaries rather than hidden placeholders or competing authorities.

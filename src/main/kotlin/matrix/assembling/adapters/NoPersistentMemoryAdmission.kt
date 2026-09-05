@@ -3,19 +3,15 @@ package matrix.assembling.adapters
 import matrix.assembling.CoherenceDecision
 import matrix.assembling.DiagnosticSnapshot
 import matrix.assembling.MatrixTurnFrame
-import matrix.assembling.MemoryAdmissionPort
 import matrix.assembling.MemoryAdmissionResult
+import matrix.assembling.MemoryPreflightPort
 
 /**
- * Temporary memory adapter used while the real Memory Foundation is not yet
- * integrated.
- *
- * This adapter never writes durable memory and never returns real memory IDs.
- * It exists only so NLU -> Understanding -> Coherence -> Authority -> Affective
- * -> Prompt -> GGUF can be connected safely before MemoryRepository exists.
+ * Temporary preflight adapter used while the real Memory Foundation is not yet
+ * integrated. It never writes durable memory or returns real memory IDs.
  */
-class NoPersistentMemoryAdmission : MemoryAdmissionPort {
-    override fun admit(turn: MatrixTurnFrame): MatrixTurnFrame {
+class NoPersistentMemoryAdmission : MemoryPreflightPort {
+    override fun evaluate(turn: MatrixTurnFrame): MatrixTurnFrame {
         val coherence = turn.requireCoherence()
         val authority = turn.requireAuthority()
         val result = when {
@@ -23,7 +19,7 @@ class NoPersistentMemoryAdmission : MemoryAdmissionPort {
                 status = "REJECTED",
                 memoryIds = emptyList(),
                 stableWrite = false,
-                reason = "memory persistence disabled; unsafe claim rejected before storage",
+                reason = "memory persistence disabled; unsafe claim rejected during preflight",
             )
             !authority.ownerResolved -> MemoryAdmissionResult(
                 status = "REJECTED",
@@ -45,7 +41,7 @@ class NoPersistentMemoryAdmission : MemoryAdmissionPort {
         val trace = turn.diagnostics
             .admission(
                 DiagnosticSnapshot(
-                    module = "MEMORY_ADMISSION",
+                    module = "MEMORY_PREFLIGHT",
                     input = "coherence=$coherence; authorityAccepted=${authority.accepted}; ownerResolved=${authority.ownerResolved}",
                     output = "status=${result.status}; stableWrite=${result.stableWrite}",
                     decision = result.status,
@@ -60,7 +56,7 @@ class NoPersistentMemoryAdmission : MemoryAdmissionPort {
             .memory(
                 DiagnosticSnapshot(
                     module = "MEMORY",
-                    input = "admission=${result.status}",
+                    input = "preflight=${result.status}",
                     output = "memoryIds=${result.memoryIds.size}; stableWrite=${result.stableWrite}",
                     decision = "NO_DURABLE_WRITE",
                     status = "PASS",
@@ -77,4 +73,7 @@ class NoPersistentMemoryAdmission : MemoryAdmissionPort {
             diagnostics = trace,
         )
     }
+
+    @Deprecated("Compatibility helper; the pre-response contract is evaluate().")
+    fun admit(turn: MatrixTurnFrame): MatrixTurnFrame = evaluate(turn)
 }
