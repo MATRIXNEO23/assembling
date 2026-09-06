@@ -199,11 +199,18 @@ enum class RetrievalStatus {
     ERROR,
 }
 
-/** Universal MIP retrieval query; no engine behavior is implemented here. */
+/**
+ * Universal MIP retrieval query.
+ *
+ * claimId is explicit when the query is claim-scoped. It remains a MipField because not every
+ * retrieval purpose belongs to one claim, while UNKNOWN/UNRESOLVED must remain distinguishable
+ * from NOT_APPLICABLE.
+ */
 data class RetrievalQuery(
     val queryId: String,
     val purpose: RetrievalPurpose,
     val agentId: String,
+    val claimId: MipField<String> = MipField.notApplicable(),
     val subjectRefs: List<MipEntityRef> = emptyList(),
     val entityRefs: List<MipEntityRef> = emptyList(),
     val predicates: List<String> = emptyList(),
@@ -220,6 +227,7 @@ data class RetrievalQuery(
         require(queryId.isNotBlank()) { "queryId must not be blank" }
         require(agentId.isNotBlank()) { "agentId must not be blank" }
         require(contextSnapshotId.isNotBlank()) { "contextSnapshotId must not be blank" }
+        claimId.requireRetrievalBindingField("claimId")
         requireOpaqueIds("predicates", predicates)
         requireOpaqueIds("goalRefs", goalRefs)
         temporalConstraint.requirePresentStringIfPresent("temporalConstraint")
@@ -229,6 +237,13 @@ data class RetrievalQuery(
         require(!includeSuperseded || includeHistorical) {
             "includeSuperseded requires includeHistorical=true"
         }
+    }
+
+    fun requireClaimBinding(): String {
+        require(claimId.status == MipFieldStatus.PRESENT && !claimId.value.isNullOrBlank()) {
+            "RetrievalQuery $queryId requires PRESENT claimId binding, found ${claimId.status}"
+        }
+        return requireNotNull(claimId.value)
     }
 }
 
@@ -245,10 +260,18 @@ data class RetrievalScore(
     }
 }
 
-/** Universal retrieval result with fail-closed status/list invariants. */
+/**
+ * Universal retrieval result with fail-closed status/list invariants.
+ *
+ * claimId and contextSnapshotId bind the result to the exact semantic claim and immutable context
+ * snapshot that produced the retrieval. Legacy/unmigrated producers default to UNRESOLVED so
+ * downstream canonical consumers can fail closed instead of guessing.
+ */
 data class RetrievalResult(
     val queryId: String,
     val status: RetrievalStatus,
+    val claimId: MipField<String> = MipField.unresolved(),
+    val contextSnapshotId: MipField<String> = MipField.unresolved(),
     val candidateRefs: List<String> = emptyList(),
     val selectedRefs: List<String> = emptyList(),
     val scores: List<RetrievalScore> = emptyList(),
@@ -257,6 +280,8 @@ data class RetrievalResult(
 ) {
     init {
         require(queryId.isNotBlank()) { "queryId must not be blank" }
+        claimId.requireRetrievalBindingField("claimId")
+        contextSnapshotId.requireRetrievalBindingField("contextSnapshotId")
         requireOpaqueIds("candidateRefs", candidateRefs)
         requireOpaqueIds("selectedRefs", selectedRefs)
         requireReasonCodes(reasonCodes)
@@ -283,6 +308,26 @@ data class RetrievalResult(
             }
         }
     }
+
+    fun requireBinding(
+        expectedClaimId: String,
+        expectedContextSnapshotId: String,
+    ): RetrievalResult {
+        require(expectedClaimId.isNotBlank()) { "expectedClaimId must not be blank" }
+        require(expectedContextSnapshotId.isNotBlank()) { "expectedContextSnapshotId must not be blank" }
+        require(claimId.status == MipFieldStatus.PRESENT && claimId.value == expectedClaimId) {
+            "RetrievalResult $queryId claim binding mismatch: expected=$expectedClaimId, " +
+                "actualStatus=${claimId.status}, actual=${claimId.value}"
+        }
+        require(
+            contextSnapshotId.status == MipFieldStatus.PRESENT &&
+                contextSnapshotId.value == expectedContextSnapshotId
+        ) {
+            "RetrievalResult $queryId context snapshot binding mismatch: expected=$expectedContextSnapshotId, " +
+                "actualStatus=${contextSnapshotId.status}, actual=${contextSnapshotId.value}"
+        }
+        return this
+    }
 }
 
 private fun requireOpaqueIds(name: String, values: List<String>) {
@@ -299,4 +344,11 @@ private fun MipField<String>.requirePresentStringIfPresent(name: String) {
     if (status == MipFieldStatus.PRESENT) {
         require(!value.isNullOrBlank()) { "$name PRESENT value must not be blank" }
     }
+}
+
+private fun MipField<String>.requireRetrievalBindingField(name: String) {
+    require(status != MipFieldStatus.NO_MATCH) {
+        "$name cannot use NO_MATCH; NO_MATCH is a retrieval outcome, not an identity state"
+    }
+    requirePresentStringIfPresent(name)
 }
