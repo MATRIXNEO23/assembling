@@ -142,9 +142,13 @@ data class MatrixTurnFrame(
                 "PRESENT canonicalAuthorityResolutions requires PRESENT contextSnapshot"
             }
             val resolutions = requireNotNull(canonicalAuthorityResolutions.value)
-            val typedClaimIds = typedClaims.map { it.claimId }
-            require(typedClaimIds.distinct().size == typedClaimIds.size) {
-                "typedClaims claimIds must be unique when canonical Authority is present"
+            val canonicalClaimIds = if (canonicalUnderstandingV3.status == MipFieldStatus.PRESENT) {
+                requireNotNull(canonicalUnderstandingV3.value).claims.map { it.claimId }
+            } else {
+                typedClaims.map { it.claimId }
+            }
+            require(canonicalClaimIds.distinct().size == canonicalClaimIds.size) {
+                "canonical Authority source claimIds must be unique"
             }
             require(resolutions.map { it.resolutionId }.distinct().size == resolutions.size) {
                 "canonical Authority resolutionIds must be unique"
@@ -152,8 +156,8 @@ data class MatrixTurnFrame(
             require(resolutions.map { it.claimId }.distinct().size == resolutions.size) {
                 "canonical Authority resolutions must contain at most one current resolution per claimId"
             }
-            require(resolutions.map { it.claimId }.toSet() == typedClaimIds.toSet()) {
-                "canonical Authority resolutions must cover exactly the current typedClaims"
+            require(resolutions.map { it.claimId }.toSet() == canonicalClaimIds.toSet()) {
+                "canonical Authority resolutions must cover exactly the current canonical claim set"
             }
             require(resolutions.all { it.contextSnapshotId == context.snapshotId }) {
                 "canonical Authority resolutions must reference the current contextSnapshotId=${context.snapshotId}"
@@ -188,27 +192,13 @@ data class NluOutput(
     val perspectiveReferent: String,
     val confidence: Map<String, Double>,
     val spans: Map<String, TextSpan?>,
-    /**
-     * Optional resolved fields produced by the Understanding lab contract.
-     * They preserve already-resolved semantic evidence without granting
-     * downstream truth or persistence authority.
-     */
     val resolvedSubject: String? = null,
     val resolvedTarget: String? = null,
     val resolvedOwner: String? = null,
     val resolvedPerspective: String? = null,
     val objectValue: String? = null,
     val sourceType: String? = null,
-    /**
-     * Observation/provenance flag copied from the source runtime when present.
-     * It is never, by itself, authorization for Belief or Memory persistence.
-     */
     val worldTruth: Boolean = false,
-    /**
-     * Optional explicit semantic-domain marker emitted by the NLU runtime.
-     * Null means the compatibility fallback may still be used; this is never a
-     * censorship or persistence decision.
-     */
     val adultOrIntimacy: Boolean? = null,
 )
 
@@ -226,11 +216,6 @@ data class SemanticFrame(
     val owner: String?,
     val confidence: Map<String, Double>,
     val adultOrIntimacy: Boolean = false,
-    /**
-     * LEGACY COMPATIBILITY FIELD.
-     * New Understanding code must not set this as durable-memory authority.
-     * Coherence + Authority + Memory Admission own persistence decisions.
-     */
     val stableMemoryAllowed: Boolean = false,
 )
 
@@ -276,10 +261,6 @@ data class MemoryAdmissionResult(
 )
 
 data class AffectiveState(
-    /**
-     * Compatibility projection for prompt construction only. Canonical
-     * RelationshipState is externally owned and must not be mutated here.
-     */
     val relationshipSummary: String,
     val affectiveSummary: String,
     val persistentDeltaAllowed: Boolean,
@@ -294,12 +275,6 @@ data class AssistantReply(
     val diagnosticTrace: Map<String, String> = emptyMap(),
 )
 
-/**
- * Structured, observable diagnostic snapshot for one module boundary.
- *
- * `reasonCodes` and `decision` are diagnostic facts only. They must never
- * contain private chain-of-thought or free-form hidden reasoning.
- */
 data class DiagnosticSnapshot(
     val module: String,
     val input: String? = null,
@@ -311,13 +286,6 @@ data class DiagnosticSnapshot(
     val metadata: Map<String, String> = emptyMap(),
 )
 
-/**
- * End-to-end diagnostic trace for one Matrix turn.
- *
- * `reasoningChain` is intentionally a list of deterministic reason codes, not
- * model chain-of-thought. `firstDivergence` is write-once: later errors remain
- * visible in events/reason codes but cannot hide the first broken boundary.
- */
 data class DiagnosticTrace(
     val inputOriginale: String? = null,
     val observation: DiagnosticSnapshot? = null,
@@ -333,28 +301,18 @@ data class DiagnosticTrace(
     val tags: Map<String, String> = emptyMap(),
 ) {
     fun add(event: String): DiagnosticTrace = copy(events = events + event)
-
     fun tag(key: String, value: String): DiagnosticTrace = copy(tags = tags + (key to value))
-
     fun withInput(value: String): DiagnosticTrace = copy(inputOriginale = value)
-
     fun reason(code: String): DiagnosticTrace = copy(reasoningChain = reasoningChain + code)
-
     fun observe(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(observation = snapshot)
-
     fun understood(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(understandingResult = snapshot)
-
     fun authority(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(authorityResolution = snapshot)
-
     fun admission(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(admissionDecision = snapshot)
-
     fun memory(snapshot: DiagnosticSnapshot, id: String? = memoryId): DiagnosticTrace = copy(
         memoryResult = snapshot,
         memoryId = id,
     )
-
     fun affective(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(affectiveStimulus = snapshot)
-
     fun diverge(code: String): DiagnosticTrace = copy(
         firstDivergence = firstDivergence ?: code,
         reasoningChain = reasoningChain + code,
@@ -362,7 +320,6 @@ data class DiagnosticTrace(
     )
 }
 
-/** Boundary failure carrying the trace captured at the first contract violation. */
 class MatrixBoundaryViolationException(
     message: String,
     val diagnosticTrace: DiagnosticTrace,
