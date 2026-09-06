@@ -142,9 +142,13 @@ data class MatrixTurnFrame(
                 "PRESENT canonicalAuthorityResolutions requires PRESENT contextSnapshot"
             }
             val resolutions = requireNotNull(canonicalAuthorityResolutions.value)
-            val typedClaimIds = typedClaims.map { it.claimId }
-            require(typedClaimIds.distinct().size == typedClaimIds.size) {
-                "typedClaims claimIds must be unique when canonical Authority is present"
+            val canonicalClaimIds = if (canonicalUnderstandingV3.status == MipFieldStatus.PRESENT) {
+                requireNotNull(canonicalUnderstandingV3.value).claims.map { it.claimId }
+            } else {
+                typedClaims.map { it.claimId }
+            }
+            require(canonicalClaimIds.distinct().size == canonicalClaimIds.size) {
+                "canonical Authority source claimIds must be unique"
             }
             require(resolutions.map { it.resolutionId }.distinct().size == resolutions.size) {
                 "canonical Authority resolutionIds must be unique"
@@ -152,8 +156,8 @@ data class MatrixTurnFrame(
             require(resolutions.map { it.claimId }.distinct().size == resolutions.size) {
                 "canonical Authority resolutions must contain at most one current resolution per claimId"
             }
-            require(resolutions.map { it.claimId }.toSet() == typedClaimIds.toSet()) {
-                "canonical Authority resolutions must cover exactly the current typedClaims"
+            require(resolutions.map { it.claimId }.toSet() == canonicalClaimIds.toSet()) {
+                "canonical Authority resolutions must cover exactly the current canonical claim set"
             }
             require(resolutions.all { it.contextSnapshotId == context.snapshotId }) {
                 "canonical Authority resolutions must reference the current contextSnapshotId=${context.snapshotId}"
