@@ -9,8 +9,24 @@ interface UnderstandingPort {
     fun understand(turn: MatrixTurnFrame): MatrixTurnFrame
 }
 
+/** Legacy compatibility coherence path. Canonical V3 uses CanonicalCoherencePort. */
 interface CoherenceGuardPort {
     fun check(turn: MatrixTurnFrame): MatrixTurnFrame
+}
+
+/** Builds one immutable canonical MIP ContextSnapshot from current turn state. */
+interface CanonicalContextPort {
+    fun assemble(turn: MatrixTurnFrame): MatrixTurnFrame
+}
+
+/** Performs claim-bound canonical retrieval without mutating Memory. */
+interface CanonicalRetrievalPort {
+    fun retrieve(turn: MatrixTurnFrame): MatrixTurnFrame
+}
+
+/** Claim-wise structural/semantic stability gate before Authority. */
+interface CanonicalCoherencePort {
+    fun validate(turn: MatrixTurnFrame): MatrixTurnFrame
 }
 
 interface AuthorityResolverPort {
