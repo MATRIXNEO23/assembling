@@ -4,7 +4,7 @@ Last updated: 2026-09-07
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active supervisor branch: `foundation-closure-f1-f2`  
-Continuity schema: `matrix.assembling.continuity.v87`
+Continuity schema: `matrix.assembling.continuity.v88`
 
 ## 0 — NEW CHAT / SESSION BOOTSTRAP — READ THIS FIRST
 
@@ -63,8 +63,9 @@ Previous complete continuities remain preserved:
 - `docs/continuity_archive/ASSEMBLING_V84_07b6ee1c544706f8fb34d9cd422eb7855955fcc7.md`
 - `docs/continuity_archive/ASSEMBLING_V85_5d504b5b45aaa56e0692149e268c8081c28ee098.md`
 - `docs/continuity_archive/ASSEMBLING_V86_40029e96581577d3e15290b67c42e81b0c052649.md`
+- `docs/continuity_archive/ASSEMBLING_V87_d077d0f1b713687f6681c8fccf003886819ce9a8.md`
 
-The full dependency-ordered Phase A-F roadmap remains preserved in v82. Nothing in v87 deletes or silently reorders confirmed work.
+The full dependency-ordered Phase A-F roadmap remains preserved in v82. Nothing in v88 deletes or silently reorders confirmed work.
 
 ---
 
@@ -100,26 +101,21 @@ A1 pristine acquisition = PASS
 A2 real BERT/V3 forward = PASS
 A3 physical ONNX/check/load/forward/parity = PASS
 A4 durable publication = PASS / SUPERVISOR ACCEPTED
-CP36 Gate-B readiness = BLOCKED / verified
+CP36 Gate-B readiness = BLOCKED / VERIFIED
+CP37 TRAIN curriculum audit = REPAIR_REQUIRED_BEFORE_TRAINING / SUPERVISOR ACCEPTED
 training = NOT STARTED
 production = NOT APPROVED
 ```
 
-Verified CP36 checkpoint:
+Verified CP37 checkpoint:
 
 ```text
-HEAD = 2904edb04cac52eb7cca677f10e0e36842e8e6e2
-report = reports/STUDENT_5_GATE_B_READINESS_CP36.md
+HEAD = e81a2ae9e1d60c6af61a7d8d1baabed9171f3166
+report = reports/STUDENT_5_TRAIN_CURRICULUM_AUDIT_CP37.md
+evidence = reports/evidence/student5-path-b-cp37-train-audit/
 ```
 
-Current branch after next Supervisor assignment preparation:
-
-```text
-HEAD = 39ca73b9a461e4435fdf1f5e5f8172c7d303dc16
-prompt = prompts/WORK_STUDENT_5_PATH_B_V3_TRAIN_CURRICULUM_AUDIT_ONLY.md
-prompt state = PREPARED_IN_REPOSITORY
-execution result = NOT_VERIFIED / NO REPOSITORY RESULT YET
-```
+CP37 changed only report/evidence/continuity. TRAIN, DEV, Frozen, model weights and prior artifacts were not modified; no training/remediation/evaluator repair was executed.
 
 Do not infer Work progress merely from UI text or GitHub Actions. GitHub Actions and ChatGPT Work are separate execution surfaces.
 
@@ -163,9 +159,9 @@ Never overwrite any model/data/artifact/checkpoint version. Full recovery detail
 
 ---
 
-## 6 — CP36 GATE-B READINESS BLOCKERS
+## 6 — CP36 GATE-B READINESS BLOCKERS REMAIN OPEN
 
-Verified TRAIN:
+Verified TRAIN identity:
 
 ```text
 logicalId = student5-matrix-nlu-v3-train-v1
@@ -173,8 +169,6 @@ path = data/student5_v3/
 rows = 3150
 claims = 3990
 sha256 = 1118a900026f48cfcc290c3f9dc52a1a019a6a1f4761661f326c33770523140e
-per-file SHA = 129/129 PASS
-Git identities = 130/130 PASS
 DEV copied into TRAIN = false
 Frozen read = false
 ```
@@ -193,88 +187,87 @@ Gate-B remains blocked because:
 9. TRAIN↔DEV independent separation = UNKNOWN because DEV V3 is unidentified
 ```
 
-Known TRAIN curriculum risks, preserved as risks rather than conclusions:
-
-```text
-BELIEF = absent
-COMMAND = absent
-REPORT = 8 and IT-only
-advanced temporal relations = absent
-adult withdrawal/revocation = 1 IT claim
-repeated surfaces = 1561
-```
-
-No training is authorized while curriculum suitability and Gate-B evaluation/DEV readiness remain unresolved.
+No training is authorized while these blockers remain unresolved.
 
 ---
 
-## 7 — CURRENT SINGLE WORK ASSIGNMENT
+## 7 — CP37 CURRICULUM VERDICT / OBSERVED DEFECTS
 
-Supervisor concern: before any Student-5 training or remediation, determine what the immutable TRAIN V3 actually teaches and whether it risks repeating Student-4 regression patterns.
-
-Only current assignment:
+Supervisor GPT accepts the CP37 evidence-backed verdict:
 
 ```text
-STUDENT-5 V3 TRAIN CURRICULUM AUDIT ONLY
-prompt = prompts/WORK_STUDENT_5_PATH_B_V3_TRAIN_CURRICULUM_AUDIT_ONLY.md
-starting branch HEAD = 39ca73b9a461e4435fdf1f5e5f8172c7d303dc16
-```
-
-Required verdict:
-
-```text
-TRAIN_CURRICULUM = FIT_FOR_CONTROLLED_TRAINING
-or
 TRAIN_CURRICULUM = REPAIR_REQUIRED_BEFORE_TRAINING
 ```
 
-Hard scope:
+This does **not** revoke TASK 2.3 structural acceptance and does **not** prove Student-5 regression. It establishes that training now would teach an incomplete/biased V3 curriculum and therefore is not authorized.
+
+Observed curriculum problems requiring disposition include:
 
 ```text
-NO training
-NO model changes
-NO augmentation
-NO TRAIN mutation
-NO DEV read/create/migration
-NO Frozen read
-NO evaluator repair
-NO quantization
-NO remediation/follow-on work
+COMMAND = zero support
+BELIEF = zero support
+advanced temporal relations = zero support
+PAST = extremely sparse / language-skewed
+REPORT = extremely sparse and IT-only
+perspective always speaker
+owner always equals subject
+no UNKNOWN/AMBIGUOUS role teaching
+no meaningful multi-context-entity choice
+code-switch concentrated in unresolved/desire-like templates
+adult desire/refusal/withdrawal coverage uneven and language-skewed
+substantial exact/normalized repetition/template concentration
+specific annotation defects/inconsistencies found for temporal spans, role/viewpoint semantics, explicit-English subject spans and malformed multi-participant requests
 ```
 
-Work must return a substantive report to Supervisor GPT and stop. Sentinel-only completion is non-compliant.
+Student-4 historical regressions make recurrence on negation, temporal, referents/report, correction/request, ownership/span and IT/ES a **plausible risk**, not a demonstrated Student-5 regression or proven curriculum-causation claim.
 
-### Work visibility rule
-
-```text
-SUPERVISOR KNOWS THE ROADMAP
-WORK KNOWS ONLY THE CURRENT ASSIGNMENT
-```
-
-Do not tell Work the future assignment unless future context is strictly required to execute the current step safely.
+The immutable `student5-matrix-nlu-v3-train-v1` remains preserved unchanged as the audit baseline.
 
 ---
 
-## 8 — EXACT SUPERVISOR ACTION WHEN WORK RETURNS
+## 8 — CURRENT DECISION POINT / NO ACTIVE FOLLOW-ON EXECUTION
+
+There is currently no authorized remediation or training execution.
+
+Supervisor recommendation:
 
 ```text
-1. read matrix-understanding-lab/docs/WORK_CONTINUITY_STUDENT_5.md
-2. verify current student5-path-b-v3 HEAD
-3. inspect the curriculum-audit report/evidence and exact prompt scope
-4. verify Work did not read DEV/Frozen or modify TRAIN/model
-5. accept or reject Work's curriculum verdict on evidence
-6. distinguish observed defect from proposed remediation
-7. if TRAIN repair is recommended, present the evidence/recommendation to Alberto and decide together before modifying TRAIN
-8. if TRAIN is fit, Gate-B still remains BLOCKED until the DEV/evaluator/calibration blockers are separately resolved
-9. prepare only one next bounded assignment after that decision
-10. checkpoint/update continuity before interruption
+NEXT = TRAIN REPAIR SPECIFICATION ONLY
 ```
 
-No automatic training follows the curriculum audit.
+Purpose of the proposed next bounded task:
+
+- convert CP37 findings into a precise repair specification;
+- define which existing rows are annotation fixes vs preserved valid examples;
+- define missing semantic/role/language coverage to add in a NEW TRAIN version;
+- define redundancy handling without deleting meaningful contrasts;
+- preserve V1 immutably;
+- define acceptance checks for the repaired TRAIN before any training;
+- do not create/modify TRAIN yet;
+- do not read DEV or Frozen;
+- do not repair evaluator/calibration in the same task;
+- do not train.
+
+This recommendation is **PROPOSED_ONLY / NOT YET ASSIGNED**. Alberto + Supervisor must decide before any TRAIN mutation or remediation execution.
 
 ---
 
-## 9 — ASSEMBLING / ENGINE STATE
+## 9 — EXACT SUPERVISOR ACTION NEXT
+
+```text
+1. tell Alberto CP37 is verified and accepted
+2. explain plainly: current TRAIN should not be used for training as-is
+3. recommend a bounded TRAIN repair-specification-only task
+4. obtain joint decision before any TRAIN mutation
+5. if approved, prepare only that specification task for Work
+6. after specification review/acceptance, decide separately whether to create a NEW repaired TRAIN version
+7. Gate-B DEV/evaluator/calibration blockers remain a separate later bounded workstream
+8. training remains prohibited until repaired curriculum and Gate-B readiness are both Supervisor-accepted
+```
+
+---
+
+## 10 — ASSEMBLING / ENGINE STATE
 
 ```text
 repo = MATRIXNEO23/assembling
@@ -306,7 +299,7 @@ Memory implementation later follows M1→M5 from that plan. Do not redesign it f
 
 ---
 
-## 10 — MASTER DEPENDENCY ORDER
+## 11 — MASTER DEPENDENCY ORDER
 
 ```text
 Student-5 / Matrix-NLU V3 completion + Supervisor acceptance
@@ -322,11 +315,11 @@ Student-5 / Matrix-NLU V3 completion + Supervisor acceptance
 → Moto G56
 ```
 
-Nothing in this continuity hardening changes this order.
+Nothing in CP37 changes the later roadmap; it inserts required curriculum repair before Student-5 training because that dependency is now evidence-backed.
 
 ---
 
-## 11 — PERMANENT SUPERVISOR RULES
+## 12 — PERMANENT SUPERVISOR RULES
 
 ```text
 CONTINUITY FIRST ON EVERY NEW CHAT
@@ -355,7 +348,7 @@ CONTINUITY MAINTENANCE IS CONSERVATIVE: ARCHIVE, PRESERVE, CORRECT STALE, ADD MI
 
 ---
 
-## 12 — CONTINUITY SELF-SUFFICIENCY TEST
+## 13 — CONTINUITY SELF-SUFFICIENCY TEST
 
 A fresh Supervisor GPT must be able to answer from this continuity + referenced canonical sources, without asking Alberto to reconstruct history:
 
@@ -364,7 +357,7 @@ A fresh Supervisor GPT must be able to answer from this continuity + referenced 
 [ ] relevant branch + latest verified checkpoint/HEAD
 [ ] owner / supervisor / executor roles
 [ ] last Supervisor-accepted result
-[ ] current bounded assignment and exact prompt
+[ ] current bounded assignment and exact prompt, or explicit NO ACTIVE ASSIGNMENT
 [ ] execution status: prepared/executed/verified/accepted
 [ ] explicit NOT-DONE items
 [ ] blockers/open decisions
@@ -379,12 +372,12 @@ If any item is missing or ambiguous, continuity is defective and must be repaire
 
 ---
 
-## 13 — CONTINUITY MAINTENANCE POLICY
+## 14 — CONTINUITY MAINTENANCE POLICY
 
 When improving this file:
 
 ```text
-1. archive the current version first
+1. archive the current version first when rewriting materially
 2. preserve all still-valid decisions/rules/state
 3. correct only stale or contradictory state
 4. add genuinely missing operational information
@@ -393,4 +386,4 @@ When improving this file:
 7. any real project-decision change is PROPOSAL ONLY until Alberto + Supervisor decide together
 ```
 
-This v87 hardening is continuity-only. It does not authorize model, dataset, architecture, gate or roadmap changes.
+This v88 update records verified CP37 and the resulting decision point. It does not authorize TRAIN mutation, DEV/Frozen access, evaluator repair or training.
