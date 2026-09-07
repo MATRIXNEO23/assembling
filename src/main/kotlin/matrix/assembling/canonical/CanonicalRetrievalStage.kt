@@ -7,7 +7,6 @@ import matrix.assembling.MatrixTurnFrame
 import matrix.assembling.mip.ContextDomain
 import matrix.assembling.mip.DomainAvailability
 import matrix.assembling.mip.MatrixContextSnapshot
-import matrix.assembling.mip.MipEntityRef
 import matrix.assembling.mip.MipField
 import matrix.assembling.mip.MipUnderstandingV3Claim
 import matrix.assembling.mip.MipUnderstandingV3FieldStatus
@@ -99,29 +98,36 @@ class CanonicalClaimRetrievalStage(
         val reasonCodes = results.flatMap { it.reasonCodes }.distinct().ifEmpty {
             listOf("RETRIEVAL.RESULTS_BOUND")
         }
+        var diagnostics = turn.diagnostics
+            .retrieval(
+                DiagnosticSnapshot(
+                    module = "RETRIEVAL",
+                    input = "claims=${observation.claims.size}; snapshotId=${context.snapshotId}",
+                    output = "results=${results.size}; statuses=$statusCounts",
+                    decision = "CLAIM_BOUND_RETRIEVAL",
+                    status = diagnosticStatus,
+                    reasonCodes = reasonCodes,
+                    metadata = mapOf(
+                        "contextSnapshotId" to context.snapshotId,
+                        "queryIds" to results.joinToString(",") { it.queryId },
+                        "claimIds" to results.joinToString(",") { it.claimId.value ?: "-" },
+                    ),
+                )
+            )
+            .reason("RETRIEVAL.RESULTS_BOUND")
+            .add("retrieval.canonical.completed")
+            .tag("retrieval.context_snapshot_id", context.snapshotId)
+            .tag("retrieval.result_count", results.size.toString())
+
+        results.firstOrNull { it.status == RetrievalStatus.ERROR }?.let { errorResult ->
+            diagnostics = diagnostics.diverge(
+                "RETRIEVAL.RESULT_ERROR.${errorResult.claimId.value ?: "UNBOUND"}"
+            )
+        }
 
         return turn.copy(
             retrievalResults = MipField.present(results),
-            diagnostics = turn.diagnostics
-                .retrieval(
-                    DiagnosticSnapshot(
-                        module = "RETRIEVAL",
-                        input = "claims=${observation.claims.size}; snapshotId=${context.snapshotId}",
-                        output = "results=${results.size}; statuses=$statusCounts",
-                        decision = "CLAIM_BOUND_RETRIEVAL",
-                        status = diagnosticStatus,
-                        reasonCodes = reasonCodes,
-                        metadata = mapOf(
-                            "contextSnapshotId" to context.snapshotId,
-                            "queryIds" to results.joinToString(",") { it.queryId },
-                            "claimIds" to results.joinToString(",") { it.claimId.value ?: "-" },
-                        ),
-                    )
-                )
-                .reason("RETRIEVAL.RESULTS_BOUND")
-                .add("retrieval.canonical.completed")
-                .tag("retrieval.context_snapshot_id", context.snapshotId)
-                .tag("retrieval.result_count", results.size.toString()),
+            diagnostics = diagnostics,
         )
     }
 
@@ -159,7 +165,7 @@ class CanonicalClaimRetrievalStage(
                     value.anchorRef?.let { append('@').append(it) }
                 }
             }
-            ?.let(MipField.Companion::present)
+            ?.let { MipField.present(it) }
             ?: MipField.notApplicable()
 
         return RetrievalQuery(
