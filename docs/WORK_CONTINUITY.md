@@ -3,14 +3,14 @@
 Last updated: 2026-09-07  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
-Active supervisor/design branch: `functional-audit-understanding-authority`  
-Continuity schema: `matrix.assembling.continuity.v78`
+Active branch: `foundation-closure-f1-f2`  
+Continuity schema: `matrix.assembling.continuity.v79`
 
 ## 0 — NON-NEGOTIABLE WORK METHOD
 
-### Real-module criterion
+### Real-module proof
 
-A module is **not** working merely because it compiles, has DTO/contracts, serializes, or passes fixture-only/unit tests.
+A module is not considered working because it compiles, has contracts/DTOs, serializes, or passes fixture-only tests.
 
 ```text
 REAL IMPLEMENTATION
@@ -22,139 +22,431 @@ REAL IMPLEMENTATION
 -> STRESS/COVERAGE WHERE APPLICABLE
 -> ERROR ANALYSIS
 -> FIX OBSERVED CAUSES
--> RETEST SAME SUITE
+-> IDENTICAL RETEST
 -> REGRESSION
--> ONLY THEN CLOSE MODULE
+-> ONLY THEN CLOSE
 ```
 
-NLU/Understanding proof requires real Student-4 runtime/model on raw text, expected semantic comparison, IT/EN/ES stress, measured errors, fixes, identical retest/regression and downstream proof. Never invent metrics.
+For NLU/Understanding specifically:
+
+```text
+raw text
+-> actual Student-4 runtime/model
+-> actual structured output
+-> expected semantic comparison
+-> IT/EN/ES stress
+-> measured errors
+-> fixes
+-> identical retest/regression
+-> downstream proof
+```
+
+Never invent metrics. Never call a module functional merely because structured fixtures passed.
+
+### Complete-design-before-piecewise-build
+
+Every module is designed according to its real job in the final Matrix Engine before implementation. Define responsibility, state ownership, exact inputs/outputs, read-only dependencies, forbidden responsibilities, ambiguity/error semantics, mobile constraints, diagnostics and downstream handoff.
+
+Foreseeable architecture must not be invented incrementally while coding. Later changes are allowed when tests, benchmarks, integrity/security evidence or owner-approved product requirements justify them.
+
+### Deep Research / reuse
+
+Before implementing or redesigning a substantial module:
+
+```text
+research mature algorithms/libraries/reference code
+verify task fit and current maintenance
+verify license/provenance
+verify Android/offline/Kotlin/JVM/C++ compatibility
+assess CPU/RAM/latency/binary/dependency cost
+classify DIRECT_REUSE / ADAPT / REIMPLEMENT / REFERENCE_ONLY / REJECT
+record exact source/version/license before copying code
+```
+
+Do not bend Matrix architecture around an external library.
 
 ### No incomplete/hypothetical implementation
 
-Forbidden: placeholders, TODO-as-implementation, unfinished/non-compiling code, fake module output presented as real functionality.
+Forbidden: placeholders, TODO-as-implementation, unfinished/non-compiling code, fake module output presented as functionality.
 
 ### Owner workflow
+
+Owner normally only:
 
 ```text
 Fetch/Pull -> run exact requested test -> return output
 ```
 
-Repository edits/scripts/branches/checkpoints are prepared online whenever possible.
+Repository changes are prepared online whenever possible.
 
 ### Approval rule
 
-Before any **new substantive implementation, modification, build or test action**, state exactly what will be done and wait for explicit owner approval. Continuity/checkpoint preservation is pre-authorized.
+Before a new substantive implementation/module/workstream, state exact scope and wait for explicit owner approval. Continuity/checkpoint preservation is pre-authorized.
 
 ### Mandatory interruption rule
 
-If owner interrupts active work, before unrelated work preserve repo/branch/HEAD, exact interrupted operation, completed substeps, files/changes, tests/results, defects, decisions, artifacts/checksums, **everything still to do in order**, pending fixes/tests/regressions, exact restart step and closure condition.
-
-### Complete-design-before-piecewise-build rule
-
-Every module is designed according to what it must actually do in the final real engine. Before implementation define responsibility, state owner, input/output, read-only dependencies, forbidden responsibilities, ambiguity/error behavior, performance/mobile constraints and handoff.
-
-Future changes are allowed when demonstrated tests, benchmarks, security/data-integrity issues or owner-approved product requirements justify them. Do not invent foreseeable architecture piecemeal.
-
-### Deep Research / reuse rule
-
-Before implementing/redesigning a module:
+If interrupted during active work, before unrelated work preserve:
 
 ```text
-research mature algorithms/libraries/reference implementations
-verify task fit
-verify license/provenance
-verify Android/offline/Kotlin/JVM/C++ fit
-assess RAM/CPU/latency/dependency/binary cost
-classify DIRECT_REUSE / ADAPT / REIMPLEMENT / REFERENCE_ONLY / REJECT
-copy/adapt only with license + exact provenance recorded
-never bend Matrix architecture around a library
+repo/branch/HEAD
+exact interrupted operation
+completed substeps/files
+all tests/results/defects
+architecture/research decisions
+artifacts/models/datasets/checksums
+EVERYTHING still to do in order
+pending fixes/tests/regressions
+exact restart action
+closure condition
 ```
 
 ### Chat + Work coordination
 
 ```text
-THIS CHAT = supervisor / complete architecture / audit / evidence / continuity
+THIS CHAT = supervisor / architecture / audit / evidence / continuity
 CHATGPT WORK = substantial authorized execution when owner launches Work mode
 ```
 
-Before Work starts record objective, repo, branch, start HEAD, scope, forbidden scope, tests and stop condition. Do not duplicate active Work implementation here. After each Work checkpoint synchronize HEAD/files/tests/defects/artifacts/remaining work/next action. This chat cannot silently observe a separate Work session in real time.
+This chat cannot silently launch/observe a separate Work session. When Work is active, do not duplicate its implementation; synchronize repository-visible checkpoints/results.
 
 ---
 
-## 1 — REPOSITORY / BRANCH STATE
+## 1 — REPOSITORY STATE
 
-### `MATRIXNEO23/assembling`
+### Main
 
 ```text
 main HEAD = 693622ce12f1db6b4bc44753bee756b551c741ea
-main includes PR #22 explicit RetrievalResult claimId/contextSnapshotId binding
-active branch = functional-audit-understanding-authority
-active branch HEAD before this continuity commit = 496364da773bbdc7d4bae19debb1c700ed42367f
-backup branch = backup-memorycandidate-wip
-backup MemoryCandidate commit = 9e7413c
-backup status = BACKUP ONLY / NOT CANONICAL / DO NOT AUTO-MERGE
+PR #22 = merged retrieval claim/context binding
 ```
 
-Design artifacts created in the current approved architecture/research phase:
+### Current F1/F2 branch
 
 ```text
-docs/MATRIX_ENGINE_COMPLETE_REAL_DESIGN_2026-09-07.md
-commit = 89e25bd8fb3c27d826559ced5b629333a4a330e6
-status = CANONICAL DESIGN BASELINE / no production implementation authorized by the document itself
-
-WORK_CONTINUITY v77 synchronization
-commit = e6aa83003eadf561e529eb0e6343a4efb2530c12
-
-prompts/WORK_FOUNDATION_CLOSURE_F1_F2.md
-commit = 496364da773bbdc7d4bae19debb1c700ed42367f
-status = PREPARED ONLY; Work must not execute unless owner launches/authorizes F1/F2
+branch = foundation-closure-f1-f2
+branch base/start = 2d9dc760c72b6f9239fe3680f0df50b2f33442c4
+code-tested HEAD = 5892dc478072e77e5412271f7e5638f9998413cc
+evidence doc commit = ea6ab032fd009d69258e7f641ff25b71cc6c2cbf
+HEAD before this continuity update = ea6ab032fd009d69258e7f641ff25b71cc6c2cbf
+PR = #23 DRAFT
+PR base = main
+status = NOT MERGED / owner merge approval not given
 ```
 
-### `MATRIXNEO23/memoria`
+### Previous audit branch preserved
 
 ```text
+branch = functional-audit-understanding-authority
+last documented head before F1/F2 branch = 2d9dc760c72b6f9239fe3680f0df50b2f33442c4
+contains structured multi-claim retrieval-binding runtime fix and design/research baseline
+```
+
+### MemoryCandidate backup
+
+```text
+branch = backup-memorycandidate-wip
+commit = 9e7413c
+status = BACKUP ONLY / NOT CANONICAL / DO NOT AUTO-MERGE
+```
+
+### Memory reference repo
+
+```text
+repo = MATRIXNEO23/memoria
 main HEAD = cde91db20d97e0792b61db15144faf1430fd27bc
-branches = main, python-authority-p0-v1
-python-authority-p0-v1 final head = f28fd33bbf3297072ef4873514ae0a551ea4576b
-PR #1 merge = b8cc7e2133868049550d3c63d78f69da8f830f20
+python Authority P0 branch final = f28fd33bbf3297072ef4873514ae0a551ea4576b
+Authority PR #1 merge = b8cc7e2133868049550d3c63d78f69da8f830f20
 ```
 
-Current `memoria/main` contains Authority-related source/models but not the complete historical Memory Foundation source/test suite. The full Foundation was recovered from the owner Library and must not be reinvented.
+`memoria/main` does not contain the full recovered historical Memory Foundation yet.
 
-### Historical Android source/design
+### Historical Android source
 
 ```text
 repo = MATRIXNEO23/8.10.9evo3-solo-gpt
 reference HEAD = e97f75052afcc93d5b1e08b3ac881dba35633451
-role = historical Android Matrix Engine source + product architectural intent
-rule = audit/port selectively; never restore old orchestrator blindly
+role = source/reference for selective porting only
+```
+
+Do not restore the historical Android orchestrator wholesale.
+
+---
+
+## 2 — CANONICAL DESIGN BASELINE
+
+Canonical complete design:
+
+```text
+docs/MATRIX_ENGINE_COMPLETE_REAL_DESIGN_2026-09-07.md
+commit = 89e25bd8fb3c27d826559ced5b629333a4a330e6
+status = CANONICAL DESIGN BASELINE
+```
+
+Prepared F1/F2 bounded task:
+
+```text
+prompts/WORK_FOUNDATION_CLOSURE_F1_F2.md
+commit = 496364da773bbdc7d4bae19debb1c700ed42367f
+```
+
+F1/F2 owner authorization received in chat on 2026-09-07 after coherence/ambiguity/adaptation review.
+
+Fundamental separation:
+
+```text
+OBSERVE != UNDERSTAND != BELIEVE != REMEMBER != FEEL
+!= RELATE != CONSENT != WANT != DECIDE != EXPRESS
+```
+
+Canonical state owners:
+
+```text
+WORLD objective state              -> WORLD / APPLICATION ADAPTER
+linguistic interpretation          -> NLU + UNDERSTANDING
+belief / epistemic commitment      -> BELIEF / AUTHORITY
+long-term autobiographical memory  -> MEMORY
+transient emotion + mood           -> AFFECTIVE
+relationship state                 -> RELATIONSHIP
+current intimacy / consent state   -> INTIMACY
+active goals / intentions          -> GOAL
+behavioral choice                  -> DECISION
+language realization              -> GGUF
+post-validation commit routing     -> PERSISTENT CONSOLIDATION
+```
+
+Hard invariants:
+
+```text
+TEXT interpreted once
+no downstream linguistic reparse
+one owner per canonical mutable state
+Context is immutable/read-only
+UNKNOWN != UNRESOLVED != AMBIGUOUS != UNAVAILABLE != NO_MATCH != ERROR
+interpretationConfidence != sourceReliability != authority != beliefConfidence != retrievalRelevance
+contradiction != supersession
+no durable Memory/state writes before VALIDATE
+Authority identifies contradiction identity
+Memory Admission consumes it; never invents conflict from text/shared actors
+semantic Memory change -> supersede()
+missing modules -> NOT_WIRED/UNAVAILABLE, never fake zero/default state
+```
+
+Normal target cycle:
+
+```text
+World/User/NPC/System Event
+-> Perception Gateway
+-> NLU Runtime
+-> Understanding V3 / TypedClaim[]
+-> TurnWorkspace
+-> parallel read-only Context ENRICH
+   [World, Memory index, Belief, Relationship, Affective, Intimacy, Goal]
+-> immutable MatrixContextSnapshot
+-> narrow Coherence
+-> Authority / Belief
+-> MemoryPreflight + state evaluations/proposals
+-> Reflection when triggered
+-> Opportunity
+-> Goal/Intention + Decision/Utility
+-> manifestation policy where relevant
+-> Realization Context Supervisor
+-> Prompt Builder
+-> GGUF
+-> Output Validator
+-> Persistent Consolidation
+-> owner-specific durable commits
+-> ActionIntent -> World ActionResult when applicable
+-> causal trace close
 ```
 
 ---
 
-## 2 — PRESERVED/CLOSED EVIDENCE
+## 3 — F1/F2 FOUNDATION CLOSURE — IMPLEMENTED AND TESTED
+
+Detailed evidence:
+
+```text
+docs/F1_F2_FOUNDATION_EVIDENCE_2026-09-07.md
+commit = ea6ab032fd009d69258e7f641ff25b71cc6c2cbf
+```
+
+### New canonical runtime files
+
+```text
+src/main/kotlin/matrix/assembling/canonical/CanonicalFoundationContracts.kt
+src/main/kotlin/matrix/assembling/canonical/CanonicalContextAssembler.kt
+src/main/kotlin/matrix/assembling/canonical/CanonicalRetrievalStage.kt
+src/main/kotlin/matrix/assembling/canonical/CanonicalCoherenceValidator.kt
+src/main/kotlin/matrix/assembling/canonical/CanonicalFoundationOrchestrator.kt
+```
+
+### Updated foundation surfaces
+
+```text
+src/main/kotlin/matrix/assembling/IntegrationPorts.kt
+- CanonicalContextPort
+- CanonicalRetrievalPort
+- CanonicalCoherencePort
+
+src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt
+- canonicalCoherenceResults claim-wise slot
+- exact claim coverage/context binding validation
+- Context/Retrieval/Coherence diagnostics
+```
+
+### New demonstrative tests
+
+```text
+src/test/kotlin/matrix/assembling/canonical/CanonicalFoundationOrchestratorTest.kt
+src/test/kotlin/matrix/assembling/canonical/CanonicalRetrievalErrorTraceTest.kt
+```
+
+### Canonical path now demonstrated for structured V3 input
+
+```text
+canonical Understanding V3
+-> CanonicalContextAssembler
+-> immutable MatrixContextSnapshot
+-> claim-bound RetrievalQuery/Result
+-> CanonicalCoherenceValidator
+-> CanonicalUnderstandingV3AuthorityPort
+-> DeterministicAuthorityResolver
+-> canonical AuthorityResolution
+```
+
+### Context behavior
+
+```text
+LINGUISTIC = AVAILABLE
+SYSTEM = AVAILABLE
+MEMORY default pre-backend = UNAVAILABLE
+future state domains = NOT_WIRED
+```
+
+Each claim has an exact LINGUISTIC context reference; the full canonical claim remains in `canonicalUnderstandingV3` and is not replaced by the reference.
+
+### Retrieval behavior
+
+One query/result per claim when applicable. Binding requires exact:
+
+```text
+queryId
+claimId
+contextSnapshotId
+```
+
+No list-order guessing. No claim-id parsing from query text. No natural-language reparse.
+
+```text
+NO_MATCH != INDEX_UNAVAILABLE != ERROR
+```
+
+Stale context binding fails as `RETRIEVAL.BINDING_MISMATCH`.
+
+Retrieval ERROR records exact first divergence:
+
+```text
+RETRIEVAL.RESULT_ERROR.<claimId>
+```
+
+### Canonical Coherence after F2
+
+Coherence only validates semantic/structural stability from V3:
+
+```text
+structuralStatus
+interpretationStatus
+dialogueAct field status
+predicate field status
+subjectReferent field status
+polarity field status
+temporalRelation field status
+```
+
+It does NOT classify REPORT/BELIEF authority, identify Memory contradiction, decide persistence, choose behavior or reparse text.
+
+No arbitrary numeric confidence threshold was added because no calibrated F1/F2 evidence justifies one.
+
+### Demonstrative cases — all passing
+
+```text
+A. normal single claim
+B. multi-claim separated through Context/Retrieval/Coherence/Authority
+C. ambiguous semantic claim -> Coherence HOLD -> Authority skipped
+D. Memory/index unavailable -> Retrieval INDEX_UNAVAILABLE -> Authority UNAVAILABLE
+E. Retrieval ERROR -> Authority ERROR + exact first divergence
+F. stale context binding -> fail closed before Coherence/Authority
+```
+
+### Field audit
+
+```text
+semantic fields silently lost = NONE demonstrated
+semantic fields intentionally changed = NONE
+semantic fields invented = NONE
+```
+
+System-generated operational metadata is expected and traceable:
+
+```text
+contextSnapshotId
+context entry ID
+retrieval queryId
+Authority resolutionId
+reason codes
+diagnostic events
+```
+
+Existing Authority V3 projection regressions remain green and preserve source/subject/owner/perspective/object/claimKind/temporal anchor/claim identity/provenance.
+
+### CI evidence
+
+```text
+run #162 / 34078896297
+HEAD = 3c63757ec5f4b7c17b7322449422a7b09c698b2b
+full repo suite = SUCCESS
+
+run #163 / 34078966250
+HEAD = 49204a97197e848156c345ae472ec6add3c884a6
+BUILD SUCCESSFUL
+compileKotlin PASS
+compileTestKotlin PASS
+test PASS
+full repository regression PASS
+
+run #164 / 34079096730
+HEAD = 5892dc478072e77e5412271f7e5638f9998413cc
+full repo suite = SUCCESS
+includes permanent assertion:
+RetrievalStatus.ERROR -> firstDivergence=RETRIEVAL.RESULT_ERROR.c0
+```
+
+### Strict F1/F2 verdict
+
+```text
+CANONICAL STRUCTURED FOUNDATION F1/F2 = PASS FOR TESTED SCOPE
+RAW-TEXT STUDENT-4 EXECUTION = NOT YET DEMONSTRATED IN ASSEMBLING
+MEMORY PERSISTENCE = NOT IMPLEMENTED
+FULL ENGINE = NOT YET DEMONSTRATED
+PHONE = NOT AUTHORIZED YET
+```
+
+F1/F2 STOP condition reached. Do not automatically continue into Memory without owner authorization.
+
+---
+
+## 4 — PREVIOUS IMPORTANT EVIDENCE — PRESERVE / DO NOT REDO
 
 ### Understanding V3 contract/adapter
 
 ```text
 PR #19
-final head = 649af878630e49eba2934b14dd45862fcfb8de5b
+head = 649af878630e49eba2934b14dd45862fcfb8de5b
 merge = 089cb7169c5f511ffd5d27b8a1d5e887c4348b0c
 post-merge CI = 33966306986 SUCCESS
 ```
 
-Correct interpretation: contract/adapter code checkpoint closed; raw-text real comprehension in assembling **NOT yet demonstrated**.
-
-### Python Authority P0
-
-Closed defects:
-
-```text
-hardcoded owner removed
-regex/free-text property extraction removed from Authority path
-actor-overlap/content-difference false contradiction removed
-structured semantic contradiction rules preserved
-```
+Correct interpretation: code/contract boundary closed; raw-text language comprehension not proven by this.
 
 ### Understanding V3 -> Authority wiring
 
@@ -165,42 +457,29 @@ merge = d3994e59008aac648576a252eac0d7c4e1028589
 CI = 34020878347 SUCCESS
 ```
 
-Wiring/code checkpoint only; not raw-language or final-orchestrator proof.
+### Retrieval contract/wire
 
-### Retrieval binding PR #22
+PR #22 added explicit `claimId` + `contextSnapshotId` query/result binding and merged to main.
 
-Added explicit query/result `claimId` and `contextSnapshotId` binding. Owner tests before merge:
+### Structured multi-claim runtime defect
 
-```text
-verify_evidence_wire.sh = BUILD SUCCESSFUL
-gradle test = BUILD SUCCESSFUL
-gradle clean test = BUILD SUCCESSFUL
-```
+Initial functional audit demonstrated multi-claim binding failure. Fix on predecessor branch changed `CanonicalUnderstandingV3AuthorityPort` to consume explicit binding fail-closed; owner rerun demonstrated single + multi structured path PASS. Permanent regression is preserved.
 
-### Structured Understanding -> Authority demonstrated defect/fix
+### Python Authority P0
 
-First owner run:
+Preserved rules:
 
 ```text
-bash run_functional_audit.sh
-single-claim structured path = PASS
-multi-claim retrieval binding = FAIL
+no hardcoded owner
+no free-text property regex in Authority
+same actor/shared entity/text difference != contradiction
+structured subject/predicate/owner/target/source/perspective/time/polarity/value comparison
+Authority never writes Memory
 ```
-
-Root cause: runtime retained legacy 1-claim/1-result-only binding. Active branch fix consumes explicit `claimId + contextSnapshotId`, fail-closed, with permanent regression.
-
-Owner retest:
-
-```text
-single-claim structured path = BUILD SUCCESSFUL
-multi-claim explicit retrieval binding = BUILD SUCCESSFUL
-```
-
-Correct verdict: tested structured V3→Authority handoff works; raw-text understanding and final engine do not yet have proof.
 
 ---
 
-## 3 — CURRENT NLU ARTIFACT — PRESERVE
+## 5 — CURRENT NLU ARTIFACT — PRESERVE
 
 ```text
 Student-4 v2.2A mixed/head-protected
@@ -213,201 +492,33 @@ ONNX SHA-256 = 738a4d052790367509d55487b649b71aaa029d839135693bb5be46f74d55ef70
 quantization = dynamic INT8 encoder + protected Matrix heads FP32
 ```
 
+Protected heads:
+
 ```text
-DO NOT replace with Student-5 automatically
-DO NOT start phone test before engine baseline closure
-DO NOT open Student-5 as side work
+token.boundary/object/subject/negation/temporal/entity
+sequence.dialogueAct/predicate/subjectReferent/targetReferent/ownerReferent/
+perspectiveReferent/polarity/temporalRelation/claimKind
 ```
 
-Deep Research runtime selection:
+Known lab caveat: experimental candidate; dev gate was not production-approved. Do not silently replace with Student-5.
+
+Deep Research runtime decision:
 
 ```text
-ONNX Runtime Mobile Android = DIRECT_REUSE
-license = MIT
-initial physical benchmark = CPU/XNNPACK for quantized Student-4, then NNAPI
-custom reduced-operator Android build only if measured size/runtime tradeoff justifies it
+ONNX Runtime Mobile Android = DIRECT_REUSE / MIT
+initial device benchmark = CPU/XNNPACK, then NNAPI
+reduced-operator build only if measured benefit justifies complexity
 ```
 
 ---
 
-## 4 — COMPLETE REAL ENGINE DESIGN
-
-Canonical design is now written before remaining implementation:
+## 6 — MEMORY FOUNDATION — CURRENT STATUS AND REQUIRED COMPLETE WORKSTREAM
 
 ```text
-docs/MATRIX_ENGINE_COMPLETE_REAL_DESIGN_2026-09-07.md
+MEMORY = NOT IMPLEMENTED / NOT INTEGRATED
 ```
 
-Fundamental separation:
-
-```text
-OBSERVE != UNDERSTAND != BELIEVE != REMEMBER != FEEL
-!= RELATE != CONSENT != WANT != DECIDE != EXPRESS
-```
-
-Canonical owners:
-
-```text
-WORLD objective state              -> WORLD / APPLICATION ADAPTER
-linguistic interpretation          -> NLU + UNDERSTANDING
-belief / epistemic commitment      -> BELIEF / AUTHORITY
-long-term autobiographical memory  -> MEMORY
-transient emotion + mood           -> AFFECTIVE
-relationship state                 -> RELATIONSHIP
-current intimacy / consent state   -> INTIMACY
-active goals / intentions           -> GOAL
-behavioral choice                  -> DECISION
-language realization              -> GGUF
-post-validation commit routing     -> PERSISTENT CONSOLIDATION
-```
-
-Normal turn target:
-
-```text
-World/User/NPC/System Event
--> Perception Gateway
--> NLU Runtime
--> Understanding V3 / TypedClaim[]
--> TurnWorkspace
--> parallel read-only ENRICH:
-   World + Memory index + Belief + Relationship + Affective + Intimacy + Goal
--> MatrixContextSnapshot
--> Coherence Validator
--> Authority / Belief resolution
--> MemoryPreflight + state evaluations/proposals
--> optional Reflection when triggered
--> Opportunity Manager
--> Decision / Utility
--> optional BT/FSM tactical executor
--> Realization Context Supervisor
--> Prompt Builder
--> GGUF
--> Output Validator
--> Persistent Consolidation
--> owner-specific durable commits
--> ActionIntent -> World ActionResult when applicable
--> causal trace close
-```
-
-Independent reads use bounded structured concurrency; causal decision/write barriers remain ordered.
-
----
-
-## 5 — MODULE REALITY / REUSE VERDICTS
-
-### World / Application Adapter
-Old `WorldMatrixProtocol` is useful and aligned. **ADAPT/PORT**, keep World objective authority.
-
-### Perception
-Old `PerceptionEnvelope` has useful identity/source/time/duplicate validation. CloudEvents is **REFERENCE_ONLY**. Final gateway supports multiple simultaneous observations, not single-user-text collapse.
-
-### NLU
-Student-4 exists, concrete production V3 runtime bridge absent. ONNX Runtime Android = **DIRECT_REUSE**.
-
-### Understanding
-`CanonicalUnderstandingV3Adapter` = **KEEP/PORT**. Legacy `UnderstandingLabAdapter` remains compatibility only. Real raw-language proof pending.
-
-### TurnWorkspace / Context
-MIP contracts exist. Old `MatrixEngineFramework.Stage/StageResult/StageDiagnostic` = useful pattern. `kotlinx.coroutines` = **DIRECT_REUSE**. Canonical Context Assembler = **BUILD**.
-
-### Coherence
-Current `BasicCoherenceGuard` overlaps Authority/policy. **FIX/REIMPLEMENT** as narrow structural/semantic validator only.
-
-### Authority
-`DeterministicAuthorityResolver` + active retrieval-binding fix = **KEEP** and wire canonically.
-
-### BeliefState
-Required separate owner; final implementation absent. AGM/Jason = **REFERENCE_ONLY**. **BUILD small evidence-backed belief base**.
-
-### Memory
-Durable Memory not integrated. Recovered Python Foundation gives transaction/lineage/admission test reference. Old Android regex acquisition = **REJECT production**. Old reconciliation = **ADAPT lifecycle only**. Hard-filter-first retrieval = **ADAPT**. Room/SQLite = **DIRECT_REUSE**.
-
-### Affective
-Existing Matrix appraisal/emotion/mood/decay is valuable; Relationship-like values mixed inside are ownership defect. FAtiMA = **ADAPT/reference**, Gamygdala = **REFERENCE/ADAPT**. Adapt Matrix code and remove Relationship ownership.
-
-### Relationship
-Final owner absent. **BUILD small directional persistent state owner**; use FAtiMA social dynamics as reference.
-
-### Intimacy/Consent
-Final owner absent. Must distinguish stable attraction, current desire, comfort/boundary, action-scoped consent and history. **BUILD Matrix-native**.
-
-### Goal/Intention
-Old separation useful but no full BDI. Jason LGPL = **REFERENCE_ONLY**. **ADAPT contracts + BUILD BDI-lite**.
-
-### Reflection
-Old trigger/queue/provenance patterns useful; concatenation heuristic insufficient. **PORT trigger/budget/provenance; REIMPLEMENT structured inference**.
-
-### Opportunity
-Required for proactive behavior, final implementation not verified. **BUILD**.
-
-### Decision/Utility
-Final owner absent. **BUILD Matrix-native explainable utility DecisionSnapshot**. gdx-ai BT/FSM belongs downstream execution only.
-
-### Interaction Manager
-Required for multi-party turn-taking/visibility/session state. **BUILD**.
-
-### Cognitive LOD
-Architecture defined, final implementation absent. **BUILD small significance/budget scheduler**.
-
-### Context Supervisor / Realization Package
-Old ContextPackageBuilder/ContextSupervisor contain useful budget/dedup/knowledge-boundary patterns. **PORT/ADAPT** after Decision.
-
-### Prompt
-REALIZATION_ONLY principle correct; current inputs legacy/incomplete. **KEEP principle, ADAPT contract after DecisionSnapshot**.
-
-### GGUF
-Echo adapter is fake/smoke. Real backend exists historically outside cognitive core. **PORT/BUILD adapter later**.
-
-### Output Validator
-Interface only. Plan = deterministic constraints + lightweight re-NLU/Understanding compare + bounded regenerate/fallback. **BUILD**.
-
-### Persistent Consolidation
-Interface only. **BUILD post-validation coordinator**, never universal state owner.
-
-### Diagnostics
-Old `CausalTrace` strong reuse candidate. OpenTelemetry/W3C Trace Context/W3C PROV = **REFERENCE_ONLY**. **PORT/ADAPT** to complete MIP stages.
-
----
-
-## 6 — DEEP RESEARCH REUSE MATRIX
-
-```text
-ONNX Runtime Mobile       MIT            DIRECT_REUSE
-kotlinx.coroutines        Apache-2.0     DIRECT_REUSE
-Android Room              AndroidX       DIRECT_REUSE
-SQLite FTS/BM25           SQLite         DIRECT_REUSE
-CloudEvents               standard       REFERENCE_ONLY
-W3C PROV                  Recommendation REFERENCE_ONLY
-OpenTelemetry/TraceContext standards      REFERENCE_ONLY
-FAtiMA Toolkit            Apache-2.0     ADAPT/reference
-Gamygdala                 MIT            REFERENCE/ADAPT
-Jason                     LGPL-3.0      REFERENCE_ONLY
-gdx-ai                    Apache-2.0     ADAPT/selective reuse BT/FSM
-RRF                       algorithm       REIMPLEMENT/benchmark
-MMR                       algorithm       REIMPLEMENT/optional
-Graphiti                  Apache-2.0     REFERENCE_ONLY; Python/graph stack too heavy
-Mem0                      Apache-2.0 ecosystem REFERENCE_ONLY
-LangMem                   Python/LangGraph REFERENCE_ONLY
-Letta                     Apache-2.0 platform REFERENCE_ONLY
-Generative Agents         research        REFERENCE_ONLY
-AGM belief revision       research        REFERENCE_ONLY
-```
-
-Retrieval decision:
-- benchmark calibrated weighted/convex fusion versus RRF;
-- do not assume old fixed HybridMemoryRanker weights are correct;
-- optional MMR post-rank to reduce redundant near-duplicates;
-- hard structured filters before soft relevance.
-
-Exact external file/commit/license/provenance must be recorded before any copy/adaptation.
-
----
-
-## 7 — MEMORY FOUNDATION RECOVERY + FINAL MEMORY REQUIREMENTS
-
-Memory status: **NOT IMPLEMENTED / NOT INTEGRATED**.
-
-Recovered reference source:
+Recovered historical Python reference from owner Library:
 
 ```text
 memory/__init__.py
@@ -419,7 +530,7 @@ memory/admission.py
 memory/admission_models.py
 ```
 
-Recovered reference tests include:
+Recovered/reference tests include:
 
 ```text
 tests/conftest.py
@@ -432,35 +543,36 @@ test_semantic_update.py
 restart/reopen integrity requirement
 ```
 
-Semantics to preserve:
+Mandatory semantics to preserve/adapt:
 
 ```text
-atomic transaction/rollback
+atomic transaction + rollback
 SAVE + read
-metadata-only update
+metadata-only reinforcement/update
 semantic evolution only through supersede()
-root revisionOf + sequential supersededBy
+revisionOf -> root
+supersededBy -> sequential successor
 protected lineage delete
-explicit contradicts_memory_id
+explicit contradiction identity
 Admission SAVE/SUPERSEDE/REJECT/IGNORE
 restart persistence
 ```
 
-### Final Memory classification
+### Final Memory must accept/retrieve all useful information categories
 
-`EPISODIC / SEMANTIC / REFLECTION` are **memory kinds**, not all information categories.
+`EPISODIC / SEMANTIC / REFLECTION` are memory kinds, not the subject taxonomy.
 
-Final MemoryRecord must also carry/index:
+Final MemoryRecord must preserve/index at least:
 
 ```text
 semanticDomain + predicateId
-subject / target / owner / source / perspective / observer when applicable
+subject / target / owner / source / perspective / observer as applicable
 entity/actor refs
 typed object/value + value type
 polarity/modality
 eventTime / validFrom / validTo / observedAt / recordedAt / temporal anchor
 authority / epistemic class
-source reliability
+sourceReliability
 provenance event/observation/claim/AuthorityResolution/derived refs
 validity/current/history
 revisionOf/supersededBy/revisionCount/contradiction id
@@ -468,9 +580,9 @@ salience/importance/retention/reinforcement/access metadata
 optional embedding/index version only if benchmarked
 ```
 
-Relationship/Affective/Goal/Intimacy are separate current state owners; Memory may retain historical evidence about those domains.
+Memory may retain historical evidence about Relationship/Affective/Goal/Intimacy, but those current states are owned by their dedicated modules.
 
-Retrieval:
+### Retrieval architecture
 
 ```text
 LEVEL 1 INDEX_PROBE every normal turn
@@ -478,242 +590,261 @@ LEVEL 2 HYDRATE_AND_RERANK only relevant candidates
 LEVEL 3 DEEP_OR_MULTI_HOP only explicit complex purpose
 ```
 
-Hard structured filters -> Room/SQLite indexes + FTS/BM25 -> optional vector if benchmark justified -> calibrated hybrid rank -> current/history policy. `NO_MATCH != UNAVAILABLE != ERROR`.
+Target approach:
+
+```text
+hard structured filters
+-> Room/SQLite indexed retrieval
+-> FTS/BM25
+-> optional vector only if benchmark useful
+-> benchmark calibrated weighted fusion vs RRF
+-> optional MMR for near-duplicate diversity
+-> explicit current/history/superseded policy
+```
+
+`NO_MATCH != UNAVAILABLE != ERROR` remains mandatory.
+
+### Memory next workstream — execute as one coherent package
+
+After owner authorization:
+
+```text
+M1 — finalize MemoryRecord + query/index contract against complete real design
+M2 — Room Repository + transactions + Admission
+M3 — structured index/FTS/BM25/hybrid/current-history retrieval
+M4 — MemoryPreflight + post-validation PersistentConsolidation binding
+M5 — demonstrative cross-turn/restart/rollback/lineage/multi-claim/history E2E
+```
+
+Do not jump between Memory and unrelated modules while this workstream is open except for required upstream bug fixes demonstrated by tests.
 
 ---
 
-## 8 — OLD ANDROID AUDIT: WHAT TO SAVE / WHAT TO REJECT
+## 7 — OLD ANDROID CODE: REUSE/REJECT DECISIONS
 
-Useful historical assets:
+Selective reuse candidates:
 
 ```text
-WorldMatrixProtocol
-PerceptionEnvelope
-MatrixEngineFramework Stage/StageResult/StageDiagnostic
-WorkingMemoryStage concepts
-HierarchicalMemoryIndex/Retrieval + SubjectOwnerGuard
-HybridMemoryRanker as benchmark/reference only
-ContextPackageBuilder
-ContextSupervisor
-Reflection trigger/queue/processor patterns
-AgentStateGoalIntention separation
-CausalTrace
-MemoryPersistenceAdapter interface separation
+WorldMatrixProtocol                    ADAPT/PORT
+PerceptionEnvelope validation          ADAPT/PORT
+MatrixEngineFramework Stage pattern    ADAPT
+WorkingMemory concepts                 ADAPT
+HierarchicalMemoryIndex/Retrieval      ADAPT/benchmark
+SubjectOwnerGuard                      ADAPT
+HybridMemoryRanker                     REFERENCE/BENCHMARK, old fixed weights not canonical
+ContextPackageBuilder                  ADAPT after Decision
+ContextSupervisor                      ADAPT after Decision
+Reflection trigger/queue patterns      ADAPT
+AgentStateGoalIntention separation     ADAPT
+CausalTrace                            ADAPT/PORT
+MemoryPersistenceAdapter separation    ADAPT
 ```
 
-Critical defects not to reintroduce:
-
-### Old orchestrator
-Performs Memory acquisition/reconciliation/persistence **before backend generation/output validation**.
+Do not restore:
 
 ```text
-DO NOT port wholesale
-DO NOT restore pre-response durable writes
-PORT useful stages individually into new MIP ordering
-```
+old MatrixEngineOrchestrator wholesale
+- defect: persisted Memory before output validation
 
-### Old MemoryAcquisitionClassifier
-Regex-parses raw text into categories. Final MemoryPreflight consumes canonical TypedClaims + AuthorityResolution.
+old MemoryAcquisitionClassifier as production parser
+- defect: reparses free text with regex
 
-```text
-REJECT production parser
-retain examples only as possible regression fixtures
-```
-
-### Old reconciliation
-Uses local slot/text heuristics for update/conflict. Final conflict identity comes from Authority.
-
----
-
-## 9 — DEVELOPMENT ORDER TO MINIMIZE FORESEEABLE REWORK
-
-### Architecture/research baseline — COMPLETE FOR CURRENT PASS
-
-```text
-design doc = docs/MATRIX_ENGINE_COMPLETE_REAL_DESIGN_2026-09-07.md
-commit = 89e25bd8fb3c27d826559ced5b629333a4a330e6
-production code changed = NO
-build/test run during design phase = NO
-```
-
-### NEXT IMPLEMENTATION PACKAGE — Foundation Closure F1/F2
-
-Prepared Work instruction:
-
-```text
-prompts/WORK_FOUNDATION_CLOSURE_F1_F2.md
-commit = 496364da773bbdc7d4bae19debb1c700ed42367f
-status = PREPARED / NOT AUTHORIZED TO EXECUTE YET
-```
-
-F1/F2 scope:
-
-```text
-F1
-- canonical event/observation/workspace/provenance/causal-trace foundation
-
-F2
-- canonical orchestrator skeleton
-- real V3 -> Context -> claim-bound Retrieval -> Authority path
-- Coherence narrowed to structural semantic validation
-- explicit NOT_WIRED future owner slots
-- bounded parallel read architecture
-- OutputValidator/PersistentConsolidation seams
-- NO durable Memory implementation
-- NO Relationship/Decision implementation yet
-```
-
-F1/F2 proof must include normal single claim, multi-claim, ambiguity, retrieval NO_MATCH, retrieval UNAVAILABLE, retrieval ERROR and context-binding mismatch; exact claim/context/retrieval/Authority IDs; no field loss/invention; first divergence/reason codes; full regression.
-
-After F1/F2 demonstrated green:
-
-### Memory ONE COMPLETE WORKSTREAM
-
-```text
-M1 final MemoryRecord/query schema
-M2 Room Repository + Admission
-M3 Retrieval/index/BM25/hybrid/history
-M4 MemoryPreflight + post-validation Consolidation
-M5 cross-turn/restart/rollback/history/multi-claim E2E closure
-```
-
-Then:
-
-```text
-Affective -> Relationship -> Intimacy/Consent -> Goal/Intention
--> Reflection -> Opportunity -> Decision/Utility -> optional BT/FSM
--> Interaction Manager -> Cognitive LOD
--> RealizationPackage/Supervisor -> final Prompt -> real GGUF
--> OutputValidator -> full Consolidation -> World ActionResult loop
--> complete automatic E2E/regression
--> Android integration
--> Moto G56
+old reconciliation conflict authority
+- defect: local text/slot heuristics instead of canonical Authority contradiction identity
 ```
 
 ---
 
-## 10 — REOPEN MODULES ONLY WITH EVIDENCE
+## 8 — DEEP RESEARCH / REUSE MATRIX
 
-A closed module is reopened only when:
+```text
+ONNX Runtime Mobile       MIT            DIRECT_REUSE
+kotlinx.coroutines        Apache-2.0     DIRECT_REUSE
+Android Room              AndroidX       DIRECT_REUSE
+SQLite FTS/BM25           SQLite         DIRECT_REUSE
+CloudEvents               standard       REFERENCE_ONLY
+W3C PROV                  Recommendation REFERENCE_ONLY
+OpenTelemetry/TraceContext standards      REFERENCE_ONLY
+FAtiMA Toolkit            Apache-2.0     ADAPT/reference
+Gamygdala                 MIT            REFERENCE/ADAPT
+Jason                     LGPL-3.0      REFERENCE_ONLY
+gdx-ai                    Apache-2.0     ADAPT/selective BT/FSM
+RRF                       algorithm       REIMPLEMENT/benchmark
+MMR                       algorithm       REIMPLEMENT/optional
+Graphiti                  Apache-2.0     REFERENCE_ONLY; stack too heavy for direct mobile use
+Mem0                      ecosystem       REFERENCE_ONLY
+LangMem                   Python          REFERENCE_ONLY
+Letta                     platform        REFERENCE_ONLY
+Generative Agents         research        REFERENCE_ONLY
+AGM belief revision       research        REFERENCE_ONLY
+```
+
+Before copying/adapting external code, record exact repository/version/commit/license.
+
+---
+
+## 9 — ENGINE WORK REMAINING AFTER MEMORY
+
+Known final modules/workstreams already designed; do not invent them ad hoc later:
+
+```text
+real Student-4 ONNX runtime + raw-language Understanding proof
+BeliefState final owner
+Affective cleanup/appraisal/current mood
+Relationship directional persistent owner
+Intimacy/Consent contextual owner
+Goal/Intention BDI-lite
+Reflection micro/decision/macro bounded
+Opportunity Manager
+Decision/Utility + manifestation policy
+optional gdx-ai BT/FSM tactical layer only where useful
+Interaction Manager
+Cognitive LOD scheduler
+RealizationPackage / Context Supervisor
+final Prompt Builder = realization only
+real GGUF adapter
+Output Validator
+Persistent Consolidation for all state owners
+World ActionIntent/ActionResult loop
+complete Causal Trace
+```
+
+Canonical order after Memory should respect actual dependencies and close each module with real demonstrative tests/fixes/regression.
+
+---
+
+## 10 — COMPLETE ENGINE E2E BEFORE PHONE
+
+Required proof path eventually:
+
+```text
+real raw input/event
+-> Perception
+-> real Student-4 NLU
+-> Understanding V3
+-> Context/Memory retrieval
+-> Coherence
+-> Authority/Belief
+-> Memory/state proposals
+-> Affective/Relationship/Intimacy/Goal
+-> Opportunity/Decision
+-> Prompt/GGUF
+-> OutputValidator
+-> PersistentConsolidation
+-> owner-specific durable state
+-> later-turn retrieval/use
+-> World result where applicable
+-> complete diagnostics
+```
+
+Required properties:
+
+```text
+no illegal direct persistence
+no silent semantic field loss
+no invented canonical state without provenance
+P0 runtime defects eliminated
+blocking regressions green
+first divergence + reason codes observable
+```
+
+Only then build/test the integrated baseline on Moto G56.
+
+Phone goal = solid improvable baseline, then CPU/RAM/PSS/latency/thermal/stability/quality iteration.
+
+---
+
+## 11 — MODULE REOPEN POLICY
+
+After a module workstream closes, reopen it only for:
 
 ```text
 real integration test demonstrates a defect
-benchmark shows a material performance issue
-security/data-integrity issue is found
-owner approves a product requirement change
+benchmark demonstrates material performance problem
+data-integrity/security issue
+owner-approved product requirement change
 ```
 
-Then perform one bounded fix + regression + close again.
+Then apply one bounded fix + permanent regression + close again.
 
 ---
 
-## 11 — CHATGPT WORK LEDGER
-
-Current verified state:
+## 12 — CHATGPT WORK LEDGER
 
 ```text
-ACTIVE WORK SESSION SYNCHRONIZED HERE = NO
-WORK OBJECTIVE = NONE VERIFIED
-WORK REPO/BRANCH/HEAD = UNKNOWN until Work reports or repository-visible changes appear
+ACTIVE SEPARATE WORK SESSION SYNCHRONIZED = NO
 ```
 
-Prepared next Work package exists but is **not running**:
+F1/F2 was executed directly through repository tools in this chat because this chat cannot launch a separate Work session itself. No claim is made that a separate Work session ran.
 
-```text
-file = prompts/WORK_FOUNDATION_CLOSURE_F1_F2.md
-task = Foundation Closure F1/F2 ONLY
-repo = MATRIXNEO23/assembling
-forbidden = durable Memory, Relationship/Decision implementation, model switch, Student-5, phone build, gate lowering
-stop = F1/F2 evidence produced; do not auto-start Memory
-```
-
-When owner launches Work with this assignment, this chat supervises/audits and does not duplicate its implementation.
+For the next heavy authorized workstream, Work may be launched by owner and given the canonical design/continuity/evidence files. This chat then supervises without duplicating active implementation.
 
 ---
 
-## 12 — OWNER LOCAL ENVIRONMENT
+## 13 — OWNER LOCAL ENVIRONMENT
 
 ```text
-assembling = C:\Users\matri\Documents\GitHub\assembling
+repo path = C:\Users\matri\Documents\GitHub\assembling
 Java 17 = C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot
 Gradle = $HOME/gradle/gradle-9.7.1
 Git = 2.55.0.windows.5
 ```
 
-Do not ask owner to manually create/copy project files unless unavoidable.
+Owner should not be asked to create/copy source files manually unless unavoidable.
 
 ---
 
-## 13 — GUARDS
+## 14 — GUARDS
 
 ```text
-PHONE TEST = BLOCKED until automatic integrated baseline + Memory/E2E closure
+PR #23 = DRAFT / DO NOT MERGE WITHOUT OWNER APPROVAL
+PHONE TEST = BLOCKED until Memory + remaining module demonstrations + full E2E baseline
 CURRENT NLU = Student-4 v2.2A
-STUDENT-5 = preserved but side work stopped unless explicitly reauthorized
-MEMORYCANDIDATE WIP = separate backup, not canonical
+STUDENT-5 = preserved / side work stopped unless explicitly reauthorized
+MEMORYCANDIDATE WIP = backup only
 NO model switch as side task
+NO durable pre-validation write
 ```
 
 ---
 
-## 14 — EXACT RESTART POINT / EVERYTHING STILL TO DO
+## 15 — EXACT RESTART POINT / EVERYTHING STILL TO DO
 
-Current completed supervisor phase:
+### Completed current workstream
 
 ```text
-COMPLETE REAL ENGINE DESIGN + DEEP RESEARCH = CURRENT PASS COMPLETE
-DESIGN FILE = docs/MATRIX_ENGINE_COMPLETE_REAL_DESIGN_2026-09-07.md
-DESIGN COMMIT = 89e25bd8fb3c27d826559ced5b629333a4a330e6
-WORK PACKAGE FILE = prompts/WORK_FOUNDATION_CLOSURE_F1_F2.md
-WORK PACKAGE COMMIT = 496364da773bbdc7d4bae19debb1c700ed42367f
-PRODUCTION IMPLEMENTATION IN THIS PHASE = NONE
-TEST/BUILD IN THIS PHASE = NONE
+COMPLETE REAL ENGINE DESIGN + DEEP RESEARCH = COMPLETE FOR CURRENT DESIGN PASS
+F1/F2 CANONICAL STRUCTURED FOUNDATION = IMPLEMENTED + DEMONSTRATED + FULL REGRESSION GREEN
+F1/F2 code-tested HEAD = 5892dc478072e77e5412271f7e5638f9998413cc
+F1/F2 evidence = docs/F1_F2_FOUNDATION_EVIDENCE_2026-09-07.md
+PR = #23 DRAFT
+Memory = NOT STARTED
 ```
 
-Everything remaining in order:
+### Remaining work in order
 
 ```text
-1. owner review/accept complete design baseline
-2. owner explicitly authorizes Foundation Closure F1/F2 implementation
-3. launch/assign Work F1/F2 or execute authorized package in one workstream
-4. F1/F2 implementation
-5. demonstrative F1/F2 tests
-6. observed-defect analysis/fixes
-7. identical retest + repository regression
-8. supervisor module/path verdict
-9. Memory M1-M5 as one complete workstream
-10. close Affective/Relationship/Intimacy/Goal owners
+1. owner reviews F1/F2 verdict and decides whether/when PR #23 may merge
+2. explicit owner authorization for next Memory M1-M5 workstream
+3. Memory final schema/index contract against real retrieval needs
+4. Memory Room Repository + Admission + atomic persistence
+5. Memory retrieval/index/BM25/hybrid/current-history
+6. MemoryPreflight + post-validation Consolidation
+7. Memory cross-turn/restart/rollback/lineage/history/multi-claim tests
+8. fix all observed Memory defects + regression
+9. raw Student-4 ONNX execution/Understanding proof and measured IT/EN/ES semantic test closure as scheduled in dependency plan
+10. close Belief/Affective/Relationship/Intimacy/Goal modules
 11. close Reflection/Opportunity/Decision/Interaction/LOD
-12. close realization/GGUF/Validator/Consolidation/World action loop
-13. full automatic E2E + fix/regression cycle
+12. close realization/GGUF/Validator/full Consolidation/World result loop
+13. complete automatic E2E + defect fixes/regression
 14. Android integration baseline
-15. Moto G56 physical performance/behavior iteration
+15. Moto G56 physical testing and iterative improvement
 ```
 
-F1/F2 closure condition:
+### Next substantive action — explicit owner approval required
 
 ```text
-canonical Understanding V3 claims reach a real immutable ContextSnapshot;
-claim-bound Retrieval evidence/status reaches narrow Coherence and canonical Authority;
-normal/multi-claim/ambiguous/NO_MATCH/UNAVAILABLE/ERROR/context-mismatch are demonstrated;
-no semantic field is silently lost/invented;
-legacy basic path is not authoritative;
-no durable pre-validation write exists;
-repository regression is green.
+MEMORY M1-M5 COMPLETE WORKSTREAM
 ```
 
-Memory closure after F1/F2:
-
-```text
-real canonical claims/resolutions persist through Room Admission/Repository;
-structured semantic/entity/time retrieval works across turns/restart;
-SUPERSEDE lineage/rollback/current-vs-history are demonstrated;
-state-owner boundaries are preserved;
-Memory/Authority/Understanding regressions are green.
-```
-
-### Next substantive action — explicit approval required
-
-```text
-FOUNDATION CLOSURE F1/F2 ONLY
-```
+Do not automatically start Memory or merge PR #23.
