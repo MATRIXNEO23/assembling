@@ -4,7 +4,7 @@ Last updated: 2026-09-07
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active supervisor branch: `foundation-closure-f1-f2`  
-Continuity schema: `matrix.assembling.continuity.v90`
+Continuity schema: `matrix.assembling.continuity.v91`
 
 ## 0 — NEW CHAT / SESSION BOOTSTRAP — READ THIS FIRST
 
@@ -41,13 +41,13 @@ Newer verified repo evidence overrides stale prose; continuity must then be chec
 
 ## 2 — PRESERVED HISTORY
 
-Previous complete continuities remain preserved through:
+Previous complete continuity preserved at:
 
 ```text
-docs/continuity_archive/ASSEMBLING_V89_b5c90c5f4b0b7a32e09fe2a887a612b54506b1fa.md
+docs/continuity_archive/ASSEMBLING_V90_213cdc6ac6f81bb70f33e20550be8d813a891d67.md
 ```
 
-The full dependency-ordered Phase A-F roadmap remains preserved in v82. Nothing in v90 deletes or silently reorders confirmed work.
+The full dependency-ordered Phase A-F roadmap remains preserved in v82. Nothing in v91 deletes or silently reorders confirmed work.
 
 ## 3 — ROLES / AUTHORITY
 
@@ -80,7 +80,7 @@ A3 physical ONNX/check/load/forward/parity = PASS
 A4 durable publication = PASS / SUPERVISOR ACCEPTED
 CP36 Gate-B readiness = BLOCKED / VERIFIED
 CP37 TRAIN curriculum audit = REPAIR_REQUIRED_BEFORE_TRAINING / SUPERVISOR ACCEPTED
-CP38 repair specification = COMPLETE AS DESIGN / BLOCKED_NEEDS_SUPERVISOR_DECISION / VERIFIED
+CP38 repair specification = COMPLETE AS DESIGN / VERIFIED
 training = NOT STARTED
 production = NOT APPROVED
 ```
@@ -93,11 +93,9 @@ report = reports/STUDENT_5_TRAIN_REPAIR_SPECIFICATION_CP38.md
 evidence = reports/evidence/student5-path-b-cp38-repair-spec/
 ```
 
-CP38 changed only specification/report/evidence/continuity. TRAIN v1, DEV, Frozen, model weights, evaluator/decoder and previous artifacts remain unchanged. No training/remediation was executed.
+CP38 changed only specification/report/evidence/continuity. TRAIN v1, DEV, Frozen, model weights, evaluator/decoder and previous artifacts remained unchanged.
 
-## 5 — IMMUTABLE ARTIFACTS / DATA
-
-TRAIN v1 baseline remains immutable:
+## 5 — IMMUTABLE TRAIN BASELINE
 
 ```text
 logicalId = student5-matrix-nlu-v3-train-v1
@@ -105,16 +103,17 @@ path = data/student5_v3/
 rows = 3150
 claims = 3990
 sha256 = 1118a900026f48cfcc290c3f9dc52a1a019a6a1f4761661f326c33770523140e
+status = IMMUTABLE BASELINE
 ```
 
-Future proposed identity only:
+The approved future repaired dataset identity is:
 
 ```text
-student5-matrix-nlu-v3-train-v2
-status = NOT CREATED
+logicalId = student5-matrix-nlu-v3-train-v2
+status = AUTHORIZED TO CREATE / NOT YET CREATED
 ```
 
-Pristine, Path A, Student-4 and prior Path-B artifacts remain immutable and recoverable per registry/persistence policy.
+V1 must remain byte-identical and recoverable.
 
 ## 6 — CP36 GATE-B BLOCKERS REMAIN OPEN
 
@@ -122,7 +121,7 @@ Pristine, Path A, Student-4 and prior Path-B artifacts remain immutable and reco
 1. authorized DEV V3 identity/path/SHA/provenance = MISSING / BLOCKED
 2. V3 evaluator incomplete for required gate semantics
 3. sourceSpan boundary defects can escape current evaluator
-4. mention-table span/entity defects can escape current evaluator
+4. mention-table span/entity defects can escape evaluator scoring/rejection
 5. forbidden downstream fields can escape evaluator scoring/rejection
 6. full exact-claim-set semantics not implemented by current scorer
 7. threshold/calibration still depends on legacy evaluator/decoder path
@@ -132,141 +131,138 @@ Pristine, Path A, Student-4 and prior Path-B artifacts remain immutable and reco
 
 No training is authorized while these remain unresolved.
 
-## 7 — CP37 / CP38 CURRICULUM STATUS
+## 7 — OWNER + SUPERVISOR APPROVED CP38 SEMANTIC DECISIONS
 
-CP37 established:
-
-```text
-TRAIN_CURRICULUM = REPAIR_REQUIRED_BEFORE_TRAINING
-```
-
-CP38 translated that into a conservative repair design with 24 repair cards, 11 overlapping annotation groups and 7 unresolved semantic decisions. The specification is complete as a design artifact, but implementation is blocked on those decisions.
-
-No Student-5 regression is claimed. Student-4 regressions are historical evidence and recurrence risk only.
-
-## 8 — SEVEN OPEN SEMANTIC DECISIONS
-
-Supervisor GPT recommendations below are **PROPOSED_ONLY / NOT OWNER-APPROVED YET**.
+The seven CP38 semantic decisions are now jointly approved and no longer proposal-only.
 
 ### D01 — present desire vs future desired action
 
-Recommendation:
-
 ```text
-Keep claim temporalRelation = CURRENT when the proposition is the person's present desire/state.
-Represent the future timing of the desired action only in temporal/object evidence or downstream goal semantics when available.
-Use FUTURE only when the desire/commitment proposition itself is explicitly future-scoped.
+Present desire/state = CURRENT.
+Future timing of the desired action belongs to temporal/object evidence or downstream goal semantics when representable.
+FUTURE applies only when the desire/commitment proposition itself is future-scoped.
 ```
 
-Reason: do not confuse time of wanting with time of the wanted action.
-
-### D02 — perspective in reported propositions
-
-Recommendation:
+### D02 — source vs perspective in reports
 
 ```text
-sourceReferent = linguistic attributor/speaker of the report
-perspectiveReferent = viewpoint holder only when wording genuinely frames the embedded proposition from that person's viewpoint
-otherwise do not mechanically copy source → perspective; use the contract's unresolved/appropriate value semantics.
+sourceReferent = linguistic attributor/source.
+perspectiveReferent = actual viewpoint holder only when linguistically supported.
+Never mechanically copy source → perspective.
+Unresolved viewpoint must stay unresolved/UNKNOWN rather than guessed.
 ```
 
-Reason: source != perspective is a deliberate V3 separation.
-
-### D03 — BELIEF vs DIRECT for opinion wrappers
-
-Recommendation:
+### D03 — BELIEF vs DIRECT
 
 ```text
-Use BELIEF when wording overtly encodes think/believe/opinion/mental stance as the evidential wrapper.
-Use DIRECT for plain assertions, including subjective predicates, when no belief wrapper is linguistically expressed.
+BELIEF = overt think/believe/opinion/mental-stance wrapper.
+DIRECT = plain assertion without such wrapper, even if subjective.
 ```
-
-Reason: BELIEF labels wording/evidential presentation, not downstream BeliefState.
 
 ### D04 — malformed/reflexive requests
 
-Recommendation:
-
 ```text
-Do not guess participant roles on malformed examples.
-Quarantine/deactivate genuinely malformed rows in future v2 with provenance preserved.
-For grammatical reflexive requests, annotate target/subject/owner according to actual semantics case-by-case and retain them as useful contrasts.
+Genuinely malformed rows = quarantine/deactivate in v2 with provenance preserved.
+Do not guess participant roles.
+Valid grammatical reflexives = annotate case-by-case and preserve as useful contrasts.
 ```
-
-Reason: malformed gold is worse than less data; valid reflexives are valuable teaching.
 
 ### D05 — Spanish metalinguistic negation
 
-Recommendation:
-
 ```text
-Annotate a negation cue only if the token scopes over the atomic proposition being represented.
-If “No” is discourse/metalinguistic correction outside that proposition, do not force NEGATIVE polarity from the token.
-Preserve positive polarity when the corrected proposition itself is positive; use CORRECT dialogue act and explicit scope evidence.
+Negation cue only when it scopes over the represented atomic proposition.
+Metalinguistic/discourse “No” does not mechanically force NEGATIVE polarity.
+Positive corrected proposition remains POSITIVE with CORRECT act and explicit scope semantics.
 ```
-
-Reason: cue presence and composed polarity are independent in V3.
 
 ### D06 — genuine no-claim observations
 
-Recommendation:
-
 ```text
-Allow genuine zero-claim observations as boundary-negative training examples when the input contains no proposition supported by V3.
-Do not manufacture an unresolved claim merely to avoid an empty claim set.
-Use UNKNOWN/abstention only when a proposition exists but a critical field cannot be resolved.
+Allow zero-claim observations when no V3-supported proposition exists.
+Use them as valid boundary-negative teaching.
+Do not invent unresolved claims to avoid an empty claim set.
+UNKNOWN/abstention is for an existing proposition with unresolved critical fields.
 ```
 
-Reason: the boundary head needs safe absence teaching; no-claim != unresolved claim.
-
-### D07 — owner≠subject and source≠perspective coverage
-
-Recommendation:
+### D07 — legitimate role divergence
 
 ```text
-Add only naturally valid constructions where these roles differ.
-Never force artificial inequality just to balance labels.
-Examples should include possession/goal/consent states owned by one entity while grammatical subject differs, and reports/quotations where attributor and viewpoint holder genuinely differ.
+Add only semantically natural cases where owner!=subject and/or source!=perspective.
+Never force role inequality merely to balance counts.
+Every role difference must be linguistically justified.
 ```
 
-Reason: V3 needs independent role learning, but synthetic role distortion would poison semantics.
+Supervisor technical judgment: these decisions directly address the CP37/CP38 pedagogy defects without changing the frozen V3 contract or inventing semantics.
 
-## 9 — SUPERVISOR RECOMMENDED REPAIR SCOPE
+## 8 — CURRENT SINGLE WORK ASSIGNMENT PREPARED
 
-If Alberto approves the seven decisions above, Supervisor recommendation is to authorize a separate bounded implementation task that:
+Owner authorized implementation of the approved conservative repair.
+
+Repository prompt:
 
 ```text
-1. preserves TRAIN v1 byte-for-byte;
-2. creates NEW student5-matrix-nlu-v3-train-v2 only;
-3. corrects confirmed annotation defects identified by CP37/CP38;
-4. enumerates and verifies all 628 explicit-English-I cases before correcting them;
-5. keeps the 404 valid implicit-subject cases unchanged;
-6. individually reviews the 11 code-switch unresolved desires;
-7. adds targeted IT/EN/ES/code-switch teaching for COMMAND, BELIEF, REPORT, REQUEST/CORRECT, advanced temporal relations, role uncertainty/ambiguity and legitimate role divergence;
-8. broadens adult desire/request/consent/refusal/withdrawal/boundary contrasts without moderation bias;
-9. removes/deactivates only verified semantic duplicates or malformed rows, preserving provenance aliases and meaningful contrasts;
-10. produces changed/added/deactivated/unchanged manifests, per-file checksums, ordered dataset SHA and family/language/head census;
-11. reruns structural/semantic curriculum audit on v2 before any training;
-12. does not read DEV/Frozen and does not train.
+prompts/WORK_STUDENT_5_PATH_B_V3_CREATE_REPAIRED_TRAIN_V2_ONLY.md
+prompt commit = ff6ee962bcc7629ace9bcd69263ddbf497376df8
+status = PREPARED_NOT_EXECUTED
 ```
 
-This implementation scope is **NOT AUTHORIZED YET** pending Alberto's approval of the semantic decisions and scope.
-
-## 10 — EXACT SUPERVISOR ACTION NEXT
+Assignment:
 
 ```text
-1. explain the seven decisions to Alberto in plain language;
-2. obtain approve/change/reject disposition from Alberto;
-3. persist the jointly confirmed decisions;
-4. only then prepare one bounded Work assignment to create TRAIN v2;
-5. audit TRAIN v2 before training;
-6. separately repair/close CP36 DEV/evaluator/calibration blockers;
-7. training remains prohibited until both repaired curriculum and Gate-B readiness are Supervisor-accepted.
+CREATE + VERIFY student5-matrix-nlu-v3-train-v2 ONLY
 ```
 
-There is currently **NO ACTIVE WORK ASSIGNMENT** after CP38.
+Allowed:
+- read immutable TRAIN v1 and CP37/CP38 evidence;
+- enumerate all selector groups before edits;
+- create a distinct v2 dataset;
+- correct confirmed defects using D01-D07;
+- add targeted TRAIN-only teaching required by frozen V3;
+- quarantine malformed rows with lineage;
+- handle only verified redundancy/equivalence deterministically;
+- produce manifests/checksums/census/audit evidence.
 
-## 11 — ASSEMBLING / ENGINE STATE
+Hard forbidden:
+
+```text
+NO TRAIN v1 mutation
+NO DEV read/create/migration/modification
+NO Frozen read/evaluation/modification
+NO training / optimizer / backprop / fine-tuning
+NO model-weight changes
+NO evaluator/decoder/threshold/calibration repair
+NO quantization / ONNX work
+NO Assembling integration
+NO production promotion
+NO automatic follow-on work
+```
+
+Required Work verdict:
+
+```text
+TRAIN_V2_REPAIR = PASS
+or
+TRAIN_V2_REPAIR = BLOCKED
+```
+
+PASS means dataset-only readiness for Supervisor review, **not authorization to train**.
+
+## 9 — EXACT SUPERVISOR ACTION NEXT
+
+```text
+1. send Work only prompts/WORK_STUDENT_5_PATH_B_V3_CREATE_REPAIRED_TRAIN_V2_ONLY.md
+2. when Work returns, read Student-5 continuity and verify branch HEAD
+3. inspect v2 dataset bytes/manifests/checksums/lineage/audit
+4. verify v1 byte-identical
+5. verify D01-D07 applied consistently
+6. verify DEV/Frozen untouched and training not run
+7. accept/reject TRAIN_V2_REPAIR on evidence
+8. if accepted, separately address CP36 DEV/evaluator/calibration blockers
+9. do not authorize training until both repaired TRAIN and Gate-B readiness are Supervisor-accepted
+10. checkpoint continuity before interruption
+```
+
+## 10 — ASSEMBLING / ENGINE STATE
 
 ```text
 PR #23 = DRAFT / NOT MERGED
@@ -278,10 +274,13 @@ phone = BLOCKED
 
 Canonical Memory plan remains `docs/MATRIX_MEMORY_REAL_CONSTRUCTION_PLAN.md` and is unchanged.
 
-## 12 — MASTER DEPENDENCY ORDER
+## 11 — MASTER DEPENDENCY ORDER
 
 ```text
-Student-5 curriculum repair + Gate-B closure + Student-5 completion
+Student-5 repaired TRAIN v2
+→ Gate-B DEV/evaluator/calibration closure
+→ controlled Student-5 training
+→ Student-5 completion + Supervisor acceptance
 → real NLU → Understanding → Context/Retrieval → Authority proof
 → Belief/Authority + Memory
 → later cognitive owners
@@ -293,7 +292,7 @@ Student-5 curriculum repair + Gate-B closure + Student-5 completion
 
 Later roadmap items remain unchanged.
 
-## 13 — PERMANENT SUPERVISOR RULES
+## 12 — PERMANENT SUPERVISOR RULES
 
 ```text
 CONTINUITY FIRST
@@ -312,10 +311,10 @@ REAL TEST TRACE REQUIRED
 NOTED != PREPARED != EXECUTED != VERIFIED != ACCEPTED
 ```
 
-## 14 — CONTINUITY SELF-SUFFICIENCY TEST
+## 13 — CONTINUITY SELF-SUFFICIENCY TEST
 
-Fresh Supervisor must know active repo/branch/HEAD, accepted checkpoint, no-active-assignment state, blockers, immutable artifacts/data, open decisions, exact next owner/supervisor action, permanent rules and required evidence without asking Alberto to reconstruct history.
+Fresh Supervisor must know active repo/branch/HEAD, accepted checkpoints, current prepared assignment, blockers, immutable artifacts/data, approved semantic decisions, exact next action, permanent rules and required evidence without asking Alberto to reconstruct history.
 
-## 15 — CONTINUITY MAINTENANCE POLICY
+## 14 — CONTINUITY MAINTENANCE POLICY
 
 Archive before material rewrite; preserve valid state; correct stale state only; add missing operational information; never silently delete useful history or change architecture/roadmap/gates/confirmed plans without joint decision.
