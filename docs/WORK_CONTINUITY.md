@@ -4,11 +4,11 @@ Last updated: 2026-09-07
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active supervisor branch: `foundation-closure-f1-f2`  
-Continuity schema: `matrix.assembling.continuity.v89`
+Continuity schema: `matrix.assembling.continuity.v90`
 
 ## 0 — NEW CHAT / SESSION BOOTSTRAP — READ THIS FIRST
 
-This file is the **first operational source** for every new Matrix Engine Supervisor GPT chat/session.
+This file is the first operational source for every new Matrix Engine Supervisor GPT chat/session.
 
 ```text
 NEW CHAT / NEW SESSION
@@ -19,48 +19,35 @@ NEW CHAT / NEW SESSION
 → ONLY THEN SPEAK / PLAN / ACT
 ```
 
-Alberto is not the project's memory system. Old conversations/chat memory are fallback only for genuinely missing detail.
+Alberto is not the project's memory system. Old chats/recollection are fallback only.
 
 Permanent rules:
-
 - `docs/MATRIX_ENGINE_SESSION_CONTINUITY_AND_SUPERVISION_RULES.md`
 - `docs/SUPERVISOR_IDEA_AND_EXECUTION_TRANSPARENCY_RULES.md`
 - `docs/MATRIX_ENGINE_WORK_METHOD.md`
-
----
 
 ## 1 — SOURCE-OF-TRUTH HIERARCHY
 
 ```text
 1. current canonical continuity
 2. active workstream continuity
-3. canonical plan / contract / rule docs referenced here
-4. live repository branch / HEAD / checkpoint / artifact evidence
+3. canonical plan/contract/rule docs referenced here
+4. live repository branch/HEAD/checkpoint/artifact evidence
 5. archived continuities for history
-6. old chats / recollection only as fallback
+6. old chats/recollection only as fallback
 ```
 
-A stale continuity statement never overrides newer verified repository evidence; update continuity at the next Supervisor checkpoint.
-
----
+Newer verified repo evidence overrides stale prose; continuity must then be checkpointed.
 
 ## 2 — PRESERVED HISTORY
 
-Previous complete continuities remain preserved:
+Previous complete continuities remain preserved through:
 
-- `docs/continuity_archive/ASSEMBLING_V80_e1c495b5f00530e4d3216785849496d709a4fdcc.md`
-- `docs/continuity_archive/ASSEMBLING_V81_7638c5b4f09095dff973f7fb88ace98c12e995fb.md`
-- `docs/continuity_archive/ASSEMBLING_V82_ff92e9dc6839dd6d3da7b06af0977658174e82ed.md`
-- `docs/continuity_archive/ASSEMBLING_V83_08ca1612b899dc7ecfddb72873ef07e00ffca177.md`
-- `docs/continuity_archive/ASSEMBLING_V84_07b6ee1c544706f8fb34d9cd422eb7855955fcc7.md`
-- `docs/continuity_archive/ASSEMBLING_V85_5d504b5b45aaa56e0692149e268c8081c28ee098.md`
-- `docs/continuity_archive/ASSEMBLING_V86_40029e96581577d3e15290b67c42e81b0c052649.md`
-- `docs/continuity_archive/ASSEMBLING_V87_d077d0f1b713687f6681c8fccf003886819ce9a8.md`
-- `docs/continuity_archive/ASSEMBLING_V88_551ae9277534761abe1c7a2f3795ac4d119ebae9.md`
+```text
+docs/continuity_archive/ASSEMBLING_V89_b5c90c5f4b0b7a32e09fe2a887a612b54506b1fa.md
+```
 
-The full dependency-ordered Phase A-F roadmap remains preserved in v82. Nothing in v89 deletes or silently reorders confirmed work.
-
----
+The full dependency-ordered Phase A-F roadmap remains preserved in v82. Nothing in v90 deletes or silently reorders confirmed work.
 
 ## 3 — ROLES / AUTHORITY
 
@@ -68,12 +55,10 @@ The full dependency-ordered Phase A-F roadmap remains preserved in v82. Nothing 
 OWNER = Alberto / final project authority
 SUPERVISOR GPT = planner / integrator / reviewer / gate-acceptance authority
 CHATGPT WORK = bounded executor
-EXTERNAL AGENTS (Copilot / Gemini / Qwen / others) = consultants only
+EXTERNAL AGENTS = consultants only
 ```
 
 Work does not self-assign later work and does not self-accept its own gate.
-
----
 
 ## 4 — CURRENT STUDENT-5 STATE
 
@@ -83,7 +68,6 @@ Active workstream:
 repo = MATRIXNEO23/matrix-understanding-lab
 branch = student5-path-b-v3
 workstream continuity = docs/WORK_CONTINUITY_STUDENT_5.md
-artifact registry = docs/STUDENT_ARTIFACT_REGISTRY.md
 ```
 
 Accepted/executed chain:
@@ -96,57 +80,22 @@ A3 physical ONNX/check/load/forward/parity = PASS
 A4 durable publication = PASS / SUPERVISOR ACCEPTED
 CP36 Gate-B readiness = BLOCKED / VERIFIED
 CP37 TRAIN curriculum audit = REPAIR_REQUIRED_BEFORE_TRAINING / SUPERVISOR ACCEPTED
+CP38 repair specification = COMPLETE AS DESIGN / BLOCKED_NEEDS_SUPERVISOR_DECISION / VERIFIED
 training = NOT STARTED
 production = NOT APPROVED
 ```
 
-Verified CP37:
+Verified CP38:
 
 ```text
-HEAD = e81a2ae9e1d60c6af61a7d8d1baabed9171f3166
-report = reports/STUDENT_5_TRAIN_CURRICULUM_AUDIT_CP37.md
-evidence = reports/evidence/student5-path-b-cp37-train-audit/
+HEAD = eef2682538dc91a5827bdd3eaff0be202f95a79e
+report = reports/STUDENT_5_TRAIN_REPAIR_SPECIFICATION_CP38.md
+evidence = reports/evidence/student5-path-b-cp38-repair-spec/
 ```
 
-CP37 changed only report/evidence/continuity. TRAIN, DEV, Frozen, model weights and prior artifacts remained unchanged.
-
-Current Student-5 branch after Supervisor assignment preparation:
-
-```text
-HEAD = 6cd1fac17bdceca742a8bf2932e0872ee5907601
-prompt = prompts/WORK_STUDENT_5_PATH_B_V3_TRAIN_REPAIR_SPECIFICATION_ONLY.md
-prompt state = PREPARED_IN_REPOSITORY / OWNER-AUTHORIZED
-execution result = NOT_VERIFIED / NO WORK RESULT YET
-```
-
-Do not infer Work progress from UI text or GitHub Actions. GitHub Actions and ChatGPT Work are separate execution surfaces.
-
----
+CP38 changed only specification/report/evidence/continuity. TRAIN v1, DEV, Frozen, model weights, evaluator/decoder and previous artifacts remain unchanged. No training/remediation was executed.
 
 ## 5 — IMMUTABLE ARTIFACTS / DATA
-
-Primary pristine base:
-
-```text
-releaseId = 383143636
-assetId = 545406840
-asset = student5-minilm-phase-a-pruned-40k.zip
-archive sha256 = 7804bfb245b71df9b835fff7ee00f6ec887e019772ae34c82d269d821d587191
-model sha256 = d6e45891d1e0ec4ed023caaeb17c0dd0ae80a93b8bf877d275310b7f2837efa2
-```
-
-Accepted untrained Gate-A Path-B reference:
-
-```text
-releaseId = 383886129
-assetId = 548329150
-asset = student5-path-b-v3-untrained-gate-a-cp35-20260907.zip
-bytes = 176837978
-sha256 = dfe20ae4cfa49656f557872f6ba2afeabef6caea06390f943ae8cd0945a37d71
-fresh recovery = PASS
-ZIP integrity = PASS
-internal SHA256SUMS = 17/17 PASS
-```
 
 TRAIN v1 baseline remains immutable:
 
@@ -158,18 +107,14 @@ claims = 3990
 sha256 = 1118a900026f48cfcc290c3f9dc52a1a019a6a1f4761661f326c33770523140e
 ```
 
-Student roles:
+Future proposed identity only:
 
 ```text
-Student-5 Path B = ACTIVE primary Matrix-NLU V3 candidate
-Student-5 pristine 40k = immutable Path-B base
-Student-5 Path A = REFERENCE untaught runtime probe / immutable
-Student-4 v2.2A = REFERENCE comparative/regression baseline / immutable
+student5-matrix-nlu-v3-train-v2
+status = NOT CREATED
 ```
 
-Never overwrite any model/data/artifact/checkpoint version.
-
----
+Pristine, Path A, Student-4 and prior Path-B artifacts remain immutable and recoverable per registry/persistence policy.
 
 ## 6 — CP36 GATE-B BLOCKERS REMAIN OPEN
 
@@ -185,228 +130,192 @@ Never overwrite any model/data/artifact/checkpoint version.
 9. TRAIN↔DEV independent separation = UNKNOWN because DEV V3 is unidentified
 ```
 
-No training is authorized while these blockers remain unresolved.
+No training is authorized while these remain unresolved.
 
----
+## 7 — CP37 / CP38 CURRICULUM STATUS
 
-## 7 — CP37 CURRICULUM VERDICT
-
-Supervisor GPT accepted:
+CP37 established:
 
 ```text
 TRAIN_CURRICULUM = REPAIR_REQUIRED_BEFORE_TRAINING
 ```
 
-This does not revoke TASK 2.3 structural acceptance and does not prove Student-5 regression. It establishes that the current TRAIN should not be used for fitting as-is.
+CP38 translated that into a conservative repair design with 24 repair cards, 11 overlapping annotation groups and 7 unresolved semantic decisions. The specification is complete as a design artifact, but implementation is blocked on those decisions.
 
-Observed issues requiring repair/specification include:
+No Student-5 regression is claimed. Student-4 regressions are historical evidence and recurrence risk only.
+
+## 8 — SEVEN OPEN SEMANTIC DECISIONS
+
+Supervisor GPT recommendations below are **PROPOSED_ONLY / NOT OWNER-APPROVED YET**.
+
+### D01 — present desire vs future desired action
+
+Recommendation:
 
 ```text
-COMMAND = zero support
-BELIEF = zero support
-advanced temporal relations = zero support
-PAST = extremely sparse / language-skewed
-REPORT = extremely sparse and IT-only
-perspective always speaker
-owner always equals subject
-no UNKNOWN/AMBIGUOUS role teaching
-no meaningful multi-context-entity choice
-code-switch concentrated in unresolved/desire-like templates
-adult desire/refusal/withdrawal coverage uneven and language-skewed
-substantial exact/normalized repetition/template concentration
-confirmed/adjudication-required annotation issues for temporal spans, role/viewpoint semantics, explicit-English subject spans and malformed multi-participant requests
+Keep claim temporalRelation = CURRENT when the proposition is the person's present desire/state.
+Represent the future timing of the desired action only in temporal/object evidence or downstream goal semantics when available.
+Use FUTURE only when the desire/commitment proposition itself is explicitly future-scoped.
 ```
 
-Student-4 recurrence on negation, temporal, referents/report, correction/request, ownership/span and IT/ES is a plausible historical risk, not proven Student-5 damage or proven curriculum causation.
+Reason: do not confuse time of wanting with time of the wanted action.
 
----
+### D02 — perspective in reported propositions
 
-## 8 — CURRENT SINGLE WORK ASSIGNMENT
-
-Owner + Supervisor approved the **design-only** next step.
+Recommendation:
 
 ```text
-assignment = STUDENT-5 V3 TRAIN REPAIR SPECIFICATION ONLY
-prompt = prompts/WORK_STUDENT_5_PATH_B_V3_TRAIN_REPAIR_SPECIFICATION_ONLY.md
-starting Student-5 HEAD = e81a2ae9e1d60c6af61a7d8d1baabed9171f3166
-prompt commit/current branch HEAD = 6cd1fac17bdceca742a8bf2932e0872ee5907601
-status = PREPARED_NOT_EXECUTED / awaiting Work result
+sourceReferent = linguistic attributor/speaker of the report
+perspectiveReferent = viewpoint holder only when wording genuinely frames the embedded proposition from that person's viewpoint
+otherwise do not mechanically copy source → perspective; use the contract's unresolved/appropriate value semantics.
 ```
 
-Purpose:
+Reason: source != perspective is a deliberate V3 separation.
 
-- translate CP37 evidence into an issue-by-issue conservative repair specification;
-- separate confirmed annotation defects from sparse coverage and unresolved semantic-policy decisions;
-- specify what existing valid data must be preserved;
-- specify missing V3 teaching to add only in a future NEW dataset version;
-- specify redundancy handling without blind deletion;
-- propose future dataset lineage/versioning and acceptance checks;
-- provide Student-4 recurrence safeguards;
-- return unresolved semantic decisions to Supervisor/Owner instead of guessing.
+### D03 — BELIEF vs DIRECT for opinion wrappers
 
-Hard scope:
+Recommendation:
 
 ```text
-NO TRAIN mutation
-NO new TRAIN shards
-NO augmentation execution
-NO row relabel/delete execution
-NO DEV read/create/migration
-NO Frozen read
-NO training / optimizer / backprop / fine-tuning
-NO evaluator/decoder/threshold repair
-NO quantization
-NO Assembling integration
-NO automatic follow-on work
+Use BELIEF when wording overtly encodes think/believe/opinion/mental stance as the evidential wrapper.
+Use DIRECT for plain assertions, including subjective predicates, when no belief wrapper is linguistically expressed.
 ```
 
-Required verdict:
+Reason: BELIEF labels wording/evidential presentation, not downstream BeliefState.
+
+### D04 — malformed/reflexive requests
+
+Recommendation:
 
 ```text
-REPAIR_SPECIFICATION = READY_FOR_SUPERVISOR_OWNER_REVIEW
-or
-REPAIR_SPECIFICATION = BLOCKED_NEEDS_SUPERVISOR_DECISION
+Do not guess participant roles on malformed examples.
+Quarantine/deactivate genuinely malformed rows in future v2 with provenance preserved.
+For grammatical reflexive requests, annotate target/subject/owner according to actual semantics case-by-case and retain them as useful contrasts.
 ```
 
-Work must return a substantive report beginning:
+Reason: malformed gold is worse than less data; valid reflexives are valuable teaching.
+
+### D05 — Spanish metalinguistic negation
+
+Recommendation:
 
 ```text
-Supervisor GPT — Student-5 TRAIN Repair Specification Report
+Annotate a negation cue only if the token scopes over the atomic proposition being represented.
+If “No” is discourse/metalinguistic correction outside that proposition, do not force NEGATIVE polarity from the token.
+Preserve positive polarity when the corrected proposition itself is positive; use CORRECT dialogue act and explicit scope evidence.
 ```
 
-Sentinel-only completion is non-compliant.
+Reason: cue presence and composed polarity are independent in V3.
 
----
+### D06 — genuine no-claim observations
 
-## 9 — EXACT SUPERVISOR ACTION WHEN WORK RETURNS
+Recommendation:
 
 ```text
-1. read Student-5 continuity and verify current branch HEAD
-2. inspect the repair-spec report/evidence against the exact prompt scope
-3. verify no TRAIN/DEV/Frozen/model/evaluator mutation occurred
-4. separate confirmed fixes, recommendations and unresolved semantic-policy choices
-5. explain the proposed repair to Alberto in plain language
-6. decide together which repair items are approved
-7. only after joint approval prepare one bounded task to create a NEW repaired TRAIN version
-8. preserve TRAIN v1 immutably
-9. separately resolve CP36 DEV/evaluator/calibration blockers before training
-10. training remains prohibited until repaired curriculum + Gate-B readiness are Supervisor-accepted
-11. checkpoint continuity before interruption
+Allow genuine zero-claim observations as boundary-negative training examples when the input contains no proposition supported by V3.
+Do not manufacture an unresolved claim merely to avoid an empty claim set.
+Use UNKNOWN/abstention only when a proposition exists but a critical field cannot be resolved.
 ```
 
----
+Reason: the boundary head needs safe absence teaching; no-claim != unresolved claim.
 
-## 10 — ASSEMBLING / ENGINE STATE
+### D07 — owner≠subject and source≠perspective coverage
+
+Recommendation:
 
 ```text
-repo = MATRIXNEO23/assembling
-branch = foundation-closure-f1-f2
+Add only naturally valid constructions where these roles differ.
+Never force artificial inequality just to balance labels.
+Examples should include possession/goal/consent states owned by one entity while grammatical subject differs, and reports/quotations where attributor and viewpoint holder genuinely differ.
+```
+
+Reason: V3 needs independent role learning, but synthetic role distortion would poison semantics.
+
+## 9 — SUPERVISOR RECOMMENDED REPAIR SCOPE
+
+If Alberto approves the seven decisions above, Supervisor recommendation is to authorize a separate bounded implementation task that:
+
+```text
+1. preserves TRAIN v1 byte-for-byte;
+2. creates NEW student5-matrix-nlu-v3-train-v2 only;
+3. corrects confirmed annotation defects identified by CP37/CP38;
+4. enumerates and verifies all 628 explicit-English-I cases before correcting them;
+5. keeps the 404 valid implicit-subject cases unchanged;
+6. individually reviews the 11 code-switch unresolved desires;
+7. adds targeted IT/EN/ES/code-switch teaching for COMMAND, BELIEF, REPORT, REQUEST/CORRECT, advanced temporal relations, role uncertainty/ambiguity and legitimate role divergence;
+8. broadens adult desire/request/consent/refusal/withdrawal/boundary contrasts without moderation bias;
+9. removes/deactivates only verified semantic duplicates or malformed rows, preserving provenance aliases and meaningful contrasts;
+10. produces changed/added/deactivated/unchanged manifests, per-file checksums, ordered dataset SHA and family/language/head census;
+11. reruns structural/semantic curriculum audit on v2 before any training;
+12. does not read DEV/Frozen and does not train.
+```
+
+This implementation scope is **NOT AUTHORIZED YET** pending Alberto's approval of the semantic decisions and scope.
+
+## 10 — EXACT SUPERVISOR ACTION NEXT
+
+```text
+1. explain the seven decisions to Alberto in plain language;
+2. obtain approve/change/reject disposition from Alberto;
+3. persist the jointly confirmed decisions;
+4. only then prepare one bounded Work assignment to create TRAIN v2;
+5. audit TRAIN v2 before training;
+6. separately repair/close CP36 DEV/evaluator/calibration blockers;
+7. training remains prohibited until both repaired curriculum and Gate-B readiness are Supervisor-accepted.
+```
+
+There is currently **NO ACTIVE WORK ASSIGNMENT** after CP38.
+
+## 11 — ASSEMBLING / ENGINE STATE
+
+```text
 PR #23 = DRAFT / NOT MERGED
-F1/F2 structured wiring = verified only for tested structured cases
 real raw-language end-to-end comprehension = NOT YET DEMONSTRATED
 Memory runtime = NOT IMPLEMENTED / NOT INTEGRATED
 full engine = NOT DEMONSTRATED
 phone = BLOCKED
 ```
 
-Canonical architecture sources:
+Canonical Memory plan remains `docs/MATRIX_MEMORY_REAL_CONSTRUCTION_PLAN.md` and is unchanged.
 
-- `docs/MATRIX_ENGINE_COMPLETE_REAL_DESIGN_2026-09-07.md`
-- `docs/MATRIX_INTERMODULE_PROTOCOL.md`
-- `docs/MATRIX_ENGINE_WORK_METHOD.md`
-
-Canonical Memory plan:
+## 12 — MASTER DEPENDENCY ORDER
 
 ```text
-docs/MATRIX_MEMORY_REAL_CONSTRUCTION_PLAN.md
-status = CANONICAL CONSTRUCTION PLAN / NOT YET IMPLEMENTED
-```
-
----
-
-## 11 — MASTER DEPENDENCY ORDER
-
-```text
-Student-5 curriculum repair + Gate-B closure + Matrix-NLU V3 completion + Supervisor acceptance
+Student-5 curriculum repair + Gate-B closure + Student-5 completion
 → real NLU → Understanding → Context/Retrieval → Authority proof
-→ Belief/Authority finalization + Memory M1-M3
-→ Memory/Belief convergence
-→ Persistent Consolidation
-→ Memory M5 E2E
-→ Affective / Relationship / Intimacy / Goal / Reflection / Decision
-→ realization / GGUF / validation / world loop
-→ full automatic E2E
+→ Belief/Authority + Memory
+→ later cognitive owners
+→ realization/GGUF/world loop
+→ E2E
 → Android
 → Moto G56
 ```
 
-The curriculum repair is inserted before training by evidence-backed dependency; later roadmap items remain unchanged.
+Later roadmap items remain unchanged.
 
----
-
-## 12 — PERMANENT SUPERVISOR RULES
+## 13 — PERMANENT SUPERVISOR RULES
 
 ```text
-CONTINUITY FIRST ON EVERY NEW CHAT
-VERIFY LIVE SOURCE OF TRUTH BEFORE OPERATIONAL CLAIMS
-OWNER IS NOT THE PROJECT MEMORY SYSTEM
-CONFIRMED CONSTRUCTION PLAN → AUTO-PERSIST + CONTINUITY LINK
-IDEA/HYPOTHESIS != CONFIRMED PLAN
-PRESERVE VALID/STABLE WORK BEFORE EXPERIMENTATION
-DEEP PRIOR-ART CHECK BEFORE REDESIGN
-EXTERNAL AGENTS = CONSULTANTS ONLY
-SUPERVISOR GPT RETAINS PLANNING + ACCEPTANCE RESPONSIBILITY
-WORK EXECUTES; WORK DOES NOT SELF-ASSIGN NEXT TASK
-WORK GETS CURRENT ASSIGNMENT, NOT FUTURE ROADMAP
-ACTIVELY MONITOR WORK STATE + RESULTS
-ONE BOUNDED IMMEDIATE ASSIGNMENT AT A TIME
-ORDINARY SUBPROBLEMS INSIDE SCOPE MAY BE SOLVED AUTONOMOUSLY BY WORK
-WORK MUST REPORT PASS/BLOCKED; NO SILENT STOP
-NO SENTINEL-ONLY WORK REPORTS
-DO NOT OVERWRITE MODEL/DATA/ARTIFACT VERSIONS
-DO NOT MERGE PR #23 WITHOUT OWNER APPROVAL
-EVERY REAL TEST = INPUT → REAL MODULE → OUTPUT → MIP → HANDOFF → NEXT OUTPUT
-RECORD LOST / CHANGED / INVENTED FIELDS + FIRST DIVERGENCE
-NOTED != PREPARED != EXECUTED != VERIFIED != SUPERVISOR_ACCEPTED
-CONTINUITY MAINTENANCE IS CONSERVATIVE: ARCHIVE, PRESERVE, CORRECT STALE, ADD MISSING
+CONTINUITY FIRST
+VERIFY BEFORE CLAIMS
+OWNER IS NOT PROJECT MEMORY
+CONFIRMED PLANS AUTO-PERSIST
+IDEA != APPROVED PLAN
+PRESERVE STABLE WORK
+DEEP PRIOR-ART BEFORE REDESIGN
+EXTERNAL AGENTS = CONSULTANTS
+SUPERVISOR RETAINS PLANNING/ACCEPTANCE
+WORK GETS ONE CURRENT BOUNDED ASSIGNMENT
+NO SILENT STOP / NO SENTINEL-ONLY REPORT
+NO OVERWRITE
+REAL TEST TRACE REQUIRED
+NOTED != PREPARED != EXECUTED != VERIFIED != ACCEPTED
 ```
 
----
+## 14 — CONTINUITY SELF-SUFFICIENCY TEST
 
-## 13 — CONTINUITY SELF-SUFFICIENCY TEST
+Fresh Supervisor must know active repo/branch/HEAD, accepted checkpoint, no-active-assignment state, blockers, immutable artifacts/data, open decisions, exact next owner/supervisor action, permanent rules and required evidence without asking Alberto to reconstruct history.
 
-A fresh Supervisor GPT must know without asking Alberto to reconstruct history:
+## 15 — CONTINUITY MAINTENANCE POLICY
 
-```text
-[ ] active repo/workstream
-[ ] relevant branch + latest verified checkpoint/HEAD
-[ ] roles
-[ ] last Supervisor-accepted result
-[ ] current bounded assignment and exact prompt
-[ ] execution state
-[ ] explicit NOT-DONE items
-[ ] blockers/open decisions
-[ ] immutable artifacts/data and recovery pointers
-[ ] confirmed construction plans
-[ ] exact immediate Supervisor action
-[ ] permanent rules
-[ ] evidence required before next PASS claim
-```
-
-If any item is missing or ambiguous, continuity is defective and must be repaired before substantial new work relies on it.
-
----
-
-## 14 — CONTINUITY MAINTENANCE POLICY
-
-```text
-1. archive current version before material rewrite
-2. preserve still-valid decisions/rules/state
-3. correct only stale/contradictory state
-4. add genuinely missing operational information
-5. mark historical/superseded items instead of silently deleting useful history
-6. do not change architecture/roadmap/gates/confirmed plans for prose convenience
-7. real project-decision changes remain proposal-only until Alberto + Supervisor decide together
-```
-
-This v89 update records the owner-authorized repair-specification-only assignment. It does not authorize dataset mutation, DEV/Frozen access, evaluator repair or training.
+Archive before material rewrite; preserve valid state; correct stale state only; add missing operational information; never silently delete useful history or change architecture/roadmap/gates/confirmed plans without joint decision.
