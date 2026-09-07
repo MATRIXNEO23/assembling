@@ -393,7 +393,8 @@ Solo dopo questa checklist il rewire è autorizzabile.
 - prima di operazioni rischiose;
 - appena emerge un rischio di stop/perdita contesto;
 - prima di terminare la sessione;
-- **prima di proporre o applicare un cambio di metodo/modulo/architettura/priorità**.
+- **prima di proporre o applicare un cambio di metodo/modulo/architettura/priorità**;
+- **immediatamente quando OWNER + SUPERVISOR confermano un piano costruttivo reale: il piano va persistito senza chiedere un'ulteriore autorizzazione solo per salvarlo**.
 
 Deve contenere almeno:
 
@@ -406,7 +407,43 @@ Deve contenere almeno:
 - artifact/checksum quando applicabile;
 - rischi aperti;
 - modifiche ad altri repo = true/false;
-- exact restart point.
+- exact restart point;
+- riferimento al documento/versione del piano costruttivo confermato, quando esiste.
+
+### 13.1 Preservazione automatica dei piani costruttivi confermati
+
+Quando una discussione progettuale arriva a una decisione equivalente a:
+
+```text
+"SI FA COSI"
+"QUESTO E IL PIANO"
+"APPROVO QUESTA STRUTTURA"
+```
+
+il supervisor deve automaticamente:
+
+```text
+1. distinguere il piano confermato dalle idee ancora ipotetiche;
+2. salvarlo nella repository attiva appropriata come documento canonico/versionato;
+3. collegarlo dalla continuity;
+4. registrare dipendenze, stato e punto di inserimento nel roadmap;
+5. preservare la versione precedente se il piano ne sostituisce una;
+6. verificare commit + readback prima di dichiarare "salvato";
+7. non chiedere al proprietario un'ulteriore domanda del tipo "vuoi che lo salvi?".
+```
+
+Le idee non ancora approvate restano proposte/ipotesi e non modificano il piano automaticamente.
+
+Hard rule:
+
+```text
+CONFIRMED CONSTRUCTION PLAN
+→ PERSIST NOW
+→ CONTINUITY LINK
+→ VERSIONED FUTURE CHANGES
+```
+
+La memoria della chat non è una persistenza sufficiente.
 
 ## 14. Una repository scrivibile alla volta
 
@@ -615,4 +652,5 @@ Questa regola non sostituisce test atomici, cross-modulo, E2E o DiagnosticTrace:
 13. VERIFY OPERATIONAL STATE BEFORE CLAIMING IT
 14. EVERY REAL TEST MUST SHOW INPUT -> MIP -> HANDOFF -> OUTPUT
 15. RECORD LOST / CHANGED / INVENTED FIELDS AND FIRST DIVERGENCE
+16. CONFIRMED CONSTRUCTION PLAN -> PERSIST NOW + LINK FROM CONTINUITY
 ```
