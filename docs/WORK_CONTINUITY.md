@@ -4,13 +4,11 @@ Last updated: 2026-09-07
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active supervisor branch: `foundation-closure-f1-f2`  
-Continuity schema: `matrix.assembling.continuity.v85`
+Continuity schema: `matrix.assembling.continuity.v86`
 
 ## 0 — NEW CHAT / SESSION BOOTSTRAP — READ THIS FIRST
 
 This file is the **first operational source** for every new Matrix Engine supervisor chat/session.
-
-Hard rule:
 
 ```text
 NEW CHAT / NEW SESSION
@@ -20,24 +18,10 @@ NEW CHAT / NEW SESSION
 → ONLY THEN SPEAK / PLAN / ACT
 ```
 
-Old conversations, chat memory and historical searches are fallback/verification only when a required detail is genuinely absent here. Alberto is not responsible for reconstructing the assistant's or Work's previous state.
+Old conversations/chat memory are fallback only. Alberto is not the project's memory system.
 
-Permanent session/supervisor rules are canonical in:
-
-```text
-docs/MATRIX_ENGINE_SESSION_CONTINUITY_AND_SUPERVISION_RULES.md
-```
-
-They include:
-- continuity-first startup;
-- self-sufficient handoff requirement;
-- automatic persistence of jointly confirmed construction plans;
-- mandatory prior-art/deep-research before redesign;
-- external agents as consultants only;
-- active Supervisor-GPT monitoring of Work state/results;
-- strict NOTED/PREPARED/EXECUTED/VERIFIED/ACCEPTED distinction.
-
-If this continuity cannot let a fresh Supervisor GPT resume without asking Alberto to repeat prior work, the continuity is defective and must be repaired before substantial new work depends on it.
+Permanent rules:
+`docs/MATRIX_ENGINE_SESSION_CONTINUITY_AND_SUPERVISION_RULES.md`
 
 ---
 
@@ -50,52 +34,178 @@ Previous complete continuities remain preserved:
 - `docs/continuity_archive/ASSEMBLING_V82_ff92e9dc6839dd6d3da7b06af0977658174e82ed.md`
 - `docs/continuity_archive/ASSEMBLING_V83_08ca1612b899dc7ecfddb72873ef07e00ffca177.md`
 - `docs/continuity_archive/ASSEMBLING_V84_07b6ee1c544706f8fb34d9cd422eb7855955fcc7.md`
+- `docs/continuity_archive/ASSEMBLING_V85_5d504b5b45aaa56e0692149e268c8081c28ee098.md`
 
-The full dependency-ordered Phase A-F roadmap is preserved in v82. Nothing in v85 silently deletes or reorders prior confirmed work.
+The full dependency-ordered Phase A-F roadmap remains preserved in v82.
 
 ---
 
-## 2 — CURRENT EXECUTION STATE
+## 2 — CURRENT STUDENT-5 EXECUTION STATE
 
 ```text
-THIS CHAT = Supervisor GPT / architecture / audit / evidence / continuity
-CHATGPT WORK = executor for Student-5 Path B
-OWNER = Alberto / final project authority
+OWNER = Alberto / final authority
+SUPERVISOR GPT = planner / reviewer / acceptance authority
+CHATGPT WORK = executor
 ```
 
-Latest verified Student-5 state:
+Verified repository state:
 
 ```text
 repo = MATRIXNEO23/matrix-understanding-lab
 branch = student5-path-b-v3
-HEAD = 1ef81d3e8d7b92d9cbd2bf5f54e6d3d1918f8973
-checkpoint = CP35b
+verified CP36 HEAD = 2904edb04cac52eb7cca677f10e0e36842e8e6e2
+current branch HEAD after supervisor prompt preparation = 39ca73b9a461e4435fdf1f5e5f8172c7d303dc16
+```
+
+Accepted Gate-A state:
+
+```text
 TASK 2.3 = ACCEPTED / DO NOT REPEAT
 A1 pristine acquisition = PASS
 A2 real BERT/V3 forward = PASS
 A3 physical ONNX/check/load/forward/parity = PASS
-A4 durable publication = PASS
-training = NOT STARTED in CP35b
-DEV = UNREAD in CP35b
-Frozen = UNREAD in CP35b
+A4 durable publication = PASS / SUPERVISOR ACCEPTED
+training = NOT STARTED
 production = NOT APPROVED
 ```
 
-A4 persistent artifact verified:
+A4 persistent artifact:
 
 ```text
 releaseId = 383886129
 assetId = 548329150
 bytes = 176837978
 sha256 = dfe20ae4cfa49656f557872f6ba2afeabef6caea06390f943ae8cd0945a37d71
-fresh recovery/readback = PASS
-ZIP integrity = PASS
+fresh recovery = PASS
+ZIP = PASS
 internal SHA256SUMS = 17/17 PASS
 ```
 
-Supervisor accepted A4. A Gate-B-readiness-only assignment was subsequently prepared for Work, but no later Gate-B execution/result is considered verified until repository-visible evidence is inspected.
+---
 
-Assembling remains:
+## 3 — CP36 GATE-B READINESS RESULT
+
+Work completed the bounded Gate-B-readiness audit and returned a substantive Supervisor report.
+
+```text
+checkpoint = CP36
+GATE_B_READINESS = BLOCKED
+training = NOT STARTED
+Frozen read = false
+DEV copied into TRAIN = false
+```
+
+Verified TRAIN:
+
+```text
+logicalId = student5-matrix-nlu-v3-train-v1
+path = data/student5_v3/
+rows = 3150
+claims = 3990
+sha256 = 1118a900026f48cfcc290c3f9dc52a1a019a6a1f4761661f326c33770523140e
+per-file SHA = 129/129 PASS
+Git identities = 130/130 PASS
+```
+
+CP36 blockers:
+
+```text
+1. authorized DEV V3 identity/path/SHA/provenance = MISSING / BLOCKED
+2. V3 evaluator is incomplete for required gate semantics
+3. sourceSpan boundary defects can escape current evaluator
+4. mention-table span/entity defects can escape current evaluator
+5. forbidden downstream fields can escape evaluator scoring/rejection
+6. full exact-claim-set semantics not implemented by current scorer
+7. threshold selection/calibration still depends on legacy evaluator/decoder path
+8. connected V3 IT/EN/ES per-family residual analysis = NOT DEMONSTRATED
+9. TRAIN↔DEV independent separation = UNKNOWN because DEV V3 is unidentified
+```
+
+Known TRAIN curriculum risks explicitly preserved from CP36:
+
+```text
+BELIEF = absent
+COMMAND = absent
+REPORT = 8 and IT-only
+advanced temporal relations = absent
+adult withdrawal/revocation = 1 IT claim
+repeated surfaces = 1561
+```
+
+These are risks, not yet a verdict that TRAIN must be changed.
+
+---
+
+## 4 — NEXT IMMEDIATE ASSIGNMENT PREPARED / NOT EXECUTED
+
+Supervisor concern: before authorizing any Student-5 training, establish whether the current immutable TRAIN actually teaches the desired V3 behavior coherently and whether it risks reproducing known Student-4 regressions.
+
+Prepared prompt:
+
+```text
+prompts/WORK_STUDENT_5_PATH_B_V3_TRAIN_CURRICULUM_AUDIT_ONLY.md
+prompt commit / branch HEAD = 39ca73b9a461e4435fdf1f5e5f8172c7d303dc16
+status = PREPARED_NOT_EXECUTED
+```
+
+Single assignment:
+
+```text
+STUDENT-5 V3 TRAIN CURRICULUM AUDIT ONLY
+```
+
+It must audit, read-only:
+
+- per-head supervision for all 16 conceptual V3 heads;
+- zero/rare/dominant labels;
+- IT/EN/ES/code-switch semantic-family distribution;
+- repetitions/template shortcuts/contradictory gold/migration artifacts;
+- cue-only negation consistency;
+- temporal-span consistency;
+- first-person implicit-subject rule consistency;
+- source/owner/perspective pedagogy;
+- comparison with documented Student-4 regression families.
+
+Required verdict:
+
+```text
+TRAIN_CURRICULUM = FIT_FOR_CONTROLLED_TRAINING
+or
+TRAIN_CURRICULUM = REPAIR_REQUIRED_BEFORE_TRAINING
+```
+
+Hard scope:
+
+```text
+NO training
+NO model changes
+NO augmentation
+NO TRAIN mutation
+NO DEV read/create/migration
+NO Frozen read
+NO evaluator repair
+NO quantization
+NO follow-on remediation
+```
+
+Work must report to Supervisor GPT and stop.
+
+---
+
+## 5 — STUDENT ROLES / IMMUTABLE LINES
+
+```text
+Student-5 Path B = ACTIVE primary Matrix-NLU V3 candidate
+Student-5 pristine 40k = immutable Path-B base
+Student-5 Path A = REFERENCE untaught runtime probe / immutable
+Student-4 v2.2A = REFERENCE comparative/regression baseline / immutable
+```
+
+Never overwrite any model/data/artifact/checkpoint version.
+
+---
+
+## 6 — ASSEMBLING / ENGINE STATE
 
 ```text
 repo = MATRIXNEO23/assembling
@@ -108,90 +218,18 @@ full engine = NOT DEMONSTRATED
 phone = BLOCKED
 ```
 
----
-
-## 3 — STUDENT ROLES / IMMUTABLE LINES
-
-```text
-Student-5 Path B = ACTIVE primary Matrix-NLU V3 candidate
-Student-5 pristine 40k = immutable Path-B base
-Student-5 Path A = REFERENCE untaught runtime probe / immutable
-Student-4 v2.2A = REFERENCE comparative/regression baseline / immutable
-```
-
-Never overwrite previous model/data/artifact versions. Every meaningful retained model/export/checkpoint requires unique identity, SHA-256, lineage and durable repository-owned storage.
-
----
-
-## 4 — CANONICAL REAL MEMORY CONSTRUCTION PLAN
-
-Confirmed construction plan:
+Canonical Memory plan remains:
 
 ```text
 docs/MATRIX_MEMORY_REAL_CONSTRUCTION_PLAN.md
 status = CANONICAL CONSTRUCTION PLAN / NOT YET IMPLEMENTED
 ```
 
-Core Memory flow:
-
-```text
-TypedClaim
-→ Authority Resolver
-→ Memory Preflight / MemoryCandidate
-→ VALIDATE accepted output/action
-→ Persistent Consolidation
-→ Memory Admission
-→ MemoryRepository
-```
-
-Long-Term memory kinds:
-
-```text
-EPISODIC
-SEMANTIC
-REFLECTION
-```
-
-`WORKING` is turn-bounded operational memory, not durable Long-Term identity.
-
-Recovered approved content-type taxonomy:
-
-```text
-FATTO
-PREFERENZA
-PROMESSA / IMPEGNO
-EVENTO
-CORREZIONE
-GIUDIZIO
-```
-
-Separate state domains may have historical evidence in Memory but are not memory kinds:
-
-```text
-RELATIONSHIP
-AFFECTIVE
-INTIMACY / CONSENT
-GOAL / INTENTION
-BELIEF
-WORLD
-```
-
-Hard intimacy rule:
-
-```text
-historical intimacy/consent memory
-!= current desire
-!= current boundary
-!= current consent
-```
-
-Memory implementation later follows M1→M5 from the canonical plan; do not redesign it from recollection unless Owner + Supervisor explicitly approve a versioned plan change.
+Do not redesign Memory from recollection.
 
 ---
 
-## 5 — MASTER DEPENDENCY ORDER
-
-Current high-level order remains:
+## 7 — MASTER DEPENDENCY ORDER
 
 ```text
 Student-5 / Matrix-NLU V3 completion + supervisor acceptance
@@ -207,11 +245,11 @@ Student-5 / Matrix-NLU V3 completion + supervisor acceptance
 → Moto G56
 ```
 
-New ideas are proposals first. Supervisor gives a recommendation; Owner + Supervisor jointly decide whether/where they enter the plan. Stable verified work is preserved before experimentation.
+No Student-5 training starts until Supervisor GPT has accepted both curriculum readiness and the eventual repaired Gate-B evaluation/DEV readiness.
 
 ---
 
-## 6 — PERMANENT SUPERVISOR OPERATING RULES
+## 8 — PERMANENT SUPERVISOR RULES
 
 ```text
 CONTINUITY FIRST ON EVERY NEW CHAT
@@ -219,63 +257,38 @@ VERIFY SOURCE OF TRUTH BEFORE OPERATIONAL CLAIMS
 OWNER IS NOT THE PROJECT MEMORY SYSTEM
 CONFIRMED CONSTRUCTION PLAN → AUTO-PERSIST + CONTINUITY LINK
 IDEA/HYPOTHESIS != CONFIRMED PLAN
-DEEP PRIOR-ART / LIBRARY / PAPER / REPO CHECK BEFORE REDESIGN
-EXTERNAL AGENTS = CONSULTANTS ONLY; SUPERVISOR GPT RETAINS SUPERVISION
-ACTIVELY MONITOR WORK STATE + RESULTS; DO NOT WAIT INDEFINITELY ON SILENT STOP
-ONE BOUNDED IMMEDIATE WORK ASSIGNMENT AT A TIME
-DO NOT DUPLICATE ACTIVE WORK EXECUTION
+DEEP PRIOR-ART CHECK BEFORE REDESIGN
+EXTERNAL AGENTS = CONSULTANTS ONLY
+SUPERVISOR GPT RETAINS PLANNING + ACCEPTANCE RESPONSIBILITY
+WORK EXECUTES; WORK DOES NOT SELF-ASSIGN NEXT TASK
+ACTIVELY MONITOR WORK STATE + RESULTS
+ONE BOUNDED IMMEDIATE ASSIGNMENT AT A TIME
 DO NOT OVERWRITE MODEL/DATA/ARTIFACT VERSIONS
 DO NOT MERGE PR #23 WITHOUT OWNER APPROVAL
-EVERY REAL TEST = REAL INPUT → REAL MODULE → OUTPUT → MIP → HANDOFF → NEXT OUTPUT
+EVERY REAL TEST = INPUT → REAL MODULE → OUTPUT → MIP → HANDOFF → NEXT OUTPUT
 RECORD LOST / CHANGED / INVENTED FIELDS + FIRST DIVERGENCE
-DO NOT CALL FIXTURE/CI-ONLY EVIDENCE FUNCTIONAL PROOF
-NOTED_FOR_LATER != PREPARED_NOT_EXECUTED != EXECUTED_NOT_VERIFIED != EXECUTED_AND_VERIFIED != SUPERVISOR_ACCEPTED
-NEVER CLAIM SAVED/DONE/STARTED/PASS WITHOUT REAL EXECUTION + VERIFICATION
-Memory runtime remains NOT IMPLEMENTED
-PHONE remains BLOCKED
+NOTED != PREPARED != EXECUTED != VERIFIED != SUPERVISOR_ACCEPTED
+NO SENTINEL-ONLY WORK REPORTS; REQUIRE SUBSTANTIVE REPORT TO SUPERVISOR GPT
 ```
-
-Deep prior-art/reuse classification should consider:
-
-```text
-DIRECT_REUSE / ADAPT / REIMPLEMENT / REFERENCE_ONLY / REJECT
-```
-
-with maturity, license/provenance, Android/offline fit, RAM/CPU/latency/size/dependency cost and maintenance risk.
-
-External consultants such as Copilot/Gemini/Qwen may be consulted when useful, but cannot change project scope or accepted architecture. Supervisor GPT evaluates their advice and remains responsible for recommendations and gate acceptance.
 
 ---
 
-## 7 — EXACT RESUME PROCEDURE
+## 9 — EXACT RESUME ACTION
 
-At a new chat/session:
+If the curriculum audit has not yet run:
 
 ```text
-1. read this file first;
-2. identify the currently relevant repo/workstream;
-3. if Student-5/Work is relevant, read matrix-understanding-lab/docs/WORK_CONTINUITY_STUDENT_5.md;
-4. verify real branch/HEAD and latest repository-visible evidence;
-5. do not trust Work prose alone;
-6. restore the exact unfinished step and accepted plans;
-7. only then answer Alberto or prepare work.
+send Work only prompts/WORK_STUDENT_5_PATH_B_V3_TRAIN_CURRICULUM_AUDIT_ONLY.md
+starting from HEAD 39ca73b9a461e4435fdf1f5e5f8172c7d303dc16
 ```
 
-When Work returns a result:
+When Work returns:
 
 ```text
-1. read Student-5 continuity;
-2. verify student5-path-b-v3 current HEAD;
-3. inspect reports/artifact registry/releases/checksums;
-4. compare against the exact bounded Supervisor-GPT assignment;
-5. accept/reject the gate on evidence;
-6. if accepted, prepare only the next immediate assignment;
-7. update continuity before interruption/end.
-```
-
-When Matrix work reaches Memory:
-
-```text
-start from docs/MATRIX_MEMORY_REAL_CONSTRUCTION_PLAN.md
-follow M1 → M5
+1. read Student-5 continuity
+2. verify current branch HEAD
+3. inspect CP37 report/evidence
+4. accept/reject TRAIN curriculum verdict
+5. decide together with Alberto whether TRAIN repair is required
+6. only after that prepare the next single bounded assignment
 ```
