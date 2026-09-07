@@ -4,7 +4,7 @@ Last updated: 2026-09-07
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active supervisor branch: `foundation-closure-f1-f2`  
-Continuity schema: `matrix.assembling.continuity.v88`
+Continuity schema: `matrix.assembling.continuity.v89`
 
 ## 0 — NEW CHAT / SESSION BOOTSTRAP — READ THIS FIRST
 
@@ -21,26 +21,18 @@ NEW CHAT / NEW SESSION
 
 Alberto is not the project's memory system. Old conversations/chat memory are fallback only for genuinely missing detail.
 
-Permanent session/supervision rules:
+Permanent rules:
 
-```text
-docs/MATRIX_ENGINE_SESSION_CONTINUITY_AND_SUPERVISION_RULES.md
-```
-
-Idea governance / execution-transparency rules:
-
-```text
-docs/SUPERVISOR_IDEA_AND_EXECUTION_TRANSPARENCY_RULES.md
-```
+- `docs/MATRIX_ENGINE_SESSION_CONTINUITY_AND_SUPERVISION_RULES.md`
+- `docs/SUPERVISOR_IDEA_AND_EXECUTION_TRANSPARENCY_RULES.md`
+- `docs/MATRIX_ENGINE_WORK_METHOD.md`
 
 ---
 
 ## 1 — SOURCE-OF-TRUTH HIERARCHY
 
-Use this order on resume or when two statements conflict:
-
 ```text
-1. this current canonical continuity
+1. current canonical continuity
 2. active workstream continuity
 3. canonical plan / contract / rule docs referenced here
 4. live repository branch / HEAD / checkpoint / artifact evidence
@@ -64,8 +56,9 @@ Previous complete continuities remain preserved:
 - `docs/continuity_archive/ASSEMBLING_V85_5d504b5b45aaa56e0692149e268c8081c28ee098.md`
 - `docs/continuity_archive/ASSEMBLING_V86_40029e96581577d3e15290b67c42e81b0c052649.md`
 - `docs/continuity_archive/ASSEMBLING_V87_d077d0f1b713687f6681c8fccf003886819ce9a8.md`
+- `docs/continuity_archive/ASSEMBLING_V88_551ae9277534761abe1c7a2f3795ac4d119ebae9.md`
 
-The full dependency-ordered Phase A-F roadmap remains preserved in v82. Nothing in v88 deletes or silently reorders confirmed work.
+The full dependency-ordered Phase A-F roadmap remains preserved in v82. Nothing in v89 deletes or silently reorders confirmed work.
 
 ---
 
@@ -93,7 +86,7 @@ workstream continuity = docs/WORK_CONTINUITY_STUDENT_5.md
 artifact registry = docs/STUDENT_ARTIFACT_REGISTRY.md
 ```
 
-Latest accepted/executed chain:
+Accepted/executed chain:
 
 ```text
 TASK 2.3 = ACCEPTED / DO NOT REPEAT
@@ -107,7 +100,7 @@ training = NOT STARTED
 production = NOT APPROVED
 ```
 
-Verified CP37 checkpoint:
+Verified CP37:
 
 ```text
 HEAD = e81a2ae9e1d60c6af61a7d8d1baabed9171f3166
@@ -115,15 +108,24 @@ report = reports/STUDENT_5_TRAIN_CURRICULUM_AUDIT_CP37.md
 evidence = reports/evidence/student5-path-b-cp37-train-audit/
 ```
 
-CP37 changed only report/evidence/continuity. TRAIN, DEV, Frozen, model weights and prior artifacts were not modified; no training/remediation/evaluator repair was executed.
+CP37 changed only report/evidence/continuity. TRAIN, DEV, Frozen, model weights and prior artifacts remained unchanged.
 
-Do not infer Work progress merely from UI text or GitHub Actions. GitHub Actions and ChatGPT Work are separate execution surfaces.
+Current Student-5 branch after Supervisor assignment preparation:
+
+```text
+HEAD = 6cd1fac17bdceca742a8bf2932e0872ee5907601
+prompt = prompts/WORK_STUDENT_5_PATH_B_V3_TRAIN_REPAIR_SPECIFICATION_ONLY.md
+prompt state = PREPARED_IN_REPOSITORY / OWNER-AUTHORIZED
+execution result = NOT_VERIFIED / NO WORK RESULT YET
+```
+
+Do not infer Work progress from UI text or GitHub Actions. GitHub Actions and ChatGPT Work are separate execution surfaces.
 
 ---
 
-## 5 — IMMUTABLE STUDENT-5 ARTIFACTS / RECOVERY
+## 5 — IMMUTABLE ARTIFACTS / DATA
 
-Primary pristine base remains immutable:
+Primary pristine base:
 
 ```text
 releaseId = 383143636
@@ -133,7 +135,7 @@ archive sha256 = 7804bfb245b71df9b835fff7ee00f6ec887e019772ae34c82d269d821d58719
 model sha256 = d6e45891d1e0ec4ed023caaeb17c0dd0ae80a93b8bf877d275310b7f2837efa2
 ```
 
-Accepted untrained Gate-A Path-B runtime reference:
+Accepted untrained Gate-A Path-B reference:
 
 ```text
 releaseId = 383886129
@@ -146,6 +148,16 @@ ZIP integrity = PASS
 internal SHA256SUMS = 17/17 PASS
 ```
 
+TRAIN v1 baseline remains immutable:
+
+```text
+logicalId = student5-matrix-nlu-v3-train-v1
+path = data/student5_v3/
+rows = 3150
+claims = 3990
+sha256 = 1118a900026f48cfcc290c3f9dc52a1a019a6a1f4761661f326c33770523140e
+```
+
 Student roles:
 
 ```text
@@ -155,25 +167,11 @@ Student-5 Path A = REFERENCE untaught runtime probe / immutable
 Student-4 v2.2A = REFERENCE comparative/regression baseline / immutable
 ```
 
-Never overwrite any model/data/artifact/checkpoint version. Full recovery details remain in Student-5 continuity and artifact registry.
+Never overwrite any model/data/artifact/checkpoint version.
 
 ---
 
-## 6 — CP36 GATE-B READINESS BLOCKERS REMAIN OPEN
-
-Verified TRAIN identity:
-
-```text
-logicalId = student5-matrix-nlu-v3-train-v1
-path = data/student5_v3/
-rows = 3150
-claims = 3990
-sha256 = 1118a900026f48cfcc290c3f9dc52a1a019a6a1f4761661f326c33770523140e
-DEV copied into TRAIN = false
-Frozen read = false
-```
-
-Gate-B remains blocked because:
+## 6 — CP36 GATE-B BLOCKERS REMAIN OPEN
 
 ```text
 1. authorized DEV V3 identity/path/SHA/provenance = MISSING / BLOCKED
@@ -191,17 +189,17 @@ No training is authorized while these blockers remain unresolved.
 
 ---
 
-## 7 — CP37 CURRICULUM VERDICT / OBSERVED DEFECTS
+## 7 — CP37 CURRICULUM VERDICT
 
-Supervisor GPT accepts the CP37 evidence-backed verdict:
+Supervisor GPT accepted:
 
 ```text
 TRAIN_CURRICULUM = REPAIR_REQUIRED_BEFORE_TRAINING
 ```
 
-This does **not** revoke TASK 2.3 structural acceptance and does **not** prove Student-5 regression. It establishes that training now would teach an incomplete/biased V3 curriculum and therefore is not authorized.
+This does not revoke TASK 2.3 structural acceptance and does not prove Student-5 regression. It establishes that the current TRAIN should not be used for fitting as-is.
 
-Observed curriculum problems requiring disposition include:
+Observed issues requiring repair/specification include:
 
 ```text
 COMMAND = zero support
@@ -216,53 +214,84 @@ no meaningful multi-context-entity choice
 code-switch concentrated in unresolved/desire-like templates
 adult desire/refusal/withdrawal coverage uneven and language-skewed
 substantial exact/normalized repetition/template concentration
-specific annotation defects/inconsistencies found for temporal spans, role/viewpoint semantics, explicit-English subject spans and malformed multi-participant requests
+confirmed/adjudication-required annotation issues for temporal spans, role/viewpoint semantics, explicit-English subject spans and malformed multi-participant requests
 ```
 
-Student-4 historical regressions make recurrence on negation, temporal, referents/report, correction/request, ownership/span and IT/ES a **plausible risk**, not a demonstrated Student-5 regression or proven curriculum-causation claim.
-
-The immutable `student5-matrix-nlu-v3-train-v1` remains preserved unchanged as the audit baseline.
+Student-4 recurrence on negation, temporal, referents/report, correction/request, ownership/span and IT/ES is a plausible historical risk, not proven Student-5 damage or proven curriculum causation.
 
 ---
 
-## 8 — CURRENT DECISION POINT / NO ACTIVE FOLLOW-ON EXECUTION
+## 8 — CURRENT SINGLE WORK ASSIGNMENT
 
-There is currently no authorized remediation or training execution.
-
-Supervisor recommendation:
+Owner + Supervisor approved the **design-only** next step.
 
 ```text
-NEXT = TRAIN REPAIR SPECIFICATION ONLY
+assignment = STUDENT-5 V3 TRAIN REPAIR SPECIFICATION ONLY
+prompt = prompts/WORK_STUDENT_5_PATH_B_V3_TRAIN_REPAIR_SPECIFICATION_ONLY.md
+starting Student-5 HEAD = e81a2ae9e1d60c6af61a7d8d1baabed9171f3166
+prompt commit/current branch HEAD = 6cd1fac17bdceca742a8bf2932e0872ee5907601
+status = PREPARED_NOT_EXECUTED / awaiting Work result
 ```
 
-Purpose of the proposed next bounded task:
+Purpose:
 
-- convert CP37 findings into a precise repair specification;
-- define which existing rows are annotation fixes vs preserved valid examples;
-- define missing semantic/role/language coverage to add in a NEW TRAIN version;
-- define redundancy handling without deleting meaningful contrasts;
-- preserve V1 immutably;
-- define acceptance checks for the repaired TRAIN before any training;
-- do not create/modify TRAIN yet;
-- do not read DEV or Frozen;
-- do not repair evaluator/calibration in the same task;
-- do not train.
+- translate CP37 evidence into an issue-by-issue conservative repair specification;
+- separate confirmed annotation defects from sparse coverage and unresolved semantic-policy decisions;
+- specify what existing valid data must be preserved;
+- specify missing V3 teaching to add only in a future NEW dataset version;
+- specify redundancy handling without blind deletion;
+- propose future dataset lineage/versioning and acceptance checks;
+- provide Student-4 recurrence safeguards;
+- return unresolved semantic decisions to Supervisor/Owner instead of guessing.
 
-This recommendation is **PROPOSED_ONLY / NOT YET ASSIGNED**. Alberto + Supervisor must decide before any TRAIN mutation or remediation execution.
+Hard scope:
+
+```text
+NO TRAIN mutation
+NO new TRAIN shards
+NO augmentation execution
+NO row relabel/delete execution
+NO DEV read/create/migration
+NO Frozen read
+NO training / optimizer / backprop / fine-tuning
+NO evaluator/decoder/threshold repair
+NO quantization
+NO Assembling integration
+NO automatic follow-on work
+```
+
+Required verdict:
+
+```text
+REPAIR_SPECIFICATION = READY_FOR_SUPERVISOR_OWNER_REVIEW
+or
+REPAIR_SPECIFICATION = BLOCKED_NEEDS_SUPERVISOR_DECISION
+```
+
+Work must return a substantive report beginning:
+
+```text
+Supervisor GPT — Student-5 TRAIN Repair Specification Report
+```
+
+Sentinel-only completion is non-compliant.
 
 ---
 
-## 9 — EXACT SUPERVISOR ACTION NEXT
+## 9 — EXACT SUPERVISOR ACTION WHEN WORK RETURNS
 
 ```text
-1. tell Alberto CP37 is verified and accepted
-2. explain plainly: current TRAIN should not be used for training as-is
-3. recommend a bounded TRAIN repair-specification-only task
-4. obtain joint decision before any TRAIN mutation
-5. if approved, prepare only that specification task for Work
-6. after specification review/acceptance, decide separately whether to create a NEW repaired TRAIN version
-7. Gate-B DEV/evaluator/calibration blockers remain a separate later bounded workstream
-8. training remains prohibited until repaired curriculum and Gate-B readiness are both Supervisor-accepted
+1. read Student-5 continuity and verify current branch HEAD
+2. inspect the repair-spec report/evidence against the exact prompt scope
+3. verify no TRAIN/DEV/Frozen/model/evaluator mutation occurred
+4. separate confirmed fixes, recommendations and unresolved semantic-policy choices
+5. explain the proposed repair to Alberto in plain language
+6. decide together which repair items are approved
+7. only after joint approval prepare one bounded task to create a NEW repaired TRAIN version
+8. preserve TRAIN v1 immutably
+9. separately resolve CP36 DEV/evaluator/calibration blockers before training
+10. training remains prohibited until repaired curriculum + Gate-B readiness are Supervisor-accepted
+11. checkpoint continuity before interruption
 ```
 
 ---
@@ -280,29 +309,25 @@ full engine = NOT DEMONSTRATED
 phone = BLOCKED
 ```
 
-Canonical architecture/design sources:
+Canonical architecture sources:
 
-```text
-docs/MATRIX_ENGINE_COMPLETE_REAL_DESIGN_2026-09-07.md
-docs/MATRIX_INTERMODULE_PROTOCOL.md
-docs/MATRIX_ENGINE_WORK_METHOD.md
-```
+- `docs/MATRIX_ENGINE_COMPLETE_REAL_DESIGN_2026-09-07.md`
+- `docs/MATRIX_INTERMODULE_PROTOCOL.md`
+- `docs/MATRIX_ENGINE_WORK_METHOD.md`
 
-Canonical Memory construction plan:
+Canonical Memory plan:
 
 ```text
 docs/MATRIX_MEMORY_REAL_CONSTRUCTION_PLAN.md
 status = CANONICAL CONSTRUCTION PLAN / NOT YET IMPLEMENTED
 ```
 
-Memory implementation later follows M1→M5 from that plan. Do not redesign it from recollection.
-
 ---
 
 ## 11 — MASTER DEPENDENCY ORDER
 
 ```text
-Student-5 / Matrix-NLU V3 completion + Supervisor acceptance
+Student-5 curriculum repair + Gate-B closure + Matrix-NLU V3 completion + Supervisor acceptance
 → real NLU → Understanding → Context/Retrieval → Authority proof
 → Belief/Authority finalization + Memory M1-M3
 → Memory/Belief convergence
@@ -315,7 +340,7 @@ Student-5 / Matrix-NLU V3 completion + Supervisor acceptance
 → Moto G56
 ```
 
-Nothing in CP37 changes the later roadmap; it inserts required curriculum repair before Student-5 training because that dependency is now evidence-backed.
+The curriculum repair is inserted before training by evidence-backed dependency; later roadmap items remain unchanged.
 
 ---
 
@@ -350,21 +375,21 @@ CONTINUITY MAINTENANCE IS CONSERVATIVE: ARCHIVE, PRESERVE, CORRECT STALE, ADD MI
 
 ## 13 — CONTINUITY SELF-SUFFICIENCY TEST
 
-A fresh Supervisor GPT must be able to answer from this continuity + referenced canonical sources, without asking Alberto to reconstruct history:
+A fresh Supervisor GPT must know without asking Alberto to reconstruct history:
 
 ```text
 [ ] active repo/workstream
 [ ] relevant branch + latest verified checkpoint/HEAD
-[ ] owner / supervisor / executor roles
+[ ] roles
 [ ] last Supervisor-accepted result
-[ ] current bounded assignment and exact prompt, or explicit NO ACTIVE ASSIGNMENT
-[ ] execution status: prepared/executed/verified/accepted
+[ ] current bounded assignment and exact prompt
+[ ] execution state
 [ ] explicit NOT-DONE items
 [ ] blockers/open decisions
-[ ] immutable artifacts and recovery pointers
-[ ] confirmed construction plans and canonical paths
+[ ] immutable artifacts/data and recovery pointers
+[ ] confirmed construction plans
 [ ] exact immediate Supervisor action
-[ ] permanent rules constraining that action
+[ ] permanent rules
 [ ] evidence required before next PASS claim
 ```
 
@@ -374,16 +399,14 @@ If any item is missing or ambiguous, continuity is defective and must be repaire
 
 ## 14 — CONTINUITY MAINTENANCE POLICY
 
-When improving this file:
-
 ```text
-1. archive the current version first when rewriting materially
-2. preserve all still-valid decisions/rules/state
-3. correct only stale or contradictory state
+1. archive current version before material rewrite
+2. preserve still-valid decisions/rules/state
+3. correct only stale/contradictory state
 4. add genuinely missing operational information
-5. mark superseded/historical items rather than silently deleting useful history
-6. do not change architecture/roadmap/gates/confirmed plans merely to simplify prose
-7. any real project-decision change is PROPOSAL ONLY until Alberto + Supervisor decide together
+5. mark historical/superseded items instead of silently deleting useful history
+6. do not change architecture/roadmap/gates/confirmed plans for prose convenience
+7. real project-decision changes remain proposal-only until Alberto + Supervisor decide together
 ```
 
-This v88 update records verified CP37 and the resulting decision point. It does not authorize TRAIN mutation, DEV/Frozen access, evaluator repair or training.
+This v89 update records the owner-authorized repair-specification-only assignment. It does not authorize dataset mutation, DEV/Frozen access, evaluator repair or training.
