@@ -4,308 +4,220 @@ Last updated: 2026-09-07
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Active work branch: `functional-audit-understanding-authority`  
-Continuity schema: `matrix.assembling.continuity.v75`
+Continuity schema: `matrix.assembling.continuity.v76`
 
 ## 0 — NON-NEGOTIABLE WORK METHOD
 
-This section is canonical and supersedes earlier interpretations of “complete” or “working”.
-
-### Demonstration criterion
-
-A module is **not** considered working merely because it compiles, DTOs/contracts exist, serialization passes, unit/contract tests pass, or a test with prebuilt structured fixtures is green.
+A module is **not** considered working because it compiles, has DTO/contracts, serializes correctly, or passes fixture-only/unit tests.
 
 Required closure sequence:
 
 ```text
-1. REAL IMPLEMENTATION PRESENT
-2. REAL INPUT -> REAL MODULE OUTPUT
-3. VERIFY OUTPUT FIELD-BY-FIELD AGAINST EXPECTED BEHAVIOR
-4. VERIFY OUTPUT REACHES THE NEXT REAL MODULE
-5. NORMAL + AMBIGUOUS + ERROR CASES
-6. STRESS / COVERAGE TESTS FOR SEMANTIC OR LEARNED MODULES
-7. ERROR ANALYSIS WITH COUNTS/CATEGORIES
-8. FIX BASED ON OBSERVED ERRORS
-9. RETEST SAME SUITE
-10. REGRESSION TESTS
-11. ONLY THEN CLOSE THE MODULE CHECKPOINT
+REAL IMPLEMENTATION
+-> REAL INPUT
+-> REAL MODULE OUTPUT
+-> FIELD-BY-FIELD EXPECTED/ACTUAL CHECK
+-> REAL HAND-OFF TO NEXT MODULE
+-> NORMAL + AMBIGUOUS + ERROR CASES
+-> STRESS/COVERAGE WHERE APPLICABLE
+-> ERROR ANALYSIS
+-> FIX OBSERVED CAUSES
+-> RETEST SAME SUITE
+-> REGRESSION
+-> ONLY THEN MODULE CHECKPOINT MAY CLOSE
 ```
 
 For NLU/Understanding specifically:
 
 ```text
 raw text
--> actual runtime/model
+-> actual Student-4 runtime/model
 -> actual structured output
--> compare expected semantics
--> stress IT/EN/ES
--> error analysis
+-> expected semantic comparison
+-> IT/EN/ES stress
+-> measured errors
 -> fixes
--> retest/regression
--> then verify hand-off to Authority
+-> identical retest + regression
+-> downstream Authority proof
 ```
 
-Never invent metrics or infer semantic quality from fixture-only tests.
-
-### No incomplete/hypothetical code
+Never invent metrics. Never treat fixture-only tests as proof of linguistic understanding.
 
 Forbidden:
 
 ```text
 placeholder code
-TODO used as implementation
-unfinished functions
-non-compiling snippets presented as solutions
-invented future contracts/modules not grounded in the real runtime
+TODO as implementation
+unfinished/non-compiling implementation
+invented future modules/contracts not grounded in real code
 ```
 
-### Owner workflow
-
-The owner should normally only need to:
+Owner workflow target:
 
 ```text
-1. Fetch/Pull repo
-2. Run exact requested test
-3. Return output
+owner normally only Fetch/Pull -> run exact requested test -> return output
 ```
 
-Repository edits, branches, scripts, fixes and checkpoints are prepared online.
+Repository edits/scripts/branches/checkpoints are prepared online.
 
 ### Approval rule
 
 Before any **new substantive implementation, modification, build or test action**, state exactly what will be done and wait for explicit owner approval.
 
-Continuity/checkpoint preservation is pre-authorized and does not require separate approval.
+Continuity/checkpoint preservation is pre-authorized.
 
-### Interruption rule — mandatory
+### Mandatory interruption rule
 
-If the owner interrupts work, before doing anything unrelated:
-
-```text
-1. Preserve valuable completed work online.
-2. Record repo / branch / HEAD.
-3. Record exact task and interruption point.
-4. Record everything completed.
-5. Record tests/results/errors discovered.
-6. Record decisions/constraints.
-7. Record artifacts/datasets/models/checksums.
-8. Record EVERYTHING STILL TO DO in the interrupted task, in execution order.
-9. Record tests/fixes/regressions still pending.
-10. Record exact restart action and closure condition.
-```
-
-The continuity file must permit exact restart without reconstructing state from chat history.
-
-### Chat + Work coordinated execution rule
-
-The project should use **ChatGPT Work and this chat in coordination**, not as independent unsynchronized workers.
-
-Canonical responsibilities:
+If the owner interrupts work, before unrelated work:
 
 ```text
-THIS CHAT
-- supervisor / architectural control
-- defines next authorized task
-- audits results and evidence
-- keeps module closure criterion consistent
-- verifies GitHub state / commits / CI / tests
-- updates WORK_CONTINUITY.md
-- tracks what Work is doing and what remains
-
-CHATGPT WORK
-- executes substantial authorized repository work when launched by the owner in Work mode
-- may inspect/edit/build/test using its cloud computer/browser/tools
-- must operate only on the explicitly assigned task/repo/branch/scope
-- must not independently change architecture, switch students/models, lower gates, or start unrelated tasks
+1. preserve valuable work online
+2. record repo/branch/HEAD
+3. record exact interruption point
+4. record completed work
+5. record tests/results/defects
+6. record decisions/constraints/artifacts/checksums
+7. record EVERYTHING STILL TO DO in order
+8. record pending tests/fixes/regressions
+9. record exact restart action
+10. record closure condition
 ```
 
-Synchronization requirement:
+### Chat + Work coordination
 
 ```text
-Before Work starts:
-- record assigned objective
-- repo/branch/start HEAD
-- exact allowed scope
-- forbidden scope
-- expected tests/artifacts
-- stop condition
-
-While Work is active:
-- this chat must treat its task as ACTIVE WORK, not duplicate the same implementation
-- parallel work here must be non-conflicting supervision/audit/planning only
-- any new information from Work must be incorporated into the current status
-
-After every Work checkpoint/output:
-- record resulting HEAD/branch/PR
-- files changed
-- tests/builds/benchmarks and results
-- defects found
-- unfinished sub-tasks
-- exact next Work action
+THIS CHAT = supervisor / architecture / audit / evidence / continuity
+CHATGPT WORK = substantial authorized execution when owner launches Work mode
 ```
 
-Important capability boundary:
+Before Work starts record objective, repo, branch, start HEAD, allowed/forbidden scope, required tests and stop condition. While Work is active this chat must not duplicate its implementation. After every Work checkpoint record current HEAD, files changed, tests, defects, artifacts, remaining work and next action.
 
-```text
-This chat cannot silently drive or observe a separate Work session in real time.
-Work must be launched/continued in Work mode by the owner.
-Once Work produces repository commits/PRs/files/results, this chat can inspect them through GitHub and synchronize continuity.
-```
-
-No task may be declared complete merely because Work reports completion; repository evidence and the project demonstration criterion still apply.
+This chat cannot silently observe a separate Work session in real time. Repository-visible Work output must be inspected and synchronized before acceptance.
 
 ---
 
-## 1 — OWNER-APPROVED MACRO EXECUTION ORDER
+## 1 — OWNER-APPROVED MACRO ORDER
 
 ```text
-A. Complete all essential engine modules with real implementations.
-B. For EACH module: demonstrative tests -> error analysis -> fix -> retest -> regression.
-C. Verify inter-module hand-offs and semantic field preservation.
+A. Complete essential engine modules with real implementations.
+B. For each module: demonstrative test -> error analysis -> fix -> retest -> regression.
+C. Verify real inter-module hand-offs and semantic field preservation.
 D. Complete Memory Foundation + real integration.
-E. Run complete desktop/JVM/end-to-end engine cycle.
-F. Fix all P0 and blocking integration defects found end-to-end.
-G. Repeat full regression until remaining issues are mainly quality/improvement, not missing/fake architecture.
+E. Run complete desktop/JVM end-to-end cycle.
+F. Fix P0/blocking integration defects and repeat regression.
+G. Reach an integrated improvable baseline; perfection is not required.
 H. Only then build/test on Moto G56.
-I. Use phone testing for real performance, RAM/CPU, latency, thermal, stability and quality iteration.
+I. Phone phase measures real RAM/CPU/PSS/latency/thermal/stability/behavior and drives later quality improvements.
 ```
-
-Pre-phone target = coherent, integrated, demonstrably executable baseline; not perfection.
 
 ---
 
-## 2 — CANONICAL REPOSITORY STATE
+## 2 — REPOSITORY / BRANCH STATE
 
-### Main
+### `MATRIXNEO23/assembling`
 
 ```text
 main HEAD = 693622ce12f1db6b4bc44753bee756b551c741ea
-PR #22 = merged
-purpose = explicit RetrievalResult claimId + contextSnapshotId binding
+main includes PR #22 explicit RetrievalResult claimId/contextSnapshotId binding
+active branch = functional-audit-understanding-authority
+active branch HEAD before this checkpoint = cf35f26ed47976dc42c57cdd014fcd06b1dac7bd
+backup branch = backup-memorycandidate-wip
+backup MemoryCandidate commit = 9e7413c
+backup status = BACKUP ONLY / NOT CANONICAL / DO NOT AUTO-MERGE
 ```
 
-### Active branch
+### `MATRIXNEO23/memoria`
 
 ```text
-branch = functional-audit-understanding-authority
-HEAD before this continuity update = 6b05299dc703a23280b92a1659d479d76b9863ce
-base = main 693622ce12f1db6b4bc44753bee756b551c741ea
-status = active audit/fix branch; not yet canonical main
+main HEAD = cde91db20d97e0792b61db15144faf1430fd27bc
+branches = main, python-authority-p0-v1 only
+python-authority-p0-v1 final head = f28fd33bbf3297072ef4873514ae0a551ea4576b
+PR #1 merged as b8cc7e2133868049550d3c63d78f69da8f830f20
 ```
 
-### Preserved WIP branch
+Important discovery on 2026-09-07:
 
 ```text
-branch = backup-memorycandidate-wip
-commit = 9e7413c
-purpose = preserve experimental MemoryCandidate contract/test
-status = BACKUP ONLY / NOT CANONICAL / DO NOT MERGE AUTOMATICALLY
+memoria/main currently contains:
+- memory/models.py
+- memory/authority_models.py
+- memory/authority_resolver.py
+- tests/test_authority_resolver_p0.py
+
+memoria/main DOES NOT currently contain the full historical Memory Foundation files:
+- memory/schema.py
+- memory/database.py
+- memory/repository.py
+- memory/admission.py
+- memory/admission_models.py
+- corresponding Memory Foundation tests
 ```
+
+The full Memory Foundation was recovered from the user's ChatGPT Library and therefore MUST NOT be re-invented from scratch.
 
 ---
 
-## 3 — CLOSED HISTORICAL CHECKPOINTS — DO NOT REDO
+## 3 — CLOSED / PRESERVED CHECKPOINTS
 
 ### Understanding V3 code/contract checkpoint
 
 ```text
-CP-U3 PR = #19
+PR #19
 final head = 649af878630e49eba2934b14dd45862fcfb8de5b
 merge = 089cb7169c5f511ffd5d27b8a1d5e887c4348b0c
 post-merge CI = 33966306986 SUCCESS
 ```
 
-Structural path:
+Interpretation:
 
 ```text
-Matrix-NLU V3 runtime output
--> CanonicalUnderstandingV3Adapter
--> MipUnderstandingV3Observation
--> MipUnderstandingV3Claim[]
--> MatrixTurnFrame.canonicalUnderstandingV3
+contract/adapter code checkpoint = CLOSED
+raw-text real comprehension = NOT YET DEMONSTRATED IN ASSEMBLING
 ```
 
-Correct current interpretation:
+### Python Authority P0
+
+Closed defects:
 
 ```text
-CODE/CONTRACT/ADAPTER CHECKPOINT = COMPLETE
-RAW-TEXT REAL COMPREHENSION IN ASSEMBLING = NOT YET DEMONSTRATED
+hardcoded owner removed
+regex/free-text property extraction removed from Authority path
+actor-overlap/content-difference false contradiction removed
+structured semantic contradiction rules preserved
 ```
 
-### Python Authority Resolver P0
-
-Repository `MATRIXNEO23/memoria`:
+### Understanding V3 -> Authority wiring
 
 ```text
-branch = python-authority-p0-v1
-final head = f28fd33bbf3297072ef4873514ae0a551ea4576b
-PR = memoria #1
-pre-merge CI = 34020629980 SUCCESS
-merge = b8cc7e2133868049550d3c63d78f69da8f830f20
-continuity closure = cde91db20d97e0792b61db15144faf1430fd27bc
-```
-
-Closed P0s:
-
-```text
-hardcoded owner -> removed
-regex/free-text property extraction -> removed from Authority path
-actor-overlap/content-difference false conflict -> replaced with structured semantic contradiction rules
-```
-
-### Understanding V3 -> Authority original wiring
-
-```text
-branch = cp-a2-v3-authority-wiring
-PR = #21
+PR #21
 head = b7ea750665a563cbca673b4050a72adc21275a8e
-CI = 34020878347 SUCCESS
 merge = d3994e59008aac648576a252eac0d7c4e1028589
+CI = 34020878347 SUCCESS
 ```
 
-Originally a wiring/code checkpoint; not proof of raw-language understanding.
+This was a wiring/code checkpoint, not proof of raw-language understanding.
 
----
+### Retrieval binding
 
-## 4 — RETRIEVAL BINDING — CONTRACT/WIRE FIX MERGED
-
-Merged PR #22 added explicit binding:
+PR #22 merged to main:
 
 ```text
-RetrievalQuery.claimId: MipField<String>
-RetrievalQuery.contextSnapshotId: mandatory nonblank String
-RetrievalResult.claimId: MipField<String>
-RetrievalResult.contextSnapshotId: MipField<String>
-RetrievalResult.requireBinding(...)
+RetrievalQuery.claimId
+RetrievalQuery.contextSnapshotId
+RetrievalResult.claimId
+RetrievalResult.contextSnapshotId
+explicit binding validation
 ```
 
-Wire rules:
+Owner tests before merge:
 
 ```text
-missing newly introduced semantic binding -> UNRESOLVED
-malformed PRESENT -> error
-missing mandatory RetrievalQuery.contextSnapshotId -> error
-NO_MATCH is retrieval outcome, not identity state
+verify_evidence_wire.sh = BUILD SUCCESSFUL
+gradle test = BUILD SUCCESSFUL
+gradle clean test = BUILD SUCCESSFUL
 ```
 
-Owner local evidence before merge:
-
-```text
-verify_evidence_wire.sh -> BUILD SUCCESSFUL
-full gradle test -> BUILD SUCCESSFUL
-clean test -> BUILD SUCCESSFUL
-```
-
-Merge:
-
-```text
-693622ce12f1db6b4bc44753bee756b551c741ea
-```
-
----
-
-## 5 — FUNCTIONAL AUDIT: UNDERSTANDING V3 -> AUTHORITY
-
-### Defect demonstrated
+### Structured Understanding -> Authority functional defect/fix
 
 Owner first ran:
 
@@ -316,31 +228,17 @@ bash run_functional_audit.sh
 Observed:
 
 ```text
-existing structured single-claim checks = BUILD SUCCESSFUL
-multi-claim explicit retrieval-binding test = FAILED
+single-claim structured path = PASS
+multi-claim retrieval binding = FAIL
 ```
 
-Root cause in real runtime:
+Root cause:
 
 ```text
-CanonicalUnderstandingV3AuthorityPort.retrievalForClaim(...)
-old behavior:
-1 claim + 1 result -> bind
-otherwise -> UNRESOLVED
+CanonicalUnderstandingV3AuthorityPort still used legacy 1-claim/1-result-only binding and returned UNRESOLVED for multi-claim turns.
 ```
 
-Thus contract green had not fixed runtime behavior.
-
-### Runtime fix on active branch
-
-Active branch changed the Authority port to consume explicit:
-
-```text
-RetrievalResult.claimId
-RetrievalResult.contextSnapshotId
-```
-
-with fail-closed matching and no list-order/query-id guessing.
+Active branch fix now consumes explicit RetrievalResult `claimId` + `contextSnapshotId`, fail-closed, no list-order/query-id guessing.
 
 Permanent regression added:
 
@@ -348,64 +246,56 @@ Permanent regression added:
 src/test/kotlin/matrix/assembling/authority/runtime/CanonicalUnderstandingV3AuthorityRetrievalBindingTest.kt
 ```
 
-### Owner retest after fix
+Owner retest:
 
 ```text
-bash run_functional_audit.sh
+single-claim structured path = BUILD SUCCESSFUL
+multi-claim explicit retrieval binding = BUILD SUCCESSFUL
 ```
 
-Result:
+Correct verdict:
 
 ```text
-[1/2] Existing real structured-path checks -> BUILD SUCCESSFUL
-[2/2] Multi-claim explicit retrieval-binding check -> BUILD SUCCESSFUL
-
-SINGLE-CLAIM STRUCTURED PATH: VERIFIED BY EXISTING REAL TESTS
-MULTI-CLAIM RETRIEVAL BINDING: WORKS
-```
-
-Correct classification:
-
-```text
-Understanding V3 -> Authority STRUCTURED HAND-OFF = VERIFIED for tested single/multi-claim cases
-Raw-text NLU comprehension = NOT PROVEN BY THIS TEST
-Global MIP runtime = NOT YET PROVEN
+structured hand-off Understanding V3 -> Authority = VERIFIED for tested single/multi-claim cases
+raw-text understanding = NOT PROVEN
+Global MIP = NOT PROVEN
 ```
 
 ---
 
-## 6 — CURRENT NLU ARTIFACT — PRESERVE / DO NOT SUBSTITUTE
+## 4 — CURRENT NLU ARTIFACT — PRESERVE
 
-Current candidate remains Student-4 v2.2A mixed/head-protected.
+Do not switch model as a side task.
 
 ```text
+Student-4 v2.2A mixed/head-protected
 status = EXPERIMENTAL_TEST_CANDIDATE / NOT_PRODUCTION_APPROVED
 ZIP bytes = 356134801
 ZIP SHA-256 = 4998ce2f44dd8553d75f86b8d7975529f6a5f779de9107eef393648022d6ccb5
-mixed INT8 ONNX = matrix-nlu-mixed-head-protected-int8.onnx
+ONNX = matrix-nlu-mixed-head-protected-int8.onnx
 ONNX bytes = 149711344
 ONNX SHA-256 = 738a4d052790367509d55487b649b71aaa029d839135693bb5be46f74d55ef70
 quantization = dynamic INT8 encoder + protected Matrix heads FP32
 ```
 
-Current decisions:
+Rules:
 
 ```text
-DO NOT SWITCH NLU MODEL
-DO NOT START PHONE TEST YET
-DO NOT OPEN STUDENT-5 AS A SIDE TASK
+DO NOT replace with Student-5 automatically
+DO NOT start phone test before engine baseline closure
+DO NOT open Student-5 as parallel side work
 ```
-
-Student-5 remains separately preserved and must not overwrite/replace Student-4 automatically.
 
 ---
 
-## 7 — MEMORY FOUNDATION — CURRENT IMMEDIATE PRIORITY
+## 5 — MEMORY FOUNDATION: CURRENT REAL STATUS
 
-Canonical semantic architecture:
+Memory has **NOT been implemented/integrated yet** in the current engine. This must not be described as complete.
+
+### Canonical architecture
 
 ```text
-TypedClaim / canonical claim
+canonical TypedClaim
 -> Authority Resolver
 -> Memory Admission
 -> MemoryRepository
@@ -416,267 +306,448 @@ Hard invariants:
 ```text
 GGUF/NLU never access persistence directly
 Authority may read evidence but never write Memory
-semantic change uses supersede() and preserves lineage
-Memory Admission schema v3 uses explicit contradicts_memory_id
 Authority owns semantic contradiction detection
-Memory Admission must not infer contradiction from text difference/shared actors
+Memory Admission consumes explicit contradicts_memory_id
+Memory Admission must not infer contradiction from shared actors/text difference
+semantic changes use supersede()
+lineage is preserved
 contradiction != supersession
 correction != automatic supersession
 temporal change != contradiction by default
+confidence != authority
 ```
 
-Pre/post response architecture:
+Pre/post-response split:
 
 ```text
-PRE-RESPONSE READ/ENRICH
--> retrieval/index probe
--> no durable write
+PRE-RESPONSE READ/ENRICH -> retrieval/index -> no durable write
+PRE-RESPONSE PROPOSE -> MemoryPreflightPort -> ephemeral only
+POST-VALIDATION COMMIT -> PersistentConsolidationPort -> Memory Admission -> MemoryRepository -> atomic durable operation
+```
 
-PRE-RESPONSE EVALUATE/PROPOSE
--> MemoryPreflightPort
--> ephemeral candidate/proposal only
+Current `assembling` reality:
 
-POST-VALIDATION COMMIT
--> PersistentConsolidationPort
+```text
+NoPersistentMemoryAdmission = temporary no-backend preflight
+PersistentConsolidationPort = interface only
+real durable MemoryRepository = NOT INTEGRATED
+real Retrieval backend = NOT INTEGRATED
+MemoryCandidate WIP = backup branch only
+```
+
+---
+
+## 6 — RECOVERED CANONICAL MEMORY FOUNDATION FROM USER LIBRARY
+
+Recovered source files:
+
+```text
+memory/__init__.py
+memory/models.py
+memory/schema.py
+memory/database.py
+memory/repository.py
+memory/admission.py
+memory/admission_models.py
+```
+
+Recovered behavior/invariants from the real reference:
+
+### Schema v3
+
+```text
+memories table includes:
+owner, memory_type, category, content, summary, actors, entities,
+world_time, real_time, location_id, authority, provenance,
+source_event_id, confidence, salience, emotional_weight,
+validity, superseded_by, revision_of, revision_count,
+contradicts_memory_id, links, goal_id, timestamps/access metadata
+
+normalized memory_actors and memory_entities tables
+foreign keys enabled
+FTS5 content+summary
+indexes for owner/type/time, validity, goal, revision lineage, contradiction id
+```
+
+### Database contract
+
+```text
+SQLite reference only; Android production must translate contract to Room/Kotlin
+PRAGMA journal_mode=WAL
+PRAGMA foreign_keys=ON
+transaction() commits on success, rolls back on exception
+```
+
+### Repository contract
+
+```text
+save
+get_by_id
+get_by_owner
+get_by_actor
+metadata-only update
+supersede
+mark superseded
+lineage rooted at original revision
+semantic fields cannot be directly updated
+```
+
+`update_metadata()` allows only metadata such as confidence/salience/emotional_weight/links/goal_id. Semantic changes (`content`, `summary`, `actors`, `entities`) must go through `supersede()`.
+
+### Admission contract
+
+```text
+AdmissionDecision = SAVE / SUPERSEDE / REJECT / IGNORE
+explicit contradicts_memory_id drives conflict lookup
+no contradicts_memory_id => Admission does not invent a conflict
+higher Authority outranks lower Authority
+same Authority may use confidence/recency for supersede decision
+```
+
+---
+
+## 7 — RECOVERED MEMORY FOUNDATION TEST EVIDENCE / REQUIRED PORTING REGRESSIONS
+
+Recovered canonical tests include at least:
+
+```text
+tests/conftest.py
+test_memory_admission.py
+test_memory_admission_authority.py
+test_memory_admission_supersede.py
+test_atomic_rollback.py
+test_lineage_protection.py
+test_semantic_update.py
+```
+
+Required behaviors demonstrated by those reference tests and therefore mandatory in Kotlin/Room port:
+
+### Atomic rollback with fault injection
+
+```text
+save(new revision) succeeds
+mark_superseded(old,new) is forced to fail
+transaction rollback must remove new revision
+old record remains VALID with superseded_by=null
+```
+
+### Lineage/delete protection
+
+```text
+A -> B -> C
+A revision_of=null, superseded_by=B
+B revision_of=A, superseded_by=C
+C revision_of=A, superseded_by=null
+revision_count 0/1/2
+foreign keys prevent physical deletion that would break lineage
+```
+
+### Semantic update protection
+
+```text
+repository has no generic semantic update path
+update_metadata rejects content/summary/actors/entities
+semantic evolution occurs only through supersede()
+old record remains frozen/superseded
+new record contains changed semantics
+normalized actor/entity tables remain consistent
+```
+
+### Admission / Authority behavior
+
+```text
+SAVE for valid accepted records
+REJECT for invalid/missing/low-confidence according to criteria
+IGNORE for duplicate/low-salience cases
+SUPERSEDE only with explicit contradiction identity and authority/confidence/recency rules
+lower-authority evidence must not supersede higher-authority memory
+WORLD_TRUTH outranks lower classes
+```
+
+### Persistence/restart requirement
+
+Historical test suite explicitly included database restart/reopen integrity. This remains a mandatory porting test even if the exact standalone file has not yet been isolated from Library search.
+
+---
+
+## 8 — CURRENT INTERRUPTION POINT
+
+The owner interrupted while the supervisor was auditing Memory. No Memory implementation was started.
+
+Completed before interruption:
+
+```text
+1. verified `memoria/main` does not contain full Memory Foundation
+2. verified only `main` and `python-authority-p0-v1` branches exist
+3. recovered canonical Memory Foundation source files from Library
+4. recovered canonical Admission/rollback/lineage/semantic-update tests from Library
+5. confirmed current `assembling` only has no-persistence preflight + future consolidation interface
+6. confirmed experimental MemoryCandidate branch is not a substitute for real Memory Foundation
+```
+
+No new Memory production code, Room implementation, build, or Memory test was executed during this audit.
+
+---
+
+## 9 — EVERYTHING STILL TO DO FOR MEMORY, IN ORDER
+
+### M0 — Preserve canonical reference online
+
+```text
+1. Select one exact recovered version of each canonical Memory Foundation source file.
+2. Select one exact canonical copy of each required test; ignore duplicate Library copies.
+3. Put the recovered Python reference + tests online in `MATRIXNEO23/memoria` on a dedicated branch.
+4. Do not overwrite the already-fixed Authority Resolver.
+5. Run the Python reference suite and record PASS/FAIL count.
+6. Fix only genuine reference/recovery inconsistencies if found.
+7. Update both Memory and Assembling continuity checkpoints.
+```
+
+Closure condition M0:
+
+```text
+full canonical Memory Foundation source + tests are durably online and reproducibly green as reference
+```
+
+### M1 — Freeze exact Kotlin/Room contract mapping
+
+Map, do not redesign casually:
+
+```text
+MemoryRecord fields
+schema v3 constraints/FKs/indexes
+SAVE
+SUPERSEDE
+metadata update
+lineage
+protected delete
+atomic transaction
+explicit contradicts_memory_id
+Admission SAVE/SUPERSEDE/REJECT/IGNORE
+```
+
+Identify the actual Android-capable target. `assembling` itself is currently JVM-only, therefore do not create fake Room merely to satisfy a checkbox.
+
+### M2 — Implement real persistence/admission
+
+```text
+Room entities/DAO/database/transactions in the actual Android-capable integration target
+Memory Admission consuming canonical claim + AuthorityResolution
+AuthorityResolution contradiction identity mapped explicitly
+no raw-text conflict inference
+PersistentConsolidationPort implementation after validation
+```
+
+### M3 — Demonstrative Memory tests
+
+At minimum:
+
+```text
+SAVE -> actual persisted row
+READ -> exact record returned
+metadata update -> only permitted metadata changes
+SUPERSEDE -> old/new states + rooted lineage
+explicit contradiction target preserved
+lower authority cannot wrongly supersede higher authority
+rollback fault injection -> no partial write
+protected lineage deletion
+restart/reopen -> correct current/history still present
+idempotency/duplicate behavior
+ambiguous/unresolved contradiction -> fail closed
+```
+
+### M4 — Real Authority -> Memory hand-off
+
+Field-by-field verify:
+
+```text
+claimId
+owner
+subject/target/perspective/source where relevant
+predicate/object/polarity/temporal scope
+Authority class
+Authority resolution confidence
+source reliability if available
+contradictedMemoryRef
+candidate refs
+provenance/context snapshot
+```
+
+No field may silently disappear or be invented.
+
+### M5 — Retrieval
+
+```text
+index probe on normal turn
+hydrate/rerank where needed
+current vs historical distinction
+superseded memory not treated as current
+irrelevant memories must not win
+historical lineage remains retrievable
+NO_MATCH != INDEX_UNAVAILABLE/ERROR
+```
+
+### M6 — Persistent consolidation
+
+```text
+accepted response/action
+-> Output Validation
+-> Persistent Consolidation
 -> Memory Admission
 -> MemoryRepository
--> atomic SAVE / SUPERSEDE / metadata operation
+-> atomic durable operation
 ```
 
-Current Assembling reality:
+No durable write before output validation.
+
+### M7 — Memory integration E2E
+
+Required demonstrative scenarios:
 
 ```text
-NoPersistentMemoryAdmission = compatibility/no-backend path
-PersistentConsolidationPort = interface only
-real durable Kotlin/Room persistence in assembling = NOT IMPLEMENTED
-MemoryCandidate experiment = backup branch only
+"Vivo a Milano" -> save -> later retrieval returns Milano
+"Prima vivevo a Venezia, ora vivo a Milano" -> current/history correct
+"Marco dice che Anna vive a Roma" -> REPORT, not WORLD_TRUTH
+"Mi ero sbagliato, vivo a Torino" -> correct SUPERSEDE + lineage
+restart -> correct memory still retrievable
+forced persistence failure -> atomic rollback
 ```
 
-Real Python Memory Foundation exists in `MATRIXNEO23/memoria` and must remain the semantic reference.
-
----
-
-## 8 — MODULE VERDICTS UNDER STRICT CRITERION
-
-```text
-Understanding V3 contracts/adapter = CODE COMPLETE; REAL RAW-TEXT COMPREHENSION NOT YET DEMONSTRATED IN ASSEMBLING
-Authority resolver = REAL STRUCTURED RESOLVER EXISTS; broader functional/stress closure still required
-Understanding -> Authority = TESTED/PASS for current structured single + multi-claim cases
-Retrieval contracts/wire = TESTED/PASS for implemented binding behavior
-Retrieval complete runtime/index = NOT YET DEMONSTRATED
-Memory Admission/Repository integration = NOT COMPLETE
-Persistent consolidation = NOT IMPLEMENTED
-Coherence = compatibility/basic path; final real-module proof pending
-Affective = adapter/basic implementation; final demonstrative proof pending
-Relationship = NOT WIRED
-Intimacy/Consent = NOT WIRED
-Goal/Decision = NOT WIRED
-GGUF in assembling = Echo/fake smoke adapter; REAL GGUF PATH NOT COMPLETE
-Output Validator = interface/partial; real path not complete
-Reflection = future/not complete
-Global MIP = NOT DEMONSTRATED
-End-to-end engine = NOT YET READY FOR CLOSURE
-Phone baseline = BLOCKED UNTIL ENGINE BASELINE CLOSURE
-```
-
----
-
-## 9 — WORK INTERRUPTED / EVERYTHING STILL TO DO
-
-### Phase 1 — close Memory Foundation integration
-
-```text
-1. Audit actual Memory Foundation implementation in MATRIXNEO23/memoria against current canonical contracts.
-2. Identify exact Android/Kotlin integration target; do not add fake Room to JVM-only module.
-3. Implement real boundary canonical AuthorityResolution -> Memory Admission/Repository.
-4. Preserve contradiction identity, provenance, owner/scope, confidence separation and lineage.
-5. Implement/finish durable post-validation consolidation path.
-6. Demonstrative Memory tests:
-   - save
-   - retrieve
-   - reinforce/update metadata as allowed
-   - supersede with lineage
-   - explicit contradiction identity
-   - rollback/atomic failure
-   - deletion/lineage protection
-   - ambiguous/unresolved fail-closed behavior
-7. Test Authority -> Memory real hand-off field-by-field.
-8. Fix observed defects.
-9. Rerun Memory + Authority regressions.
-```
+Fix all observed defects, rerun same suite, then regress Authority/Understanding hand-offs.
 
 Memory closure condition:
 
 ```text
-A real claim/resolution can be admitted/rejected/superseded through actual repository behavior with semantics/lineage preserved and regression evidence.
+real canonical claim + AuthorityResolution can be admitted/rejected/superseded through actual durable repository behavior; lineage, contradiction identity, persistence and rollback are demonstrated; retrieval can consume resulting state; regressions are green.
 ```
 
-### Phase 2 — close remaining essential modules one at a time
+---
 
-For each:
+## 10 — REMAINING ENGINE WORK AFTER MEMORY
+
+Do not jump here before Memory required suite closes.
+
+For each actual module in dependency order:
 
 ```text
-implementation audit
--> real demonstrative test
--> edge/ambiguity/error cases
--> field preservation to next module
--> error analysis
--> fix
--> retest
--> regression
+implementation audit -> real demonstrative test -> ambiguity/error -> hand-off -> error analysis -> fix -> retest -> regression
 ```
 
-Known remaining essential areas include:
+Known incomplete areas:
 
 ```text
-Context/Retrieval
-Coherence
-Affective
+Context/Retrieval runtime
+Coherence final behavior
+Affective final demonstrative proof
 Relationship
-Intimacy/Consent where required by final engine design
-Goal/Decision where required by final engine design
+Intimacy/Consent where required
+Goal/Decision
 real GGUF adapter
 Output Validator
 Persistent Consolidation
 ```
 
-Actual orchestrator dependency graph decides order; do not invent modules merely to fill a plan.
+Raw NLU proof remains required using current Student-4, not a replacement model.
 
-### Phase 3 — real NLU/Understanding proof
+---
 
-```text
-1. Execute actual Student-4 runtime/model on raw phrases.
-2. IT/EN/ES stress suite.
-3. Cover negation, temporal, referents, reports, corrections, requests/goals, ownership, multi-claim, ambiguity and combined cases.
-4. Produce measured error counts/categories.
-5. Fix only observed problems.
-6. Retest identical suite plus regression.
-7. Verify resulting real claims through Authority/downstream modules.
-```
+## 11 — COMPLETE ENGINE END-TO-END BEFORE PHONE
 
-### Phase 4 — complete end-to-end
-
-Required proof path:
+Required path:
 
 ```text
 raw user input
--> real NLU/Understanding
+-> real Student-4 NLU/Understanding
 -> context/retrieval
 -> Authority
--> Memory preflight/admission
--> real MemoryRepository / consolidation
--> affective/relationship/goal/decision modules as wired
+-> Memory preflight/proposal
+-> affective/relationship/goal/decision as wired
 -> prompt builder
 -> real GGUF
 -> output validator
--> post-validation persistent consolidation
--> final response + diagnostics
+-> persistent consolidation
+-> Memory Admission
+-> MemoryRepository
+-> future retrieval
+-> final response + diagnostic trace
 ```
 
-Required checks:
+Required properties:
 
 ```text
-no semantic field silently lost
-no field invented without provenance
-no illegal direct persistence path
-no P0 runtime defect
+no illegal direct persistence
+no silent semantic field loss
+no invented state without provenance
+P0 runtime defects eliminated
 blocking regressions green
-causal/diagnostic trace explains decisions
+diagnostics identify first divergence and reason codes
 ```
 
-Fix defects and repeat until baseline closure.
-
-### Phase 5 — Moto G56
-
-Only after Phases 1-4:
-
-```text
-build/install Android baseline
--> real Student-4 NLU
--> real engine cycle
--> real GGUF
--> physical-device tests
--> CPU/RAM/PSS/latency/thermal/stability
--> behavioral quality tests
--> iterative improvements
-```
-
-Goal = improvable baseline, not perfection.
+Only after this reaches an integrated improvable baseline does Moto G56 testing start.
 
 ---
 
-## 10 — CHATGPT WORK TASK LEDGER
-
-Current state at this checkpoint:
+## 12 — CHATGPT WORK LEDGER
 
 ```text
-Work session task = NONE CURRENTLY SYNCHRONIZED IN THIS CHAT
-Work repo/branch/HEAD = UNKNOWN UNTIL OWNER PROVIDES OR WORK COMMITS ARE VISIBLE
-Do not assume Work is idle or finished without evidence.
+WORK OBJECTIVE = not currently synchronized from an active Work session
+WORK REPOSITORY = unknown until Work session reports/commits are visible
+WORK BRANCH = unknown
+WORK START HEAD = unknown
+WORK CURRENT HEAD = unknown
+CURRENT OPERATION = none verified in this chat
 ```
 
-When Work is started/continued, populate this ledger immediately:
+When Work is launched for Memory, recommended assignment is **M0 recovery/preservation first**, not Room implementation yet.
+
+Required Work task record before launch:
 
 ```text
-WORK OBJECTIVE =
-WORK REPOSITORY =
-WORK BRANCH =
-WORK START HEAD =
-WORK CURRENT HEAD =
-AUTHORIZED FILES/SCOPE =
-FORBIDDEN SCOPE =
-CURRENT OPERATION =
-COMPLETED SUBTASKS =
-TESTS/RESULTS =
-DEFECTS FOUND =
-ARTIFACTS/CHECKSUMS =
-REMAINING SUBTASKS =
-NEXT WORK ACTION =
-STOP/CLOSURE CONDITION =
+OBJECTIVE = recover canonical Python Memory Foundation + tests into memoria without changing Authority semantics
+REPO = MATRIXNEO23/memoria
+START HEAD = cde91db20d97e0792b61db15144faf1430fd27bc
+ALLOWED = recovered Memory Foundation source/tests + continuity + CI needed to run them
+FORBIDDEN = changing NLU, assembling architecture, Authority semantic rules, Student-4/5, phone build
+EXPECTED = canonical source online + complete test execution + report
+STOP = after reference suite result and checkpoint; no Kotlin/Room yet
 ```
 
-This ledger must be updated after every significant Work checkpoint so this chat can supervise without duplicating or conflicting work.
+This chat should supervise that Work task and must not duplicate its implementation while active.
 
 ---
 
-## 11 — OWNER LOCAL TEST ENVIRONMENT
+## 13 — OWNER LOCAL ENVIRONMENT
 
 ```text
-repo path = C:\Users\matri\Documents\GitHub\assembling
+assembling path = C:\Users\matri\Documents\GitHub\assembling
 Java 17 = C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot
 Gradle = $HOME/gradle/gradle-9.7.1
 Git = 2.55.0.windows.5
 ```
 
-`run_functional_audit.sh` configures the known Java/Gradle path for current functional audit.
+Owner should not be asked to create/copy project files manually unless unavoidable.
 
 ---
 
-## 12 — EXACT RESTART POINT
+## 14 — EXACT RESTART POINT
 
 ```text
-ACTIVE REPO = MATRIXNEO23/assembling
-ACTIVE BRANCH = functional-audit-understanding-authority
-HEAD BEFORE THIS CONTINUITY UPDATE = 6b05299dc703a23280b92a1659d479d76b9863ce
-LAST OWNER-RUN TEST = bash run_functional_audit.sh
-LAST RESULT = structured single-claim PASS + multi-claim retrieval binding PASS
-MAIN = 693622ce12f1db6b4bc44753bee756b551c741ea
-
-CURRENT MACRO OBJECTIVE = close engine modules before end-to-end and Moto G56
-CURRENT IMMEDIATE PRIORITY = Memory Foundation real integration
-PHONE TEST = NOT YET
-STUDENT-5 SIDE WORK = STOPPED / DO NOT CONTINUE
-MEMORYCANDIDATE BACKUP = PRESERVED / NOT CANONICAL
-WORK COORDINATION = REQUIRED; no duplicated/conflicting task
+ACTIVE SUPERVISOR TASK = Memory Foundation recovery/integration preparation
+INTERRUPTION POINT = after canonical Memory source/tests were found in Library; before any implementation
+MEMORY STATUS = NOT IMPLEMENTED / NOT INTEGRATED
+NEXT REQUIRED TASK = M0 preserve full canonical Python Memory Foundation + tests online in `MATRIXNEO23/memoria`
+NEXT IMPLEMENTATION AFTER M0 = map verified reference to actual Android Kotlin/Room target
+PHONE TEST = BLOCKED UNTIL module demonstrations + fixes + full E2E baseline
+CURRENT NLU = Student-4 v2.2A; DO NOT SUBSTITUTE
+STUDENT-5 = preserved but side work stopped
+MEMORYCANDIDATE WIP = preserved separately; not canonical
 ```
 
-### Exact next substantive action — requires owner approval
+### Next substantive action — REQUIRES OWNER APPROVAL
 
 ```text
-Audit the actual Memory Foundation code and current integration boundary,
-identify the first real missing implementation required for
-AuthorityResolution -> Memory Admission -> MemoryRepository,
-and prepare one complete implementation/test cycle for that concrete gap.
+M0: recover one canonical copy of each Memory Foundation source/test from Library,
+put them online on a dedicated `memoria` branch without changing Authority semantics,
+run the complete Python reference test suite,
+and report exact PASS/FAIL + remaining defects.
 ```
-
-Before starting that substantive action, wait for explicit owner approval.
