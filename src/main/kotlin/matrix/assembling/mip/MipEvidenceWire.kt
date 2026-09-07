@@ -62,6 +62,7 @@ object MipEvidenceWire {
         "queryId" to value.queryId,
         "purpose" to value.purpose.name,
         "agentId" to value.agentId,
+        "claimId" to fieldToWire(value.claimId) { it },
         "subjectRefs" to value.subjectRefs.map(::entityToWire),
         "entityRefs" to value.entityRefs.map(::entityToWire),
         "predicates" to value.predicates,
@@ -79,6 +80,7 @@ object MipEvidenceWire {
         queryId = wire.requireString("queryId"),
         purpose = wire.requireEnum("purpose", RetrievalPurpose::valueOf),
         agentId = wire.requireString("agentId"),
+        claimId = wire.optionalFieldOrUnresolved("claimId") { it as? String },
         subjectRefs = wire.requireObjectList("subjectRefs").map(::entityFromWire),
         entityRefs = wire.requireObjectList("entityRefs").map(::entityFromWire),
         predicates = wire.requireStringList("predicates"),
@@ -97,6 +99,8 @@ object MipEvidenceWire {
     fun retrievalResultToWire(value: RetrievalResult): Map<String, Any?> = mapOf(
         "queryId" to value.queryId,
         "status" to value.status.name,
+        "claimId" to fieldToWire(value.claimId) { it },
+        "contextSnapshotId" to fieldToWire(value.contextSnapshotId) { it },
         "candidateRefs" to value.candidateRefs,
         "selectedRefs" to value.selectedRefs,
         "scores" to value.scores.map {
@@ -112,6 +116,8 @@ object MipEvidenceWire {
     fun retrievalResultFromWire(wire: Map<String, Any?>): RetrievalResult = RetrievalResult(
         queryId = wire.requireString("queryId"),
         status = wire.requireEnum("status", RetrievalStatus::valueOf),
+        claimId = wire.optionalFieldOrUnresolved("claimId") { it as? String },
+        contextSnapshotId = wire.optionalFieldOrUnresolved("contextSnapshotId") { it as? String },
         candidateRefs = wire.requireStringList("candidateRefs"),
         selectedRefs = wire.requireStringList("selectedRefs"),
         scores = wire.requireObjectList("scores").map {
@@ -190,17 +196,23 @@ object MipEvidenceWire {
         resolutionStatus = wire.requireEnum("resolutionStatus", MipEntityResolutionStatus::valueOf),
     )
 
-    private fun <T> fieldToWire(field: MipField<T>, encode: (T) -> Any?): Map<String, Any?> = mapOf(
+    private fun <T> fieldToWire(
+        field: MipField<T>,
+        encode: (T) -> Any?,
+    ): Map<String, Any?> = mapOf(
         "status" to field.status.name,
         "value" to field.value?.let(encode),
     )
 }
 
 private fun Map<String, Any?>.requireObject(key: String): Map<String, Any?> =
-    this[key].asStringAnyMapOrNull() ?: throw MipContractException("Missing or non-object field: $key")
+    this[key].asStringAnyMapOrNull()
+        ?: throw MipContractException("Missing or non-object field: $key")
 
 private fun Map<String, Any?>.requireObjectList(key: String): List<Map<String, Any?>> {
-    val raw = this[key] as? List<*> ?: throw MipContractException("Missing or non-list field: $key")
+    val raw = this[key] as? List<*>
+        ?: throw MipContractException("Missing or non-list field: $key")
+
     return raw.mapIndexed { index, value ->
         value.asStringAnyMapOrNull()
             ?: throw MipContractException("$key[$index] must be an object")
@@ -208,51 +220,73 @@ private fun Map<String, Any?>.requireObjectList(key: String): List<Map<String, A
 }
 
 private fun Map<String, Any?>.requireString(key: String): String =
-    (this[key] as? String)?.takeIf { it.isNotBlank() }
+    (this[key] as? String)
+        ?.takeIf { it.isNotBlank() }
         ?: throw MipContractException("Missing/blank/non-string field: $key")
 
 private fun Map<String, Any?>.requireStringAllowEmpty(key: String): String =
-    this[key] as? String ?: throw MipContractException("Missing/non-string field: $key")
+    this[key] as? String
+        ?: throw MipContractException("Missing/non-string field: $key")
 
-private fun Map<String, Any?>.optionalString(key: String): String? = when (val value = this[key]) {
-    null -> null
-    is String -> value
-    else -> throw MipContractException("$key must be string or null")
-}
+private fun Map<String, Any?>.optionalString(key: String): String? =
+    when (val value = this[key]) {
+        null -> null
+        is String -> value
+        else -> throw MipContractException("$key must be string or null")
+    }
 
 private fun Map<String, Any?>.requireBoolean(key: String): Boolean =
-    this[key] as? Boolean ?: throw MipContractException("Missing/non-boolean field: $key")
+    this[key] as? Boolean
+        ?: throw MipContractException("Missing/non-boolean field: $key")
 
 private fun Map<String, Any?>.requireInt(key: String): Int {
-    val number = this[key] as? Number ?: throw MipContractException("Missing/non-number field: $key")
+    val number = this[key] as? Number
+        ?: throw MipContractException("Missing/non-number field: $key")
+
     val long = number.toLong()
-    if (number.toDouble() != long.toDouble() || long !in Int.MIN_VALUE..Int.MAX_VALUE) {
+
+    if (
+        number.toDouble() != long.toDouble() ||
+        long !in Int.MIN_VALUE..Int.MAX_VALUE
+    ) {
         throw MipContractException("$key must be an exact Int")
     }
+
     return long.toInt()
 }
 
 private fun Map<String, Any?>.requireDouble(key: String): Double =
-    (this[key] as? Number)?.toDouble() ?: throw MipContractException("Missing/non-number field: $key")
+    (this[key] as? Number)?.toDouble()
+        ?: throw MipContractException("Missing/non-number field: $key")
 
 private fun Map<String, Any?>.requireInstant(key: String): Instant {
     val raw = requireString(key)
+
     return try {
         Instant.parse(raw)
     } catch (error: RuntimeException) {
-        throw MipContractException("$key is not an ISO-8601 Instant: $raw")
+        throw MipContractException(
+            "$key is not an ISO-8601 Instant: $raw"
+        )
     }
 }
 
 private fun Map<String, Any?>.requireStringList(key: String): List<String> {
-    val raw = this[key] as? List<*> ?: throw MipContractException("Missing/non-list field: $key")
+    val raw = this[key] as? List<*>
+        ?: throw MipContractException("Missing/non-list field: $key")
+
     return raw.mapIndexed { index, value ->
-        value as? String ?: throw MipContractException("$key[$index] must be a string")
+        value as? String
+            ?: throw MipContractException("$key[$index] must be a string")
     }
 }
 
-private fun <T> Map<String, Any?>.requireEnum(key: String, decode: (String) -> T): T {
+private fun <T> Map<String, Any?>.requireEnum(
+    key: String,
+    decode: (String) -> T,
+): T {
     val raw = requireString(key)
+
     return try {
         decode(raw)
     } catch (error: IllegalArgumentException) {
@@ -267,17 +301,51 @@ private fun <T> Map<String, Any?>.requireField(
     val raw = requireObject(key)
     val status = raw.requireEnum("status", MipFieldStatus::valueOf)
     val rawValue = raw["value"]
+
     if (status == MipFieldStatus.PRESENT) {
-        val value = decode(rawValue) ?: throw MipContractException("$key.value missing or wrong type")
+        val value = decode(rawValue)
+            ?: throw MipContractException(
+                "$key.value missing or wrong type"
+            )
+
         return MipField.present(value)
     }
-    if (rawValue != null) throw MipContractException("$key has value while status=$status")
+
+    if (rawValue != null) {
+        throw MipContractException(
+            "$key has value while status=$status"
+        )
+    }
+
     return MipField(status)
+}
+
+/**
+ * Backward-compatible decoder for newly introduced binding fields only.
+ *
+ * Missing key means the producer predates explicit binding support.
+ * The identity therefore remains UNRESOLVED.
+ *
+ * A key that exists but is malformed still throws MipContractException.
+ */
+private fun <T> Map<String, Any?>.optionalFieldOrUnresolved(
+    key: String,
+    decode: (Any?) -> T?,
+): MipField<T> {
+    if (!containsKey(key)) {
+        return MipField.unresolved()
+    }
+
+    return requireField(key, decode)
 }
 
 @Suppress("UNCHECKED_CAST")
 private fun Any?.asStringAnyMapOrNull(): Map<String, Any?>? {
     val raw = this as? Map<*, *> ?: return null
-    if (raw.keys.any { it !is String }) return null
+
+    if (raw.keys.any { it !is String }) {
+        return null
+    }
+
     return raw as Map<String, Any?>
 }
