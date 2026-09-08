@@ -1,0 +1,44 @@
+name: Fetch E5 Pruned Candidate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fetch_e5_candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Hugging Face client
+        run: pip install --disable-pip-version-check huggingface_hub
+      - name: Download pinned full snapshot
+        run: python understanding/candidates/jangedoo-multilingual-e5-small-pruned/fetch_upstream.py
+      - name: Verify model binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          F=understanding/candidates/jangedoo-multilingual-e5-small-pruned/upstream_snapshot/model.safetensors
+          test -f "$F"
+          test "$(stat -c%s "$F")" = "351646568"
+          echo "e8de21ecee219f55eb9a29e3f0ba7a6167756b6109512d201895b3158e97ae3e  $F" | sha256sum -c -
+      - name: Package complete candidate
+        run: |
+          cd understanding/candidates/jangedoo-multilingual-e5-small-pruned
+          zip -r jangedoo-multilingual-e5-small-pruned-pinned.zip upstream_snapshot
+      - name: Upload complete candidate artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jangedoo-multilingual-e5-small-pruned-pinned
+          path: understanding/candidates/jangedoo-multilingual-e5-small-pruned/jangedoo-multilingual-e5-small-pruned-pinned.zip
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
