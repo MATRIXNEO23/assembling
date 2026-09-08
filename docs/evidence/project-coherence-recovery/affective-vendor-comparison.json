@@ -1,0 +1,7 @@
+{
+  "vendorSha256": "9efb3bf302f5778549e23966d7e2a61e5814571449985026158be156d8f4e88b",
+  "labSha256": "40a65130f8f652224ae23af17425a5bb1dc5dad45062b00078bcb515c80cd073",
+  "difference": "One trailing LF in vendor; all preceding bytes identical",
+  "algorithmicDriftFound": false,
+  "scope": "affective_engine.py only; not equivalence of full runtime packages"
+}

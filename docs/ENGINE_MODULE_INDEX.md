@@ -5,6 +5,20 @@ Repository: `MATRIXNEO23/assembling`
 Branch: `main`
 Baseline HEAD when created: `693622ce12f1db6b4bc44753bee756b551c741ea`
 
+## Current project-wide recovery assessment
+
+The current readiness assessment is [PROJECT_COHERENCE_REVIEW.md](PROJECT_COHERENCE_REVIEW.md), covering 32 module/domain entries across Assembling, Understanding, Memoria, Affective and the historical Android backup. It supersedes broad interpretations of historical COMPLETE labels; it does not replace MIP or approve a new architecture.
+
+- **Do not restart the whole project:** no evidence justifies a total rewrite. Preserve tested components and diagnose the remaining wiring gaps.
+- Engine R1 remains closed: 159 JVM tests at its verified scope. Full real-backend Engine execution remains unverified.
+- Authority Python: 15 existing tests PASS; Affective Lab: 141 PASS; Memory Foundation v3: all 16 canonical files recovered byte-identically, 25 SQLite tests PASS.
+- Foundation recovery snapshot: `docs/evidence/project-coherence-recovery/foundation-v3-reference/`, provenance and checksums alongside. Read-only reference; not imported into Engine and not a competing Memory module.
+- Historical retrieval/reflection/goal/world/graph source exists at `MATRIXNEO23/8.10.9evo3-solo-gpt` commit `e97f75052afcc93d5b1e08b3ac881dba35633451`. Preserve it; current MIP compatibility and runtime are not established.
+- Current Coherence implementation status must include `adapters/BasicAdapters.kt` (legacy typedClaims); the compatibility path listed below is not proof of full canonical V3 wiring.
+- Known retrieval binding gap: current DTO has claimId/contextSnapshotId, but CanonicalUnderstandingV3AuthorityPort still only binds the 1-claim/1-result case. No repair applied during assessment.
+
+Per-module evidence, exact locators, limitations and reuse/repair/verification actions: `docs/evidence/project-coherence-recovery/module-assessment.json`. Existing module identities below are retained.
+
 ## Mandatory use
 
 This is the first lookup for every new Matrix Engine / Assembling session. Historical repositories such as `8.10.9evo3-solo-gpt` are backup/source references only and must not be treated as the active implementation.

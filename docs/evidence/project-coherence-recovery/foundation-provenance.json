@@ -1,0 +1,239 @@
+{
+  "sourceReferenceRepository": "MATRIXNEO23/memoria",
+  "sourceReferenceCommit": "cde91db20d97e0792b61db15144faf1430fd27bc",
+  "sourceReferencePath": "REFERENCE_FOUNDATION_V3.md",
+  "files": [
+    {
+      "canonicalPath": "memory/__init__.py",
+      "sourcePath": "__init__.py",
+      "sha256": "fd936476495865290862fb63adbfd0add54bf606a0c56c67d5c73e607e198a70",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_5dc95925dc28819180b77445cc465dce",
+          "fileId": "file_00000000793c820aac971fbb503ee3bf",
+          "path": "/__init__.py"
+        }
+      ],
+      "bytes": 51
+    },
+    {
+      "canonicalPath": "memory/admission_models.py",
+      "sourcePath": "admission_models.py",
+      "sha256": "f0e926ed1d1848c3c235e342f1ad36a33c3806c86331ab3bdce044c78afb1bb9",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_2baff49ab2d48191ac8be944126f2b07",
+          "fileId": "file_0000000068cc820a8e32641c97772a5c",
+          "path": "/admission_models.py"
+        }
+      ],
+      "bytes": 1688
+    },
+    {
+      "canonicalPath": "memory/database.py",
+      "sourcePath": "database.py",
+      "sha256": "1b9d2d61157b1aa0b755d59d69ebff04ee29c5b2bfdefc38f2037b1bd59db69a",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_d84c23ff52a88191966900710cf3b00f",
+          "fileId": "file_00000000ffe8820a934f04a12bcfb076",
+          "path": "/database.py"
+        }
+      ],
+      "bytes": 2383
+    },
+    {
+      "canonicalPath": "memory/models.py",
+      "sourcePath": "models.py",
+      "sha256": "e98f43b5191a39df70228bbfbdaff80b09b829d1ffb5ffc8bdc0d9685cd3b357",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_cd3a562eac84819194d80beae120af63",
+          "fileId": "file_000000000118820abd4acc94cd593756",
+          "path": "/models.py"
+        }
+      ],
+      "bytes": 4505
+    },
+    {
+      "canonicalPath": "memory/repository.py",
+      "sourcePath": "memoryrepository(2).py",
+      "sha256": "89c34762aaf31cc4eaf4f32022cbf66464142cbb4490a494a328f638103522ad",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_78a0e770b3108191a26c4ba5fd30d851",
+          "fileId": "file_00000000fddc820aa589ee1a4016cfcb",
+          "path": "/memoryrepository(2).py"
+        }
+      ],
+      "bytes": 7034
+    },
+    {
+      "canonicalPath": "memory/schema.py",
+      "sourcePath": "schema.py",
+      "sha256": "d479b0d9ab4d83fb79e85542d859a7a37e2074471212a92252f3d5e9ef5e357b",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_422ee83484e88191a88fc741f73633eb",
+          "fileId": "file_000000004750820ab6aeb888fb59fcee",
+          "path": "/schema.py"
+        }
+      ],
+      "bytes": 9531
+    },
+    {
+      "canonicalPath": "tests/conftest.py",
+      "sourcePath": "conftest.py",
+      "sha256": "1bff5230e66a62cd8d82afa610a1700956eab251af0e0786e8fc09129fb533d2",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_1267ba9e248881919021a6c6b41cfd5c",
+          "fileId": "file_000000005820820a971f401f17fe1d2c",
+          "path": "/conftest.py"
+        }
+      ],
+      "bytes": 1916
+    },
+    {
+      "canonicalPath": "tests/test_atomic_rollback.py",
+      "sourcePath": "test_atomic_rollback.py",
+      "sha256": "31c0d6787d1dacaf9cb49d49cf28dda85b2e92928ab07e101d561ea323f6e44a",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_627d85bc4b8c81918b649fc0f160746b",
+          "fileId": "file_000000003500820aa055b58bd9845c02",
+          "path": "/test_atomic_rollback.py"
+        }
+      ],
+      "bytes": 1822
+    },
+    {
+      "canonicalPath": "tests/test_delete_protection.py",
+      "sourcePath": "test_delete_protection.py",
+      "sha256": "ac705658b4adcd4c84452555637fc4d2e33c502a92eab6e0005f286a857fe50c",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_84d83e34f20c8191b12caae2811b0684",
+          "fileId": "file_00000000f0fc820a9631537bfd1dafc6",
+          "path": "/test_delete_protection.py"
+        }
+      ],
+      "bytes": 2653
+    },
+    {
+      "canonicalPath": "tests/test_lineage_protection.py",
+      "sourcePath": "test_lineage_protection.py",
+      "sha256": "fbe210c92ff932c1223eb2100c3305516f1fb2c854a4e347090cd58abd8d14a6",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_69c2e74e9fa481919d782c21289cda7e",
+          "fileId": "file_000000004f60820aa3d099733be6d0a8",
+          "path": "/test_lineage_protection.py"
+        }
+      ],
+      "bytes": 2683
+    },
+    {
+      "canonicalPath": "tests/test_memory_admission.py",
+      "sourcePath": "test_memory_admission.py",
+      "sha256": "47ba6448686fb7fe497745fea7fcdeb2840e598fdfdad415ecd976dde988be2d",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_2703bd70bad88191b6874287afa6f584",
+          "fileId": "file_00000000666c820a88b7dbb88c31fc34",
+          "path": "/test_memory_admission.py"
+        },
+        {
+          "libraryFileId": "libfile_2703bd70bad88191b6874287afa6f584",
+          "fileId": "file_00000000666c820a88b7dbb88c31fc34",
+          "path": "/test_memory_admission.py"
+        }
+      ],
+      "bytes": 4088
+    },
+    {
+      "canonicalPath": "tests/test_memory_admission_authority.py",
+      "sourcePath": "test_memory_admission_authority.py",
+      "sha256": "4ece9b0c80bc2feb5ad4ac19052551d99765fc3dc0df5d95ef0fa71e993bf7fb",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_f8e849e713c081918673018243bb8ad0",
+          "fileId": "file_0000000097b0820a881e8dbcb0ca5866",
+          "path": "/test_memory_admission_authority.py"
+        }
+      ],
+      "bytes": 4656
+    },
+    {
+      "canonicalPath": "tests/test_memory_admission_rejection.py",
+      "sourcePath": "test_memory_admission_rejection.py",
+      "sha256": "808b20d96e6f0ffdcf74a6569e98dc8415b5a4f655da6c1267a5ecd979ace35d",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_d117b7f4f9988191b7ba2bb53057bff8",
+          "fileId": "file_000000009df8820ab05fddd72e732122",
+          "path": "/test_memory_admission_rejection.py"
+        }
+      ],
+      "bytes": 3636
+    },
+    {
+      "canonicalPath": "tests/test_memory_admission_supersede.py",
+      "sourcePath": "test_memory_admission_supersede.py",
+      "sha256": "76a0e4f778c508c438051589b9c1447883f3302af55baca58590713194e2cc38",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_c5b7963dcadc8191a90b000fa7f3ad4a",
+          "fileId": "file_0000000055e8820aa0c64b19b64903f9",
+          "path": "/test_memory_admission_supersede.py"
+        }
+      ],
+      "bytes": 5794
+    },
+    {
+      "canonicalPath": "tests/test_semantic_update.py",
+      "sourcePath": "test_semantic_update.py",
+      "sha256": "512e75427a6f1795c16fbba43261e604fb5fa88e4a97646c3a165765d86ae053",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_3e3fb38818848191aa6d52a741eb0763",
+          "fileId": "file_0000000074a0820a905cbc8fc8db1e66",
+          "path": "/test_semantic_update.py"
+        }
+      ],
+      "bytes": 3548
+    },
+    {
+      "canonicalPath": "memory/admission.py",
+      "sourcePath": "admission.py",
+      "sha256": "ea52a90056218daf9b96b3d106430b8de4c5f7c0a4f2dcb7cedfdc2c7d1e52fa",
+      "match": "EXACT_BYTES",
+      "librarySources": [
+        {
+          "libraryFileId": "libfile_f5dae56ea7608191b3fa3cc0012cd288",
+          "fileId": "file_000000009818820aabe64918040b30fa",
+          "path": "/admission.py"
+        }
+      ],
+      "bytes": 6896
+    }
+  ],
+  "identity": "Memory Foundation v3 — exact recovered historical reference",
+  "integratedIntoEngine": false,
+  "implementationBytesModified": false
+}

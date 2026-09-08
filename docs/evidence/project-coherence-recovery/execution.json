@@ -1,0 +1,50 @@
+{
+  "suites": [
+    {
+      "suite": "memoria",
+      "passed": 15,
+      "failures": 0,
+      "errors": 0,
+      "python": "3.12.13",
+      "pytest": "8.4.1",
+      "xml": "memoria-tests.xml",
+      "log": "memoria-tests.log",
+      "scope": "existing tests on unchanged recovered source"
+    },
+    {
+      "suite": "affective",
+      "passed": 141,
+      "failures": 0,
+      "errors": 0,
+      "python": "3.12.13",
+      "pytest": "8.4.1",
+      "xml": "affective-tests.xml",
+      "log": "affective-tests.log",
+      "scope": "existing tests on unchanged recovered source"
+    },
+    {
+      "suite": "foundation",
+      "passed": 25,
+      "failures": 0,
+      "errors": 0,
+      "python": "3.12.13",
+      "pytest": "8.4.1",
+      "xml": "foundation-tests.xml",
+      "log": "foundation-tests.log",
+      "scope": "existing tests on unchanged recovered source"
+    }
+  ],
+  "priorJvmEvidence": {
+    "passed": 159,
+    "report": "docs/RECOVERY_R1_V3_PROMPT_20260908.md",
+    "merge": "994ba3f75d76d2f3d3dd60aea9da20546be99529",
+    "rerunThisAssessment": false
+  },
+  "runtime": {
+    "python": "3.12.13",
+    "platform": "Linux-6.18.35-x86_64-with-glibc2.39",
+    "sqlite": "3.53.1"
+  },
+  "harnessNote": "First Foundation collection attempt used a wrong scratch working-directory path before the final module copy, producing four missing-module collection errors. Corrected only the local recovery path, authenticated all 16 files, then original suite passed 25/25. No Foundation source fix was applied.",
+  "ciVersionDifference": "memoria CI specifies Python 3.11; this isolated local execution used Python 3.12.13."
+}

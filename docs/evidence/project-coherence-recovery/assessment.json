@@ -1,0 +1,30 @@
+{
+  "scope": "Project-wide recovery and coherence assessment; not certification of every algorithm or end-to-end runtime",
+  "sourceHeads": {
+    "assembling": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "matrix-understanding-lab": "23341d2db7fbe6bd42907a8a742540c4dab1a5a6",
+    "memoria": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "matrix-affective-lab": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "8.10.9evo3-solo-gpt": "e97f75052afcc93d5b1e08b3ac881dba35633451"
+  },
+  "writeRepository": "MATRIXNEO23/assembling",
+  "moduleEntries": 32,
+  "externalGitFilesAuthenticated": 115,
+  "foundationFilesAuthenticated": 16,
+  "newExistingTestsPassed": 181,
+  "priorJvmTestsPassed": 159,
+  "totalRewriteJustified": false,
+  "projectEndToEndVerified": false,
+  "implementationChanged": false,
+  "datasetsChanged": false,
+  "modelsChanged": false,
+  "historicalRepositoryChanged": false,
+  "semanticDecisionsReopened": false,
+  "limitations": [
+    "No access to unpushed user working trees or unprovided files.",
+    "Historical tree inventoried (381 entries); 19 selected source/doc blobs read, not full historical app audit.",
+    "Active Lab examination remains targeted to persisted index/contracts/training evidence; no TRAIN/DEV/Frozen content audit.",
+    "No production-device, real GGUF/NLU, crash/restart or full cross-language pipeline execution.",
+    "No claim that all possible historical repositories or private artifacts have been exhausted."
+  ]
+}

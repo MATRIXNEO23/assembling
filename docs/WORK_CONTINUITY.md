@@ -5,6 +5,18 @@ Repository: `MATRIXNEO23/assembling`
 Canonical branch: `main`  
 Continuity schema: `matrix.assembling.continuity.v74`
 
+## Current operational entrypoint — whole-project coherence, not CP47 alone
+
+The owner clarified that the task concerns **every project module and whether prior work is coherent/reusable**, not just model recovery. The project-wide recovery assessment is now completed and persisted in `docs/PROJECT_COHERENCE_REVIEW.md`, with 32 scoped module/domain entries and nine findings in `docs/evidence/project-coherence-recovery/`.
+
+Source Engine HEAD for this assessment: `283c88122bc1fd6fb2d90ae7efe81d07b84ffede`. Other pinned source heads are in assessment.json. Only Assembling documentation/recovery evidence is changed; other repositories, runtime code, models, datasets and semantic decisions are untouched.
+
+Verified this assessment: Authority Python 15 tests PASS; Affective 141 PASS; original Foundation 25 PASS on file-backed SQLite. All 16 Foundation files match historical canonical hashes and are now preserved as an exact read-only reference snapshot with provenance/recovery instructions. Historical backup also contains retrieval, reflection, goal/state, world and entity graph code; do not call these globally nonexistent or rewrite before reuse assessment.
+
+Preserve R1 (159 JVM tests, already closed) and all artifact recovery below. No evidence justifies restarting the entire project. Full Engine real-backend/Android operation remains unverified; legacy/canonical wiring, retrieval binding, missing providers and final persistence are explicit gaps, not hidden by green unit tests.
+
+**Resume point:** read the canonical module index and the project-wide assessment first. Assessment is complete; no new implementation task started. The recommended next bounded verification is the canonical V3 turn through current orchestrator stages, localizing remaining legacy consumers with existing diagnostics. Do not automatically repeat R1, regenerate Foundation/TRAIN/DEV, retrain, select models, import historical code, or start Room integration from old next-step labels. Recovered source is a reference, not newly integrated runtime.
+
 ## Current recovery entrypoint — recover artifacts before repeating work
 
 The owner reports repeated work caused by lost artifact continuity. The immediate requirement is recovery and durable identification, not re-execution.

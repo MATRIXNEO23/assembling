@@ -1,0 +1,2992 @@
+{
+  "sha": "902cb73d5e60e660f827cdb99967a074c186e3b9",
+  "tree": [
+    {
+      "mode": "100644",
+      "path": ".bootstrap",
+      "sha": "b7c200acbff874ea7bc47cd8dc930e8fef95c8da",
+      "size": 10,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b7c200acbff874ea7bc47cd8dc930e8fef95c8da"
+    },
+    {
+      "mode": "040000",
+      "path": ".github",
+      "sha": "1d9590af8ed8db46871885481eecf45fa4ae8479",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/1d9590af8ed8db46871885481eecf45fa4ae8479"
+    },
+    {
+      "mode": "040000",
+      "path": ".github/workflows",
+      "sha": "4012153ff2678ec547fa6cf0aff66e2a6afb5934",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/4012153ff2678ec547fa6cf0aff66e2a6afb5934"
+    },
+    {
+      "mode": "100644",
+      "path": ".github/workflows/build-matrix-evo3.yml",
+      "sha": "449dd800995e7cc3419eddccfb4f65302d0bf5ca",
+      "size": 7650,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/449dd800995e7cc3419eddccfb4f65302d0bf5ca"
+    },
+    {
+      "mode": "100644",
+      "path": "00_LEGGIMI_CODEX.md",
+      "sha": "ca2c4bd4cc4a8293d7cd208be5ee525b92ba579c",
+      "size": 15862,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/ca2c4bd4cc4a8293d7cd208be5ee525b92ba579c"
+    },
+    {
+      "mode": "100644",
+      "path": "ARCHITETTURA_MATRIX_ENGINE.md",
+      "sha": "c30f2c46017ba52482613c4fd13e4b0626fc8443",
+      "size": 25385,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c30f2c46017ba52482613c4fd13e4b0626fc8443"
+    },
+    {
+      "mode": "100644",
+      "path": "BACKLOG_MATRIX_ENGINE.md",
+      "sha": "c5bb1e82d84e87cc4996078d7fea9bec18b83f8e",
+      "size": 19266,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c5bb1e82d84e87cc4996078d7fea9bec18b83f8e"
+    },
+    {
+      "mode": "100644",
+      "path": "CONTINUITA_MATRIX_ENGINE.md",
+      "sha": "adee40fd233bd272c40bef99e00c3c3838fd6b4e",
+      "size": 40967,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/adee40fd233bd272c40bef99e00c3c3838fd6b4e"
+    },
+    {
+      "mode": "100644",
+      "path": "DIAGNOSTICA_MATRIX_ENGINE.md",
+      "sha": "33a8d375e91612e111d92d4ab89dce804fddfb7f",
+      "size": 19089,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/33a8d375e91612e111d92d4ab89dce804fddfb7f"
+    },
+    {
+      "mode": "100644",
+      "path": "FINE_TUNING_CHANGELOG.md",
+      "sha": "0ce135ae6ec6b1d1851a72308d3cfc4b411fd97e",
+      "size": 517,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0ce135ae6ec6b1d1851a72308d3cfc4b411fd97e"
+    },
+    {
+      "mode": "100644",
+      "path": "FINE_TUNING_DATASET_ROADMAP.md",
+      "sha": "3eee1905f83020b2a001c8ac6b233060b12b26ca",
+      "size": 1644,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/3eee1905f83020b2a001c8ac6b233060b12b26ca"
+    },
+    {
+      "mode": "100644",
+      "path": "GAMEVIEWMODEL_ACQUISITION_RUNTIME.patch",
+      "sha": "21f2c44bcea7c94dd77d5523ceea491174026b44",
+      "size": 4547,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/21f2c44bcea7c94dd77d5523ceea491174026b44"
+    },
+    {
+      "mode": "100644",
+      "path": "GGUF_CERVELLETTO_DATASET.md",
+      "sha": "48906e3d30955fa767c47f3b38e2a5ae4cb4a45d",
+      "size": 16289,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/48906e3d30955fa767c47f3b38e2a5ae4cb4a45d"
+    },
+    {
+      "mode": "100644",
+      "path": "IMPLEMENTAZIONI_DA_FARE_MATRIX_ENGINE.md",
+      "sha": "c5dbc8532cf82f669f0b3abd5a61710cf69d6fa3",
+      "size": 1885,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c5dbc8532cf82f669f0b3abd5a61710cf69d6fa3"
+    },
+    {
+      "mode": "100644",
+      "path": "MATRIX_ENGINE_EVOLUTION_ROADMAP.md",
+      "sha": "5e6238c4b2d316ec35378746c7b817cfdd7c5a28",
+      "size": 15814,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5e6238c4b2d316ec35378746c7b817cfdd7c5a28"
+    },
+    {
+      "mode": "100644",
+      "path": "PIANO_EVOLUZIONE_BUILD.md",
+      "sha": "8858efd046d42db696120115f1968da15cb8fd59",
+      "size": 2050,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8858efd046d42db696120115f1968da15cb8fd59"
+    },
+    {
+      "mode": "100644",
+      "path": "PROJECT_WORK_RULES.md",
+      "sha": "b033e5018b48a3315ab353d8ad0cb6f4678f4cc2",
+      "size": 1465,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b033e5018b48a3315ab353d8ad0cb6f4678f4cc2"
+    },
+    {
+      "mode": "100644",
+      "path": "README_ASSISTENTE_CONTINUITA.md",
+      "sha": "22880f206abc9e9588d593b7cbb7019856a43bd2",
+      "size": 871,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/22880f206abc9e9588d593b7cbb7019856a43bd2"
+    },
+    {
+      "mode": "100644",
+      "path": "RIFLESSIONI_DA_VALUTARE_CON_CODEX.md",
+      "sha": "0b33da9bebac3ba67f178a5df664b923278b85ae",
+      "size": 4016,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0b33da9bebac3ba67f178a5df664b923278b85ae"
+    },
+    {
+      "mode": "100644",
+      "path": "WORK_HANDOFF_MATRIX_ENGINE.md",
+      "sha": "e2722b161c30fc65e2d2220887ec638e51855e9b",
+      "size": 1202,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e2722b161c30fc65e2d2220887ec638e51855e9b"
+    },
+    {
+      "mode": "040000",
+      "path": "app",
+      "sha": "c167ea7663f5666185b5ce945a5fe677a6060ad0",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/c167ea7663f5666185b5ce945a5fe677a6060ad0"
+    },
+    {
+      "mode": "100644",
+      "path": "app/build.gradle.kts",
+      "sha": "c35b70560e1baf7842130ed998cdde5fcb0a6702",
+      "size": 3286,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c35b70560e1baf7842130ed998cdde5fcb0a6702"
+    },
+    {
+      "mode": "100644",
+      "path": "app/proguard-rules.pro",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "mode": "040000",
+      "path": "app/signing",
+      "sha": "a63769ef40a063c99e5a8412d93703b7dfe9d1ce",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/a63769ef40a063c99e5a8412d93703b7dfe9d1ce"
+    },
+    {
+      "mode": "100644",
+      "path": "app/signing/neontides-update.jks",
+      "sha": "d85094be8309603a62a3410b43d98039ab5f84eb",
+      "size": 2750,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d85094be8309603a62a3410b43d98039ab5f84eb"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src",
+      "sha": "c01fec11b911b40bc13cc9c3b60ede100f192965",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/c01fec11b911b40bc13cc9c3b60ede100f192965"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main",
+      "sha": "84bedae5691dca628dce8a7f663e12dc7f4abe96",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/84bedae5691dca628dce8a7f663e12dc7f4abe96"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/AndroidManifest.xml",
+      "sha": "fed64203425a9dcc4ae2bcafeb7e29104c01f2eb",
+      "size": 953,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/fed64203425a9dcc4ae2bcafeb7e29104c01f2eb"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/cpp",
+      "sha": "a3c2aae5dc94d0c2d77e3f2edebae1417310c3d7",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/a3c2aae5dc94d0c2d77e3f2edebae1417310c3d7"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/cpp/CMakeLists.txt",
+      "sha": "501bc0ee12ad90206daf3b39810d365e2529b792",
+      "size": 1343,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/501bc0ee12ad90206daf3b39810d365e2529b792"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/cpp/native-lib.cpp",
+      "sha": "d657abc1fc737d9fed3dc2589d168db335e0f40d",
+      "size": 22069,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d657abc1fc737d9fed3dc2589d168db335e0f40d"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java",
+      "sha": "1f4eb7c14bf8b35423b0e348e9d2e0377114f95a",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/1f4eb7c14bf8b35423b0e348e9d2e0377114f95a"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com",
+      "sha": "924306378c3891d0dbe767fce2a0f2614479c561",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/924306378c3891d0dbe767fce2a0f2614479c561"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides",
+      "sha": "cb5dc25791eceb2ccc8d4e28de0c88738401ed04",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/cb5dc25791eceb2ccc8d4e28de0c88738401ed04"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp",
+      "sha": "f596de87ce1a736b3e98b51b338c34030aa199f0",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/f596de87ce1a736b3e98b51b338c34030aa199f0"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/GameViewModel.kt",
+      "sha": "553ba012ea77f2bc4ece3f504ad6924277f28b6a",
+      "size": 106655,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/553ba012ea77f2bc4ece3f504ad6924277f28b6a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/MainActivity.kt",
+      "sha": "e537b5b44ce05b4be968b4ae66c0f0e185330659",
+      "size": 610,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e537b5b44ce05b4be968b4ae66c0f0e185330659"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai",
+      "sha": "2e624792a625505c6ae419b7f75677ce20f439cf",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/2e624792a625505c6ae419b7f75677ce20f439cf"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/AiEngine.kt",
+      "sha": "a34b11455850a0e87febf2eca383144e64603638",
+      "size": 90942,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a34b11455850a0e87febf2eca383144e64603638"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/BaseDialogueLabSessionStore.kt",
+      "sha": "85d843ed74d2f835be3da41ee347c65f45810130",
+      "size": 2028,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/85d843ed74d2f835be3da41ee347c65f45810130"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/DiagnosticComparison.kt",
+      "sha": "60a9ddfdb6c5513892bbfe72a971b78dbaa5fee6",
+      "size": 9220,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/60a9ddfdb6c5513892bbfe72a971b78dbaa5fee6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/DialogueTestModels.kt",
+      "sha": "d89c4e7501fb0723d0501e32e82b49ce71311d05",
+      "size": 1594,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d89c4e7501fb0723d0501e32e82b49ce71311d05"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/HybridDialogueRouter.kt",
+      "sha": "0849d3def4778665e2ea33433f787c6d8d1a10c0",
+      "size": 40497,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0849d3def4778665e2ea33433f787c6d8d1a10c0"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/LocalAiRuntime.kt",
+      "sha": "67ca0020dffb631d442e9a3f6b6ebf453ceff94d",
+      "size": 11220,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/67ca0020dffb631d442e9a3f6b6ebf453ceff94d"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine",
+      "sha": "b23d45907525cde5f8aec2632248012078739d31",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/b23d45907525cde5f8aec2632248012078739d31"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/HYBRID_DIALOGUE_ROUTER_SPLIT.md",
+      "sha": "9036bb1cec4558cee121da2c035f1da29655e3bb",
+      "size": 7049,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/9036bb1cec4558cee121da2c035f1da29655e3bb"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/README.md",
+      "sha": "a726dab24b2cbd47fb82b73656284d7f21630399",
+      "size": 4356,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a726dab24b2cbd47fb82b73656284d7f21630399"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/SEMANTIC_MEMORY_SELECTOR_SPLIT.md",
+      "sha": "9de9f8643c686d6231f659fb4b5fadbd9b27b7d2",
+      "size": 6920,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/9de9f8643c686d6231f659fb4b5fadbd9b27b7d2"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/behavior",
+      "sha": "7fbddef3fcb8aac81bad73fd2289f195c8ae485d",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/7fbddef3fcb8aac81bad73fd2289f195c8ae485d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/behavior/.gitkeep",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/behavior/AgentStateGoalIntention.kt",
+      "sha": "9ce0494f07d0d4736bd1a3051a651e5edc27b17c",
+      "size": 3687,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/9ce0494f07d0d4736bd1a3051a651e5edc27b17c"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/behavior/BehaviorModule.kt",
+      "sha": "8fad75e4710abd10b22207607510c9eb552ac9ff",
+      "size": 624,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8fad75e4710abd10b22207607510c9eb552ac9ff"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core",
+      "sha": "7c0d4025d0bb80230b5d1962407edfa97958be0e",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/7c0d4025d0bb80230b5d1962407edfa97958be0e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/ApplicationOutputAdapter.kt",
+      "sha": "2b6cf06787fb7c089fb9a2197bf4df52b26f3cf2",
+      "size": 6818,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/2b6cf06787fb7c089fb9a2197bf4df52b26f3cf2"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/KnowledgeSourceAdapter.kt",
+      "sha": "0eb317e8eb4975e53d75803bb1f2d39ecdb423fc",
+      "size": 743,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0eb317e8eb4975e53d75803bb1f2d39ecdb423fc"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineAdapters.kt",
+      "sha": "7f8124eaac0e7f228814b4ed0a5e8d07bdc6eac0",
+      "size": 12628,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7f8124eaac0e7f228814b4ed0a5e8d07bdc6eac0"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineFramework.kt",
+      "sha": "266e59bd7a95ceb8c8540401cb82b78b646ba522",
+      "size": 5354,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/266e59bd7a95ceb8c8540401cb82b78b646ba522"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineOrchestrator.kt",
+      "sha": "704f36b4db67007940c8ff0431adc992723aed18",
+      "size": 36055,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/704f36b4db67007940c8ff0431adc992723aed18"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/MultiAgentWorldLoop.kt",
+      "sha": "35f09745bc5f69a0167ef5d39349da0daadda181",
+      "size": 1209,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/35f09745bc5f69a0167ef5d39349da0daadda181"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/PerceptionEnvelope.kt",
+      "sha": "c63ce1c643a9ab533d2e826cdfe5091dad60037a",
+      "size": 8747,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c63ce1c643a9ab533d2e826cdfe5091dad60037a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/SubjectNamespace.kt",
+      "sha": "0a1989913a750950b4a245a5a2c679a1186f7c60",
+      "size": 816,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0a1989913a750950b4a245a5a2c679a1186f7c60"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/WorldMatrixProtocol.kt",
+      "sha": "7fd06c97dd29a63ccbfcac4797c71d42c43d865c",
+      "size": 5656,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7fd06c97dd29a63ccbfcac4797c71d42c43d865c"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics",
+      "sha": "5fda3b5bf7802c6b1a31f130edb0f04f11a1bf24",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/5fda3b5bf7802c6b1a31f130edb0f04f11a1bf24"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/.gitkeep",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/AnomalySummary.kt",
+      "sha": "670f68ffd9687ac3229776874e93f17c8f4ae90d",
+      "size": 2397,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/670f68ffd9687ac3229776874e93f17c8f4ae90d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/CacheHistoryAudit.kt",
+      "sha": "8c069eb957a6d6a4f827f8b5f16aadd307d6451e",
+      "size": 4459,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8c069eb957a6d6a4f827f8b5f16aadd307d6451e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/CausalTrace.kt",
+      "sha": "ebbb8537b422e0acc4a10c7e97cd768d186eacc2",
+      "size": 7179,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/ebbb8537b422e0acc4a10c7e97cd768d186eacc2"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/CausalTraceCompleteness.kt",
+      "sha": "a66c27e13d2c5dbe70aa63a75341b337663f8d30",
+      "size": 1962,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a66c27e13d2c5dbe70aa63a75341b337663f8d30"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DeepCompletenessReport.kt",
+      "sha": "a9172e9dccf75262a2c452c959d05029b3ebbc6b",
+      "size": 5663,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a9172e9dccf75262a2c452c959d05029b3ebbc6b"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DeepDiagnosticJsonl.kt",
+      "sha": "9025e96b351bbdab5a97db20dcfa85eccf0d8e6e",
+      "size": 13821,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/9025e96b351bbdab5a97db20dcfa85eccf0d8e6e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DeepDiagnosticTrace.kt",
+      "sha": "d99437bb36fc4f5bb89abc0600bd4d76009a30c3",
+      "size": 10451,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d99437bb36fc4f5bb89abc0600bd4d76009a30c3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DeepTurnDiagnosticSnapshot.kt",
+      "sha": "467f029036206949d7cb67806bed938d228075c3",
+      "size": 5627,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/467f029036206949d7cb67806bed938d228075c3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DiagnosticEnvelope.kt",
+      "sha": "9b7de0936dd5a0d10a8c84ac1657968c934451b9",
+      "size": 5161,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/9b7de0936dd5a0d10a8c84ac1657968c934451b9"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/FirstDivergence.kt",
+      "sha": "62a5de94ef57a26b269ba33b671dc98319dda1b3",
+      "size": 5481,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/62a5de94ef57a26b269ba33b671dc98319dda1b3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/GenerationOutputTrace.kt",
+      "sha": "3c0aa10dcb02d91ecd159d5d8a4ebe478520adf3",
+      "size": 3736,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/3c0aa10dcb02d91ecd159d5d8a4ebe478520adf3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/LabRuntimeOverrides.kt",
+      "sha": "82de918bb53023852b31aedfbe9bba1896e951bb",
+      "size": 3290,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/82de918bb53023852b31aedfbe9bba1896e951bb"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/M1CognitiveDiagnostic.kt",
+      "sha": "9bddb04b0bf2a87dafc3ac8b8c926b48463f1451",
+      "size": 5232,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/9bddb04b0bf2a87dafc3ac8b8c926b48463f1451"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/ModularMemoryLab.kt",
+      "sha": "6134c47c9e0c5a9d46c038e430be024ec5a20e19",
+      "size": 6157,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6134c47c9e0c5a9d46c038e430be024ec5a20e19"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/PromptTraceSnapshot.kt",
+      "sha": "0312a4af07906c87117ba0e09bc7a98fa44b5166",
+      "size": 9228,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0312a4af07906c87117ba0e09bc7a98fa44b5166"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory",
+      "sha": "e2124bfc1a44202affe2c0def000e21d0c7d56a7",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/e2124bfc1a44202affe2c0def000e21d0c7d56a7"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/EntityRelationshipGraph.kt",
+      "sha": "81577855eab7b2ceb110301148d2e47b8e93a9c1",
+      "size": 4770,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/81577855eab7b2ceb110301148d2e47b8e93a9c1"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/LegacyMemoryAcquisitionAdapter.kt",
+      "sha": "dc3c6a54e62dd8d868de2263bf7c1463247e2a60",
+      "size": 4483,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/dc3c6a54e62dd8d868de2263bf7c1463247e2a60"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryAcquisitionClassifier.kt",
+      "sha": "8a53ba1b9edc9eb2ca70806081c0f6755912464f",
+      "size": 11428,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8a53ba1b9edc9eb2ca70806081c0f6755912464f"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryLayer.kt",
+      "sha": "6511c5938b9d39067b21351612e60a0b291010f9",
+      "size": 1069,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6511c5938b9d39067b21351612e60a0b291010f9"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryPersistenceAdapter.kt",
+      "sha": "bd57275db880fd14f0b1973a7727981da569c63a",
+      "size": 10017,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/bd57275db880fd14f0b1973a7727981da569c63a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryPipelineStages.kt",
+      "sha": "e31b88a1cb61cf37040044d192a8f028a9be8a3e",
+      "size": 5264,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e31b88a1cb61cf37040044d192a8f028a9be8a3e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryReconciliationEngine.kt",
+      "sha": "76bb380d8e813b32d0677e5e79bd1029bf282842",
+      "size": 14219,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/76bb380d8e813b32d0677e5e79bd1029bf282842"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryStreamEngine.kt",
+      "sha": "3803b85e6d1dee9876a0ea7648c3ef62f9a6c24d",
+      "size": 9677,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/3803b85e6d1dee9876a0ea7648c3ef62f9a6c24d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/StructuredMemoryStore.kt",
+      "sha": "fec1b420db1b4e41169cd1b149e776aced71dbb9",
+      "size": 3442,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/fec1b420db1b4e41169cd1b149e776aced71dbb9"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/UnderstandingMemoryMapper.kt",
+      "sha": "f67d799c3eb231241cd2905ddba23e5812c94c27",
+      "size": 10183,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f67d799c3eb231241cd2905ddba23e5812c94c27"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/WorkingMemory.kt",
+      "sha": "04bb6bc1c8904bf205bcd27848a34210694c568f",
+      "size": 3033,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/04bb6bc1c8904bf205bcd27848a34210694c568f"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/prompt",
+      "sha": "617598a5c4528328f960cfc64e4f735d672de3a1",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/617598a5c4528328f960cfc64e4f735d672de3a1"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/prompt/.gitkeep",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/prompt/ContextPackage.kt",
+      "sha": "4e05d435a01930a58c3ab02789b175e4c39874c5",
+      "size": 3983,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4e05d435a01930a58c3ab02789b175e4c39874c5"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection",
+      "sha": "3582a12cc56ecf7c7312437c1e917af44e8c81c6",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/3582a12cc56ecf7c7312437c1e917af44e8c81c6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/.gitkeep",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionEngine.kt",
+      "sha": "962aaf766baac39c999cdc7ff5946adfd8c7471c",
+      "size": 5114,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/962aaf766baac39c999cdc7ff5946adfd8c7471c"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionProcessor.kt",
+      "sha": "279b09a174b105df5619d9f210251e9f5c3e0d41",
+      "size": 15122,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/279b09a174b105df5619d9f210251e9f5c3e0d41"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionQueue.kt",
+      "sha": "942d8f8be0ab8d03b7001b9bec945c1311b59f53",
+      "size": 9640,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/942d8f8be0ab8d03b7001b9bec945c1311b59f53"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionTrigger.kt",
+      "sha": "f2dd5ed8954f6fd698a20a581a711391f9eaa5b4",
+      "size": 5600,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f2dd5ed8954f6fd698a20a581a711391f9eaa5b4"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval",
+      "sha": "8c9cfa2260d7355362f1677c213b1e379828ecbc",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/8c9cfa2260d7355362f1677c213b1e379828ecbc"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/.gitkeep",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/HierarchicalMemoryIndex.kt",
+      "sha": "4139d9992234e94e03dde1d26974adb9bae10b09",
+      "size": 2712,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4139d9992234e94e03dde1d26974adb9bae10b09"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/HierarchicalMemoryRetrieval.kt",
+      "sha": "a6317dcfc33274dacfc3f6fd6f60c14878fa4ecf",
+      "size": 8756,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a6317dcfc33274dacfc3f6fd6f60c14878fa4ecf"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/HybridMemoryRanker.kt",
+      "sha": "10c470cb74243ddd33f25b353a6fa98d1131afda",
+      "size": 3214,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/10c470cb74243ddd33f25b353a6fa98d1131afda"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/SubjectOwnerGuard.kt",
+      "sha": "17462e33651d34bd7a7f5ac05833ddaea85c72ee",
+      "size": 4006,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/17462e33651d34bd7a7f5ac05833ddaea85c72ee"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/VectorEmbeddingAdapter.kt",
+      "sha": "faedd32cebada5d4748fd2e1814337153bc463f9",
+      "size": 8591,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/faedd32cebada5d4748fd2e1814337153bc463f9"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/routing",
+      "sha": "d564d0bc3dd917926892c55e3706cc116d5b165e",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/d564d0bc3dd917926892c55e3706cc116d5b165e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/routing/.gitkeep",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/supervisor",
+      "sha": "0cc2018660a3b8832cee05a4a8b63b7d2890fc04",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/0cc2018660a3b8832cee05a4a8b63b7d2890fc04"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/supervisor/.gitkeep",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/supervisor/ContextSupervisor.kt",
+      "sha": "cdc7ddcc1b3a0a1f4d3aaaf6115e885dd11ec8fe",
+      "size": 4699,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/cdc7ddcc1b3a0a1f4d3aaaf6115e885dd11ec8fe"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/understanding",
+      "sha": "0b46d673b0389c74f3899f25b91e3affeb6df1a3",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/0b46d673b0389c74f3899f25b91e3affeb6df1a3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/understanding/DeterministicUnderstandingEngine.kt",
+      "sha": "a7ef1b00a25970693c8b7ca83d9ceddba98c3a1a",
+      "size": 23201,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a7ef1b00a25970693c8b7ca83d9ceddba98c3a1a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/understanding/UnderstandingModels.kt",
+      "sha": "0b3c36e88deb9cf6fecd46771c996f50b0ec9b88",
+      "size": 3167,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0b3c36e88deb9cf6fecd46771c996f50b0ec9b88"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MemoryStreamEngine.kt",
+      "sha": "899e84626f3886a2a46c59ddfbd6d8020b9fbc7d",
+      "size": 10027,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/899e84626f3886a2a46c59ddfbd6d8020b9fbc7d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MlcRuntimeProtocol.kt",
+      "sha": "36d8148e9cfacb9e0d56a3c660b5087ac169a46c",
+      "size": 4917,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/36d8148e9cfacb9e0d56a3c660b5087ac169a46c"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/MlcRuntimeService.kt",
+      "sha": "20a2d470be5a5458bf9528acf8ed5a90e96e3ad3",
+      "size": 4944,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/20a2d470be5a5458bf9528acf8ed5a90e96e3ad3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/ModelDownloadManager.kt",
+      "sha": "20035aba693810eb7d134597082c54f3741e7a99",
+      "size": 10530,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/20035aba693810eb7d134597082c54f3741e7a99"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/ModelManager.kt",
+      "sha": "6cb93c5bd839dff7421a07e86ccfc7b4891af895",
+      "size": 16950,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6cb93c5bd839dff7421a07e86ccfc7b4891af895"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/ModularMemoryLab.kt",
+      "sha": "738b3345dd109bf778cb39c7dc267608904968f8",
+      "size": 6360,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/738b3345dd109bf778cb39c7dc267608904968f8"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/NativeLlama.kt",
+      "sha": "0224af24dc08ca879e9aa2cbc70199970ff77ed8",
+      "size": 1135,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0224af24dc08ca879e9aa2cbc70199970ff77ed8"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/NeonTidesMemoryAcquisitionBridge.kt",
+      "sha": "1cf88bb9e4c3918d124c02741e6fb7acf9945a68",
+      "size": 5002,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/1cf88bb9e4c3918d124c02741e6fb7acf9945a68"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/OnlineAiClient.kt",
+      "sha": "33918105b80d5d891cb8dbe94cde88245ad0783e",
+      "size": 4458,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/33918105b80d5d891cb8dbe94cde88245ad0783e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/PersonaPromptSanitizer.kt",
+      "sha": "636f15860433358e412a1bd44acae912a8ef0c16",
+      "size": 827,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/636f15860433358e412a1bd44acae912a8ef0c16"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/PromptTextBoundary.kt",
+      "sha": "d4ee91cddc63ffb4b97bf467ce6aadf24bbcf75c",
+      "size": 6794,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d4ee91cddc63ffb4b97bf467ce6aadf24bbcf75c"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/SecureAiSettings.kt",
+      "sha": "8d2e8f8f22d85cdee4f32252eff971aba42affb6",
+      "size": 2766,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8d2e8f8f22d85cdee4f32252eff971aba42affb6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ai/SemanticMemorySelector.kt",
+      "sha": "4a6da9e3db817143d5f369568c095f074f07c8dc",
+      "size": 17712,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4a6da9e3db817143d5f369568c095f074f07c8dc"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/data",
+      "sha": "4697a0e13630f81fd6d209e2b57031f371ef8bbb",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/4697a0e13630f81fd6d209e2b57031f371ef8bbb"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/data/GameData.kt",
+      "sha": "c6cd40c771f76fdea140d3b3049866ba30bf50b3",
+      "size": 29302,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c6cd40c771f76fdea140d3b3049866ba30bf50b3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/data/SaveGameManager.kt",
+      "sha": "94f10052747db7ebfad3889a84844088f989e3dc",
+      "size": 10221,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/94f10052747db7ebfad3889a84844088f989e3dc"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/model",
+      "sha": "7d24a443d5561f70ada870f82fa2e7e685983a3d",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/7d24a443d5561f70ada870f82fa2e7e685983a3d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/model/Models.kt",
+      "sha": "b52782fb653b077582a397c68f6cf8c9e6fad898",
+      "size": 5448,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b52782fb653b077582a397c68f6cf8c9e6fad898"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui",
+      "sha": "e1164dd500475c85092252251730a278d7dc17b4",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/e1164dd500475c85092252251730a278d7dc17b4"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/NeonTidesApp.kt",
+      "sha": "d005ee8d7edbe3330669a116a43d2359f7e7d01e",
+      "size": 13403,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d005ee8d7edbe3330669a116a43d2359f7e7d01e"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens",
+      "sha": "2a7606a12c7043b9e9aa9220ec0f7cbc0bfd9ec1",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/2a7606a12c7043b9e9aa9220ec0f7cbc0bfd9ec1"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/DiagnosticsScreen.kt",
+      "sha": "582ce6d0898b4a036e70cf1b814555aa617dd235",
+      "size": 13283,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/582ce6d0898b4a036e70cf1b814555aa617dd235"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/DialogueScreen.kt",
+      "sha": "fc98aaea2f947cc0405e005780242a236351bc71",
+      "size": 10309,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/fc98aaea2f947cc0405e005780242a236351bc71"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/GalleryScreen.kt",
+      "sha": "5441580e196bbd69a8884b8c1642f8370272496d",
+      "size": 7695,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5441580e196bbd69a8884b8c1642f8370272496d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/GalleryUnlockDialog.kt",
+      "sha": "f4ffee8458b3c69cbccc27175de602d6525da988",
+      "size": 2530,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f4ffee8458b3c69cbccc27175de602d6525da988"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/GameScreen.kt",
+      "sha": "65c3e639c6c38cea2df6034ca41c67e418f39112",
+      "size": 7488,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/65c3e639c6c38cea2df6034ca41c67e418f39112"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/LunaDiagnosticLab.kt",
+      "sha": "9cb2620e3895a080546942a474c9e3060cff5317",
+      "size": 24539,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/9cb2620e3895a080546942a474c9e3060cff5317"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/MainMenuScreen.kt",
+      "sha": "4e4c7c9301b536ca38f579f413293b505b4a1644",
+      "size": 5434,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4e4c7c9301b536ca38f579f413293b505b4a1644"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/MapScreen.kt",
+      "sha": "223b73f192bb82864761c9afe3997d0e882cc07b",
+      "size": 4942,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/223b73f192bb82864761c9afe3997d0e882cc07b"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/ModelManagerScreen.kt",
+      "sha": "a58bd470740872bd81f74f44464fd2d157d17f76",
+      "size": 15118,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a58bd470740872bd81f74f44464fd2d157d17f76"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/PhoneScreen.kt",
+      "sha": "f6a832b860fbaec75ecb2b328c87484b393adc81",
+      "size": 20770,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f6a832b860fbaec75ecb2b328c87484b393adc81"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/PlayerAppearance.kt",
+      "sha": "72bbaadf6f36cae03c27ee186ad2e8a19c291066",
+      "size": 1866,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/72bbaadf6f36cae03c27ee186ad2e8a19c291066"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/PlayerSetupScreen.kt",
+      "sha": "d6d0db97b5177da5f62b6f1af9fe1511f5fad50e",
+      "size": 8408,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d6d0db97b5177da5f62b6f1af9fe1511f5fad50e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/SaveSlotsScreen.kt",
+      "sha": "a977651997a22278301bda70cba5d4b7cfd043c6",
+      "size": 7264,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a977651997a22278301bda70cba5d4b7cfd043c6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/screens/TestUpdatesScreen.kt",
+      "sha": "b4fbcc632e4507a93b9fe6ee072e63243d50a205",
+      "size": 7086,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b4fbcc632e4507a93b9fe6ee072e63243d50a205"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/theme",
+      "sha": "58c059c7f269834e87ad6cecde0b8947f86badf3",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/58c059c7f269834e87ad6cecde0b8947f86badf3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/java/com/neontides/nativeapp/ui/theme/Theme.kt",
+      "sha": "fd54d357dbf6d1b11c35f2106c5c1da45a1da3cd",
+      "size": 665,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/fd54d357dbf6d1b11c35f2106c5c1da45a1da3cd"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/res",
+      "sha": "ac53d864b18193f24583988e16cb65430a495f05",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/ac53d864b18193f24583988e16cb65430a495f05"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/res/drawable-nodpi",
+      "sha": "50f2a18c6986e01945e8e41b1733070a4893d848",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/50f2a18c6986e01945e8e41b1733070a4893d848"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_apartment.webp",
+      "sha": "a97e6f01619fadfd69a4e907c4796837fde862a1",
+      "size": 83000,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a97e6f01619fadfd69a4e907c4796837fde862a1"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_bar.webp",
+      "sha": "8c8cc427579aef6f8a0934ce8d9d52e48ce5434a",
+      "size": 87726,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8c8cc427579aef6f8a0934ce8d9d52e48ce5434a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_beach.webp",
+      "sha": "ae57d884b3026d4090a4936e42282bfd4b2e7bb7",
+      "size": 94164,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/ae57d884b3026d4090a4936e42282bfd4b2e7bb7"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_cafe.webp",
+      "sha": "da1d6b1682fce7854d11e85aeee98c8874f6db36",
+      "size": 81172,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/da1d6b1682fce7854d11e85aeee98c8874f6db36"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_club.webp",
+      "sha": "656d7ae4e9364b46f2248788def2e8d29bf8162a",
+      "size": 73348,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/656d7ae4e9364b46f2248788def2e8d29bf8162a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_downtown.webp",
+      "sha": "8c780d0d06255e3fc5c6393593c20c7ee57cef3d",
+      "size": 140506,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8c780d0d06255e3fc5c6393593c20c7ee57cef3d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_gym.webp",
+      "sha": "7119d3b1b35b27ff8d9a879234d4d92fddece400",
+      "size": 100748,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7119d3b1b35b27ff8d9a879234d4d92fddece400"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_mall.webp",
+      "sha": "00541dbe7dfa0fcb146497d839512a82e353b671",
+      "size": 156006,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/00541dbe7dfa0fcb146497d839512a82e353b671"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_park.webp",
+      "sha": "f780613e56074eedd4bf7dfb73d6d6fc9f130716",
+      "size": 184062,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f780613e56074eedd4bf7dfb73d6d6fc9f130716"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_restaurant.webp",
+      "sha": "c23e092f52b7445c793af2d7b85f057a72511f30",
+      "size": 96842,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c23e092f52b7445c793af2d7b85f057a72511f30"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_rooftop.webp",
+      "sha": "f2946b24bd73e2f180e68276e0e30c72f0876fed",
+      "size": 120218,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f2946b24bd73e2f180e68276e0e30c72f0876fed"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/bg_supermarket.webp",
+      "sha": "774670ffdb29236c1993f9cbd289d0897c404315",
+      "size": 115756,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/774670ffdb29236c1993f9cbd289d0897c404315"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/character_chiara.webp",
+      "sha": "98a1d53feed28f48cefc47b4c5829d329ffb682e",
+      "size": 798956,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/98a1d53feed28f48cefc47b4c5829d329ffb682e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/character_elena.webp",
+      "sha": "35d8d254ad835a0f6b7977244b1c7401a9c127c0",
+      "size": 527094,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/35d8d254ad835a0f6b7977244b1c7401a9c127c0"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/character_kenji.webp",
+      "sha": "5c8f368a269c1efac43ca88c6213c3c245316e79",
+      "size": 616536,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5c8f368a269c1efac43ca88c6213c3c245316e79"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/character_luca.webp",
+      "sha": "33589d386e882a2a09b40f5f25fc92e966ad4cf4",
+      "size": 615624,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/33589d386e882a2a09b40f5f25fc92e966ad4cf4"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/character_luna.webp",
+      "sha": "a156fcfef675831177d10ecb81de6a0103ff8165",
+      "size": 1042760,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a156fcfef675831177d10ecb81de6a0103ff8165"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/character_matteo.webp",
+      "sha": "c627c02b687e59b3fa9d73602cd378e80361ae98",
+      "size": 578796,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c627c02b687e59b3fa9d73602cd378e80361ae98"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/character_maya.webp",
+      "sha": "58c63fa7ebeed79f4ddbb611f6c58c9af08ee06e",
+      "size": 600526,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/58c63fa7ebeed79f4ddbb611f6c58c9af08ee06e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/character_nadia.webp",
+      "sha": "a7228eccbc134f039f65f97ed6521472bffd5d27",
+      "size": 582142,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a7228eccbc134f039f65f97ed6521472bffd5d27"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/character_sofia.webp",
+      "sha": "6e779b55debf0e6d5b647071a790f047ad387c61",
+      "size": 432238,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6e779b55debf0e6d5b647071a790f047ad387c61"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_chiara_casual.webp",
+      "sha": "dd4dac235e4560eb300adabedcf873da3b3e0af3",
+      "size": 58870,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/dd4dac235e4560eb300adabedcf873da3b3e0af3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_chiara_date.webp",
+      "sha": "3c82526bcbaec0ef6c409a2c0784f1ee44f70d2e",
+      "size": 124864,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/3c82526bcbaec0ef6c409a2c0784f1ee44f70d2e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_chiara_flirt.webp",
+      "sha": "bb783aa09125b2267e0e50c83d815e271867bc34",
+      "size": 50344,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/bb783aa09125b2267e0e50c83d815e271867bc34"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_chiara_intimate.webp",
+      "sha": "04faaf856d560e323ff7f2978e003d6acc4f1a5a",
+      "size": 96962,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/04faaf856d560e323ff7f2978e003d6acc4f1a5a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_chiara_profile.webp",
+      "sha": "b7394ceda75d1e0013f79401dc58d35eaae8b3ab",
+      "size": 59830,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b7394ceda75d1e0013f79401dc58d35eaae8b3ab"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_elena_casual.webp",
+      "sha": "85e225ea73476517c0e860d18357a839d5b87f5a",
+      "size": 24452,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/85e225ea73476517c0e860d18357a839d5b87f5a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_elena_date.webp",
+      "sha": "c51d53eb37e0fee5aacb79128d7c20a260d9b1f5",
+      "size": 81808,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c51d53eb37e0fee5aacb79128d7c20a260d9b1f5"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_elena_flirt.webp",
+      "sha": "6948375fc0604d169cd52b0a3bc82828490f1fe5",
+      "size": 22848,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6948375fc0604d169cd52b0a3bc82828490f1fe5"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_elena_intimate.webp",
+      "sha": "7febdc45bbdf302fb6f02390f508b6685d1c2a62",
+      "size": 78854,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7febdc45bbdf302fb6f02390f508b6685d1c2a62"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_elena_profile.webp",
+      "sha": "5e3c14372c594caaa33c0b5b8dcb01d110c1e44b",
+      "size": 23742,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5e3c14372c594caaa33c0b5b8dcb01d110c1e44b"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_kenji_casual.webp",
+      "sha": "d3f28081bb81d34eb2d52c4e99325fd652e7c6af",
+      "size": 666474,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d3f28081bb81d34eb2d52c4e99325fd652e7c6af"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_kenji_date.webp",
+      "sha": "57ccc24a09a0d7ec604017f11fccd3a021575cdd",
+      "size": 386976,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/57ccc24a09a0d7ec604017f11fccd3a021575cdd"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_kenji_flirt.webp",
+      "sha": "59c082c4d7b5c41965878a470c417c98176dc4dd",
+      "size": 458840,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/59c082c4d7b5c41965878a470c417c98176dc4dd"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_kenji_intimate.webp",
+      "sha": "aa004a70db59aed943be5f7f0d593c88f7260e21",
+      "size": 411942,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/aa004a70db59aed943be5f7f0d593c88f7260e21"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_kenji_profile.webp",
+      "sha": "5c8f368a269c1efac43ca88c6213c3c245316e79",
+      "size": 616536,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5c8f368a269c1efac43ca88c6213c3c245316e79"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luca_casual.webp",
+      "sha": "1ec820f02287a9b86404ca721e90863771be8175",
+      "size": 651734,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/1ec820f02287a9b86404ca721e90863771be8175"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luca_date.webp",
+      "sha": "c5317b3ae86377e32ce70332a524e9db1991b7ac",
+      "size": 510358,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c5317b3ae86377e32ce70332a524e9db1991b7ac"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luca_flirt.webp",
+      "sha": "186f83b535e09903247422128ad276ac508a7809",
+      "size": 538568,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/186f83b535e09903247422128ad276ac508a7809"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luca_intimate.webp",
+      "sha": "b3b0edc36d2174cd6023e87a626a065e59a4e649",
+      "size": 543368,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b3b0edc36d2174cd6023e87a626a065e59a4e649"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luca_profile.webp",
+      "sha": "33589d386e882a2a09b40f5f25fc92e966ad4cf4",
+      "size": 615624,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/33589d386e882a2a09b40f5f25fc92e966ad4cf4"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luna_casual.webp",
+      "sha": "1b567283100cc8e9009432134dcf8d70a2af1b42",
+      "size": 36166,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/1b567283100cc8e9009432134dcf8d70a2af1b42"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luna_date.webp",
+      "sha": "f67ce59e90f476c58d5a54318f1aebfc082e9018",
+      "size": 28278,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f67ce59e90f476c58d5a54318f1aebfc082e9018"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luna_flirt.webp",
+      "sha": "0c4d08e8cb29851ac80f21a27df4fd818e837661",
+      "size": 146518,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0c4d08e8cb29851ac80f21a27df4fd818e837661"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luna_intimate.webp",
+      "sha": "e4a45c542e3416c0ebfa54df073b870725536644",
+      "size": 189624,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e4a45c542e3416c0ebfa54df073b870725536644"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_luna_profile.webp",
+      "sha": "37ec153996b574f73f047c522c1d1f9366be8a69",
+      "size": 27068,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/37ec153996b574f73f047c522c1d1f9366be8a69"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_matteo_casual.webp",
+      "sha": "99b245acbda38dc529f629d5a9b5784ec148c9fe",
+      "size": 485454,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/99b245acbda38dc529f629d5a9b5784ec148c9fe"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_matteo_date.webp",
+      "sha": "7dda3ccd9b80b8ce71e26473398d0b78218065db",
+      "size": 449232,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7dda3ccd9b80b8ce71e26473398d0b78218065db"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_matteo_flirt.webp",
+      "sha": "e5e67ff770ef8c7c29378a0b5f9aacb1f8e51ae6",
+      "size": 480112,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e5e67ff770ef8c7c29378a0b5f9aacb1f8e51ae6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_matteo_intimate.webp",
+      "sha": "80b6ee2bde4457ce7cb3b97f9e32fdfb2d902eda",
+      "size": 491062,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/80b6ee2bde4457ce7cb3b97f9e32fdfb2d902eda"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_matteo_profile.webp",
+      "sha": "c627c02b687e59b3fa9d73602cd378e80361ae98",
+      "size": 578796,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c627c02b687e59b3fa9d73602cd378e80361ae98"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_maya_casual.webp",
+      "sha": "b495a20d41f34143c4d1a9249f1c2216f44cc28c",
+      "size": 22802,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b495a20d41f34143c4d1a9249f1c2216f44cc28c"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_maya_date.webp",
+      "sha": "25b9e895a8f0214a2074a37b98b954765cb1fd28",
+      "size": 24436,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/25b9e895a8f0214a2074a37b98b954765cb1fd28"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_maya_flirt.webp",
+      "sha": "dc96e7274a6bfbe1690f1ec51d25e9d65e3155a3",
+      "size": 102514,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/dc96e7274a6bfbe1690f1ec51d25e9d65e3155a3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_maya_intimate.webp",
+      "sha": "99f84fdbb5d866c6b73a072337ee1277ad355df2",
+      "size": 108756,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/99f84fdbb5d866c6b73a072337ee1277ad355df2"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_maya_profile.webp",
+      "sha": "7c771e9cb0d4ef8eef636d8de94240a691c15386",
+      "size": 25604,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7c771e9cb0d4ef8eef636d8de94240a691c15386"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_nadia_casual.webp",
+      "sha": "75fd8ff305209bf6761a6d24bb4d3b9652f47960",
+      "size": 62682,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/75fd8ff305209bf6761a6d24bb4d3b9652f47960"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_nadia_date.webp",
+      "sha": "f7d4a114190e7aa285c7a934d8754441cdae44c4",
+      "size": 67034,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f7d4a114190e7aa285c7a934d8754441cdae44c4"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_nadia_flirt.webp",
+      "sha": "db8291fc8a6f7bf71c0914732439d249fe411bd6",
+      "size": 64850,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/db8291fc8a6f7bf71c0914732439d249fe411bd6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_nadia_intimate.webp",
+      "sha": "6b489c556f15426f1b6d0950bc5abfc4f5b6c7e7",
+      "size": 74986,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6b489c556f15426f1b6d0950bc5abfc4f5b6c7e7"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_nadia_profile.webp",
+      "sha": "438d5e08a49ea6a536fa8fd11c486172523dcbb6",
+      "size": 61974,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/438d5e08a49ea6a536fa8fd11c486172523dcbb6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_sofia_casual.webp",
+      "sha": "be37121da4b7c8123e3325baf2446998fbf0bfd1",
+      "size": 22280,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/be37121da4b7c8123e3325baf2446998fbf0bfd1"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_sofia_date.webp",
+      "sha": "f65bb40be5cb9d654df031088560f30db3f126eb",
+      "size": 73694,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f65bb40be5cb9d654df031088560f30db3f126eb"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_sofia_flirt.webp",
+      "sha": "ec66629e06f2628f2a2621a495021625c21fb6d4",
+      "size": 23152,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/ec66629e06f2628f2a2621a495021625c21fb6d4"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_sofia_intimate.webp",
+      "sha": "c92308bed0f1bcac8a040d64b5aa399e6db75ace",
+      "size": 81544,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c92308bed0f1bcac8a040d64b5aa399e6db75ace"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/gallery_sofia_profile.webp",
+      "sha": "86f868d3df52ddc792493dedc27281605d147711",
+      "size": 20970,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/86f868d3df52ddc792493dedc27281605d147711"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_character_chiara.webp",
+      "sha": "3ccd83da4900aa74179c3f4b791bb949af9959b9",
+      "size": 119826,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/3ccd83da4900aa74179c3f4b791bb949af9959b9"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_character_elena.webp",
+      "sha": "91b5e4c9bed27af105b06f545138650e7e1e9f28",
+      "size": 87930,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/91b5e4c9bed27af105b06f545138650e7e1e9f28"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_character_kenji.webp",
+      "sha": "7a09b2a14e77c4491cc52419551b735c5593bb69",
+      "size": 88598,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7a09b2a14e77c4491cc52419551b735c5593bb69"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_character_luca.webp",
+      "sha": "5d6b4508a4859a052a41a0641b538e8b0f5e06d9",
+      "size": 82530,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5d6b4508a4859a052a41a0641b538e8b0f5e06d9"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_character_luna.webp",
+      "sha": "730720bb16221751377e4cc1f4dbb6f31ad4019d",
+      "size": 111228,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/730720bb16221751377e4cc1f4dbb6f31ad4019d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_character_matteo.webp",
+      "sha": "0c19dc5bda454bae80accdcff939dc9083db72f5",
+      "size": 89268,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0c19dc5bda454bae80accdcff939dc9083db72f5"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_character_maya.webp",
+      "sha": "77d351bb9f637d9142ff93aa8b24428e05cf16e2",
+      "size": 79298,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/77d351bb9f637d9142ff93aa8b24428e05cf16e2"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_character_nadia.webp",
+      "sha": "ace0b17004bc1a2d01c369b5bf30d26b73f45ab6",
+      "size": 90224,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/ace0b17004bc1a2d01c369b5bf30d26b73f45ab6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_character_sofia.webp",
+      "sha": "b7ccba432ad905276d57a3361748810dbe548daf",
+      "size": 100636,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b7ccba432ad905276d57a3361748810dbe548daf"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_female_1.webp",
+      "sha": "1a7057721e0b496e55cb15fd4f86c6bee4d369fb",
+      "size": 13890,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/1a7057721e0b496e55cb15fd4f86c6bee4d369fb"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_female_2.webp",
+      "sha": "ed63faa50aca30fb4974cdc491a7421b316448bf",
+      "size": 10898,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/ed63faa50aca30fb4974cdc491a7421b316448bf"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_female_3.webp",
+      "sha": "4c213b00d6fe37adb5d1ab241d19805d357812c5",
+      "size": 18172,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4c213b00d6fe37adb5d1ab241d19805d357812c5"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_female_4.webp",
+      "sha": "6e4420be5eaaaef34a8b34748f1a72e317633d96",
+      "size": 14000,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6e4420be5eaaaef34a8b34748f1a72e317633d96"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_female_5.webp",
+      "sha": "559cff4a1bed2ae4289f084aac4457668232517c",
+      "size": 18402,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/559cff4a1bed2ae4289f084aac4457668232517c"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_male_1.webp",
+      "sha": "c05cc38406304e5db83bd497900783104cbc3cb8",
+      "size": 9340,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c05cc38406304e5db83bd497900783104cbc3cb8"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_male_2.webp",
+      "sha": "135c6ce35cec0fddef63fc3f78a29636beab797d",
+      "size": 11808,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/135c6ce35cec0fddef63fc3f78a29636beab797d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_male_3.webp",
+      "sha": "82f7c90827c6cf48141ef767bed855eb4e8b8d55",
+      "size": 10808,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/82f7c90827c6cf48141ef767bed855eb4e8b8d55"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_male_4.webp",
+      "sha": "3966b27c25745ab4d736fe56f518c7ff2bd353cd",
+      "size": 8600,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/3966b27c25745ab4d736fe56f518c7ff2bd353cd"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/phone_face_player_male_5.webp",
+      "sha": "8ea877f034588d6b4e730b3ab6bad8b8e4a787c3",
+      "size": 11754,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8ea877f034588d6b4e730b3ab6bad8b8e4a787c3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_female_1.webp",
+      "sha": "4e7e578b3f0993bd083b510c0de32a74422744c7",
+      "size": 587020,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4e7e578b3f0993bd083b510c0de32a74422744c7"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_female_2.webp",
+      "sha": "fb1c1550cc3278a592323dd43698026217682b94",
+      "size": 436968,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/fb1c1550cc3278a592323dd43698026217682b94"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_female_3.webp",
+      "sha": "551aebe7d5c198932fe65cc1a2b8f1b651af783c",
+      "size": 544674,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/551aebe7d5c198932fe65cc1a2b8f1b651af783c"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_female_4.webp",
+      "sha": "c95d4c1be2810b31ad7e19aef051c8c017d55c1d",
+      "size": 571724,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c95d4c1be2810b31ad7e19aef051c8c017d55c1d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_female_5.webp",
+      "sha": "cc5f4bb32ed5fab5341167cb54f946cc886dfce9",
+      "size": 540454,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/cc5f4bb32ed5fab5341167cb54f946cc886dfce9"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_male_1.webp",
+      "sha": "a256f3cab976f3354120c846216435667babe825",
+      "size": 528512,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a256f3cab976f3354120c846216435667babe825"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_male_2.webp",
+      "sha": "57f1b69120b27b5e7f08dcbbb77e824b9c89e896",
+      "size": 546042,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/57f1b69120b27b5e7f08dcbbb77e824b9c89e896"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_male_3.webp",
+      "sha": "6396e9e74a05fc838b94fe6afd3fc9037369551a",
+      "size": 741712,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6396e9e74a05fc838b94fe6afd3fc9037369551a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_male_4.webp",
+      "sha": "39cb8a55da3adafef6f79e2148f90db9270a7b47",
+      "size": 649410,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/39cb8a55da3adafef6f79e2148f90db9270a7b47"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/drawable-nodpi/player_male_5.webp",
+      "sha": "aa85432113e750f58c254e8623f26ddd41b14b2d",
+      "size": 566142,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/aa85432113e750f58c254e8623f26ddd41b14b2d"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/res/raw",
+      "sha": "677b699e0ffd3562b0a2fce96042620be70d65ff",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/677b699e0ffd3562b0a2fce96042620be70d65ff"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/raw/neontides_main_theme.ogg",
+      "sha": "25904d141351260f018452cf91a96ca4bd0ed12f",
+      "size": 523878,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/25904d141351260f018452cf91a96ca4bd0ed12f"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/raw/neontides_message.ogg",
+      "sha": "e9c6de8eadc19cd43e111b7801ad831cd5313808",
+      "size": 7970,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e9c6de8eadc19cd43e111b7801ad831cd5313808"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/raw/neontides_phone_message.ogg",
+      "sha": "5d50e4b3c8cdc03dac2efb768732983a322902b6",
+      "size": 6564,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5d50e4b3c8cdc03dac2efb768732983a322902b6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/raw/neontides_ringtone.ogg",
+      "sha": "141fe767c065dad297b05a37498a2ba2214786ae",
+      "size": 22640,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/141fe767c065dad297b05a37498a2ba2214786ae"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/main/res/values",
+      "sha": "135da40ec4921be72a3729fedc8e9c2ee431ec29",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/135da40ec4921be72a3729fedc8e9c2ee431ec29"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/values/strings.xml",
+      "sha": "70f407ef02716a95e5811c9b0505cd2511f5dbb1",
+      "size": 73,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/70f407ef02716a95e5811c9b0505cd2511f5dbb1"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/main/res/values/themes.xml",
+      "sha": "16d1b96cd1530395d749d25a31537da5a6116fb5",
+      "size": 407,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/16d1b96cd1530395d749d25a31537da5a6116fb5"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test",
+      "sha": "b6201dab650b8901fb36e40b855c2ecc5442aa24",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/b6201dab650b8901fb36e40b855c2ecc5442aa24"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java",
+      "sha": "ffa450fc16148360e7321bc60bd704e88e23ac0b",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/ffa450fc16148360e7321bc60bd704e88e23ac0b"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com",
+      "sha": "c2b5d5c0dd58fb01fa8c4ea995a1f6604e07b2cd",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/c2b5d5c0dd58fb01fa8c4ea995a1f6604e07b2cd"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides",
+      "sha": "4aa81d450cd92ab284a6d02e15efb0443d30cf50",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/4aa81d450cd92ab284a6d02e15efb0443d30cf50"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp",
+      "sha": "36422bf9147de5f50941d0bbe130e84a02c32631",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/36422bf9147de5f50941d0bbe130e84a02c32631"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai",
+      "sha": "a4d7499811554056c4b04acc1b01f79b36e245e2",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/a4d7499811554056c4b04acc1b01f79b36e245e2"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/BaseDialogueLabSessionStoreTest.kt",
+      "sha": "0de07ed9910d272ea58f9170de3440e4bc687743",
+      "size": 2193,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0de07ed9910d272ea58f9170de3440e4bc687743"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/CachedPersonaContextTest.kt",
+      "sha": "832dc55081b55fadc5a6b9b7b4b5eb788672bbfe",
+      "size": 889,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/832dc55081b55fadc5a6b9b7b4b5eb788672bbfe"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/DeepDiagnosticRuntimeWiringSourceTest.kt",
+      "sha": "bb92985818ec651cc14781a2ce7fb1e0725e78d3",
+      "size": 2428,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/bb92985818ec651cc14781a2ce7fb1e0725e78d3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/DiagnosticComparisonTest.kt",
+      "sha": "af17a23baa7bd3ddfac4d949144a56a4a8114ac8",
+      "size": 6001,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/af17a23baa7bd3ddfac4d949144a56a4a8114ac8"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/DiagnosticExportOverrideTest.kt",
+      "sha": "6936ef2bbbdba2079304e343b59113a1c38aad9e",
+      "size": 2793,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6936ef2bbbdba2079304e343b59113a1c38aad9e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/DiagnosticLabWiringSourceTest.kt",
+      "sha": "010caf2e1d77d178b97ddf6c87e688e1aaf12804",
+      "size": 3260,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/010caf2e1d77d178b97ddf6c87e688e1aaf12804"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/HybridDialogueRouterM1RecoveryTest.kt",
+      "sha": "d8afb61c801d10bd59ff72f423e8d58cdbb61898",
+      "size": 1751,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d8afb61c801d10bd59ff72f423e8d58cdbb61898"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/LabRuntimeOverridesWiringSourceTest.kt",
+      "sha": "66361319f12dfcdf497905f44a2e0e19a6901f6e",
+      "size": 1757,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/66361319f12dfcdf497905f44a2e0e19a6901f6e"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine",
+      "sha": "f5c6d0f1fbd9866306efe97d7f0894f5c4484bc2",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/f5c6d0f1fbd9866306efe97d7f0894f5c4484bc2"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core",
+      "sha": "10131914a647749d52fa8df0b49db0ebdb95cf8e",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/10131914a647749d52fa8df0b49db0ebdb95cf8e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/ApplicationContextBlocksStageTest.kt",
+      "sha": "6cb13442a97c744bcb95af51862453227d8682cc",
+      "size": 4882,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6cb13442a97c744bcb95af51862453227d8682cc"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/ApplicationExecutionContextBoundaryTest.kt",
+      "sha": "81d815ded73169fba6e2b6f8315a80112818eca5",
+      "size": 10765,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/81d815ded73169fba6e2b6f8315a80112818eca5"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/ApplicationKnowledgeBoundaryStageTest.kt",
+      "sha": "19a361aeac9b32e775525ca51192b8d14fc4fa81",
+      "size": 5010,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/19a361aeac9b32e775525ca51192b8d14fc4fa81"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/ApplicationOutputStageTest.kt",
+      "sha": "72cb340299b775668fbd0f8b789157ad88a89e35",
+      "size": 5869,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/72cb340299b775668fbd0f8b789157ad88a89e35"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineFrameworkPrivacyTest.kt",
+      "sha": "491790e7a529464dbe77f4aacbde63f09bb8fc87",
+      "size": 1845,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/491790e7a529464dbe77f4aacbde63f09bb8fc87"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineOrchestratorBackendFailureTest.kt",
+      "sha": "0dc3c66057fcd79dd1467c165f0f854ef5d1e94a",
+      "size": 6551,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0dc3c66057fcd79dd1467c165f0f854ef5d1e94a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineOrchestratorBehaviorContextTest.kt",
+      "sha": "72ff395513befe0d7095cb0d2cd908ee37b6965a",
+      "size": 5412,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/72ff395513befe0d7095cb0d2cd908ee37b6965a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineOrchestratorPersistenceTest.kt",
+      "sha": "fcd697706e1d6717fe437e68c82e053de483e10e",
+      "size": 43855,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/fcd697706e1d6717fe437e68c82e053de483e10e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineOrchestratorReflectionTest.kt",
+      "sha": "343eb3817c03ad4cad537a13f6ffec7ec92408c3",
+      "size": 15517,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/343eb3817c03ad4cad537a13f6ffec7ec92408c3"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineOrchestratorVectorFallbackTest.kt",
+      "sha": "fe3cea285ac874ca5093bf02721ba55076098db4",
+      "size": 5028,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/fe3cea285ac874ca5093bf02721ba55076098db4"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/PerceptionNormalizationStageTest.kt",
+      "sha": "28ef67d3d1c11a203b37742b4b0d64b40e769d2a",
+      "size": 5198,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/28ef67d3d1c11a203b37742b4b0d64b40e769d2a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/core/WorldMatrixProtocolTest.kt",
+      "sha": "001bc397bea4b7c3ad090d31468059c243995329",
+      "size": 2499,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/001bc397bea4b7c3ad090d31468059c243995329"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics",
+      "sha": "81f961cc042aa78f5ea0ca7a8362c2a20a942034",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/81f961cc042aa78f5ea0ca7a8362c2a20a942034"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/AnomalySummaryTest.kt",
+      "sha": "211ffc8b94038a00f07125cb15c24e029c3b27bf",
+      "size": 2182,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/211ffc8b94038a00f07125cb15c24e029c3b27bf"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/CacheHistoryAuditTest.kt",
+      "sha": "a81ff98efb2b66fbccf4ce355a18ebccd3b8869b",
+      "size": 3634,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a81ff98efb2b66fbccf4ce355a18ebccd3b8869b"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/CausalTraceCompletenessGateTest.kt",
+      "sha": "d2d7211935c588a2b8fbb8b68b47d7493c0ab4f4",
+      "size": 2011,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d2d7211935c588a2b8fbb8b68b47d7493c0ab4f4"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/CausalTraceTest.kt",
+      "sha": "21122742cf86e4546d65a1cee5a7b2546b484ee6",
+      "size": 4298,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/21122742cf86e4546d65a1cee5a7b2546b484ee6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DeepCompletenessReportTest.kt",
+      "sha": "b9c7bb2fce771be7f604334f8801c74a1a9be6f5",
+      "size": 1984,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b9c7bb2fce771be7f604334f8801c74a1a9be6f5"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DeepDiagnosticJsonlTest.kt",
+      "sha": "6030efd3cac73b7c467f96c7a61044e07025657d",
+      "size": 4492,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6030efd3cac73b7c467f96c7a61044e07025657d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DeepDiagnosticTraceContractTest.kt",
+      "sha": "abc730265862c5858ed279cd9906356a1468a9b4",
+      "size": 2729,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/abc730265862c5858ed279cd9906356a1468a9b4"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DeepTurnDiagnosticTxtTest.kt",
+      "sha": "25809f9532a2cae14e46fc72ba84c213e23ef2f5",
+      "size": 3314,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/25809f9532a2cae14e46fc72ba84c213e23ef2f5"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DiagnosticCauseClassifierTest.kt",
+      "sha": "8b1c31ff3a9cb7df600f2225f6e7b1667647aafa",
+      "size": 2521,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8b1c31ff3a9cb7df600f2225f6e7b1667647aafa"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/DiagnosticEnvelopeTest.kt",
+      "sha": "db3e3a818dc6474cf6b45f0076321e5c55a809cc",
+      "size": 2596,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/db3e3a818dc6474cf6b45f0076321e5c55a809cc"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/FirstDivergenceAnalyzerTest.kt",
+      "sha": "6adff9a6609a5d9e3d5d2f8a7075fbc45e13dc3c",
+      "size": 3777,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6adff9a6609a5d9e3d5d2f8a7075fbc45e13dc3c"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/GenerationOutputTraceTest.kt",
+      "sha": "26df7109fe0d18862a467b7d7a6e919ce080e269",
+      "size": 5702,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/26df7109fe0d18862a467b7d7a6e919ce080e269"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/LabRuntimeOverridesTest.kt",
+      "sha": "57af4ec2bfb65bdef361b8068403a1a1a15ccda1",
+      "size": 1764,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/57af4ec2bfb65bdef361b8068403a1a1a15ccda1"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/M1CognitiveDiagnosticTest.kt",
+      "sha": "803e889ed4fc2a25cbfdcc0e0a3b7d5369fe144b",
+      "size": 1972,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/803e889ed4fc2a25cbfdcc0e0a3b7d5369fe144b"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/MemoryCatalogTraceTest.kt",
+      "sha": "0d7696da8346e85b0e869ff0b3a02e6a17c0a867",
+      "size": 4751,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0d7696da8346e85b0e869ff0b3a02e6a17c0a867"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/ModularMemoryLabTest.kt",
+      "sha": "b5f79e1b1cab458109672f2a53c5b474f57736c0",
+      "size": 2280,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b5f79e1b1cab458109672f2a53c5b474f57736c0"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/PromptBuilderDecisionAuditTest.kt",
+      "sha": "f49c47c7381645f5779d5e078fd643d302e12d62",
+      "size": 2651,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f49c47c7381645f5779d5e078fd643d302e12d62"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/PromptBuilderInputAuditTest.kt",
+      "sha": "202bdbc0da5070f6ce61814f81c51be798bb28a1",
+      "size": 1706,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/202bdbc0da5070f6ce61814f81c51be798bb28a1"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/PromptBuilderOutputAuditTest.kt",
+      "sha": "cb06d7eb45e0e7e839a8b1795a7cc2420e0bcccf",
+      "size": 3362,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/cb06d7eb45e0e7e839a8b1795a7cc2420e0bcccf"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/PromptPayloadAuditTest.kt",
+      "sha": "7a0f2cae0056e76f06d80aaeb78ac461aa2d8c09",
+      "size": 2442,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7a0f2cae0056e76f06d80aaeb78ac461aa2d8c09"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/diagnostics/PromptTraceSnapshotTest.kt",
+      "sha": "0bc9e565d738a7f0f3c1a363e0ac3d1ecd30fdcb",
+      "size": 1618,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/0bc9e565d738a7f0f3c1a363e0ac3d1ecd30fdcb"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/memory",
+      "sha": "608d0405923cc20eff8e4a332883bf928ad0065b",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/608d0405923cc20eff8e4a332883bf928ad0065b"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/memory/LegacyMemoryAcquisitionAdapterTest.kt",
+      "sha": "7500b551cf72bdd229b348f5a8626b6056fd7335",
+      "size": 835,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7500b551cf72bdd229b348f5a8626b6056fd7335"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryAcquisitionClassifierTest.kt",
+      "sha": "d5ee4090a4df2c266316932504345714a343047e",
+      "size": 1749,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/d5ee4090a4df2c266316932504345714a343047e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryCoreRegressionTest.kt",
+      "sha": "16b5ec423ee21b28d7a65faf8c429e3b908cdaab",
+      "size": 12361,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/16b5ec423ee21b28d7a65faf8c429e3b908cdaab"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryStreamEngineTest.kt",
+      "sha": "b46ec517ded9329efec096bf1d571182d510ecfc",
+      "size": 4077,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/b46ec517ded9329efec096bf1d571182d510ecfc"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/prompt",
+      "sha": "d708eda66e543b533642ea1360ed8283720fce6e",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/d708eda66e543b533642ea1360ed8283720fce6e"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/prompt/ContextSupervisorRegressionTest.kt",
+      "sha": "4d91b7a9580a03446b0df8bbba4dac988ad78a28",
+      "size": 6182,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4d91b7a9580a03446b0df8bbba4dac988ad78a28"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/reflection",
+      "sha": "7becce2af0f1154bddda6368e573c324d8641b1f",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/7becce2af0f1154bddda6368e573c324d8641b1f"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionEngineSubjectIsolationTest.kt",
+      "sha": "119fae0869c1bda5379ba392461d0a26e0daf00a",
+      "size": 3011,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/119fae0869c1bda5379ba392461d0a26e0daf00a"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionProcessorTest.kt",
+      "sha": "a1f890c28805d92b91acb9b8b5d0d6c23e026d58",
+      "size": 9425,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a1f890c28805d92b91acb9b8b5d0d6c23e026d58"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionQueueTest.kt",
+      "sha": "9dcf819f83ba3ddbcab76e9b9671f9f621514478",
+      "size": 5539,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/9dcf819f83ba3ddbcab76e9b9671f9f621514478"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionTriggerTest.kt",
+      "sha": "6bf23a6dfd3f9ca5ae902375f87de5ee6213cb42",
+      "size": 5607,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6bf23a6dfd3f9ca5ae902375f87de5ee6213cb42"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval",
+      "sha": "03d103dd8f43c71dcdee0dd88502216ca4522071",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/03d103dd8f43c71dcdee0dd88502216ca4522071"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/VectorRankingStageTest.kt",
+      "sha": "085676e94cca5b84576e743bbcb996ae61418512",
+      "size": 5325,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/085676e94cca5b84576e743bbcb996ae61418512"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/understanding",
+      "sha": "d8d4bcac5c12157a12fd95a62a25970acdee1b9f",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/d8d4bcac5c12157a12fd95a62a25970acdee1b9f"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/MatrixEngine/understanding/UnderstandingEngineGoldenM1Test.kt",
+      "sha": "ee9172e5ee295251fbf2078e5a3f437b1f85431d",
+      "size": 14524,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/ee9172e5ee295251fbf2078e5a3f437b1f85431d"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/PersonaPromptSanitizerTest.kt",
+      "sha": "4c3660fda9c130e8de17ebc8edfaf44a40bc0c1f",
+      "size": 1946,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4c3660fda9c130e8de17ebc8edfaf44a40bc0c1f"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/PromptPackerAuditTest.kt",
+      "sha": "3348482074c6014c7a276e8aad535b7f62790547",
+      "size": 6809,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/3348482074c6014c7a276e8aad535b7f62790547"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/PromptTextBoundaryTest.kt",
+      "sha": "5f53f5395c8ba4d659f94da0c23258abb070f2b6",
+      "size": 4432,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5f53f5395c8ba4d659f94da0c23258abb070f2b6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ai/TestPageHygieneSourceTest.kt",
+      "sha": "9c33dba36413280f8c9b34f878c346220eb1364e",
+      "size": 1519,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/9c33dba36413280f8c9b34f878c346220eb1364e"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ui",
+      "sha": "f593996cb0a98337052109fdc0786c568e03130b",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/f593996cb0a98337052109fdc0786c568e03130b"
+    },
+    {
+      "mode": "040000",
+      "path": "app/src/test/java/com/neontides/nativeapp/ui/screens",
+      "sha": "394452636021342be761a66ba1ae3ebfc91856c6",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/394452636021342be761a66ba1ae3ebfc91856c6"
+    },
+    {
+      "mode": "100644",
+      "path": "app/src/test/java/com/neontides/nativeapp/ui/screens/LunaDiagnosticLabSourceTest.kt",
+      "sha": "575c4a06b82f2b4b7d4d186354e2bfc858c3256d",
+      "size": 1497,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/575c4a06b82f2b4b7d4d186354e2bfc858c3256d"
+    },
+    {
+      "mode": "100644",
+      "path": "build.gradle.kts",
+      "sha": "4b6cd076199e8cbab2d048c3cdd8f99e7b4aaebd",
+      "size": 356,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4b6cd076199e8cbab2d048c3cdd8f99e7b4aaebd"
+    },
+    {
+      "mode": "040000",
+      "path": "docs",
+      "sha": "f8729bbd1fb912b1b3b91e5f0618bfb309e99ee8",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/f8729bbd1fb912b1b3b91e5f0618bfb309e99ee8"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/.gitkeep",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/ARCHITETTURA_FINALE_MATRIX_ENGINE.md",
+      "sha": "162b0a42fda2f31f15c4f807aaba38c4d819df70",
+      "size": 1977,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/162b0a42fda2f31f15c4f807aaba38c4d819df70"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/AUDIT_TECNICO_MATRIX_ENGINE.md",
+      "sha": "2ae3f5d11473d1251cf9d35ef26a5852b93c7f09",
+      "size": 3342,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/2ae3f5d11473d1251cf9d35ef26a5852b93c7f09"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/B0_AUDIT_CODICE_REALE.md",
+      "sha": "f69e629df0ccf314e998384dabc73e5d9aeb176d",
+      "size": 11998,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/f69e629df0ccf314e998384dabc73e5d9aeb176d"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/CRITICAL_ENGINEERING_GATE.md",
+      "sha": "177c21b7fae6f90af69d75e815716795a2e9e557",
+      "size": 6893,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/177c21b7fae6f90af69d75e815716795a2e9e557"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/CURRENT_PRIORITY_MATRIX_CORE_PROTOTYPE.md",
+      "sha": "7a76a4ac4498845e975727ef3d43375074946763",
+      "size": 5352,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7a76a4ac4498845e975727ef3d43375074946763"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/DIAGNOSTICA_CHECKPOINT_GATE.md",
+      "sha": "fa524d7c1524c145e726a028218093770fa699ba",
+      "size": 7580,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/fa524d7c1524c145e726a028218093770fa699ba"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/FUTURE_FEATURE_TATTO_VISUALE_AVATAR.md",
+      "sha": "ab2ca525555372d715691ed1d1e7e2f5b6fdfaa4",
+      "size": 3377,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/ab2ca525555372d715691ed1d1e7e2f5b6fdfaa4"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/METODO_ANIMAZIONI_2D_DETERMINISTICHE.md",
+      "sha": "6fc7573b3567c290567f1f4902c37a293f1b4c2a",
+      "size": 4816,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6fc7573b3567c290567f1f4902c37a293f1b4c2a"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/NOTA_CERVELLETTO_LABEL_MULTILINGUE.md",
+      "sha": "48b48592bf59c5c1b6004242576bf590d704e69e",
+      "size": 1150,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/48b48592bf59c5c1b6004242576bf590d704e69e"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/NOTA_DA_DISCUTERE_CODEX_ESPRESSIONE_EMOZIONI.md",
+      "sha": "8755453517abba4e49564e7ecd24a1568cc73da2",
+      "size": 1408,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8755453517abba4e49564e7ecd24a1568cc73da2"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/NOTA_MEMORIA_ENTITA_LUOGHI.md",
+      "sha": "3d4e73ac684451ecd28ec82e62ccaec88a3610a5",
+      "size": 2177,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/3d4e73ac684451ecd28ec82e62ccaec88a3610a5"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/NOTA_REVISIONE_ARCHITETTURA_CERVELLETTO_INPUT_OUTPUT.md",
+      "sha": "50becb55a763e9216b3ec0a0144ca9c48f3a4969",
+      "size": 2879,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/50becb55a763e9216b3ec0a0144ca9c48f3a4969"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/NOTA_SOCIAL_EVENT_ENGINE.md",
+      "sha": "ba57387c7d674a63da3fc457616c68a815db48cd",
+      "size": 4926,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/ba57387c7d674a63da3fc457616c68a815db48cd"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/NOTA_STUDIO_ARCHITETTURE_COGNITIVE_ESISTENTI.md",
+      "sha": "c36bf98b645d57677934e1e7580be93bea9fbcfd",
+      "size": 3418,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c36bf98b645d57677934e1e7580be93bea9fbcfd"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/NOTE_PROSSIME_BUILD_NPC_DIAGNOSTICA.md",
+      "sha": "a5d2ff275531d892e8b07d35a32729cab9d522c1",
+      "size": 6762,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a5d2ff275531d892e8b07d35a32729cab9d522c1"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/OBIETTIVO_PERSONCINA_VIRTUALE.md",
+      "sha": "4345dca244319c918c80d0e3f830a0e6859bdff1",
+      "size": 12310,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/4345dca244319c918c80d0e3f830a0e6859bdff1"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/REGOLA_DIAGNOSTICA_CONFRONTO_MODELLI.md",
+      "sha": "6ab52ca9d40ab9c17265332b3307279279f3416a",
+      "size": 2519,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6ab52ca9d40ab9c17265332b3307279279f3416a"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/SIGNING_APK_POLICY.md",
+      "sha": "55f3ab487c3e0db5926a4100ee6a47106b0f4cd0",
+      "size": 2129,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/55f3ab487c3e0db5926a4100ee6a47106b0f4cd0"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/SUPERVISOR_REVIEW_PROTOCOL.md",
+      "sha": "a0186af962998f0170e8a1fe65f601e3805c5588",
+      "size": 4988,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/a0186af962998f0170e8a1fe65f601e3805c5588"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/TEST_DIAGNOSTICO_ABC.md",
+      "sha": "8b0cc8f04640f973decc3dc1e9d659bb20fa3fdb",
+      "size": 9156,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8b0cc8f04640f973decc3dc1e9d659bb20fa3fdb"
+    },
+    {
+      "mode": "040000",
+      "path": "docs/decisions",
+      "sha": "ca9ac92a86fcf79bd9179b27fa51a13dd458c1b3",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/ca9ac92a86fcf79bd9179b27fa51a13dd458c1b3"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/decisions/2026-09-03_MATRIX_CORE_PROTOTYPE_DECISIONS.md",
+      "sha": "6bcfdada80739828ff08b82181e158aa71398c2a",
+      "size": 5104,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6bcfdada80739828ff08b82181e158aa71398c2a"
+    },
+    {
+      "mode": "040000",
+      "path": "docs/prompts",
+      "sha": "1d035003f0825583c3495351f95c76ece4d40d6a",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/1d035003f0825583c3495351f95c76ece4d40d6a"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/prompts/PROMPT_WORK_CRITICAL_ARCHITECTURE_AUDIT.md",
+      "sha": "fc67f24efaae1b8282654127317b252be74d055f",
+      "size": 5418,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/fc67f24efaae1b8282654127317b252be74d055f"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/prompts/PROMPT_WORK_POST_MOTO_DIAGNOSTIC_FIX_STRICT.md",
+      "sha": "6b2d08e2a7bea728f8a1981e8be047295eed54f7",
+      "size": 13075,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/6b2d08e2a7bea728f8a1981e8be047295eed54f7"
+    },
+    {
+      "mode": "040000",
+      "path": "docs/reviews",
+      "sha": "e835b6d1a67b928c210e223d47f6cfd1517e7f01",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/e835b6d1a67b928c210e223d47f6cfd1517e7f01"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/reviews/2026-09-03_CRITICAL_ARCHITECTURE_AUDIT.md",
+      "sha": "7f2ba14dc4fcf78de6734191520a9a7c8d12a57a",
+      "size": 39403,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/7f2ba14dc4fcf78de6734191520a9a7c8d12a57a"
+    },
+    {
+      "mode": "040000",
+      "path": "docs/supervisor_reviews",
+      "sha": "263041fa307ccef05bfd24a07adecade225e093b",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/263041fa307ccef05bfd24a07adecade225e093b"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/supervisor_reviews/2026-09-03_DIAGNOSTIC_OBSERVABILITY_SUPERVISOR_REVIEW.md",
+      "sha": "727c06d5994e47543a4df6a0c7ff215591aca2e4",
+      "size": 16276,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/727c06d5994e47543a4df6a0c7ff215591aca2e4"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/supervisor_reviews/2026-09-03_POST_MOTO_DIAGNOSTIC_FIX_SUPERVISOR_REVIEW.md",
+      "sha": "942b6f011bb1ee260f88f3a5c13344f659e993cc",
+      "size": 15296,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/942b6f011bb1ee260f88f3a5c13344f659e993cc"
+    },
+    {
+      "mode": "100644",
+      "path": "gradle.properties",
+      "sha": "5930f57406f642ba32d8a52ffc2e3f912a2b1a83",
+      "size": 136,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5930f57406f642ba32d8a52ffc2e3f912a2b1a83"
+    },
+    {
+      "mode": "040000",
+      "path": "mlc4j-stub",
+      "sha": "e61848b8280e40634fd25ca27f7d32a6be56fdd0",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/e61848b8280e40634fd25ca27f7d32a6be56fdd0"
+    },
+    {
+      "mode": "100644",
+      "path": "mlc4j-stub/build.gradle.kts",
+      "sha": "8a8365b7ab2ab2e45d0894ed4610c392f020b0d1",
+      "size": 597,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/8a8365b7ab2ab2e45d0894ed4610c392f020b0d1"
+    },
+    {
+      "mode": "040000",
+      "path": "mlc4j-stub/src",
+      "sha": "8e1161395d6c27efbb837478480a16b3d06e4e60",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/8e1161395d6c27efbb837478480a16b3d06e4e60"
+    },
+    {
+      "mode": "040000",
+      "path": "mlc4j-stub/src/main",
+      "sha": "586f8aa7f46f8d0c4b3aef0404c806c619c544a4",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/586f8aa7f46f8d0c4b3aef0404c806c619c544a4"
+    },
+    {
+      "mode": "100644",
+      "path": "mlc4j-stub/src/main/AndroidManifest.xml",
+      "sha": "cc947c56799598205b8fb518f3ba95843c1bab71",
+      "size": 13,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/cc947c56799598205b8fb518f3ba95843c1bab71"
+    },
+    {
+      "mode": "040000",
+      "path": "mlc4j-stub/src/main/java",
+      "sha": "dbc9d080005b3aaa3bcf8664662702094ecea522",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/dbc9d080005b3aaa3bcf8664662702094ecea522"
+    },
+    {
+      "mode": "040000",
+      "path": "mlc4j-stub/src/main/java/ai",
+      "sha": "68144d9b19098ffb55edcc29eb515923774f52c4",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/68144d9b19098ffb55edcc29eb515923774f52c4"
+    },
+    {
+      "mode": "040000",
+      "path": "mlc4j-stub/src/main/java/ai/mlc",
+      "sha": "a37d48c6d05177928fc0a4771dfdd7dea2a73682",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/a37d48c6d05177928fc0a4771dfdd7dea2a73682"
+    },
+    {
+      "mode": "040000",
+      "path": "mlc4j-stub/src/main/java/ai/mlc/mlcllm",
+      "sha": "9154b3b6597944f71f0f452af019b142f84c4814",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/9154b3b6597944f71f0f452af019b142f84c4814"
+    },
+    {
+      "mode": "100644",
+      "path": "mlc4j-stub/src/main/java/ai/mlc/mlcllm/MLCEngine.kt",
+      "sha": "c517a31f8db9fb0882bb151e800edfd3d8e7da16",
+      "size": 1861,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/c517a31f8db9fb0882bb151e800edfd3d8e7da16"
+    },
+    {
+      "mode": "040000",
+      "path": "models",
+      "sha": "fcbe89e805d28eeeaa9caff0921d1a0e013ee0f5",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/fcbe89e805d28eeeaa9caff0921d1a0e013ee0f5"
+    },
+    {
+      "mode": "040000",
+      "path": "models/cervelletto",
+      "sha": "c7f4239a436f87030f52796331732d9e64ee901a",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/c7f4239a436f87030f52796331732d9e64ee901a"
+    },
+    {
+      "mode": "040000",
+      "path": "models/cervelletto/minilm-multilingual-arm64",
+      "sha": "e1545ca86f09c3c5ca1b77db2595daa12c4dffe0",
+      "type": "tree",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/e1545ca86f09c3c5ca1b77db2595daa12c4dffe0"
+    },
+    {
+      "mode": "100644",
+      "path": "models/cervelletto/minilm-multilingual-arm64/MODEL.md",
+      "sha": "5c58fd6e81b817ec851bf13a6d199baac082a528",
+      "size": 1887,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/5c58fd6e81b817ec851bf13a6d199baac082a528"
+    },
+    {
+      "mode": "100644",
+      "path": "models/cervelletto/minilm-multilingual-arm64/download_model.sh",
+      "sha": "84d132313acb1471c32fe70a555f69ac87490b8e",
+      "size": 802,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/84d132313acb1471c32fe70a555f69ac87490b8e"
+    },
+    {
+      "mode": "100644",
+      "path": "settings.gradle.kts",
+      "sha": "772174c8900e5c6ed86eaaccde6c2c7c6091706c",
+      "size": 678,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/772174c8900e5c6ed86eaaccde6c2c7c6091706c"
+    },
+    {
+      "mode": "100644",
+      "path": "valutazioni con gpt.txt",
+      "sha": "51aaeccfb96a3c751ebcfbdf5c203eaf57e0f016",
+      "size": 18982,
+      "type": "blob",
+      "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/blobs/51aaeccfb96a3c751ebcfbdf5c203eaf57e0f016"
+    }
+  ],
+  "truncated": false,
+  "url": "https://api.github.com/repos/MATRIXNEO23/8.10.9evo3-solo-gpt/git/trees/902cb73d5e60e660f827cdb99967a074c186e3b9"
+}

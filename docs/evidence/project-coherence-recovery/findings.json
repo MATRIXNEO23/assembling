@@ -1,0 +1,119 @@
+[
+  {
+    "id": "C01",
+    "severity": "HIGH",
+    "status": "OPEN_INTEGRATION_GAP",
+    "finding": "La catena canonica completa non è dimostrata: stadi legacy e canonici convivono; retrieval/context, decision e consolidation non sono cablati nel root orchestrator. R1 prompt è già chiuso, non va rifatto.",
+    "modules": [
+      "M03",
+      "M06",
+      "M07",
+      "M08",
+      "M10",
+      "M14",
+      "M22"
+    ],
+    "action": "Un checkpoint di verifica del turno canonico sui port esistenti, con trace e prime divergenze; nessuna sostituzione dei backend o invenzione di campi."
+  },
+  {
+    "id": "C02",
+    "severity": "MEDIUM",
+    "status": "CONFIRMED_STATIC_CAPABILITY_GAP",
+    "finding": "CanonicalUnderstandingV3AuthorityPort.retrievalForClaim supporta soltanto 1 claim/1 result. Il commento dice che RetrievalResult non ha claimId, ma il DTO corrente ha claimId/contextSnapshotId e validatori di binding.",
+    "modules": [
+      "M04",
+      "M08",
+      "M11"
+    ],
+    "action": "Proteggere con regressione specifica prima di eventuale correzione; non forzare risoluzione quando il binding è davvero insufficiente."
+  },
+  {
+    "id": "C03",
+    "severity": "HIGH_IF_DECLARED_COMPLETE",
+    "status": "MISSING_ENGINE_BACKENDS",
+    "finding": "Test di port/echo/preflight non provano backend NLU/GGUF, memoria persistente o Android.",
+    "modules": [
+      "M07",
+      "M09",
+      "M12",
+      "M23",
+      "M24",
+      "M25"
+    ],
+    "action": "Non promuovere Engine a funzionante end-to-end; recuperare e verificare i backend pertinenti in checkpoint separati."
+  },
+  {
+    "id": "C04",
+    "severity": "MEDIUM",
+    "status": "RECOVERY_CLOSED_IN_THIS_CHANGE",
+    "finding": "Foundation v3 non era completa nella repo memoria: 16 sorgenti/test esistevano separati. Ora recuperati con checksum identici, 25 test passati e snapshot di riferimento persistito.",
+    "modules": [
+      "M09"
+    ],
+    "action": "Usare questo locator e provenance; non riscrivere per assenza della copia locale."
+  },
+  {
+    "id": "C05",
+    "severity": "MEDIUM",
+    "status": "DOCUMENTATION_SCOPE_CONFLICT",
+    "finding": "ARCHITETTURA.md Lab è DESIGN_ONLY, include RELATIONSHIP/GOAL nelle decisioni Admission e sequenza Memory prima di risposta; MIP corrente mantiene domini separati e commit finale dopo output. Vecchi README propongono ancora task già eseguiti.",
+    "modules": [
+      "M09",
+      "M15",
+      "M17",
+      "M32"
+    ],
+    "action": "Trattare quei piani come storici/proposte, non runtime canonico né nuova autorizzazione. Nessuna decisione semantica riaperta."
+  },
+  {
+    "id": "C06",
+    "severity": "MEDIUM",
+    "status": "HISTORICAL_REUSE_COMPATIBILITY_UNVERIFIED",
+    "finding": "Il backup Android contiene implementazioni di reflection/retrieval/goal/graph: assenza in Assembling non significa inesistenza globale. Copiarle senza verifica introdurrebbe contratti e ownership storici.",
+    "modules": [
+      "M11",
+      "M17",
+      "M18",
+      "M19",
+      "M20",
+      "M21",
+      "M25"
+    ],
+    "action": "Conservare commit/path e test originali; riuso selettivo solo dopo confronto col MIP corrente."
+  },
+  {
+    "id": "C07",
+    "severity": "MEDIUM",
+    "status": "MODEL_EVALUATION_LIMITATION_ALREADY_KNOWN",
+    "finding": "Student-5 recuperabile non è selezionato; Student-4 non supera automaticamente gate production; E5 importato non è validato MATRIX.",
+    "modules": [
+      "M27",
+      "M28",
+      "M30",
+      "M31"
+    ],
+    "action": "Nessun training/rimpiazzo automatico; non usare loss TRAIN o 2/8 ad hoc come gate."
+  },
+  {
+    "id": "C08",
+    "severity": "LOW",
+    "status": "NON_DEFECT_OBSERVATION",
+    "finding": "SHA vendor Affective diverso dal Lab esclusivamente per newline finale: nessuna differenza algoritmica in affective_engine.py.",
+    "modules": [
+      "M13",
+      "M14"
+    ],
+    "action": "Non correggere o sostituire il file per il solo hash diverso."
+  },
+  {
+    "id": "C09",
+    "severity": "MEDIUM",
+    "status": "STATUS_RECONCILIATION",
+    "finding": "COMPLETE storico, sorgente presente, unit test PASS e integrazione reale erano confusi. Coherence index legacy e vecchi next-step non bastano per stato runtime.",
+    "modules": [
+      "M06",
+      "M32"
+    ],
+    "action": "Consultare assessment corrente nell’indice esistente e continuità; niente indice canonico concorrente."
+  }
+]

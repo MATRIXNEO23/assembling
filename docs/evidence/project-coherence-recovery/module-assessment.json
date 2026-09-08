@@ -1,0 +1,451 @@
+[
+  {
+    "id": "M01",
+    "module": "MIP / confini semantici",
+    "status": "VERIFIED_SCOPED",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/mip/",
+      "docs/MATRIX_INTERMODULE_PROTOCOL.md"
+    ],
+    "evidence": "Suite JVM R1: 159 test complessivi; contratti/status/evidence verificati con fixture.",
+    "limitation": "Non prova conformità di ogni backend reale.",
+    "recommendedAction": "CONSERVARE contratti; verificare ogni adapter prima di collegarlo."
+  },
+  {
+    "id": "M02",
+    "module": "MatrixTurnFrame / diagnostica",
+    "status": "VERIFIED_SCOPED",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt"
+    ],
+    "evidence": "Carrier del turno e firstDivergence testati.",
+    "limitation": "Non sostituisce MIP e non decide semantica.",
+    "recommendedAction": "CONSERVARE; usare la diagnostica esistente."
+  },
+  {
+    "id": "M03",
+    "module": "Understanding V3",
+    "status": "VERIFIED_SCOPED",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/understanding/v3/"
+    ],
+    "evidence": "Adapter e validazione V3 eseguiti in JVM.",
+    "limitation": "Input strutturati di prova; inferenza linguistica reale non dimostrata.",
+    "recommendedAction": "CONSERVARE adapter; testare futuro bridge del modello."
+  },
+  {
+    "id": "M04",
+    "module": "Authority Kotlin",
+    "status": "VERIFIED_SCOPED_WITH_GAP",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/authority/",
+      "src/main/kotlin/matrix/assembling/authority/runtime/CanonicalUnderstandingV3AuthorityPort.kt"
+    ],
+    "evidence": "Risoluzione strutturata e confine V3→Authority→prompt testati.",
+    "limitation": "Retrieval multi-claim resta unresolved; port non consuma binding ora presente nel DTO.",
+    "recommendedAction": "CONSERVARE; correggere solo binding dopo regressione mirata, in checkpoint separato."
+  },
+  {
+    "id": "M05",
+    "module": "Authority Python di riferimento",
+    "status": "VERIFIED_SCOPED",
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "paths": [
+      "memory/authority_resolver.py",
+      "memory/authority_models.py",
+      "tests/test_authority_resolver_p0.py"
+    ],
+    "evidence": "15 test originali passati ora, Python 3.12.13 / pytest 8.4.1.",
+    "limitation": "Non è il runtime Kotlin; non dimostra equivalenza integrale delle due implementazioni.",
+    "recommendedAction": "CONSERVARE reference e test; confronto contrattuale quando necessario."
+  },
+  {
+    "id": "M06",
+    "module": "Coherence",
+    "status": "PARTIAL_LEGACY_WIRING",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/adapters/BasicAdapters.kt",
+      "src/main/kotlin/matrix/assembling/coherence/CoherenceGuard.kt"
+    ],
+    "evidence": "Controlli legacy e fail-closed coperti dalla suite JVM.",
+    "limitation": "BasicCoherenceGuard legge typedClaims legacy; indice cita anche percorso compatibility.",
+    "recommendedAction": "CONSERVARE invarianti; verificare percorso canonico V3 senza inventare legacy."
+  },
+  {
+    "id": "M07",
+    "module": "Orchestratore Engine",
+    "status": "IMPLEMENTED_NOT_FUNCTIONALLY_VERIFIED",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt"
+    ],
+    "evidence": "Percorso esistente testato con NLU statico, GGUF echo e memoria disabilitata.",
+    "limitation": "Mancano stadi espliciti retrieval/context, decision e consolidation; catena reale non provata.",
+    "recommendedAction": "VERIFICARE un turno canonico attraverso tutti gli stadi esistenti; non dichiarare Engine completo."
+  },
+  {
+    "id": "M08",
+    "module": "Context / workspace / snapshot",
+    "status": "PARTIAL_NOT_WIRED",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt",
+      "src/main/kotlin/matrix/assembling/mip/MipEvidenceContracts.kt",
+      "src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt"
+    ],
+    "evidence": "DTO e snapshot definiti; frame iniziale può essere fornito dal chiamante.",
+    "limitation": "handle(UserMessage) non collega un provider di contesto/retrieval.",
+    "recommendedAction": "CONSERVARE contratti; individuare provider reale prima del collegamento."
+  },
+  {
+    "id": "M09",
+    "module": "Memory Foundation / SQLite / Admission",
+    "status": "VERIFIED_REFERENCE_NOT_WIRED",
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "paths": [
+      "REFERENCE_FOUNDATION_V3.md"
+    ],
+    "evidence": "Recuperati 16/16 file con SHA canonici; 25 test originali passati ora su SQLite in file temporanei. Copia esatta in questo dossier.",
+    "limitation": "Non è un backend Kotlin/Room; non collegato all’Engine. Suite non dimostra riavvio Android/process death.",
+    "recommendedAction": "CONSERVARE sorgente e test; nessuna riscrittura Foundation per perdita di file."
+  },
+  {
+    "id": "M10",
+    "module": "Memory preflight",
+    "status": "VERIFIED_SCOPED",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/adapters/NoPersistentMemoryAdmission.kt",
+      "src/main/kotlin/matrix/assembling/IntegrationPorts.kt"
+    ],
+    "evidence": "Divieto di scritture persistenti prima dell’output verificato in JVM.",
+    "limitation": "Non è una memoria durabile né retrieval.",
+    "recommendedAction": "CONSERVARE protezione; non sostituirla con writer anticipato."
+  },
+  {
+    "id": "M11",
+    "module": "Retrieval / indice / reranking",
+    "status": "NOT_WIRED_CURRENT_HISTORICAL_SOURCE_EXISTS",
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "paths": [
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/HierarchicalMemoryRetrieval.kt",
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/HierarchicalMemoryIndex.kt",
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/HybridMemoryRanker.kt"
+    ],
+    "evidence": "Sorgenti storiche lette e autenticate; MIP corrente definisce il confine.",
+    "limitation": "Nessuna equivalenza o integrazione con MIP attuale provata; non testato qui.",
+    "recommendedAction": "CONSERVARE backup; valutare riuso selettivo prima di nuova implementazione."
+  },
+  {
+    "id": "M12",
+    "module": "Consolidamento / persistenza Engine",
+    "status": "NOT_WIRED_CURRENT",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/IntegrationPorts.kt",
+      "src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt",
+      "docs/MEMORY_INTEGRATION_STATUS.md"
+    ],
+    "evidence": "Port PersistentConsolidationPort presente; nessuna chiamata nel percorso corrente. Foundation reference ha transazioni/lineage testate.",
+    "limitation": "Non esiste prova di commit finale Engine→storage→riavvio.",
+    "recommendedAction": "VERIFICARE/collegare solo dopo recupero e compatibilità del backend."
+  },
+  {
+    "id": "M13",
+    "module": "Affective appraisal / emotions / mood / persistent affect",
+    "status": "VERIFIED_LAB_NOT_ENGINE_RUNTIME",
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "paths": [
+      "src/affective_engine.py",
+      "src/prototype.py",
+      "tests/"
+    ],
+    "evidence": "141 test originali passati ora; cause, decay, replay, target isolation e scenari coperti dalla suite.",
+    "limitation": "Stato affettivo Python in memoria non significa storage persistente; nessun bridge reale Android verificato.",
+    "recommendedAction": "CONSERVARE prototipo e test; testare bridge reale separatamente."
+  },
+  {
+    "id": "M14",
+    "module": "Affective adapter Kotlin",
+    "status": "IMPLEMENTED_NOT_FUNCTIONALLY_VERIFIED",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/adapters/AffectiveLabAdapter.kt",
+      "vendor/matrix-affective-lab/src/affective_engine.py"
+    ],
+    "evidence": "Adapter e snapshot presenti. Diff vendor/lab è soltanto newline finale; nessuna deriva algoritmica in quel file.",
+    "limitation": "Appraisal prototype.py e runtime cross-language non sono dimostrati dal solo vendor engine.py.",
+    "recommendedAction": "CONSERVARE; verificare input/output canonici e backend effettivo."
+  },
+  {
+    "id": "M15",
+    "module": "RelationshipState / controller relazionale",
+    "status": "NOT_WIRED_CURRENT",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "docs/MODULE_CONNECTIONS.md",
+      "docs/MATRIX_INTERMODULE_PROTOCOL.md"
+    ],
+    "evidence": "Dominio separato esplicito; Affective non ne è proprietario.",
+    "limitation": "Grafo storico di entità/relazioni non equivale a controller relazionale canonico.",
+    "recommendedAction": "Non simulare con emozioni o punteggi; recupero/compatibilità prima di implementare."
+  },
+  {
+    "id": "M16",
+    "module": "Intimità / consenso / confini",
+    "status": "NOT_WIRED_CURRENT",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "docs/MODULE_CONNECTIONS.md",
+      "docs/MATRIX_INTERMODULE_PROTOCOL.md"
+    ],
+    "evidence": "Dominio separato riservato. Requisiti linguistici NLU preservati.",
+    "limitation": "Nessun resolver completo identificato nell’Engine esaminato; lessico NLU non è policy/controller.",
+    "recommendedAction": "Non inferire consenso da desiderio/attrazione; futura prova del controller e dei suoi confini."
+  },
+  {
+    "id": "M17",
+    "module": "Goal / intention / agent state",
+    "status": "NOT_WIRED_CURRENT_HISTORICAL_SOURCE_EXISTS",
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "paths": [
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/behavior/AgentStateGoalIntention.kt"
+    ],
+    "evidence": "Sorgente autentica: deduplica stato, filtra goal attivi, ordina priorità e lega intention a goal.",
+    "limitation": "Non è un decisore BDI/Utility completo; non integrato in Assembling.",
+    "recommendedAction": "CONSERVARE componente storico; verificarne compatibilità prima del riuso."
+  },
+  {
+    "id": "M18",
+    "module": "Decision / comportamento",
+    "status": "NOT_WIRED_CURRENT_PARTIAL_REFERENCE",
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "paths": [
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/behavior/BehaviorModule.kt",
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineOrchestrator.kt"
+    ],
+    "evidence": "Interfaccia e BehaviorDecision storici recuperati.",
+    "limitation": "Interfaccia/envelope non dimostrano algoritmo completo; orchestratore corrente non ha decision stage.",
+    "recommendedAction": "Non attribuire decisioni al prompt/GGUF; riuso mirato quando il task sarà aperto."
+  },
+  {
+    "id": "M19",
+    "module": "Reflection",
+    "status": "HISTORICAL_IMPLEMENTATION_NOT_CURRENTLY_VERIFIED",
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "paths": [
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionEngine.kt",
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionProcessor.kt",
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionQueue.kt",
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionTrigger.kt"
+    ],
+    "evidence": "Quattro sorgenti lette; test storici identificati nell’albero Git.",
+    "limitation": "Test storici non eseguiti qui; nessun collegamento al nuovo MIP provato.",
+    "recommendedAction": "CONSERVARE, non ricreare; eseguire regressioni storiche prima di porting."
+  },
+  {
+    "id": "M20",
+    "module": "World / perception / agent loop",
+    "status": "HISTORICAL_REFERENCE_NOT_CURRENTLY_WIRED",
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "paths": [
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/WorldMatrixProtocol.kt",
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/MultiAgentWorldLoop.kt"
+    ],
+    "evidence": "Protocollo e loop recuperati; test WorldMatrixProtocol identificato.",
+    "limitation": "Non prova un World host reale né runtime multi-agent integrato nell’Engine attuale.",
+    "recommendedAction": "CONSERVARE reference; World esterno deve rispettare MIP tramite adapter."
+  },
+  {
+    "id": "M21",
+    "module": "Entity identity / relationship graph",
+    "status": "PARTIAL_CONTRACT_AND_HISTORICAL_REFERENCE",
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "paths": [
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/EntityRelationshipGraph.kt"
+    ],
+    "evidence": "Interfaccia + InMemoryEntityRelationshipGraph recuperati; riferenti/candidati esistono nel MIP corrente.",
+    "limitation": "Non equivale a resolver universale di identità o RelationshipState controller.",
+    "recommendedAction": "Non inventare un nuovo modulo “Entity Resolution” come prossimo task automatico."
+  },
+  {
+    "id": "M22",
+    "module": "Prompt realization",
+    "status": "VERIFIED_SCOPED_R1_CLOSED",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/SemanticFrameToPrompt.kt",
+      "src/main/kotlin/matrix/assembling/prompt/v3/CanonicalV3PromptRenderer.kt",
+      "docs/RECOVERY_R1_V3_PROMPT_20260908.md"
+    ],
+    "evidence": "R1 chiuso: V3→Authority→prompt eseguito, 159 test complessivi e CI verde, readback precedente.",
+    "limitation": "Non dimostra qualità del testo GGUF né intera orchestrazione.",
+    "recommendedAction": "CONSERVARE fix; non riaprire R1 come mancante."
+  },
+  {
+    "id": "M23",
+    "module": "GGUF generazione reale",
+    "status": "PORT_ONLY_IN_CURRENT_ENGINE",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/IntegrationPorts.kt",
+      "src/main/kotlin/matrix/assembling/adapters/BasicAdapters.kt"
+    ],
+    "evidence": "Port e EchoGgufAdapter testabili.",
+    "limitation": "Nessun backend modello reale eseguito nella catena corrente esaminata; eventuale host storico non validato qui.",
+    "recommendedAction": "Recuperare backend/host autenticato prima di test reale; non simulare qualità con echo."
+  },
+  {
+    "id": "M24",
+    "module": "Output validator",
+    "status": "PORT_NOT_REAL_SEMANTIC_VALIDATION",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/IntegrationPorts.kt",
+      "src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt"
+    ],
+    "evidence": "Confine opzionale e NON_CABLATO esplicito quando assente.",
+    "limitation": "Esecuzione di un port non prova validazione semantica.",
+    "recommendedAction": "CONSERVARE esplicitazione; definire/verificare implementazione pertinente prima di promozione."
+  },
+  {
+    "id": "M25",
+    "module": "Android / applicazione host",
+    "status": "NOT_VERIFIED_FOR_CURRENT_ENGINE",
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "paths": [
+      "app/",
+      "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/"
+    ],
+    "evidence": "Albero storico contiene app Android; Assembling corrente è Kotlin/JVM.",
+    "limitation": "Nessuna build/device test dell’app storica o integrazione nuova eseguita qui.",
+    "recommendedAction": "CONSERVARE host backup; non dichiarare che l’intero progetto non abbia Android."
+  },
+  {
+    "id": "M26",
+    "module": "Compatibility / vecchie pipeline",
+    "status": "HISTORICAL_COMPATIBILITY_PRESERVE",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "src/main/kotlin/matrix/assembling/contracts/",
+      "src/main/kotlin/matrix/assembling/pipeline/",
+      "src/main/kotlin/matrix/assembling/prompt/SemanticFrameToPrompt.kt"
+    ],
+    "evidence": "Percorsi separati e test esistenti.",
+    "limitation": "Non sono autorità canonica per nuovi caller; evitare fallback impliciti V3→legacy.",
+    "recommendedAction": "CONSERVARE fino a migrazione provata; non cancellare automaticamente."
+  },
+  {
+    "id": "M27",
+    "module": "Student-4 / baseline",
+    "status": "FAILED_HISTORICAL_DEV_GATE_NOT_PRODUCTION_APPROVED",
+    "repository": "MATRIXNEO23/matrix-understanding-lab",
+    "ref": "23341d2db7fbe6bd42907a8a742540c4dab1a5a6",
+    "paths": [
+      "STUDENT5_MODULE_INDEX.md"
+    ],
+    "evidence": "Stato storico conservato; autorizzazione R2 controlled-runtime distinta dal gate production.",
+    "limitation": "LFS pointer valido non dimostra payload riletto in questa verifica; nessuna nuova valutazione.",
+    "recommendedAction": "CONSERVARE baseline e identità; nessuna modifica/promozione automatica."
+  },
+  {
+    "id": "M28",
+    "module": "Student-5 / dieci checkpoint FP32",
+    "status": "ARTIFACT_BYTE_VERIFIED_SELECTION_PENDING",
+    "repository": "MATRIXNEO23/matrix-understanding-lab",
+    "ref": "23341d2db7fbe6bd42907a8a742540c4dab1a5a6",
+    "paths": [
+      "STUDENT5_MODULE_INDEX.md"
+    ],
+    "evidence": "CP47 Release 384423046 / asset 549780835: readback precedente fresco, 10 model SHA e 58 checksum interni validi.",
+    "limitation": "Nessun vincitore; qualità/generalizzazione non provata da TRAIN loss.",
+    "recommendedAction": "CONSERVARE checkpoint; non rifare training per recuperarli."
+  },
+  {
+    "id": "M29",
+    "module": "TRAIN / target builder / G03",
+    "status": "PRESERVED_PREVIOUS_SCOPED_VERIFICATION",
+    "repository": "MATRIXNEO23/matrix-understanding-lab",
+    "ref": "23341d2db7fbe6bd42907a8a742540c4dab1a5a6",
+    "paths": [
+      "data/student5_v3_train_v21/",
+      "STUDENT5_MODULE_INDEX.md"
+    ],
+    "evidence": "TRAIN f90ae775a44023c37bf0c3a5087d64746413cbec770ca36cf154d1d533544aa4; G03 PASS storico; 4355 target.",
+    "limitation": "Nessun nuovo audit dataset; correttezza target non prova predizioni del modello.",
+    "recommendedAction": "CONSERVARE input immutabili e prove; nessuna ricreazione DEV/gold."
+  },
+  {
+    "id": "M30",
+    "module": "E5 candidato / import",
+    "status": "ISOLATED_CANDIDATE_NOT_MATRIX_VALIDATED",
+    "repository": "MATRIXNEO23/matrix-understanding-lab",
+    "ref": "23341d2db7fbe6bd42907a8a742540c4dab1a5a6",
+    "paths": [
+      "understanding/candidates/jangedoo-multilingual-e5-small-pruned/"
+    ],
+    "evidence": "Import e locator LFS documentati nella riconciliazione precedente.",
+    "limitation": "Non è automaticamente modello NLU con teste MATRIX; non inferenza validata.",
+    "recommendedAction": "CONSERVARE isolato; workflow erroneo Assembling inventariato, non cancellato."
+  },
+  {
+    "id": "M31",
+    "module": "Benchmark / valutazione / prove di regressione",
+    "status": "PARTIAL_EVIDENCE",
+    "repository": "MATRIXNEO23/matrix-understanding-lab",
+    "ref": "23341d2db7fbe6bd42907a8a742540c4dab1a5a6",
+    "paths": [
+      "STUDENT5_MODULE_INDEX.md",
+      "reports/MATRIX_PROJECT_RECONCILIATION_20260908.md"
+    ],
+    "evidence": "CP48 documenta selezione bloccata; Colab 2/8 è resoconto esplorativo non gate.",
+    "limitation": "Manca selezione Student-5 autorizzata recuperata; nessuna sostituzione con TRAIN/Frozen.",
+    "recommendedAction": "Preservare gap e prove; non cambiare dataset o criteri per dichiarare PASS."
+  },
+  {
+    "id": "M32",
+    "module": "Piani / indici / continuità inter-repo",
+    "status": "PARTIAL_INCONSISTENT_STATUS_LABELS",
+    "repository": "MATRIXNEO23/assembling",
+    "ref": "283c88122bc1fd6fb2d90ae7efe81d07b84ffede",
+    "paths": [
+      "docs/ENGINE_MODULE_INDEX.md",
+      "docs/WORK_CONTINUITY.md",
+      "docs/MODULE_CONNECTIONS.md"
+    ],
+    "evidence": "Esistono piani/versioni con scope diversi e COMPLETE storici; questo registro separa origine, test, integrazione.",
+    "limitation": "Lab ARCHITETTURA Python DESIGN_ONLY e vecchi README non descrivono il runtime attuale.",
+    "recommendedAction": "Usare indice corrente + questo assessment; conservare documenti storici senza eseguirne automaticamente i next-step."
+  }
+]

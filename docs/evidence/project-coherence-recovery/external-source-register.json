@@ -1,0 +1,1037 @@
+[
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": ".github/workflows/ci.yml",
+    "gitBlobSha": "f3d128224c39de17d6479f9311593c23a4427473",
+    "sha256": "4621d26a349e073815300b4954259f6e6ff1c9666f06b1057388385e74d86ee0",
+    "bytes": 397,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": "PROJECT_WORK_RULES.md",
+    "gitBlobSha": "b033e5018b48a3315ab353d8ad0cb6f4678f4cc2",
+    "sha256": "338dbc1d92138f15a106d001d6f381202223384d7f1d5256fe843265ab8736cf",
+    "bytes": 1465,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": "README.md",
+    "gitBlobSha": "409e6fc2746ce5393ce918dbb2db68c1bbc1603c",
+    "sha256": "d6302c60daa0ce89ecd3a6c26698e982a932719db914c55501575e7c8faa91fd",
+    "bytes": 10478,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": "REFERENCE_FOUNDATION_V3.md",
+    "gitBlobSha": "2e06c6bdb4be1d61bed001d9d69e0267ce92e787",
+    "sha256": "9af55c7b3a576c3a966ff838837651519d51063d17d38ff28c24995bafa8bfb5",
+    "bytes": 3034,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": "WORK_CONTINUITY.md",
+    "gitBlobSha": "be862a86f6b63bd901a6d64ff0704b4199d8cdf8",
+    "sha256": "668fa113062396e7e0e26030e277a9bed559beafd8e3efdefe8056bf9c659049",
+    "bytes": 4354,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": "memory/__init__.py",
+    "gitBlobSha": "cf156abcfb120467a309adec2f517762a39faffd",
+    "sha256": "5931c4de1adf4294739a5189aabcd028dc97d6a7a2596bd5d1f119bdcf0f4688",
+    "bytes": 46,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": "memory/authority_models.py",
+    "gitBlobSha": "4dcc399f109c923011d5feb3b325ed0231f04d5d",
+    "sha256": "34ce45e029f8228aa0db5a09e416386292a23b8c96f533cc729e4f13b4c697a6",
+    "bytes": 3647,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": "memory/authority_resolver.py",
+    "gitBlobSha": "be4d70a449168923f935ea748273ec380768510a",
+    "sha256": "7236fb7881d999dfb2fa7177c01d6e13ed47132fa4e8b037af846606b02bb741",
+    "bytes": 9260,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": "memory/models.py",
+    "gitBlobSha": "31dd7aeddb409f1b99b26ea3c924c2823e0271ae",
+    "sha256": "739de0d5062a02f55a44472e1a0b6f560123135090192a69e852a1bbadb81b01",
+    "bytes": 4506,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/memoria",
+    "ref": "cde91db20d97e0792b61db15144faf1430fd27bc",
+    "path": "tests/test_authority_resolver_p0.py",
+    "gitBlobSha": "8a97bb49585535e3dcf84e6675f4b0e9a5f7d465",
+    "sha256": "d7b7406dcb4a1739fd6d5024a75fa84362dde95b6135476e2088b9cb2c53153a",
+    "bytes": 7005,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": ".github/workflows/test.yml",
+    "gitBlobSha": "4372508de74d5606082b90cbe6eade75b8e45e33",
+    "sha256": "2e3cdd56cb8b80e7fe94c1745fcd165d6cf1dbad7b1d0b8649f93d9848a92a0c",
+    "bytes": 300,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "PROJECT_WORK_RULES.md",
+    "gitBlobSha": "b033e5018b48a3315ab353d8ad0cb6f4678f4cc2",
+    "sha256": "338dbc1d92138f15a106d001d6f381202223384d7f1d5256fe843265ab8736cf",
+    "bytes": 1465,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "README.md",
+    "gitBlobSha": "79d0970f4e8a8e3fe74a33307772345a42c252b6",
+    "sha256": "ece4a4ccb4b38b4b52af4731cfdb9571af180ae2dba1c27049773d26077765fc",
+    "bytes": 2006,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "THIRD_PARTY_NOTICES.md",
+    "gitBlobSha": "3610c1c0444e680e98be7ca353e2e803b805a2a4",
+    "sha256": "b52d6cf66f1d828583fca14e54a06e6ae42347f842eb52a53ee59377df39eeb6",
+    "bytes": 2463,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "docs/AFFECTIVE_CONTRACT_V0.md",
+    "gitBlobSha": "f0f6cff12a84809c204658a2897c6de16a8bfcda",
+    "sha256": "e90d14176c83b221f25c16b19e20f1b94b54f540baf837bab02643ca284e9ef0",
+    "bytes": 3488,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "docs/FATIMA_REVERSE_ENGINEERING.md",
+    "gitBlobSha": "150c4043238381ade6ce4b3436d98eef923ffb6c",
+    "sha256": "5b8cb3949859e725d74e282fde2e7d6df0b96e3a6e95e3cbdf4463e5b8a42272",
+    "bytes": 7488,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "docs/REUSE_RESEARCH_MATRIX.md",
+    "gitBlobSha": "7b48f396e18df053fc8511155320d11a508c777e",
+    "sha256": "a2754fe0ce783e079e1c6d459cab06231e33271716c998b7449e306fc67085e6",
+    "bytes": 1977,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "docs/SCENARIO_TEST_PLAN.md",
+    "gitBlobSha": "fcf1caa407aa88ae3a12da6d6c84f1c6453fb41c",
+    "sha256": "d74f15d860a19dbb2ca33284e666fee519d055d1360ada762e9c4e99848f8717",
+    "bytes": 526,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "src/affective_engine.py",
+    "gitBlobSha": "97e47109a996de93322aebf6fca323514755f69d",
+    "sha256": "40a65130f8f652224ae23af17425a5bb1dc5dad45062b00078bcb515c80cd073",
+    "bytes": 11046,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "src/prototype.py",
+    "gitBlobSha": "ce7ad0ec9626ab5b66ceac689ad745d198792907",
+    "sha256": "9572561e79d0a20daa6bcade864f49c9c3e9c105c65faa3347b5c2587621f6cf",
+    "bytes": 7984,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_admiration_respect.py",
+    "gitBlobSha": "7d80fd07b9f9ca389c824c82f3bcde50639ca3bf",
+    "sha256": "5a79d1ccfc3c07d2468816f6522947a7fe7f7ccbbb604aa1f37f436df6737030",
+    "bytes": 269,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_advanced_affect.py",
+    "gitBlobSha": "2cee405188cb801ed5472196c05f95d1967a83b8",
+    "sha256": "4746820217d6d1f1642485135d49139af01e5ee0b7d885feae9e65042055dfe1",
+    "bytes": 9474,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_affective_engine.py",
+    "gitBlobSha": "a91851b5ffffa881f181a8e3f74108f5a5da7484",
+    "sha256": "7f0485855ef915f61261c481b6243e78b38959c822a67698b6146bcedbe0135a",
+    "bytes": 4993,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_appraisal_clamp.py",
+    "gitBlobSha": "5a86f29983a8a19c1fb05bb99ddb8ff71f09c9de",
+    "sha256": "f82ad3d45dc0a6a61576b50eb03b39aed6d4e226b97f34e9e09c31029ae7910d",
+    "bytes": 381,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_attitude_sign.py",
+    "gitBlobSha": "683f7f47d60a14c9231e0201fac9fb8f6315d444",
+    "sha256": "5c23d656c030ac4c15cb68793e0fa52950d9d2c451fd2f87867c8b68f4526baf",
+    "bytes": 469,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_attraction_ownership.py",
+    "gitBlobSha": "1bc4a894971791c8786ca1932ecc162b5fc52fd8",
+    "sha256": "07601930e7a219aa92762857d9fe45493c730c6beaf848ea343648072e07de49",
+    "bytes": 342,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_aversion_independence.py",
+    "gitBlobSha": "926c2135a04864a89e4de5f7bc35db262f55a347",
+    "sha256": "898fa226c2107cdfa2c2b821c8fa629a9d55f53c6bd7735b502a88a4ce2be84f",
+    "bytes": 341,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_batch_equivalence.py",
+    "gitBlobSha": "57582e2310d7415e87bbbd48fea17d38188be5a8",
+    "sha256": "d759441d46787f79c7a9c7a742a1d60314df51c08480cc14d4c8b668e841e81c",
+    "bytes": 402,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_behavioral_audit.py",
+    "gitBlobSha": "aa40a5217ae24c986f5b8fcb89596498fdf805ca",
+    "sha256": "7988d370802a1c3513eb5d7ab17c19b1af402c97829962b0f1c74629dc8ce176",
+    "bytes": 3029,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_causal_slot_identity.py",
+    "gitBlobSha": "01d378c5c240f78e2f678014678088cf12d88bf1",
+    "sha256": "5a3a0424ade1ec01fb6650580f93213d37096323f348d108864b4ae32d06e8c6",
+    "bytes": 379,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_compound_scenarios.py",
+    "gitBlobSha": "687504f60d3148c4721add24282895e079f684f5",
+    "sha256": "a95316c58c961499f3ce2e7a7835b2f9f46dfe890948407edb22f3f1b8ad9408",
+    "bytes": 741,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_correction_cycles.py",
+    "gitBlobSha": "9ce26a7a596ae7cc3924bddb12b35c7bb901d87a",
+    "sha256": "7a7071f388748c96e402a9fcbc575b990a471790fb9d9cd706dcc3210185748c",
+    "bytes": 574,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_correction_mood_boundary.py",
+    "gitBlobSha": "791de75d0c018ce7bbfefbfa669bfff12ef0ceff",
+    "sha256": "ab3cded7afdddd069762d71eda2de309b4ce0841b9faea9c180ac24ed06208a4",
+    "bytes": 351,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_cross_target_reappraisal.py",
+    "gitBlobSha": "3f1948ff2dd7ce8b8f5718d5bdbe4828f1b33938",
+    "sha256": "ddb3676199f68437127f48ff129fd3e0592ce20cd888c573c48ba41be9470615",
+    "bytes": 465,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_decay_monotonic.py",
+    "gitBlobSha": "dab3805e76ad78b84f45748b8faad9fc10ac7ac8",
+    "sha256": "94f591e3e3de7c459ed9f56c98536dd35088986790705d53f5f518ff844b6498",
+    "bytes": 326,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_empty_batch.py",
+    "gitBlobSha": "fbe916d3d5e1353096cec66276a2027ad355016f",
+    "sha256": "e5ca0a94c770659b7d175660a24571c5269d9fd868daab483b24b635e029d73c",
+    "bytes": 200,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_empty_emotion_state.py",
+    "gitBlobSha": "f73835125942ddbac576508b1167ceddc29be44b",
+    "sha256": "1aa62d065225711d80314f6365ed7cd3fabc4dbfdd55c6b36d954d68b8ab8737",
+    "bytes": 210,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_extinction_cleanup.py",
+    "gitBlobSha": "6983960e547561036b60c35048238a24b9dec38c",
+    "sha256": "1536d2291e28fd05e1acf6e0357476726d455b77e881d43403111147dcc5a397",
+    "bytes": 328,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_extreme_decay.py",
+    "gitBlobSha": "9c7d46657371b10edf111452157028d96acffe7e",
+    "sha256": "c09bd6aa96156195a91d6265fe681b6d7a5639d11104d4805fab2e63fd3b1adc",
+    "bytes": 253,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_fortune_other_scenarios.py",
+    "gitBlobSha": "b8943452d4f4a617748a9f70fe4c8d92dd5f249b",
+    "sha256": "5d95a7482f513948603e35b9ea40009be718834df6c18a949b870eaf27a61d76",
+    "bytes": 550,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_habituation_key_isolation.py",
+    "gitBlobSha": "9717096652a3dbe8d44c0b15e9c5e5a2cd702de6",
+    "sha256": "7ae596744bb2096966a754cfe93439ceabe6d6157f81c7f0185751e7afbbb29e",
+    "bytes": 465,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_habituation_scenarios.py",
+    "gitBlobSha": "d8b5b64b515b3d630e0f23211c785dc5ef63ccd9",
+    "sha256": "5a94cc8c43ade22a8f8ad05fcfb40f4de125fc8f9067aa4daa0aa68a7b8c6864",
+    "bytes": 520,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_life_simulation_scenarios.py",
+    "gitBlobSha": "5485cd9400d35425f776fb27ea270412b73a7850",
+    "sha256": "4b3a8d7baf0a9399b477579622361ffef077018c399af803b216b7bfcab9b823",
+    "bytes": 7746,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_many_targets.py",
+    "gitBlobSha": "e82a5b013aef18f8aa5a449a21760dec8b398d19",
+    "sha256": "da4612a918f8662e7a15503b17e14b2fdad78543740647d123c0db1042498b9b",
+    "bytes": 339,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_mood_ambiguity.py",
+    "gitBlobSha": "ffc4e51cecc016ce269121497b29cf50ba65ee90",
+    "sha256": "cc94230e9535635f8941ca5e39a558fca995a958ea329a172f88893e3cdfc6e9",
+    "bytes": 669,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_mood_decay_scenario.py",
+    "gitBlobSha": "58f62adbfa8e29087236baaba8369fcfacf52dd9",
+    "sha256": "348ac48e979b2b0556a2a93978e2d11d9ae63b47e39f784038e0e4e9e91ee00c",
+    "bytes": 328,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_mood_no_prospect_push.py",
+    "gitBlobSha": "f37f56fd97efd0d280f088551158b1089c6f1299",
+    "sha256": "a8f34e6177d20166caf1eb0755a60c853f5bd4086d790c2dca23002c2e2dc2c0",
+    "bytes": 324,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_mood_sign.py",
+    "gitBlobSha": "c179d383646e04fee6c765d5c5ee87fb04328859",
+    "sha256": "c5b9be6a40ac5d75b131b170cd6d0957dae42b7743256cb096e19d55cc7b3b21",
+    "bytes": 334,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_mood_threshold.py",
+    "gitBlobSha": "f9c2adca43749a1f45acd9299e554e55837eac89",
+    "sha256": "206f5bee463a450a5018bdbfbe238a9e9c6b3ca03c40c084a8fb7e98c256545b",
+    "bytes": 228,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_multi_cause_saturation.py",
+    "gitBlobSha": "639402c4c07bf2c4bba91863c6a55129e47baee7",
+    "sha256": "375e7ab2357d75380a9efe848d30e6fcc10c8f12e1e5743e135ba664818bb85b",
+    "bytes": 413,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_multi_channel_same_cause.py",
+    "gitBlobSha": "915a97663ce38c736089592ec92fc3d849852c5c",
+    "sha256": "62bfeb27c6168ade5bce417ec10321d4ab3155d1d2737eedad9e76518f7bf025",
+    "bytes": 519,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_negative_input.py",
+    "gitBlobSha": "f0355b13a4d04f3b43c51e5839dd1230199c4a1e",
+    "sha256": "9c2d33d977b410d3139fcc67ae2ac5fddf3d8a6f75c3b3fde148c68027cb7f3e",
+    "bytes": 243,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_no_cross_cause_replacement.py",
+    "gitBlobSha": "8ca48ebb8ebf7ed8cec77754022834f4f749615a",
+    "sha256": "9f05fe788c873f486b57d9ed95e67669276fb8271624d1fadd6260ac07381944",
+    "bytes": 429,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_no_nan_inf.py",
+    "gitBlobSha": "e26337e9032eb92edc7c49c55c0fe67cdcf15b70",
+    "sha256": "37905c24cd3d7a16f399c6504c144c14239a00f8675948f824bf7d4bdae8251e",
+    "bytes": 552,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_novelty_scenario.py",
+    "gitBlobSha": "1c244cd0f141bb27e88c452a5aaf99cf8f302eb6",
+    "sha256": "549ab9f93fc3eff64ead4923d7f7668b3ec19db5e61add4e608c81ee56697e8b",
+    "bytes": 509,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_over_one_input.py",
+    "gitBlobSha": "f875886de4d1512af7cb8eb7461320cd42112f42",
+    "sha256": "55ad659b87940d8b672a40f47100ff908bc2233570723a89b6ff1b486c0dbb3b",
+    "bytes": 219,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_persistent_baseline.py",
+    "gitBlobSha": "1b3d6b5d67b0ecc75edae23ae5bb656cc34713ab",
+    "sha256": "6c91024ff939a690e9a788bf39a46ee764eaac61d28226bfb50b5c635b9fbc93",
+    "bytes": 286,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_persistent_decay_independence.py",
+    "gitBlobSha": "00c7bd35045d0b4f63bbe01faed5eaeb88ca7e76",
+    "sha256": "2f264a6ef860d28820bb2111745c447bac45f1a958cc516316f8feb1c9fa1aa2",
+    "bytes": 327,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_persistent_dimensions.py",
+    "gitBlobSha": "15ed9153884b56649eb867561a7119747c3b45c5",
+    "sha256": "2fd863267d4fa3b1743341493e1d3d3f86dd56a286bb1852c518e2922a7a14bc",
+    "bytes": 273,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_persistent_saturation.py",
+    "gitBlobSha": "11bf151b5a713e0bec841c4574b470e2e8873098",
+    "sha256": "1f6f7c9be1ec0b96ae773306b5e4846df15dbc2421b8ada2a9d35604b80a2506",
+    "bytes": 304,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_persistent_saturation_retraction.py",
+    "gitBlobSha": "dd497c67045ffbec3117db925a9a1c26163ab139",
+    "sha256": "98e3446bfe06ef8c5ccebd29fe8b902fbb632e66ebe3d1616d911b1d910e222e",
+    "bytes": 415,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_persistent_survives_transient.py",
+    "gitBlobSha": "6c46b15c483ae92aa803bb6e31d408a4207824b3",
+    "sha256": "8632a7e5aeed02fb9a5e85f5aa42f65ae9c9ad351adace75e7ad01d1e911b337",
+    "bytes": 377,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_personality_reactivity.py",
+    "gitBlobSha": "9b0c8e32a0f973a3baca28f0959b52ba8bfd10e9",
+    "sha256": "94c0ff85c96eb72cba4829693e4bdc0151d6788ee4b47f79a0afd32c3f06aae4",
+    "bytes": 894,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_profile_bounds.py",
+    "gitBlobSha": "350988c3d4b23e2f1453b34c4d9cdd2e43c05e5e",
+    "sha256": "741b62297983904c8544c4e62803562c58b930c828810fa6c0eebf9cd487ddfc",
+    "bytes": 344,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_prospect_bounds.py",
+    "gitBlobSha": "3eff49eb29eae10e057c54561c24a1585ac5b7a8",
+    "sha256": "a6a24172ce4125f0d96340465e57df737f60e80116da095c4f743edf0505dc93",
+    "bytes": 342,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_prospect_no_change.py",
+    "gitBlobSha": "0209850417ce93fa3c402aabf2c697cb4825d2a8",
+    "sha256": "574d1d55acc486f8cc82172c32ec1a9bda4fe543462e822b3f325f9bfa8bb2a5",
+    "bytes": 463,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_prototype.py",
+    "gitBlobSha": "d931db17c589e98628d996fe3d649319b54c97a3",
+    "sha256": "eb4d67c55d95c627770aa4cef647a6267ceef4cc75bca26478ed7ed14b3afe5d",
+    "bytes": 4271,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_realistic_scenarios.py",
+    "gitBlobSha": "9999c8c57b6a984b4c3bbe47098b20f3645a65dd",
+    "sha256": "15b5768ebca0abb292cd24b52162d2218e1b4fa1a1760b41b0f6e2aebf28731f",
+    "bytes": 4012,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_reappraisal_mood.py",
+    "gitBlobSha": "d027ca7a48fd06813b2e309c4eaea57bfa2130d2",
+    "sha256": "39331bb8795ddb07f48441aa8a130f9ef0a1b0d8bb744519666d0b23abcdd0e1",
+    "bytes": 325,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_reappraisal_target_change.py",
+    "gitBlobSha": "946376db356b67a07afa0c9b64ab10ab76d1d49a",
+    "sha256": "c73a6949a68e352fc0cd0075ad57f1cb1dd241afdc289de50e7740a9e9648fa4",
+    "bytes": 382,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_reinforce_missing.py",
+    "gitBlobSha": "a56bc0f865b14ce049410e7579e65dd104d10137",
+    "sha256": "3ebe8974f8777d7cc1ae5592559973238d5ca3bf416939b58eb8e71d35c20681",
+    "bytes": 216,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_reinforcement_bounds.py",
+    "gitBlobSha": "d3e8f51dff1470e522496639c348af392ba2f047",
+    "sha256": "02714654c732895b60e2cf540dd516ef52776a41a92cd0aeb66c917b8ad4e53a",
+    "bytes": 356,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_replay_after_decay.py",
+    "gitBlobSha": "e239709e6f4772c659832ebd09b50c8f31f36989",
+    "sha256": "1056a168959530c803f66c3e4e2adea0cbcc7c7514ecec94cae6fafb62df532a",
+    "bytes": 379,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_respect_baseline.py",
+    "gitBlobSha": "8d6f63740224a70b89ce62c89f47dc7799b8cb3c",
+    "sha256": "08a0b6106ff1d5730897e7d417015a61242496562e18b8ac1e494a2890ee609e",
+    "bytes": 290,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_retraction_after_extinction.py",
+    "gitBlobSha": "c991acf3db5be2da0953ab02d26d377166b15ade",
+    "sha256": "29f7c039a1686be8e5658fbe7e8f47d27dad0bd5abf19e2e03cf6f0e1d39ef41",
+    "bytes": 486,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_same_habituation_key_unique_ids.py",
+    "gitBlobSha": "61be4d1844b1dd0a26f58876f7f651ceb3d8d58a",
+    "sha256": "e408ce479341145630863ba3a2d2267c2cf55a149749b137497dee83b1d5f696",
+    "bytes": 449,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_scenario_fuzz.py",
+    "gitBlobSha": "88097b441ee1fdd4a7cdb6c6d8423d1eebae0094",
+    "sha256": "5a291c335db8ca4d269c200fffb704d8b52751a499bbecea030de7d6a64fadc7",
+    "bytes": 1753,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_scenario_reversibility.py",
+    "gitBlobSha": "1abbdc238d1c065dba14530bdf7bd9316f97a0c1",
+    "sha256": "616cb1199310961a8ae3b8ddc62730d9357e9157add363df2506fe3312f0b73b",
+    "bytes": 673,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_self_affect_boundary.py",
+    "gitBlobSha": "fc9ccf7bfa8e4efebd6bb179de6ac70e86da3989",
+    "sha256": "fd58bf8f85cfe1941d4305836f6006dc7867bec59c6cb07ac6e4962e29322d71",
+    "bytes": 321,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_self_negative.py",
+    "gitBlobSha": "bb4a89b3f1d442b98bf6a9fed110be1f754442bb",
+    "sha256": "c876e941c8d9bee495b2302084b3141227315ceb45f9cecf647e52dba1eccf4f",
+    "bytes": 358,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_self_positive.py",
+    "gitBlobSha": "a0c3e7b040146e4afa99faeb7253ea197ff15b62",
+    "sha256": "662af46a2e42b1f1a3242a80c1ab6502c279ea7d782f2f29770e1f82755f32a8",
+    "bytes": 365,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_semantic_zero_scenario.py",
+    "gitBlobSha": "5edc88fec72b07aed54c183f3d5850efb02bbd21",
+    "sha256": "14c043d61bfadee1c8b2ba6845a70a6cbc4ca7da8be4c959e9ba82c6f6a21f43",
+    "bytes": 379,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_snapshot_copy.py",
+    "gitBlobSha": "6d628d1bf414a6251d5904b6f6de70b9984c6d6e",
+    "sha256": "c169ad1b98d6bfe42312dfa00b3501dcbd407ad8c1d22ad0cd6ecf7ce79ee517",
+    "bytes": 355,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_snapshot_determinism.py",
+    "gitBlobSha": "6c508c9a73bcb06002d6231c461d13ae42d74e00",
+    "sha256": "0eab74b3ea3ddc96457ed4ed61a05cbdf52c2e23125c0f67135b2ab44edaab30",
+    "bytes": 319,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_source_pad_all_emotions.py",
+    "gitBlobSha": "8c0ddbb84f9d192e795ad373f5a01c8fda9942db",
+    "sha256": "ac865e0711e9833a1cdb76fd25ccbcb7d85ee5758511561a7e8f9df2fa7cd350",
+    "bytes": 410,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_stress_invariants.py",
+    "gitBlobSha": "5249c2f98762177e876832faf799f1f63454958c",
+    "sha256": "17ec736f52603d1224cbed5896195643376ede0421828e0e832c20d433b49c06",
+    "bytes": 2546,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_target_channel_identity.py",
+    "gitBlobSha": "e5b40c4ed5961ff3aceaaf865c5a6939ef210ec6",
+    "sha256": "add3e59359738624b7b4d19109fbd6688c75bba2cc747b7246cd8032d513bf3f",
+    "bytes": 513,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_targetless_persistent.py",
+    "gitBlobSha": "8c974d90fa562aa3758478a7fa675aceca031669",
+    "sha256": "60a7fd95d84f1f59431988e5be5a6476a727f393c6360eb3c9b9319aebe51dda",
+    "bytes": 251,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_threshold_scenario.py",
+    "gitBlobSha": "ff85d717d1c7bd0af7c718c65d0f9672779a2cbb",
+    "sha256": "fa416623a97e30c977df14e1b974393befd073a04fbdf5711972794f5bc7f492",
+    "bytes": 576,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_trace_integrity.py",
+    "gitBlobSha": "45ce0958862a1445197902a04cc72482c4df44f9",
+    "sha256": "00eb9a6c4d1f1758162deeea7ad14396e61acab16e3939b3f4866d4d548c9e13",
+    "bytes": 390,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_unknown_emotion_safe.py",
+    "gitBlobSha": "59d8f92a7e3bb3a953192b6bc261c0f327788714",
+    "sha256": "01262c8b4c9f1d5249ed41b94cb1312a093d6b2006d3df3a18a0c8844f33d141",
+    "bytes": 309,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_world_event_neutral.py",
+    "gitBlobSha": "5ecfcbb81a29bc77a8aad9ae0b805a5ad0a7fe57",
+    "sha256": "25e5c12b11c635e0be3943ed81178ffdf22f5a87353a718af444f62fd44cff6f",
+    "bytes": 274,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "tests/test_zero_time.py",
+    "gitBlobSha": "861cba52bb9e71a96a887901c3f17c7c4d83aa2a",
+    "sha256": "073734a9de7253f75678e792f2a309e9aaa152e3a4b88d86a5fab3bd6fec82b1",
+    "bytes": 242,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "third_party/LICENSE_ALMANET_MIT.txt",
+    "gitBlobSha": "7f5e22fbb0be299958bf7c150d98078ea26b50b4",
+    "sha256": "9eee68f3f69bf710cbe4cd461905c81ce4ecdf78a50387f3bc96257bc19e0a89",
+    "bytes": 1067,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "third_party/LICENSE_COGNITIV_MIT.txt",
+    "gitBlobSha": "cc137ff106ca124f856440a0be857fdff67de2b1",
+    "sha256": "2d8aa2a8e7cad791486c37f0cb2f264528627f6cd761063af0241c2ddc981b98",
+    "bytes": 1073,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/matrix-affective-lab",
+    "ref": "b51f89c45aed123b290d30bc8ab0a9a0031cc8b9",
+    "path": "third_party/LICENSE_FATIMA_APACHE_2.txt",
+    "gitBlobSha": "ddfbc0687efaf5216203b003af1263335612ce3a",
+    "sha256": "7bf97a6c1de9729858ce3db0e4a86e112ff84942733eae109ef735d8643817d7",
+    "bytes": 11343,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "00_LEGGIMI_CODEX.md",
+    "gitBlobSha": "ca2c4bd4cc4a8293d7cd208be5ee525b92ba579c",
+    "sha256": "d6a23db0d2672963064488e727784b0579bbbcac177cad168c0080d892eee451",
+    "bytes": 15862,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "PROJECT_WORK_RULES.md",
+    "gitBlobSha": "b033e5018b48a3315ab353d8ad0cb6f4678f4cc2",
+    "sha256": "338dbc1d92138f15a106d001d6f381202223384d7f1d5256fe843265ab8736cf",
+    "bytes": 1465,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/README.md",
+    "gitBlobSha": "a726dab24b2cbd47fb82b73656284d7f21630399",
+    "sha256": "bc2e5ad92700e921f8ad2bc162386942fb13e1e6daa486238713de244ad58c8d",
+    "bytes": 4356,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/behavior/AgentStateGoalIntention.kt",
+    "gitBlobSha": "9ce0494f07d0d4736bd1a3051a651e5edc27b17c",
+    "sha256": "769c6aa6f388807adf3c0df6659dae914a2473915a15fd057bd23906386d5832",
+    "bytes": 3687,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/behavior/BehaviorModule.kt",
+    "gitBlobSha": "8fad75e4710abd10b22207607510c9eb552ac9ff",
+    "sha256": "f0d76ef19c0deaff88bf31fdd8f403791ec23db1209ee9845d88d72a3039c244",
+    "bytes": 624,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/MatrixEngineOrchestrator.kt",
+    "gitBlobSha": "704f36b4db67007940c8ff0431adc992723aed18",
+    "sha256": "5fdecd2b7d57cde7abd20b9fa5e156abaf342f7d1b95e3154e20415c88443275",
+    "bytes": 36055,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/MultiAgentWorldLoop.kt",
+    "gitBlobSha": "35f09745bc5f69a0167ef5d39349da0daadda181",
+    "sha256": "6c575035bdc6cffee3cf9fcaef3a0e2d7292b9f0d9a604d5424a1cfef8066364",
+    "bytes": 1209,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/core/WorldMatrixProtocol.kt",
+    "gitBlobSha": "7fd06c97dd29a63ccbfcac4797c71d42c43d865c",
+    "sha256": "52e3a42fd0e0bc9fbf5bbf72379eb1db22c50be2ff0a1617743ed40acc26c613",
+    "bytes": 5656,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/EntityRelationshipGraph.kt",
+    "gitBlobSha": "81577855eab7b2ceb110301148d2e47b8e93a9c1",
+    "sha256": "aa49cd5afc3ca5ee07af2c776cd5769efcc99f9131ae316efb8f8d5a630371df",
+    "bytes": 4770,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/memory/MemoryPersistenceAdapter.kt",
+    "gitBlobSha": "bd57275db880fd14f0b1973a7727981da569c63a",
+    "sha256": "08d2ce12077dbf068445c9da50689374d9f0863713ab164413a9878738d10ada",
+    "bytes": 10017,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionEngine.kt",
+    "gitBlobSha": "962aaf766baac39c999cdc7ff5946adfd8c7471c",
+    "sha256": "e44f724e8a6fda15ddea977f2bd68ce1622af0a2040c6d77ab6387db8602ba4b",
+    "bytes": 5114,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionProcessor.kt",
+    "gitBlobSha": "279b09a174b105df5619d9f210251e9f5c3e0d41",
+    "sha256": "b5058b9ee76bfa196e52021576601c8f476b1d0b2e5211a4d78c0b4562a2540e",
+    "bytes": 15122,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionQueue.kt",
+    "gitBlobSha": "942d8f8be0ab8d03b7001b9bec945c1311b59f53",
+    "sha256": "75c23caf356f2d85e60d28e30545c19940643bf14743b6f99cd1d70e8b8214b2",
+    "bytes": 9640,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/reflection/ReflectionTrigger.kt",
+    "gitBlobSha": "f2dd5ed8954f6fd698a20a581a711391f9eaa5b4",
+    "sha256": "11678bea829917e99d9580336f1ac705084fb02ba07698db72638343144c2746",
+    "bytes": 5600,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/HierarchicalMemoryIndex.kt",
+    "gitBlobSha": "4139d9992234e94e03dde1d26974adb9bae10b09",
+    "sha256": "0f058080d6ce57fbfe6c64813b41e2910d0fbb01a44823f8370dc5e93a3378c0",
+    "bytes": 2712,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/HierarchicalMemoryRetrieval.kt",
+    "gitBlobSha": "a6317dcfc33274dacfc3f6fd6f60c14878fa4ecf",
+    "sha256": "cbc0938ffb39d0ce50167bf8debb8ecb8d764d553c6d23d83dff220fc72f6cca",
+    "bytes": 8756,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/HybridMemoryRanker.kt",
+    "gitBlobSha": "10c470cb74243ddd33f25b353a6fa98d1131afda",
+    "sha256": "b5ccf2d5c1681476dc9f8b9badb1fa4a4876dff82fd0e1ad69bfd22af4d6b591",
+    "bytes": 3214,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/SubjectOwnerGuard.kt",
+    "gitBlobSha": "17462e33651d34bd7a7f5ac05833ddaea85c72ee",
+    "sha256": "b798f35fd54f007641e82eb0c5e00436ebba6c927088b028b94c6b5e9e7ed89c",
+    "bytes": 4006,
+    "readback": "EXACT_GIT_BLOB"
+  },
+  {
+    "repository": "MATRIXNEO23/8.10.9evo3-solo-gpt",
+    "ref": "e97f75052afcc93d5b1e08b3ac881dba35633451",
+    "path": "app/src/main/java/com/neontides/nativeapp/ai/MatrixEngine/retrieval/VectorEmbeddingAdapter.kt",
+    "gitBlobSha": "faedd32cebada5d4748fd2e1814337153bc463f9",
+    "sha256": "5d8d58d2762d277403bbd54ee00f10d1d6e64e1ff6771702a83a959b9abd422f",
+    "bytes": 8591,
+    "readback": "EXACT_GIT_BLOB"
+  }
+]
