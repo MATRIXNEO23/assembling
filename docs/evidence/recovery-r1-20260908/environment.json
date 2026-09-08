@@ -1,0 +1,29 @@
+{
+  "os": "Linux-6.18.35-x86_64-with-glibc2.39",
+  "architecture": "x86_64",
+  "java": {
+    "url": "https://download.java.net/openjdk/jdk17/ri/openjdk-17+35_linux-x64_bin.tar.gz",
+    "sha256": "aef49cc7aa606de2044302e757fa94c8e144818e93487081c4fd319ca858134b",
+    "version": "OpenJDK 17 RI build 35",
+    "bytes": 186661523
+  },
+  "gradle": {
+    "version": "8.10.2",
+    "archiveSha256": "31c55713e40233a8303827ceb42ca48a47267a0ad4bab9177123121e71524c26"
+  },
+  "kotlinPlugin": "2.0.21",
+  "javaToolchain": 17,
+  "greenCommand": "gradle test -Pkotlin.compiler.execution.strategy=in-process --max-workers=2",
+  "localOnlyOverrides": [
+    "HTTP(S) proxy properties for permitted network access",
+    "javax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts (system trust, TLS validation retained)",
+    "JAVA_HOME points to authenticated local OpenJDK 17",
+    "Gradle 8.10.2 instead of historical CI Gradle 9.7.1; remote existing workflow remains unchanged"
+  ],
+  "setupFailuresBeforeTestExecution": [
+    "JRE without Java compiler",
+    "proxy configuration absent",
+    "downloaded JDK required system CA trust store"
+  ],
+  "scope": "Actual JVM tests on fixtures; no NLU or GGUF model inference, no Android execution"
+}

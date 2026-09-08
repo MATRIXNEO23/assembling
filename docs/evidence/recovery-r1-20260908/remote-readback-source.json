@@ -1,0 +1,139 @@
+{
+  "ref": "5f9495c1def64296fe724fb7933b44191e0b7092",
+  "result": "PASS",
+  "files": [
+    {
+      "path": "docs/ENGINE_MODULE_INDEX.md",
+      "bytes": 9427,
+      "sha256": "683da7fdec95e509079224b5c965a0476242bdc36b087fc42cbb25b21dd7fe2d",
+      "gitBlobSha": "5f0f1a9641507d012680da9a729e33e114a23416",
+      "match": true
+    },
+    {
+      "path": "docs/WORK_CONTINUITY.md",
+      "bytes": 7586,
+      "sha256": "77afad2320f8ddfcc54ada89d901700b1d2745b1a1731d10312dad2314260f0a",
+      "gitBlobSha": "c307ed7812138a521986000d5c51e39dbdea819d",
+      "match": true
+    },
+    {
+      "path": "src/main/kotlin/matrix/assembling/SemanticFrameToPrompt.kt",
+      "bytes": 6910,
+      "sha256": "c5817f5cf53e4faf63d84a1992b2c74e67c76c292c1132ed1cdaf3a11e1f1b4f",
+      "gitBlobSha": "e644b4ad3eab04675807f3727aeec81db1c4d08c",
+      "match": true
+    },
+    {
+      "path": "src/test/kotlin/matrix/assembling/authority/runtime/CanonicalUnderstandingV3AuthorityPortTest.kt",
+      "bytes": 16213,
+      "sha256": "6666fb2505b01240caacbd428e28839c2346f88bc6e7004aa7f40fd654529759",
+      "gitBlobSha": "6c4388822bade67e0dafac5f37bbe68eb900ae4c",
+      "match": true
+    },
+    {
+      "path": "src/test/kotlin/matrix/assembling/understanding/v3/CanonicalUnderstandingV3AdapterTest.kt",
+      "bytes": 22378,
+      "sha256": "d5c55c13863b1564a4e535b99931777935bebb01ed2634cbd98cf0fd355a32d8",
+      "gitBlobSha": "69615ff4a22a529844b2bad6f31071ac1ea538a3",
+      "match": true
+    },
+    {
+      "path": "src/main/kotlin/matrix/assembling/prompt/v3/CanonicalV3PromptRenderer.kt",
+      "bytes": 8782,
+      "sha256": "63b115c76da0bc590d054f899eb1592bfe4916b79d734b5321764fe12e2de083",
+      "gitBlobSha": "8acc5886ea65bd04d575fe61502fa907fc756bf8",
+      "match": true
+    },
+    {
+      "path": "docs/RECOVERY_R1_V3_PROMPT_20260908.md",
+      "bytes": 7247,
+      "sha256": "fa99a432a2297b142f9b6aaba102a21619a75670ab1bc7479adb923b5a4bd696",
+      "gitBlobSha": "cd640ecc6f76f7bbf0e8b1ff046fb47bc50e3549",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/SHA256SUMS",
+      "bytes": 1874,
+      "sha256": "a9d8445e62774e1679509f6ddee89c21118850a7debaecc4d8f8414c2b531acc",
+      "gitBlobSha": "5e065ae6e2df632ec1f77355c4f9666f2b57a3a7",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/after.log",
+      "bytes": 3310,
+      "sha256": "5daff3fc3ca592ca23950153bdcb12b37e8a4083ba2f6272900b616977792b43",
+      "gitBlobSha": "d3d23ed0ce25ae88bb9a348bddda805e5b2039b7",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/baseline.log",
+      "bytes": 3491,
+      "sha256": "05f0cccbffbbeaee0a6afbdc0ab30c874b030c3d823120b1cd21cea9b941ff92",
+      "gitBlobSha": "11ec345166707b5b58d9b32d31586fa7bf0cbf76",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/environment.json",
+      "bytes": 1226,
+      "sha256": "d229baeaaaa3817d674c8b8789a839d3f2ca5813c3eab41b677f0ec743a81802",
+      "gitBlobSha": "6eaa06e39466afd763273016350ac68a0844a496",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/red.log",
+      "bytes": 3844,
+      "sha256": "1f5df33b034b343ef9b15409fdfd289caaaca37b9bac7ddc751f6872acb55155",
+      "gitBlobSha": "79f3d2196a737cbb5a66c4bc2b647a7791145655",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/source-diff.patch",
+      "bytes": 22846,
+      "sha256": "8f6b946b9f654b5cc693985f03e78fe4a59cde35a5de24fe32e0763bb990667a",
+      "gitBlobSha": "c00dff526ea4ab8d5088af80015a67df2097ab36",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/source-identities.json",
+      "bytes": 1210,
+      "sha256": "9e2527001baa10e15c1d63ad5c498f4aadece5e4719af750e44ae3c47d5dda3d",
+      "gitBlobSha": "1a72cb0ed14a798ad43daa8e778b020544eb4483",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/test-results.json",
+      "bytes": 69586,
+      "sha256": "ea86f7cfa54ba128d0aede5b3d0d8decd109e661857f29f520ebc52648560aaa",
+      "gitBlobSha": "12c913c9900406ffad8d3d88fb10a99374e47bfb",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/v3-prompt-escaped.json",
+      "bytes": 6859,
+      "sha256": "7a3cb6afed133d06c258f20ee45910b67f6261895a4e1f023e055e14ba5628f0",
+      "gitBlobSha": "dacb4afd5c10e22a3865abcc6c96fa1b50f8ab96",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/v3-prompt.json",
+      "bytes": 6799,
+      "sha256": "402e385bbdd9917552f6bf15935b567a675afc4b849df697b5234aff8ae1a0bd",
+      "gitBlobSha": "1ac30597eb187d826b7408c4730fb892f9257c78",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/verification.json",
+      "bytes": 6048,
+      "sha256": "9e7a1318169bf8875bc813dd4a735f41d748dacc6d8f843b2f8cb8eabaca6928",
+      "gitBlobSha": "3e6014629bca4a06f2b0cec69844a3c16acbd96a",
+      "match": true
+    },
+    {
+      "path": "docs/evidence/recovery-r1-20260908/verify_prompt.py",
+      "bytes": 2669,
+      "sha256": "3b42aade144e44320dead2225c5e8e7ca732aed01fd75afd6411a307628a312e",
+      "gitBlobSha": "d976d77f2d4d9317f7f799cfe715212ed86512ce",
+      "match": true
+    }
+  ]
+}

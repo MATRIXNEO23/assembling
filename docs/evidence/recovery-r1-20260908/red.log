@@ -1,0 +1,43 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :processResources NO-SOURCE
+> Task :processTestResources NO-SOURCE
+
+> Task :compileKotlin
+w: file:///workspace/scratch/4729da267a67/recovery-work/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:3:8 'class CoherenceGuard : Any' is deprecated. Compatibility-only legacy coherence path. New integration must use MatrixTurnFrame + CoherenceGuardPort and MIP semantics.
+w: file:///workspace/scratch/4729da267a67/recovery-work/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:9:8 'class SemanticFrameToPrompt : Any' is deprecated. Compatibility-only legacy prompt translator. New integration must use matrix.assembling.SemanticFrameToPrompt on the MatrixTurnFrame path.
+w: file:///workspace/scratch/4729da267a67/recovery-work/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:24:33 'class CoherenceGuard : Any' is deprecated. Compatibility-only legacy coherence path. New integration must use MatrixTurnFrame + CoherenceGuardPort and MIP semantics.
+w: file:///workspace/scratch/4729da267a67/recovery-work/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:24:50 'constructor(thresholds: CoherenceThresholds = ...): CoherenceGuard' is deprecated. Compatibility-only legacy coherence path. New integration must use MatrixTurnFrame + CoherenceGuardPort and MIP semantics.
+w: file:///workspace/scratch/4729da267a67/recovery-work/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:25:35 'class SemanticFrameToPrompt : Any' is deprecated. Compatibility-only legacy prompt translator. New integration must use matrix.assembling.SemanticFrameToPrompt on the MatrixTurnFrame path.
+w: file:///workspace/scratch/4729da267a67/recovery-work/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:25:59 'constructor(): SemanticFrameToPrompt' is deprecated. Compatibility-only legacy prompt translator. New integration must use matrix.assembling.SemanticFrameToPrompt on the MatrixTurnFrame path.
+
+> Task :compileJava NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :jar
+
+> Task :compileTestKotlin
+w: file:///workspace/scratch/4729da267a67/recovery-work/assembling/src/test/kotlin/matrix/assembling/DiagnosticTraceTest.kt:137:31 'interface MemoryAdmissionPort : MemoryPreflightPort' is deprecated. Pre-response stage is MemoryPreflightPort; durable writes belong to PersistentConsolidationPort.
+w: file:///workspace/scratch/4729da267a67/recovery-work/assembling/src/test/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipelineTest.kt:18:28 'constructor(coherenceGuard: CoherenceGuard = ..., promptTranslator: SemanticFrameToPrompt = ...): MatrixAssemblyPipeline' is deprecated. Compatibility-only. Use MatrixTurnFrame + MatrixAssemblingOrchestrator for new integration work.
+
+> Task :compileTestJava NO-SOURCE
+> Task :testClasses UP-TO-DATE
+
+> Task :test FAILED
+
+CanonicalUnderstandingV3AuthorityPortTest > canonical V3 Authority output reaches prompt without legacy fields() FAILED
+    java.lang.IllegalStateException at CanonicalUnderstandingV3AuthorityPortTest.kt:140
+
+6 tests completed, 1 failed
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':test'.
+> There were failing tests. See the report at: file:///workspace/scratch/4729da267a67/recovery-work/assembling/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 51s
+4 actionable tasks: 4 executed

@@ -163,3 +163,37 @@ step 2 = CLOSED
 step 3 = CLOSED
 NEXT = verify Android/Room target, then implement Memory Kotlin/Room consuming canonical AuthorityResolution
 ```
+
+
+## Recovery checkpoint R1 — V3 → Authority → prompt (2026-09-08)
+
+Repository attiva: `MATRIXNEO23/assembling`; base `8e94db9e692e387f8ef2b5d528f8dd3f1c1d8fcf`.
+Autorizzazione utente: recuperare il lavoro, verificarne le prove, eseguire il necessario sul collegamento individuato. Una sola repository scrivibile.
+
+La riconciliazione delle due repo è persistita in `MATRIXNEO23/matrix-understanding-lab` al commit `23341d2db7fbe6bd42907a8a742540c4dab1a5a6`, report `reports/MATRIX_PROJECT_RECONCILIATION_20260908.md`. Non è una validazione funzionale dei modelli.
+
+Task corrente: riprodurre l'interruzione del prompt root quando riceve Understanding e Authority canonici V3; correggere esclusivamente quel confine e verificarne regressioni e perdita di campi. Nessuna modifica ai contratti congelati, nessun rewire dei moduli assenti.
+
+La dicitura storica COMPLETE sopra va letta per il checkpoint allora testato, non come prova di Engine completo. L'orchestrator esistente continua a usare porte legacy per Coherence/Memory/Affective; l'inferenza NLU reale, GGUF reale, MemoryRepository persistente e test APK non sono dimostrati da questa suite JVM.
+
+Gate corrente all'avvio: baseline JVM e regressione mirata. Risultati finali, evidenze e punto di ripresa sono registrati nel report R1 aggiunto a chiusura. Altri repository modificati in questo checkpoint: false.
+
+### R1 local gate result
+
+- Baseline: 150/150 tests pass, zero skipped.
+- Reproduction: 6 tests, one expected failure `MatrixTurnFrame missing semantic frame`.
+- Targeted correction: V3 rendering in root prompt; no legacy semantic projection, no frozen-contract change.
+- After: 159/159 tests pass, zero skipped; independent Python JSON verification PASS.
+- Evidence: `docs/RECOVERY_R1_V3_PROMPT_20260908.md` and `docs/evidence/recovery-r1-20260908/`.
+- Current gate: persist branch/PR, final-head CI, merge only if green, post-merge CI and remote byte readback.
+- Exact restart: complete R1 remote gates; do not treat this as full orchestrator/model/Memory/Android validation. Historical “Memory ACTIVE NEXT” is not authorization to fabricate a new backend during recovery.
+
+### R1 remote source gate and recovery locator
+
+- PR: https://github.com/MATRIXNEO23/assembling/pull/24
+- Code/evidence source commit: `5f9495c1def64296fe724fb7933b44191e0b7092`.
+- Source PR CI: run `34198222276`, job `101970687729`, PASS; `gradle test` executed, BUILD SUCCESSFUL in 42s.
+- Remote recovery: all 19 files of source commit fetched again; UTF-8 bytes, SHA-256 and Git blob identities match.
+- Source code is frozen after that successful CI; this closure adds only receipts/documentation.
+- **Publication receipt:** the final body of PR #24 records final PR head, final-head CI, merge/main SHA, post-merge CI and final readback. It is the durable exact restart locator and avoids a self-referencing commit SHA inside a commit. If that receipt is missing, publication has not yet been confirmed.
+- After the publication receipt is PASS: R1 software boundary is closed; all broader runtime limitations in `docs/RECOVERY_R1_V3_PROMPT_20260908.md` remain open. No next module/training stage has been started.

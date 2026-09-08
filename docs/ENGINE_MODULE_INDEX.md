@@ -28,7 +28,7 @@ Update this file whenever a module, adapter, protocol, model/runtime artifact, p
 3. `src/main/kotlin/matrix/assembling/MatrixAssemblingOrchestrator.kt` — current orchestration path.
 4. `src/main/kotlin/matrix/assembling/SemanticFrameToPrompt.kt` — current root prompt realization path.
 
-The older `contracts/*`, `pipeline/*`, `prompt/*` path is compatibility/testing only for new callers unless explicitly re-authorized by current docs.
+The older `contracts/*`, `pipeline/*` and `prompt/SemanticFrameToPrompt.kt` paths are compatibility/testing only for new callers. The internal `prompt/v3/CanonicalV3PromptRenderer.kt` renderer added by Recovery R1 belongs to the current root prompt path.
 
 ## Implemented / present modules
 
@@ -89,6 +89,10 @@ Purpose: current compatibility/test adapters around the assembly ports.
 Authoritative current root: `src/main/kotlin/matrix/assembling/SemanticFrameToPrompt.kt`
 Compatibility/deprecated-for-new-callers path: `src/main/kotlin/matrix/assembling/prompt/SemanticFrameToPrompt.kt`.
 Prompt Builder is realization-only; it must not acquire decision, truth, memory, relationship, affective or consent authority.
+
+Recovery R1 (2026-09-08): root prompt consumes PRESENT Understanding V3 and claim-wise canonical Authority directly through `src/main/kotlin/matrix/assembling/prompt/v3/CanonicalV3PromptRenderer.kt`. No legacy DTO projection. Status, ranked alternatives, plural evidence, role identities and provenance are preserved; V3 ERROR/absent Authority and premature durable write fail closed. Legacy body is unchanged.
+
+Verification scope: **software boundary verified on JVM fixtures**, 159/159 local tests, including actual adapter → deterministic Authority → prompt execution. This does **not** verify real NLU/GGUF models or rewire the full orchestrator's legacy Coherence/Memory/Affective stages. See `docs/RECOVERY_R1_V3_PROMPT_20260908.md` and its raw evidence; source PR CI is PASS (run `34198222276`, commit `5f9495c1def64296fe724fb7933b44191e0b7092`) and source readback is PASS. Final publication SHA, final PR/main CI and final readback are recorded in the closing receipt of [PR #24](https://github.com/MATRIXNEO23/assembling/pull/24).
 
 ### Diagnostic trace / workspace carrier
 Primary surface: `MatrixTurnFrame.diagnostics` in `src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt`.
