@@ -1,0 +1,478 @@
+{
+  "archive": {
+    "assetId": 549780835,
+    "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1.tar.xz",
+    "bytes": 93830912,
+    "sha256": "029bc292c11091da3aa5742ac85017ffdbc7dbb7ba7be6fadc5cc603f07ceafa",
+    "elapsedSeconds": 31.038,
+    "identityMatch": true
+  },
+  "internalChecksumEntriesVerified": 58,
+  "checkpointsVerified": 10,
+  "checkpointHashesMatchCanonicalIndex": true,
+  "models": [
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-01/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "dcf03bca3ead7bbd43573c9fddc20ef8c954132bb089625de969d35fa5609035"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-02/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "71e5b7558cb778db7c3eb40418e88c815745dea34144b1dbad9598f9fe10a265"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-03/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "45c1109e9258d53679f853622d19370f794d5ce274c47e44e4dd89261e50eb49"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-04/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "3c0f0fdfb64972c1f921508b2fdb25abde5871cbcc13725b0af0323bca7e1b1b"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-05/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "3f2e656832a435082ad7ac0e53ba401dd35237eb553fad5123a22a371d09a328"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-06/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "7b7f670bc265e6e1e11fb76c87875494e2d7325dbc45a0993dad413bbda6ead9"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-07/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "ee45bb926bd26f7278fc6c2cac02173774d3106dd4258a33c7cc826d4ab16663"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-08/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "1e5cb002dfc770a45e01aca5c89578acc851d39dbcec2e305828d3bfffde2f20"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-09/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "89956185f8ba446a0178ff231b65de3cc9f4cb3410ddb28a088bb488aca9e990"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-10/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "f19920de1f6224f37fde056e6b2e423ff4905b215409684a53a5295a1a0ddc6d"
+    }
+  ],
+  "allMemberHashes": [
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/MODEL_MANIFEST.json",
+      "bytes": 7222,
+      "sha256": "48f3fb6a9e693fdf8f651197fde836b7d2660296242f3cbc776730fdbbd18332"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/RECOVERY.md",
+      "bytes": 2095,
+      "sha256": "de554f3f81742b0bfaa0f91c39c4ea37baf393dd35f4cdbcfc0c21b303622de7"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/SHA256SUMS",
+      "bytes": 6524,
+      "sha256": "995392831e99e3dfa393b8e779e38f7ce88a680d6909f2d8d0d4f0394887da26"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/architecture.json",
+      "bytes": 3092,
+      "sha256": "ba1572d83de16921809cc3d790012dea17a3009bdbce3255c00f987b7dc72112"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/builder-regression-tests.log",
+      "bytes": 4212,
+      "sha256": "3b3db8a530343db3d3db58c9ffae0b268278ef96cc84ae151dfde63e8022bce4"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/checkpoint-verification.json",
+      "bytes": 3142,
+      "sha256": "8e78a849f8d6f4889cc9f8b3f7a9fff4990db1fd2046ae4e351bbc1d623eb8ee"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/cp45-recovery.json",
+      "bytes": 556,
+      "sha256": "def494a3423afb145dfc697f0e062296f5b2f4b9e1bb1b3b135db80a5ff8726c"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/evaluation-status.json",
+      "bytes": 514,
+      "sha256": "fc2b70d7d4e8a0bc735e4d57bf2325e71b5327e3a05ff969ef739cf7c37c5d7b"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/execution-notes.json",
+      "bytes": 1149,
+      "sha256": "e6d4fcd50f3878e6ca9c4f90fe92b7dcffe6d8171e8a9a9078396a9109d4a657"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/forward-parity.json",
+      "bytes": 910,
+      "sha256": "d05f49d49fc2b43bbd32d11998fb16c263fc450c8e79751edcaf75e87c15d50c"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/preflight.json",
+      "bytes": 6899,
+      "sha256": "b9d7e5a5cd0303e0e93d7d31214b0ffdc3318e416d1174acd0d31733b407dadd"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/recover_checkpoint.py",
+      "bytes": 1607,
+      "sha256": "1ba1eb0659faa59e52dcabed7a80a42afaa8361435fb62695b2d72afd471ba20"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/source/contract_v3.py",
+      "bytes": 7778,
+      "sha256": "e524946ae9092fdbc1344be106acc065f506c97c0550ad506ba99ee7e0dde371"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/source/model_v3.py",
+      "bytes": 7354,
+      "sha256": "2ae0cd0a5f22a210784556701aa64ce11c7969eeabd5e7ea32824e4fe23cc0fa"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/source/referent_candidates.py",
+      "bytes": 5137,
+      "sha256": "a8cbabf3eff816e8eb1e4079ff8ffccb8a7de640bc1d890b5c2d4d4d6f97ec29"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/source/train_cp47.py",
+      "bytes": 19060,
+      "sha256": "ab983422b78f94456b3a907adb3428ddcc15af368d3b4cd17b8eb028de8d5ebe"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/source/training_data_v3.py",
+      "bytes": 10840,
+      "sha256": "89fdc2d6f847dc5b6a08612602b01b39c874e9af00f2961488b7b5e4cfeca88c"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/source/verify_cp47.py",
+      "bytes": 3216,
+      "sha256": "f23e1da6be21fb1ce8b75e614785548a05fed95fb0f7707ff4e40ae6efc5a441"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-01/checkpoint.json",
+      "bytes": 1949,
+      "sha256": "0a1116947d928b354e4b9e727edea15b9a5c5fe7275610566f5696e971f1d342"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-01/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "dcf03bca3ead7bbd43573c9fddc20ef8c954132bb089625de969d35fa5609035"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-01/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "0150d082a60486ad86d470f74c4d1a80b79173e697f6f039173632da67c5460b"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-02/checkpoint.json",
+      "bytes": 1957,
+      "sha256": "4c04753a51afe009809117da784b20d3558e53d6506341411f5cadb852c0d844"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-02/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "71e5b7558cb778db7c3eb40418e88c815745dea34144b1dbad9598f9fe10a265"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-02/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "b76f1c0c6e92eccab0ddfd9b3760cda45a7718d9bfe9b62680baa29c9685c00a"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-03/checkpoint.json",
+      "bytes": 1966,
+      "sha256": "327b2f17a66798829ec9c94e26f29bc1e2ba40b0f4a8d507ccbd9d9c75d3487f"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-03/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "45c1109e9258d53679f853622d19370f794d5ce274c47e44e4dd89261e50eb49"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-03/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "1329bc88a671d98014f43c3f1007e65e7ce8f0037698669189ed09d9dc1d7215"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-04/checkpoint.json",
+      "bytes": 1962,
+      "sha256": "e4989c7a67dfc1bf3535578300851bfd7ec99d309cfa05e01e68367944e9f358"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-04/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "3c0f0fdfb64972c1f921508b2fdb25abde5871cbcc13725b0af0323bca7e1b1b"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-04/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "76197a706ded92f9df85f56c9cc249380cdb0f551d61a736be6881b46f57e8ff"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-05/checkpoint.json",
+      "bytes": 1967,
+      "sha256": "544f025001ecdba04700fb936294b209281be0c5c376983d5557b457ba8da346"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-05/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "3f2e656832a435082ad7ac0e53ba401dd35237eb553fad5123a22a371d09a328"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-05/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "72ab920274b47696350c428d11f92d3d7fc893ab493165f717588ca3e1aba5aa"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-06/checkpoint.json",
+      "bytes": 1967,
+      "sha256": "32082335379ab148f3de29296da1577fae165bf2e36a795eb6c753c1ec0a1414"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-06/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "7b7f670bc265e6e1e11fb76c87875494e2d7325dbc45a0993dad413bbda6ead9"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-06/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "eeeeec92758b5975172d5dc35d17653e1e09f3caf378aae1c7b0e2fb7e9d8273"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-07/checkpoint.json",
+      "bytes": 1968,
+      "sha256": "783a76d26748af76630611cbaf44a7d6415ffe51b8c726ec8b7419ef71f621c3"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-07/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "ee45bb926bd26f7278fc6c2cac02173774d3106dd4258a33c7cc826d4ab16663"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-07/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "eb6f269f464f6806c060ff537500cd25727f6428f9a7df360e9c1c42fdabac90"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-08/checkpoint.json",
+      "bytes": 1965,
+      "sha256": "3ee2912d85b570b5c4a1dce1da1c9dd4d19e5065c77940a64b3aa673d4a9a9d1"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-08/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "1e5cb002dfc770a45e01aca5c89578acc851d39dbcec2e305828d3bfffde2f20"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-08/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "913a1959da85b1a5558752c3430936d021a1b333482b7641ee96632dba37c1ed"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-09/checkpoint.json",
+      "bytes": 1966,
+      "sha256": "58420e4df1f36ae49792a2901a1dc1b6a72e1852355a66b2f78d8148b092502c"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-09/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "89956185f8ba446a0178ff231b65de3cc9f4cb3410ddb28a088bb488aca9e990"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-09/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "0beed9236192c2758005afee1f06e5d09750cf016777f7287be76032f5867216"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-10/checkpoint.json",
+      "bytes": 1974,
+      "sha256": "1cd6e0c82c784c459ec1fed97f84a5e66d83000cd8d98869ebccee465ca4b2ac"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-10/model.safetensors",
+      "bytes": 148713360,
+      "sha256": "f19920de1f6224f37fde056e6b2e423ff4905b215409684a53a5295a1a0ddc6d"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1-epoch-10/training-state.pt",
+      "bytes": 1410590,
+      "sha256": "30f6fb5333ee5dda06cb9894cde563f9bb1e7a1e5c98ec1e9025943bf267e150"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/target-consumption.json",
+      "bytes": 3857,
+      "sha256": "d221a62e78086d0bdd1a1514805fd12e4fdc044c6f32cfadadfcddfc2bc4f0db"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/tokenizer-and-source-config/candidate-manifest.json",
+      "bytes": 18213,
+      "sha256": "a9d23de7816d487986316351c163f37a67d65d001861dbf042b9114c455f066d"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/tokenizer-and-source-config/config.json",
+      "bytes": 687,
+      "sha256": "447f6d16a312069ceaf1c9b36dda10cf3327f30d8b83dfba02397b5579c7c504"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/tokenizer-and-source-config/sentencepiece.bpe.model",
+      "bytes": 884247,
+      "sha256": "748f8053688469d7dc98c135a28a3fc0713bdbb82853f86f8d7a254bada46f78"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/tokenizer-and-source-config/special_tokens_map.json",
+      "bytes": 280,
+      "sha256": "06e405a36dfe4b9604f484f6a1e619af1a7f7d09e34a8555eb0b77b66318067f"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/tokenizer-and-source-config/token-id-remap.json",
+      "bytes": 1210100,
+      "sha256": "da36a5e1a9057391da935354d895edb3bc3a959744aca6b6602e511f9d4ea9b9"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/tokenizer-and-source-config/tokenizer_config.json",
+      "bytes": 1199,
+      "sha256": "3d2c97bf6696333c33eec6c8c04a8d8731e8f143fadf641240f6d23345c70060"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/training-config.json",
+      "bytes": 3056,
+      "sha256": "d50cda539726470baebcaf21150bc520053b948df7247abc926927c74f9a9cdf"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/training-manifest.json",
+      "bytes": 4270,
+      "sha256": "a12881f009a27a4cf5b13377493122dfcc7c9aef963a8e7fc09e72503bed6d60"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/training-metrics.json",
+      "bytes": 20714,
+      "sha256": "52e445a29002c1e9217d5c26bc16ea9d2f8a8ed269cfe0ce2e7bcfca34bd7b18"
+    },
+    {
+      "path": "student5-matrix-nlu-v3-fp32-cp47-run1/training.log",
+      "bytes": 18464,
+      "sha256": "8f94af76e9cac49836b69aff46ee69176d03c667baae37beeb1f2504e7581784"
+    }
+  ],
+  "binaryRecovery": "PASS",
+  "modelLoadingPerformed": false,
+  "semanticEvaluationPerformed": false,
+  "trainingExecuted": false,
+  "sourceModified": false,
+  "canonicalRegistry": {
+    "authoritativeIndex": "https://github.com/MATRIXNEO23/matrix-understanding-lab/blob/23341d2db7fbe6bd42907a8a742540c4dab1a5a6/STUDENT5_MODULE_INDEX.md",
+    "scope": "Read-only recovery references; no Engine integration or new artifact identity",
+    "releases": [
+      {
+        "releaseId": 383143636,
+        "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/tag/student-5-minilm-40k-phase-a-pristine",
+        "assets": [
+          {
+            "id": 545406840,
+            "name": "student5-minilm-phase-a-pruned-40k.zip",
+            "bytes": 88361246,
+            "publishedDigest": "sha256:7804bfb245b71df9b835fff7ee00f6ec887e019772ae34c82d269d821d587191",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student-5-minilm-40k-phase-a-pristine/student5-minilm-phase-a-pruned-40k.zip"
+          }
+        ],
+        "verification": "REMOTE_METADATA_ONLY_THIS_CHECK"
+      },
+      {
+        "releaseId": 384399324,
+        "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/tag/student5-minilm-40k-phase-a-fp32-working-copy-cp45",
+        "assets": [
+          {
+            "id": 549697449,
+            "name": "MODEL_MANIFEST.json",
+            "bytes": 5357,
+            "publishedDigest": "sha256:d108ef92e37de57fc29a2668dbbd65936d43aa3b916290c3b51fa26ad4bdad40",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-minilm-40k-phase-a-fp32-working-copy-cp45/MODEL_MANIFEST.json"
+          },
+          {
+            "id": 549697481,
+            "name": "RECOVERY.md",
+            "bytes": 1889,
+            "publishedDigest": "sha256:8c7552998db2eb03cd755010de82a2cb188ecf98e839ffa6f0138a99dbcdd98e",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-minilm-40k-phase-a-fp32-working-copy-cp45/RECOVERY.md"
+          },
+          {
+            "id": 549697459,
+            "name": "SHA256SUMS",
+            "bytes": 381,
+            "publishedDigest": "sha256:415a339392eb5af78c985dc44dd58737ee98e943bb1813ab408dd9da3fdd0ead",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-minilm-40k-phase-a-fp32-working-copy-cp45/SHA256SUMS"
+          },
+          {
+            "id": 549697495,
+            "name": "source-copy-verification.json",
+            "bytes": 3305,
+            "publishedDigest": "sha256:6e42a082a550ba24a16ff3b07c9744f64ef7c9751a539af474239859406cb53b",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-minilm-40k-phase-a-fp32-working-copy-cp45/source-copy-verification.json"
+          },
+          {
+            "id": 549697344,
+            "name": "student5-minilm-40k-phase-a-fp32-working-copy-cp45.zip",
+            "bytes": 88361246,
+            "publishedDigest": "sha256:7804bfb245b71df9b835fff7ee00f6ec887e019772ae34c82d269d821d587191",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-minilm-40k-phase-a-fp32-working-copy-cp45/student5-minilm-40k-phase-a-fp32-working-copy-cp45.zip"
+          }
+        ],
+        "verification": "REMOTE_METADATA_ONLY_THIS_CHECK"
+      },
+      {
+        "releaseId": 384423046,
+        "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/tag/student5-matrix-nlu-v3-fp32-cp47-run1",
+        "assets": [
+          {
+            "id": 549780936,
+            "name": "ARCHIVE_SHA256SUMS",
+            "bytes": 111,
+            "publishedDigest": "sha256:2ddbdc4f0c332548665585d003f97ca2d1cc4843226a7b9fbad890a29e7b4c59",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-matrix-nlu-v3-fp32-cp47-run1/ARCHIVE_SHA256SUMS"
+          },
+          {
+            "id": 549780942,
+            "name": "MODEL_MANIFEST.json",
+            "bytes": 7222,
+            "publishedDigest": "sha256:48f3fb6a9e693fdf8f651197fde836b7d2660296242f3cbc776730fdbbd18332",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-matrix-nlu-v3-fp32-cp47-run1/MODEL_MANIFEST.json"
+          },
+          {
+            "id": 549780957,
+            "name": "RECOVERY.md",
+            "bytes": 2095,
+            "publishedDigest": "sha256:de554f3f81742b0bfaa0f91c39c4ea37baf393dd35f4cdbcfc0c21b303622de7",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-matrix-nlu-v3-fp32-cp47-run1/RECOVERY.md"
+          },
+          {
+            "id": 549780835,
+            "name": "student5-matrix-nlu-v3-fp32-cp47-run1.tar.xz",
+            "bytes": 93830912,
+            "publishedDigest": "sha256:029bc292c11091da3aa5742ac85017ffdbc7dbb7ba7be6fadc5cc603f07ceafa",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-matrix-nlu-v3-fp32-cp47-run1/student5-matrix-nlu-v3-fp32-cp47-run1.tar.xz"
+          },
+          {
+            "id": 549780992,
+            "name": "training-manifest.json",
+            "bytes": 4270,
+            "publishedDigest": "sha256:a12881f009a27a4cf5b13377493122dfcc7c9aef963a8e7fc09e72503bed6d60",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-matrix-nlu-v3-fp32-cp47-run1/training-manifest.json"
+          },
+          {
+            "id": 549780967,
+            "name": "training-metrics.json",
+            "bytes": 20714,
+            "publishedDigest": "sha256:52e445a29002c1e9217d5c26bc16ea9d2f8a8ed269cfe0ce2e7bcfca34bd7b18",
+            "url": "https://github.com/MATRIXNEO23/matrix-understanding-lab/releases/download/student5-matrix-nlu-v3-fp32-cp47-run1/training-metrics.json"
+          }
+        ],
+        "verification": "FRESH_ARCHIVE_AND_ALL_INTERNAL_SHA256_PASS"
+      }
+    ]
+  }
+}

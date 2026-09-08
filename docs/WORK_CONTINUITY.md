@@ -1,9 +1,30 @@
 # Work Continuity — Matrix Assembling
 
-Last updated: 2026-09-06T10:08+02:00  
+Latest operational state: read the current recovery entrypoint below; older dated checkpoints are retained as history.  
 Repository: `MATRIXNEO23/assembling`  
 Canonical branch: `main`  
 Continuity schema: `matrix.assembling.continuity.v74`
+
+## Current recovery entrypoint — recover artifacts before repeating work
+
+The owner reports repeated work caused by lost artifact continuity. The immediate requirement is recovery and durable identification, not re-execution.
+
+- Active write repository remains `MATRIXNEO23/assembling`; model ownership remains with `MATRIXNEO23/matrix-understanding-lab`. No model integration is authorized by this registry link.
+- Verified Engine code checkpoint R1: `994ba3f75d76d2f3d3dd60aea9da20546be99529`, PR #24; 159 JVM fixture tests, successful pre/post-merge CI and remote readback. Full Engine/model validation remains incomplete as documented.
+- **Canonical model recovery registry:** [STUDENT5_MODULE_INDEX.md at verified Lab HEAD](https://github.com/MATRIXNEO23/matrix-understanding-lab/blob/23341d2db7fbe6bd42907a8a742540c4dab1a5a6/STUDENT5_MODULE_INDEX.md). Use its CP45/CP47 identities, per-epoch hashes and recovery instructions. Do not create a competing module index or relabel old artifacts.
+- **CP47 recovered afresh:** Release `384423046`, asset `549780835`, `student5-matrix-nlu-v3-fp32-cp47-run1.tar.xz`, 93,830,912 bytes, SHA-256 `029bc292c11091da3aa5742ac85017ffdbc7dbb7ba7be6fadc5cc603f07ceafa`. Fresh remote bytes match; all 58 internal checksum entries and all 10 epoch model hashes match. These ten checkpoints do not need retraining to be recovered. Selection remains pending; this is an integrity/recovery check, not model loading or evaluation.
+- Evidence: `docs/evidence/artifact-recovery-cp47/readback.json` and `SHA256SUMS`. The archive remains in its original durable Release; the newly downloaded local file is only a disposable verification copy.
+- Pristine Release `383143636` / asset `545406840` and CP45 Release `384399324` / asset `549697344` are still listed remotely with the expected sizes and published hashes. This particular check verified their metadata, not a fresh download of both binaries. Do not conflate those levels of evidence.
+
+Recovery rules for the next session:
+
+1. Open this continuity and the existing canonical index first. Recover by repository + pinned commit/path or Release/asset ID + size/SHA, never chat memory alone.
+2. A missing local file, expired Actions artifact, broken download or unknown locator is not proof that the canonical artifact is lost. Quarantine invalid local bytes; recover and authenticate the persisted original before considering any reconstruction.
+3. Do not call a deliverable durably saved if its only copy is session storage, cache or a temporary Actions artifact. Important binaries need the approved Release/persistent route; code, reports and recovery metadata need a Git commit. For LFS, verify the payload as well as the pointer when claiming byte recovery.
+4. Before closing work, persist identity, parent lineage, locator, sizes, checksums and recovery instructions; actually read back from the destination. Record metadata-only, byte-verified and functionally-tested states separately.
+5. If recovery remains blocked, preserve the evidence and exact missing identity. Do not automatically rebuild datasets, retrain, recreate DEV/gold, select a model or start another module.
+
+The historical execution order and COMPLETE labels below describe their original checkpoints. They are not automatic instructions to redo work or to treat the entire project as functionally validated.
 
 ## Owner-approved execution order
 
