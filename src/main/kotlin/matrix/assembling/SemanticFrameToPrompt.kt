@@ -9,6 +9,15 @@ package matrix.assembling
  */
 class SemanticFrameToPrompt : SemanticFrameToPromptPort {
     override fun buildPrompt(turn: MatrixTurnFrame): MatrixTurnFrame {
+        when (turn.canonicalUnderstandingV3.status) {
+            matrix.assembling.mip.MipFieldStatus.PRESENT ->
+                return matrix.assembling.prompt.v3.CanonicalV3PromptRenderer.render(turn)
+            matrix.assembling.mip.MipFieldStatus.ERROR -> throw MatrixBoundaryViolationException(
+                "Canonical Understanding failed; legacy prompt fallback is forbidden",
+                turn.diagnostics.diverge("PROMPT.V3.UNDERSTANDING_ERROR").add("prompt.v3.boundary_failure"),
+            )
+            else -> Unit // UNAVAILABLE is the unchanged compatibility path.
+        }
         val input = turn.input
         val frame = turn.requireSemantic()
         val coherenceDecision = turn.requireCoherence()

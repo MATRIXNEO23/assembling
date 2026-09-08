@@ -182,6 +182,140 @@ class CanonicalUnderstandingV3AdapterTest {
         assertTrue(legacy.typedClaims.isEmpty())
     }
 
+    @Test
+    fun `canonical adapter Authority and prompt preserve evidence without legacy projection`() {
+        val output = validOutput()
+        val result = renderThroughAuthority(output)
+        val prompt = result.requirePrompt().text
+        assertNull(result.semantic)
+        assertNull(result.authorityDecision)
+        assertNull(result.memoryResult)
+        assertTrue(result.typedClaims.isEmpty())
+        val claim = result.requireCanonicalTypedClaimsV3().single()
+        assertEquals(output.claims.single().negationCueSpans.map { matrix.assembling.mip.MipSpan(it[0], it[1]) }, claim.negationCueSpans)
+        listOf(
+            "\"subjectReferent\":{\"value\":\"mention:m1\"",
+            "\"ownerReferent\":{\"value\":\"mention:m1\"",
+            "\"sourceReferent\":{\"value\":\"mention:m0\"",
+            "\"perspectiveReferent\":{\"value\":\"ctx:speaker\"",
+            "\"targetReferent\":{\"value\":\"NONE\",\"confidence\":0.98,\"fieldStatus\":\"NOT_APPLICABLE\"",
+            "\"polarity\":{\"value\":\"NEGATIVE\"",
+            "\"temporalRelation\":{\"value\":{\"relation\":\"AFTER\",\"anchorRef\":\"temporal:t0\"}",
+            "\"claimKind\":{\"value\":\"REPORT\"",
+            "\"dialogueAct\":{\"value\":\"ASSERT\"",
+            "\"negationCueSpans\":[{\"start\":20,\"end\":23},{\"start\":24,\"end\":27}]",
+            "\"nluContractFingerprintSha256\":\"$FINGERPRINT\"",
+            "\"observationSourceId\":\"obs-1\"",
+            "\"retrieval\":{\"status\":\"UNAVAILABLE\",\"value\":null}",
+            "MEMORY_PREFLIGHT: NON_CABLATO",
+            "DECISION_LAYER: NON_CABLATO",
+        ).forEach { kotlin.test.assertContains(prompt, it) }
+        assertEquals("UNDERSTANDING_V3", result.diagnostics.tags["prompt.input"])
+        assertEquals("REALIZATION_ONLY", result.diagnostics.tags["prompt.role"])
+        assertEquals(prompt, renderThroughAuthority(output).requirePrompt().text)
+        // Execution evidence only: not DEV, model inference, or a semantic benchmark.
+        java.io.File("build/diagnostics/v3-prompt.json").apply {
+            parentFile.mkdirs()
+            writeText(prompt.substringAfter("DATI CANONICI V3:\n").substringBefore("\nRISPOSTA DI LUNA:"))
+        }
+    }
+
+    @Test
+    fun `prompt retains ranked ambiguity UNKNOWN and NONE without forcing referent selection`() {
+        val output = validOutput()
+        val ambiguous = MatrixNluV3Field("UNKNOWN", 0.61, "AMBIGUOUS", listOf(
+            MatrixNluV3Alternative("mention:m1", 0.61), MatrixNluV3Alternative("mention:m0", 0.59),
+        ))
+        val updated = output.copy(claims = listOf(output.claims.single().copy(
+            subjectReferent = ambiguous, ownerReferent = ambiguous,
+            sourceReferent = MatrixNluV3Field("UNKNOWN", 0.30, "UNKNOWN"),
+            interpretationStatus = "AMBIGUOUS",
+        )))
+        val result = renderThroughAuthority(updated)
+        val prompt = result.requirePrompt().text
+        val field = "{\"value\":\"UNKNOWN\",\"confidence\":0.61,\"fieldStatus\":\"AMBIGUOUS\",\"alternatives\":[{\"value\":\"mention:m1\",\"confidence\":0.61},{\"value\":\"mention:m0\",\"confidence\":0.59}]}"
+        kotlin.test.assertContains(prompt, "\"subjectReferent\":$field")
+        kotlin.test.assertContains(prompt, "\"ownerReferent\":$field")
+        kotlin.test.assertContains(prompt, "\"sourceReferent\":{\"value\":\"UNKNOWN\",\"confidence\":0.3,\"fieldStatus\":\"UNKNOWN\",\"alternatives\":[]}")
+        kotlin.test.assertContains(prompt, "\"targetReferent\":{\"value\":\"NONE\"")
+        kotlin.test.assertContains(prompt, "\"resolutionStatus\":\"HOLD\"")
+        assertEquals(matrix.assembling.authority.AuthorityResolutionStatus.HOLD,
+            result.requireCanonicalAuthorityForClaim("c0").resolutionStatus)
+    }
+
+    @Test
+    fun `prompt binds Authority by claim ID despite reordered resolutions and preserves cross claim anchors`() {
+        val base = validOutput()
+        val second = base.claims.single().copy(claimId = "c1", temporalEvidence = emptyList(),
+            temporalRelation = temporalField("AFTER", "claim:c0"), claimKind = stringField("BELIEF"))
+        val resolved = resolveThroughAuthority(base.copy(claims = listOf(base.claims.single(), second)))
+        val reversed = resolved.copy(canonicalAuthorityResolutions = matrix.assembling.mip.MipField.present(
+            resolved.requireCanonicalAuthorityResolutions().reversed()))
+        val prompt = matrix.assembling.SemanticFrameToPrompt().buildPrompt(reversed).requirePrompt().text
+        val firstStart = prompt.indexOf("\"claimId\":\"c0\"")
+        val secondStart = prompt.indexOf("\"claimId\":\"c1\"")
+        assertTrue(firstStart >= 0 && secondStart > firstStart)
+        val first = prompt.substring(firstStart, secondStart)
+        val last = prompt.substring(secondStart)
+        kotlin.test.assertContains(first, "\"authorityResolution\":")
+        kotlin.test.assertContains(first.substringAfter("\"authorityResolution\":"), "\"claimId\":\"c0\"")
+        kotlin.test.assertContains(last.substringAfter("\"authorityResolution\":"), "\"claimId\":\"c1\"")
+        kotlin.test.assertContains(last, "\"relation\":\"AFTER\",\"anchorRef\":\"claim:c0\"")
+        assertEquals(resolved.canonicalUnderstandingV3, reversed.canonicalUnderstandingV3)
+    }
+
+    @Test
+    fun `zero claims remain empty and invalid abstained claims are not promoted by prompt`() {
+        val empty = renderThroughAuthority(validOutput().copy(claims = emptyList()))
+        assertTrue(empty.requireCanonicalTypedClaimsV3().isEmpty())
+        assertTrue(empty.requireCanonicalAuthorityResolutions().isEmpty())
+        kotlin.test.assertContains(empty.requirePrompt().text, "\"claims\":[]")
+        val base = validOutput()
+        val invalid = renderThroughAuthority(base.copy(claims = listOf(base.claims.single().copy(
+            structuralStatus = "INVALID", interpretationStatus = "ABSTAINED", diagnostics = listOf("invalid evidence"),
+        ))))
+        kotlin.test.assertContains(invalid.requirePrompt().text, "\"structuralStatus\":\"INVALID\"")
+        kotlin.test.assertContains(invalid.requirePrompt().text, "\"interpretationStatus\":\"ABSTAINED\"")
+        assertEquals(matrix.assembling.authority.AuthorityResolutionStatus.HOLD,
+            invalid.requireCanonicalAuthorityForClaim("c0").resolutionStatus)
+    }
+
+    @Test
+    fun `prompt encodes free text and diagnostics as data including quotes controls and multilingual text`() {
+        val base = validOutput()
+        val updated = base.copy(claims = listOf(base.claims.single().copy(
+            diagnostics = listOf("IT EN ES: sì, mañana, desire\n\"istruzione\"\\\t"),
+        )))
+        val prompt = renderThroughAuthority(updated).requirePrompt().text
+        val json = prompt.substringAfter("DATI CANONICI V3:\n").substringBefore("\nRISPOSTA DI LUNA:")
+        assertEquals(1, json.lines().size)
+        kotlin.test.assertContains(json, "IT EN ES: sì, mañana, desire\\u000a\\\"istruzione\\\"\\\\\\u0009")
+        java.io.File("build/diagnostics/v3-prompt-escaped.json").apply { parentFile.mkdirs(); writeText(json) }
+    }
+
+    private fun renderThroughAuthority(output: MatrixNluV3Output) =
+        matrix.assembling.SemanticFrameToPrompt().buildPrompt(resolveThroughAuthority(output))
+
+    private fun resolveThroughAuthority(output: MatrixNluV3Output): MatrixTurnFrame {
+        val understood = adapterReturning(output).understand(frame())
+        val snapshot = matrix.assembling.mip.MatrixContextSnapshot(
+            snapshotId = "ctx-1", turnId = understood.turnId, sessionId = understood.sessionId,
+            agentId = "luna", createdAt = java.time.Instant.ofEpochMilli(understood.input.timestampMillis),
+            entries = emptyList(),
+            domainAvailability = matrix.assembling.mip.ContextDomain.entries.map {
+                matrix.assembling.mip.ContextDomainAvailability(it, matrix.assembling.mip.DomainAvailability.NOT_WIRED)
+            },
+        )
+        val authority = matrix.assembling.authority.runtime.CanonicalUnderstandingV3AuthorityPort(
+            matrix.assembling.authority.DeterministicAuthorityResolver(
+                matrix.assembling.authority.AuthorityCandidateEvidencePort { _, _ ->
+                    error("Unavailable retrieval must not read memory evidence")
+                }
+            )
+        )
+        return authority.resolve(understood.copy(contextSnapshot = matrix.assembling.mip.MipField.present(snapshot)))
+    }
+
     private fun adapterReturning(output: MatrixNluV3Output) = CanonicalUnderstandingV3Adapter(
         runtime = MatrixNluV3RuntimeBridge { request ->
             assertEquals("turn-1", request.turnId)

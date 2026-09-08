@@ -133,6 +133,61 @@ class CanonicalUnderstandingV3AuthorityPortTest {
         assertEquals(CanonicalUnderstandingV3AuthorityPort.REASON_CONTEXT_UNAVAILABLE, error.diagnosticTrace.firstDivergence)
     }
 
+
+    @Test
+    fun `canonical V3 Authority output reaches prompt without legacy fields`() {
+        val turn = port().resolve(frame(observation(), listOf(noMatch("q:c0"))))
+        val rendered = matrix.assembling.SemanticFrameToPrompt().buildPrompt(turn)
+        val prompt = rendered.requirePrompt().text
+        kotlin.test.assertNull(rendered.semantic)
+        kotlin.test.assertNull(rendered.authorityDecision)
+        assertTrue(rendered.typedClaims.isEmpty())
+        kotlin.test.assertContains(prompt, "residence.place")
+        kotlin.test.assertContains(prompt, "REPORT")
+        kotlin.test.assertContains(prompt, "mention:m0")
+        kotlin.test.assertContains(prompt, "mention:m1")
+        assertEquals(turn.canonicalUnderstandingV3, rendered.canonicalUnderstandingV3)
+        assertEquals(turn.canonicalAuthorityResolutions, rendered.canonicalAuthorityResolutions)
+    }
+
+    @Test
+    fun `canonical prompt fails closed when Authority is absent`() {
+        val turn = frame(observation(), listOf(noMatch("q:c0")))
+        val error = assertFailsWith<MatrixBoundaryViolationException> {
+            matrix.assembling.SemanticFrameToPrompt().buildPrompt(turn)
+        }
+        assertEquals("PROMPT.V3.AUTHORITY_UNAVAILABLE", error.diagnosticTrace.firstDivergence)
+    }
+
+    @Test
+    fun `canonical prompt rejects premature durable writes and IDs`() {
+        val turn = port().resolve(frame(observation(), listOf(noMatch("q:c0"))))
+        listOf(
+            matrix.assembling.MemoryAdmissionResult("TEST", stableWrite = true, reason = "invalid pre-response write"),
+            matrix.assembling.MemoryAdmissionResult("TEST", memoryIds = listOf("memory-1"), reason = "invalid pre-response IDs"),
+        ).forEach { memory ->
+            val error = assertFailsWith<MatrixBoundaryViolationException> {
+                matrix.assembling.SemanticFrameToPrompt().buildPrompt(turn.copy(memoryResult = memory))
+            }
+            assertEquals("PROMPT.V3.PRE_RESPONSE_STABLE_WRITE", error.diagnosticTrace.firstDivergence)
+        }
+        val transient = turn.copy(memoryResult = matrix.assembling.MemoryAdmissionResult(
+            "PROVISIONAL_CLAIM", reason = "no persistent write"))
+        val rendered = matrix.assembling.SemanticFrameToPrompt().buildPrompt(transient)
+        assertEquals(transient.memoryResult, rendered.memoryResult)
+        kotlin.test.assertContains(rendered.requirePrompt().text, "\"stableWrite\":false,\"memoryIds\":[]")
+    }
+
+    @Test
+    fun `errored canonical Understanding must not fall back to legacy prompt`() {
+        val turn = MatrixTurnFrame(turnId = TURN, sessionId = SESSION, input = input(),
+            canonicalUnderstandingV3 = MipField.error())
+        val error = assertFailsWith<MatrixBoundaryViolationException> {
+            matrix.assembling.SemanticFrameToPrompt().buildPrompt(turn)
+        }
+        assertEquals("PROMPT.V3.UNDERSTANDING_ERROR", error.diagnosticTrace.firstDivergence)
+    }
+
     private fun port() = CanonicalUnderstandingV3AuthorityPort(
         DeterministicAuthorityResolver(
             AuthorityCandidateEvidencePort { _, _ -> error("NO_MATCH must not read candidate evidence") }

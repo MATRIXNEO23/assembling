@@ -1,0 +1,26 @@
+{
+  "sourceHead": "8e94db9e692e387f8ef2b5d528f8dd3f1c1d8fcf",
+  "legacyPromptBodyByteIdentical": true,
+  "files": [
+    {
+      "path": "src/main/kotlin/matrix/assembling/SemanticFrameToPrompt.kt",
+      "beforeSha256": "468add742842952a83f91e95c8eafa6457023071ec391fe01ed8aef15840f0d6",
+      "afterSha256": "c5817f5cf53e4faf63d84a1992b2c74e67c76c292c1132ed1cdaf3a11e1f1b4f"
+    },
+    {
+      "path": "src/main/kotlin/matrix/assembling/prompt/v3/CanonicalV3PromptRenderer.kt",
+      "beforeSha256": null,
+      "afterSha256": "63b115c76da0bc590d054f899eb1592bfe4916b79d734b5321764fe12e2de083"
+    },
+    {
+      "path": "src/test/kotlin/matrix/assembling/authority/runtime/CanonicalUnderstandingV3AuthorityPortTest.kt",
+      "beforeSha256": "41d27ae48f0a295f9686bf3fa319330218c9e3723edfa7ebeeb63182ce87ed6c",
+      "afterSha256": "6666fb2505b01240caacbd428e28839c2346f88bc6e7004aa7f40fd654529759"
+    },
+    {
+      "path": "src/test/kotlin/matrix/assembling/understanding/v3/CanonicalUnderstandingV3AdapterTest.kt",
+      "beforeSha256": "c54fcfaf7f28b50d0bb077a6ebd7e1955f2a718f830cea6d66c053182ffa2a79",
+      "afterSha256": "d5c55c13863b1564a4e535b99931777935bebb01ed2634cbd98cf0fd355a32d8"
+    }
+  ]
+}
