@@ -1,7 +1,10 @@
 5daff3fc3ca592ca23950153bdcb12b37e8a4083ba2f6272900b616977792b43  docs/evidence/recovery-r1-20260908/after.log
 05f0cccbffbbeaee0a6afbdc0ab30c874b030c3d823120b1cd21cea9b941ff92  docs/evidence/recovery-r1-20260908/baseline.log
+ef2216ce777259c6b32c63a80b768a393aa93876e428eb613291cf9d1be1a884  docs/evidence/recovery-r1-20260908/ci-pr-source.json
+b84667f95eca89860badf2d3c110d06cb82d60b14f7c21475ff1e9f8da31c273  docs/evidence/recovery-r1-20260908/ci-pr-source.log
 d229baeaaaa3817d674c8b8789a839d3f2ca5813c3eab41b677f0ec743a81802  docs/evidence/recovery-r1-20260908/environment.json
 1f5df33b034b343ef9b15409fdfd289caaaca37b9bac7ddc751f6872acb55155  docs/evidence/recovery-r1-20260908/red.log
+e97463159326fdb6c85130deeda5ffcf11a2b632b80a3932a4673876011b938c  docs/evidence/recovery-r1-20260908/remote-readback-source.json
 8f6b946b9f654b5cc693985f03e78fe4a59cde35a5de24fe32e0763bb990667a  docs/evidence/recovery-r1-20260908/source-diff.patch
 9e2527001baa10e15c1d63ad5c498f4aadece5e4719af750e44ae3c47d5dda3d  docs/evidence/recovery-r1-20260908/source-identities.json
 ea86f7cfa54ba128d0aede5b3d0d8decd109e661857f29f520ebc52648560aaa  docs/evidence/recovery-r1-20260908/test-results.json

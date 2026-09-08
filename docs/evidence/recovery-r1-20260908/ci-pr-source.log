@@ -1,0 +1,303 @@
+﻿2026-09-08T07:12:54.9346300Z Current runner version: '2.337.0'
+2026-09-08T07:12:54.9371258Z ##[group]Runner Image Provisioner
+2026-09-08T07:12:54.9372219Z Hosted Compute Agent
+2026-09-08T07:12:54.9372823Z Version: 20260828.587
+2026-09-08T07:12:54.9373511Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-08T07:12:54.9374312Z Build Date: 2026-08-28T16:44:25Z
+2026-09-08T07:12:54.9375024Z Worker ID: {b1aceec6-072c-4287-951f-34735f3c77fc}
+2026-09-08T07:12:54.9376141Z Azure Region: westus
+2026-09-08T07:12:54.9376717Z ##[endgroup]
+2026-09-08T07:12:54.9378309Z ##[group]Operating System
+2026-09-08T07:12:54.9379025Z Ubuntu
+2026-09-08T07:12:54.9379609Z 24.04.4
+2026-09-08T07:12:54.9380185Z LTS
+2026-09-08T07:12:54.9380711Z ##[endgroup]
+2026-09-08T07:12:54.9381256Z ##[group]Runner Image
+2026-09-08T07:12:54.9381957Z Image: ubuntu-24.04
+2026-09-08T07:12:54.9382531Z Version: 20260831.293.1
+2026-09-08T07:12:54.9383872Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260831.293/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-08T07:12:54.9385661Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260831.293
+2026-09-08T07:12:54.9386757Z ##[endgroup]
+2026-09-08T07:12:54.9387860Z ##[group]GITHUB_TOKEN Permissions
+2026-09-08T07:12:54.9389811Z Contents: read
+2026-09-08T07:12:54.9390434Z Metadata: read
+2026-09-08T07:12:54.9391150Z ##[endgroup]
+2026-09-08T07:12:54.9393221Z Secret source: Actions
+2026-09-08T07:12:54.9394329Z Prepare workflow directory
+2026-09-08T07:12:55.0789730Z Prepare all required actions
+2026-09-08T07:12:55.0861007Z Getting action download info
+2026-09-08T07:12:55.4570610Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-09-08T07:12:55.5611127Z Download action repository 'actions/setup-java@v4' (SHA:cf277c60eb25467037889841efdb72551f06f6c3)
+2026-09-08T07:12:56.0556510Z Download action repository 'gradle/actions@v4' (SHA:ed408507eac070d1f99cc633dbcf757c94c7933a)
+2026-09-08T07:12:58.0300664Z Complete job name: kotlin-tests
+2026-09-08T07:12:58.5365714Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-08T07:12:58.5373827Z ##[group]Run actions/checkout@v4
+2026-09-08T07:12:58.5374351Z with:
+2026-09-08T07:12:58.5374632Z   repository: MATRIXNEO23/assembling
+2026-09-08T07:12:58.5377831Z   token: ***
+2026-09-08T07:12:58.5378101Z   ssh-strict: true
+2026-09-08T07:12:58.5378364Z   ssh-user: git
+2026-09-08T07:12:58.5378631Z   persist-credentials: true
+2026-09-08T07:12:58.5378922Z   clean: true
+2026-09-08T07:12:58.5379185Z   sparse-checkout-cone-mode: true
+2026-09-08T07:12:58.5379502Z   fetch-depth: 1
+2026-09-08T07:12:58.5379756Z   fetch-tags: false
+2026-09-08T07:12:58.5380020Z   show-progress: true
+2026-09-08T07:12:58.5380300Z   lfs: false
+2026-09-08T07:12:58.5380601Z   submodules: false
+2026-09-08T07:12:58.5380874Z   set-safe-directory: true
+2026-09-08T07:12:58.5381178Z   allow-unsafe-pr-checkout: false
+2026-09-08T07:12:58.5381752Z ##[endgroup]
+2026-09-08T07:12:58.6488817Z Syncing repository: MATRIXNEO23/assembling
+2026-09-08T07:12:58.6491211Z ##[group]Getting Git version info
+2026-09-08T07:12:58.6491982Z Working directory is '/home/runner/work/assembling/assembling'
+2026-09-08T07:12:58.6493188Z [command]/usr/bin/git version
+2026-09-08T07:12:58.6564359Z git version 2.55.0
+2026-09-08T07:12:58.6588681Z ##[endgroup]
+2026-09-08T07:12:58.6604980Z Temporarily overriding HOME='/home/runner/work/_temp/113781f8-3bfc-4bd0-9d3c-14e6de05f227' before making global git config changes
+2026-09-08T07:12:58.6607238Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-08T07:12:58.6611861Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/assembling/assembling
+2026-09-08T07:12:58.6667213Z Deleting the contents of '/home/runner/work/assembling/assembling'
+2026-09-08T07:12:58.6671292Z ##[group]Initializing the repository
+2026-09-08T07:12:58.6677623Z [command]/usr/bin/git init /home/runner/work/assembling/assembling
+2026-09-08T07:12:58.6785313Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-08T07:12:58.6786517Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-08T07:12:58.6787524Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-08T07:12:58.6788286Z hint: call:
+2026-09-08T07:12:58.6788605Z hint:
+2026-09-08T07:12:58.6789037Z hint: 	git config --global init.defaultBranch <name>
+2026-09-08T07:12:58.6789426Z hint:
+2026-09-08T07:12:58.6789801Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-08T07:12:58.6790402Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-08T07:12:58.6790881Z hint:
+2026-09-08T07:12:58.6791141Z hint: 	git branch -m <name>
+2026-09-08T07:12:58.6791475Z hint:
+2026-09-08T07:12:58.6791875Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-08T07:12:58.6797628Z Initialized empty Git repository in /home/runner/work/assembling/assembling/.git/
+2026-09-08T07:12:58.6809824Z [command]/usr/bin/git remote add origin https://github.com/MATRIXNEO23/assembling
+2026-09-08T07:12:58.6859206Z ##[endgroup]
+2026-09-08T07:12:58.6860020Z ##[group]Disabling automatic garbage collection
+2026-09-08T07:12:58.6863949Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-08T07:12:58.6894992Z ##[endgroup]
+2026-09-08T07:12:58.6895957Z ##[group]Setting up auth
+2026-09-08T07:12:58.6903781Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-08T07:12:58.6939202Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-08T07:12:58.7343238Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-08T07:12:58.7382594Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-08T07:12:58.7609642Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-08T07:12:58.7645847Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-08T07:12:58.7877124Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-08T07:12:58.7918757Z ##[endgroup]
+2026-09-08T07:12:58.7919608Z ##[group]Fetching the repository
+2026-09-08T07:12:58.7929175Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3955d01dba570f872d2e8246836699eca848540b:refs/remotes/pull/24/merge
+2026-09-08T07:12:59.2847881Z From https://github.com/MATRIXNEO23/assembling
+2026-09-08T07:12:59.2848809Z  * [new ref]         3955d01dba570f872d2e8246836699eca848540b -> pull/24/merge
+2026-09-08T07:12:59.2852761Z ##[endgroup]
+2026-09-08T07:12:59.2853340Z ##[group]Determining the checkout info
+2026-09-08T07:12:59.2855998Z ##[endgroup]
+2026-09-08T07:12:59.2862087Z [command]/usr/bin/git sparse-checkout disable
+2026-09-08T07:12:59.2916945Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-08T07:12:59.2958798Z ##[group]Checking out the ref
+2026-09-08T07:12:59.2963136Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/24/merge
+2026-09-08T07:12:59.3797828Z Note: switching to 'refs/remotes/pull/24/merge'.
+2026-09-08T07:12:59.3798464Z 
+2026-09-08T07:12:59.3798891Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-08T07:12:59.3799888Z changes and commit them, and you can discard any commits you make in this
+2026-09-08T07:12:59.3800894Z state without impacting any branches by switching back to a branch.
+2026-09-08T07:12:59.3801748Z 
+2026-09-08T07:12:59.3802137Z If you want to create a new branch to retain commits you create, you may
+2026-09-08T07:12:59.3802729Z do so (now or later) by using -c with the switch command. Example:
+2026-09-08T07:12:59.3803031Z 
+2026-09-08T07:12:59.3803186Z   git switch -c <new-branch-name>
+2026-09-08T07:12:59.3803404Z 
+2026-09-08T07:12:59.3803547Z Or undo this operation with:
+2026-09-08T07:12:59.3803749Z 
+2026-09-08T07:12:59.3803869Z   git switch -
+2026-09-08T07:12:59.3804069Z 
+2026-09-08T07:12:59.3804967Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-08T07:12:59.3806008Z 
+2026-09-08T07:12:59.3806811Z HEAD is now at 3955d01 Merge 5f9495c1def64296fe724fb7933b44191e0b7092 into 8e94db9e692e387f8ef2b5d528f8dd3f1c1d8fcf
+2026-09-08T07:12:59.4085490Z ##[endgroup]
+2026-09-08T07:12:59.4132038Z [command]/usr/bin/git log -1 --format=%H
+2026-09-08T07:12:59.4158785Z 3955d01dba570f872d2e8246836699eca848540b
+2026-09-08T07:12:59.8420078Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-08T07:12:59.8422193Z ##[group]Run actions/setup-java@v4
+2026-09-08T07:12:59.8422470Z with:
+2026-09-08T07:12:59.8422686Z   distribution: temurin
+2026-09-08T07:12:59.8422922Z   java-version: 17
+2026-09-08T07:12:59.8423139Z   java-package: jdk
+2026-09-08T07:12:59.8423358Z   check-latest: false
+2026-09-08T07:12:59.8423587Z   server-id: github
+2026-09-08T07:12:59.8423817Z   server-username: GITHUB_ACTOR
+2026-09-08T07:12:59.8424085Z   server-password: GITHUB_TOKEN
+2026-09-08T07:12:59.8424348Z   overwrite-settings: true
+2026-09-08T07:12:59.8424589Z   job-status: success
+2026-09-08T07:12:59.8428353Z   token: ***
+2026-09-08T07:12:59.8428582Z ##[endgroup]
+2026-09-08T07:13:00.0290542Z ##[warning]setup-java v4 is deprecated and will no longer receive updates. Please migrate to actions/setup-java@v5.
+2026-09-08T07:13:00.0298388Z ##[group]Installed distributions
+2026-09-08T07:13:00.0355366Z Resolved Java 17.0.20+1 from tool-cache
+2026-09-08T07:13:00.0356077Z Setting Java 17.0.20+1 as the default
+2026-09-08T07:13:00.0366960Z (node:2306) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-08T07:13:00.0368202Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-08T07:13:00.0370545Z Creating toolchains.xml for JDK version 17 from temurin
+2026-09-08T07:13:00.0446454Z Writing to /home/runner/.m2/toolchains.xml
+2026-09-08T07:13:00.0447065Z 
+2026-09-08T07:13:00.0447373Z Java configuration:
+2026-09-08T07:13:00.0447865Z   Distribution: temurin
+2026-09-08T07:13:00.0448336Z   Version: 17.0.20+1
+2026-09-08T07:13:00.0449005Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-08T07:13:00.0449631Z 
+2026-09-08T07:13:00.0450182Z ##[endgroup]
+2026-09-08T07:13:00.0469774Z Creating settings.xml with server-id: github
+2026-09-08T07:13:00.0470598Z Writing to /home/runner/.m2/settings.xml
+2026-09-08T07:13:00.9062314Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-08T07:13:00.9063725Z ##[group]Run gradle/actions/setup-gradle@v4
+2026-09-08T07:13:00.9064021Z with:
+2026-09-08T07:13:00.9064228Z   cache-disabled: false
+2026-09-08T07:13:00.9064467Z   cache-read-only: true
+2026-09-08T07:13:00.9064699Z   cache-write-only: false
+2026-09-08T07:13:00.9064964Z   cache-overwrite-existing: false
+2026-09-08T07:13:00.9065440Z   cache-cleanup: on-success
+2026-09-08T07:13:00.9065743Z   gradle-home-cache-includes: caches
+notifications
+
+2026-09-08T07:13:00.9066319Z   add-job-summary: always
+2026-09-08T07:13:00.9066579Z   add-job-summary-as-pr-comment: never
+2026-09-08T07:13:00.9066877Z   dependency-graph: disabled
+2026-09-08T07:13:00.9067239Z   dependency-graph-report-dir: dependency-graph-reports
+2026-09-08T07:13:00.9067612Z   dependency-graph-continue-on-failure: true
+2026-09-08T07:13:00.9067920Z   build-scan-publish: false
+2026-09-08T07:13:00.9068166Z   validate-wrappers: true
+2026-09-08T07:13:00.9068413Z   allow-snapshot-wrappers: false
+2026-09-08T07:13:00.9068697Z   gradle-home-cache-strict-match: false
+2026-09-08T07:13:00.9068989Z   workflow-job-context: null
+2026-09-08T07:13:00.9071783Z   github-token: ***
+2026-09-08T07:13:00.9072002Z env:
+2026-09-08T07:13:00.9072306Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-08T07:13:00.9072818Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-08T07:13:00.9073205Z ##[endgroup]
+2026-09-08T07:13:01.3793590Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+2026-09-08T07:13:01.3796348Z ##[group]Restore Gradle state from cache
+2026-09-08T07:13:01.6431909Z Cache hit for restore-key: gradle-home-v1|Linux-X64|kotlin-tests[43774d487450faf90ae7dcbe586a8f81]-8e94db9e692e387f8ef2b5d528f8dd3f1c1d8fcf
+2026-09-08T07:13:02.3639441Z Received 119234 of 119234 (100.0%), 0.3 MBs/sec
+2026-09-08T07:13:02.3641437Z Cache Size: ~0 MB (119234 B)
+2026-09-08T07:13:02.3682004Z [command]/usr/bin/tar -xf /home/runner/work/_temp/10b3a0a2-a8c0-4171-8fca-3598a05579d2/cache.tzst -P -C /home/runner/work/assembling/assembling --use-compress-program unzstd
+2026-09-08T07:13:02.3881950Z Cache restored successfully
+2026-09-08T07:13:02.3887013Z Restored cache entry with key gradle-home-v1|Linux-X64|kotlin-tests[43774d487450faf90ae7dcbe586a8f81]-3955d01dba570f872d2e8246836699eca848540b to /home/runner/.gradle/caches,/home/runner/.gradle/notifications,/home/runner/.gradle/.setup-gradle in 1008ms
+2026-09-08T07:13:02.6404315Z Cache hit for: gradle-transforms-v1-a72dce75d922211108ea0b743dbcfd6c
+2026-09-08T07:13:02.6414418Z Cache hit for: gradle-kotlin-dsl-v1-41c08caf022c5f2bc9ac058a93c19ea2
+2026-09-08T07:13:02.6420868Z Cache hit for: gradle-groovy-dsl-v1-dba4d28ad0cc77b793d95dd636617159
+2026-09-08T07:13:02.6427641Z Cache hit for: gradle-instrumented-jars-v1-95f6d35ed16498937a45031061e18829
+2026-09-08T07:13:02.6520174Z Cache hit for: gradle-dependencies-v1-0ff378357c155604ad8986b8a6971356
+2026-09-08T07:13:02.9252115Z Received 64155 of 64155 (100.0%), 0.3 MBs/sec
+2026-09-08T07:13:02.9253196Z Cache Size: ~0 MB (64155 B)
+2026-09-08T07:13:02.9279644Z [command]/usr/bin/tar -xf /home/runner/work/_temp/3ae17f1e-80c5-4ab2-a43d-29e71508a25b/cache.tzst -P -C /home/runner/work/assembling/assembling --use-compress-program unzstd
+2026-09-08T07:13:02.9707545Z Cache restored successfully
+2026-09-08T07:13:02.9708796Z Restored cache entry with key gradle-instrumented-jars-v1-95f6d35ed16498937a45031061e18829 to /home/runner/.gradle/caches/jars-*/*/ in 581ms
+2026-09-08T07:13:03.2153730Z Received 47864 of 47864 (100.0%), 0.1 MBs/sec
+2026-09-08T07:13:03.2154679Z Cache Size: ~0 MB (47864 B)
+2026-09-08T07:13:03.2176230Z [command]/usr/bin/tar -xf /home/runner/work/_temp/da91f318-6bf9-4082-8e3c-b93fe184acc1/cache.tzst -P -C /home/runner/work/assembling/assembling --use-compress-program unzstd
+2026-09-08T07:13:03.2277059Z Cache restored successfully
+2026-09-08T07:13:03.2279768Z Restored cache entry with key gradle-kotlin-dsl-v1-41c08caf022c5f2bc9ac058a93c19ea2 to /home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/,/home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/ in 838ms
+2026-09-08T07:13:03.4017419Z Received 102988 of 102988 (100.0%), 0.2 MBs/sec
+2026-09-08T07:13:03.4018762Z Cache Size: ~0 MB (102988 B)
+2026-09-08T07:13:03.4039457Z [command]/usr/bin/tar -xf /home/runner/work/_temp/57ba09c4-edc6-4826-9e4c-f80f5ad4547a/cache.tzst -P -C /home/runner/work/assembling/assembling --use-compress-program unzstd
+2026-09-08T07:13:03.4228519Z Cache restored successfully
+2026-09-08T07:13:03.4230678Z Restored cache entry with key gradle-groovy-dsl-v1-dba4d28ad0cc77b793d95dd636617159 to /home/runner/.gradle/caches/*/groovy-dsl/*/ in 1032ms
+2026-09-08T07:13:03.9339516Z Received 0 of 46117634 (0.0%), 0.0 MBs/sec
+2026-09-08T07:13:03.9569555Z Received 0 of 79580207 (0.0%), 0.0 MBs/sec
+2026-09-08T07:13:04.3912170Z Received 46117634 of 46117634 (100.0%), 30.2 MBs/sec
+2026-09-08T07:13:04.3913943Z Cache Size: ~44 MB (46117634 B)
+2026-09-08T07:13:04.4090779Z [command]/usr/bin/tar -xf /home/runner/work/_temp/722f4756-76a8-4431-98f0-f11801ac9729/cache.tzst -P -C /home/runner/work/assembling/assembling --use-compress-program unzstd
+2026-09-08T07:13:04.7653852Z Cache restored successfully
+2026-09-08T07:13:04.7677833Z Restored cache entry with key gradle-transforms-v1-a72dce75d922211108ea0b743dbcfd6c to /home/runner/.gradle/caches/transforms-4/*/,/home/runner/.gradle/caches/*/transforms/*/ in 2375ms
+2026-09-08T07:13:04.8622659Z Received 79580207 of 79580207 (100.0%), 39.8 MBs/sec
+2026-09-08T07:13:04.8623705Z Cache Size: ~76 MB (79580207 B)
+2026-09-08T07:13:04.8644865Z [command]/usr/bin/tar -xf /home/runner/work/_temp/900fcbc3-b7ad-4bc7-b1df-2ae464509c08/cache.tzst -P -C /home/runner/work/assembling/assembling --use-compress-program unzstd
+2026-09-08T07:13:04.9742348Z Cache restored successfully
+2026-09-08T07:13:04.9778066Z Restored cache entry with key gradle-dependencies-v1-0ff378357c155604ad8986b8a6971356 to /home/runner/.gradle/caches/modules-*/files-*/*/*/*/* in 2588ms
+2026-09-08T07:13:04.9849685Z ##[endgroup]
+2026-09-08T07:13:04.9923645Z ##[group]All Gradle Wrapper jars are valid
+2026-09-08T07:13:04.9924602Z 
+2026-09-08T07:13:04.9925217Z ##[endgroup]
+2026-09-08T07:13:05.0286206Z ##[group]Run gradle test
+2026-09-08T07:13:05.0286785Z [36;1mgradle test[0m
+2026-09-08T07:13:05.0325745Z shell: /usr/bin/bash -e {0}
+2026-09-08T07:13:05.0326072Z env:
+2026-09-08T07:13:05.0326456Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-08T07:13:05.0327029Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-08T07:13:05.0327555Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-08T07:13:05.0327933Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-08T07:13:05.0328284Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-08T07:13:05.0328639Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-08T07:13:05.0329139Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-08T07:13:05.0329705Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-08T07:13:05.0330102Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-08T07:13:05.0330422Z ##[endgroup]
+2026-09-08T07:13:09.2121702Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-09-08T07:13:22.9132517Z > Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-08T07:13:23.6122369Z > Task :processResources NO-SOURCE
+2026-09-08T07:13:23.6123746Z > Task :processTestResources NO-SOURCE
+2026-09-08T07:13:40.8120381Z 
+2026-09-08T07:13:40.8122620Z > Task :compileKotlin
+2026-09-08T07:13:40.8129030Z w: file:///home/runner/work/assembling/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:3:8 'class CoherenceGuard : Any' is deprecated. Compatibility-only legacy coherence path. New integration must use MatrixTurnFrame + CoherenceGuardPort and MIP semantics.
+2026-09-08T07:13:40.8134798Z w: file:///home/runner/work/assembling/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:9:8 'class SemanticFrameToPrompt : Any' is deprecated. Compatibility-only legacy prompt translator. New integration must use matrix.assembling.SemanticFrameToPrompt on the MatrixTurnFrame path.
+2026-09-08T07:13:40.8147487Z w: file:///home/runner/work/assembling/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:24:33 'class CoherenceGuard : Any' is deprecated. Compatibility-only legacy coherence path. New integration must use MatrixTurnFrame + CoherenceGuardPort and MIP semantics.
+2026-09-08T07:13:40.8197615Z w: file:///home/runner/work/assembling/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:24:50 'constructor(thresholds: CoherenceThresholds = ...): CoherenceGuard' is deprecated. Compatibility-only legacy coherence path. New integration must use MatrixTurnFrame + CoherenceGuardPort and MIP semantics.
+2026-09-08T07:13:40.8208234Z w: file:///home/runner/work/assembling/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:25:35 'class SemanticFrameToPrompt : Any' is deprecated. Compatibility-only legacy prompt translator. New integration must use matrix.assembling.SemanticFrameToPrompt on the MatrixTurnFrame path.
+2026-09-08T07:13:40.8211558Z w: file:///home/runner/work/assembling/assembling/src/main/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipeline.kt:25:59 'constructor(): SemanticFrameToPrompt' is deprecated. Compatibility-only legacy prompt translator. New integration must use matrix.assembling.SemanticFrameToPrompt on the MatrixTurnFrame path.
+2026-09-08T07:13:40.9115452Z 
+2026-09-08T07:13:40.9116863Z > Task :compileJava NO-SOURCE
+2026-09-08T07:13:40.9117917Z > Task :classes UP-TO-DATE
+2026-09-08T07:13:41.1136992Z > Task :jar
+2026-09-08T07:13:45.7136012Z 
+2026-09-08T07:13:45.7166171Z > Task :compileTestKotlin
+2026-09-08T07:13:45.7194830Z w: file:///home/runner/work/assembling/assembling/src/test/kotlin/matrix/assembling/DiagnosticTraceTest.kt:137:31 'interface MemoryAdmissionPort : MemoryPreflightPort' is deprecated. Pre-response stage is MemoryPreflightPort; durable writes belong to PersistentConsolidationPort.
+2026-09-08T07:13:45.7228649Z w: file:///home/runner/work/assembling/assembling/src/test/kotlin/matrix/assembling/pipeline/MatrixAssemblyPipelineTest.kt:18:28 'constructor(coherenceGuard: CoherenceGuard = ..., promptTranslator: SemanticFrameToPrompt = ...): MatrixAssemblyPipeline' is deprecated. Compatibility-only. Use MatrixTurnFrame + MatrixAssemblingOrchestrator for new integration work.
+2026-09-08T07:13:45.8139159Z 
+2026-09-08T07:13:45.8140193Z > Task :compileTestJava NO-SOURCE
+2026-09-08T07:13:45.8165976Z > Task :testClasses UP-TO-DATE
+2026-09-08T07:13:47.3121116Z > Task :test
+2026-09-08T07:13:47.3122486Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1788851596018.json
+2026-09-08T07:13:47.4013256Z 
+2026-09-08T07:13:47.4014906Z [Incubating] Problems report is available at: file:///home/runner/work/assembling/assembling/build/reports/problems/problems-report.html
+2026-09-08T07:13:47.4016697Z 
+2026-09-08T07:13:47.4044690Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-09-08T07:13:47.4060791Z 
+2026-09-08T07:13:47.4062318Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-09-08T07:13:47.4063573Z 
+2026-09-08T07:13:47.4064903Z For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-09-08T07:13:47.4066639Z 
+2026-09-08T07:13:47.4080950Z BUILD SUCCESSFUL in 42s
+2026-09-08T07:13:47.4081713Z 4 actionable tasks: 4 executed
+2026-09-08T07:13:47.4083080Z Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html
+2026-09-08T07:13:47.9160749Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-08T07:13:47.9162088Z Post job cleanup.
+2026-09-08T07:13:48.1633382Z In post-action step
+2026-09-08T07:13:48.1645621Z Cache is read-only: will not save state for use in subsequent builds.
+2026-09-08T07:13:48.1652744Z Generating Job Summary
+2026-09-08T07:13:48.1672429Z Completed post-action step
+2026-09-08T07:13:48.2853212Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-08T07:13:48.2854715Z Post job cleanup.
+2026-09-08T07:13:48.4351178Z (node:2715) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-08T07:13:48.4352684Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-08T07:13:48.5547465Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-08T07:13:48.5548790Z Post job cleanup.
+2026-09-08T07:13:48.6395360Z [command]/usr/bin/git version
+2026-09-08T07:13:48.6439598Z git version 2.55.0
+2026-09-08T07:13:48.6479216Z Temporarily overriding HOME='/home/runner/work/_temp/017b1c58-e784-45f9-a8a4-1910a075e99b' before making global git config changes
+2026-09-08T07:13:48.6480753Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-08T07:13:48.6485652Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/assembling/assembling
+2026-09-08T07:13:48.6527817Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-08T07:13:48.6574865Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-08T07:13:48.6837761Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-08T07:13:48.6865828Z http.https://github.com/.extraheader
+2026-09-08T07:13:48.6880297Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-09-08T07:13:48.6917597Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-08T07:13:48.7179851Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-08T07:13:48.7221191Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-08T07:13:48.7636126Z Cleaning up orphan processes
+2026-09-08T07:13:48.7953558Z Terminate orphan process: pid (2438) (java)
+2026-09-08T07:13:48.7981913Z Terminate orphan process: pid (2594) (java)
+2026-09-08T07:13:48.7990263Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -92,7 +92,7 @@ Prompt Builder is realization-only; it must not acquire decision, truth, memory,
 
 Recovery R1 (2026-09-08): root prompt consumes PRESENT Understanding V3 and claim-wise canonical Authority directly through `src/main/kotlin/matrix/assembling/prompt/v3/CanonicalV3PromptRenderer.kt`. No legacy DTO projection. Status, ranked alternatives, plural evidence, role identities and provenance are preserved; V3 ERROR/absent Authority and premature durable write fail closed. Legacy body is unchanged.
 
-Verification scope: **software boundary verified on JVM fixtures**, 159/159 local tests, including actual adapter → deterministic Authority → prompt execution. This does **not** verify real NLU/GGUF models or rewire the full orchestrator's legacy Coherence/Memory/Affective stages. See `docs/RECOVERY_R1_V3_PROMPT_20260908.md` and its raw evidence; remote PR/main CI remains a required gate for publication.
+Verification scope: **software boundary verified on JVM fixtures**, 159/159 local tests, including actual adapter → deterministic Authority → prompt execution. This does **not** verify real NLU/GGUF models or rewire the full orchestrator's legacy Coherence/Memory/Affective stages. See `docs/RECOVERY_R1_V3_PROMPT_20260908.md` and its raw evidence; source PR CI is PASS (run `34198222276`, commit `5f9495c1def64296fe724fb7933b44191e0b7092`) and source readback is PASS. Final publication SHA, final PR/main CI and final readback are recorded in the closing receipt of [PR #24](https://github.com/MATRIXNEO23/assembling/pull/24).
 
 ### Diagnostic trace / workspace carrier
 Primary surface: `MatrixTurnFrame.diagnostics` in `src/main/kotlin/matrix/assembling/MatrixTurnFrame.kt`.

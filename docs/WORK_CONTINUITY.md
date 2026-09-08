@@ -187,3 +187,13 @@ Gate corrente all'avvio: baseline JVM e regressione mirata. Risultati finali, ev
 - Evidence: `docs/RECOVERY_R1_V3_PROMPT_20260908.md` and `docs/evidence/recovery-r1-20260908/`.
 - Current gate: persist branch/PR, final-head CI, merge only if green, post-merge CI and remote byte readback.
 - Exact restart: complete R1 remote gates; do not treat this as full orchestrator/model/Memory/Android validation. Historical “Memory ACTIVE NEXT” is not authorization to fabricate a new backend during recovery.
+
+### R1 remote source gate and recovery locator
+
+- PR: https://github.com/MATRIXNEO23/assembling/pull/24
+- Code/evidence source commit: `5f9495c1def64296fe724fb7933b44191e0b7092`.
+- Source PR CI: run `34198222276`, job `101970687729`, PASS; `gradle test` executed, BUILD SUCCESSFUL in 42s.
+- Remote recovery: all 19 files of source commit fetched again; UTF-8 bytes, SHA-256 and Git blob identities match.
+- Source code is frozen after that successful CI; this closure adds only receipts/documentation.
+- **Publication receipt:** the final body of PR #24 records final PR head, final-head CI, merge/main SHA, post-merge CI and final readback. It is the durable exact restart locator and avoids a self-referencing commit SHA inside a commit. If that receipt is missing, publication has not yet been confirmed.
+- After the publication receipt is PASS: R1 software boundary is closed; all broader runtime limitations in `docs/RECOVERY_R1_V3_PROMPT_20260908.md` remain open. No next module/training stage has been started.

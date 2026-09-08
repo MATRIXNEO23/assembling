@@ -6,7 +6,7 @@ Branch: `recovery/r1-canonical-v3-prompt`.
 
 ## Risultato e confine della prova
 
-**Il difetto del confine canonico V3 → prompt è riprodotto e corretto.** La suite JVM originale esegue 150 test verdi; con la regressione e le nuove prove esegue 159 test verdi, zero errori, zero skip. La verifica indipendente del JSON generato passa. La CI della PR e del merge è il gate remoto successivo: consultarne run e SHA prima di considerare questo checkpoint pubblicato.
+**Il difetto del confine canonico V3 → prompt è riprodotto e corretto.** La suite JVM originale esegue 150 test verdi; con la regressione e le nuove prove esegue 159 test verdi, zero errori, zero skip. La verifica indipendente del JSON generato passa. La CI della PR sul commit di codice `5f9495c1def64296fe724fb7933b44191e0b7092` è PASS (run `34198222276`, `gradle test`, 42s). Il readback dei 19 file di quel commit è PASS, con SHA-256 e Git blob ricalcolati. La ricevuta conclusiva della [PR #24](https://github.com/MATRIXNEO23/assembling/pull/24) registra il commit finale, CI pre/post-merge e readback finale: consultarla per l’esito di pubblicazione, senza confondere il gate locale con quello remoto.
 
 Questa è una prova funzionale software del percorso `MatrixNluV3RuntimeBridge` con output fixture → `CanonicalUnderstandingV3Adapter` → `CanonicalUnderstandingV3AuthorityPort` con resolver deterministico reale → `SemanticFrameToPrompt`. Non è inferenza con un modello NLU, una prova con GGUF, una verifica semantica di dataset, un giro completo di `MatrixAssemblingOrchestrator`, un test Memory durevole o un test Android.
 
@@ -51,6 +51,7 @@ Directory: `docs/evidence/recovery-r1-20260908/`.
 - `v3-prompt.json`, `v3-prompt-escaped.json`: output effettivi delle fixture JVM.
 - `verify_prompt.py`: decoder/verifica indipendente; eseguibile anche contro `build/diagnostics` dopo `gradle test`.
 - `verification.json`: risultati circoscritti e immutabilità degli altri file originali.
+- `ci-pr-source.json`, `ci-pr-source.log`, `remote-readback-source.json`: prova della CI e recupero remoto del commit di codice prima della sola chiusura documentale.
 - `SHA256SUMS`: checksum delle evidenze e dei quattro file Kotlin modificati/aggiunti; percorsi relativi alla root repository.
 
 ## Limiti aperti: nessuna dichiarazione di Engine completo
