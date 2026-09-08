@@ -393,7 +393,8 @@ Solo dopo questa checklist il rewire è autorizzabile.
 - prima di operazioni rischiose;
 - appena emerge un rischio di stop/perdita contesto;
 - prima di terminare la sessione;
-- **prima di proporre o applicare un cambio di metodo/modulo/architettura/priorità**.
+- **prima di proporre o applicare un cambio di metodo/modulo/architettura/priorità**;
+- **immediatamente quando OWNER + SUPERVISOR confermano un piano costruttivo reale: il piano va persistito senza chiedere un'ulteriore autorizzazione solo per salvarlo**.
 
 Deve contenere almeno:
 
@@ -406,7 +407,43 @@ Deve contenere almeno:
 - artifact/checksum quando applicabile;
 - rischi aperti;
 - modifiche ad altri repo = true/false;
-- exact restart point.
+- exact restart point;
+- riferimento al documento/versione del piano costruttivo confermato, quando esiste.
+
+### 13.1 Preservazione automatica dei piani costruttivi confermati
+
+Quando una discussione progettuale arriva a una decisione equivalente a:
+
+```text
+"SI FA COSI"
+"QUESTO E IL PIANO"
+"APPROVO QUESTA STRUTTURA"
+```
+
+il supervisor deve automaticamente:
+
+```text
+1. distinguere il piano confermato dalle idee ancora ipotetiche;
+2. salvarlo nella repository attiva appropriata come documento canonico/versionato;
+3. collegarlo dalla continuity;
+4. registrare dipendenze, stato e punto di inserimento nel roadmap;
+5. preservare la versione precedente se il piano ne sostituisce una;
+6. verificare commit + readback prima di dichiarare "salvato";
+7. non chiedere al proprietario un'ulteriore domanda del tipo "vuoi che lo salvi?".
+```
+
+Le idee non ancora approvate restano proposte/ipotesi e non modificano il piano automaticamente.
+
+Hard rule:
+
+```text
+CONFIRMED CONSTRUCTION PLAN
+→ PERSIST NOW
+→ CONTINUITY LINK
+→ VERSIONED FUTURE CHANGES
+```
+
+La memoria della chat non è una persistenza sufficiente.
 
 ## 14. Una repository scrivibile alla volta
 
@@ -530,4 +567,90 @@ Reflection viene dopo una Memory verificata, così non produce inferenze su rico
 10. NO NEXT MODULE UNTIL CURRENT SUITE IS 100% GREEN
 11. SEMANTIC QUALITY IS MEASURED AND MAXIMIZED, NOT FROZEN AS ONE GLOBAL PERCENTAGE
 12. PROPOSE PIVOTS WITH EVIDENCE; CHANGE DIRECTION ONLY AFTER OWNER APPROVAL
+```
+
+## 20. Verifica obbligatoria dello stato operativo prima di qualsiasi affermazione
+
+Le domande su **repository, branch, HEAD, task corrente, executor, Work attivo, gate, artifact o prossimo passo** non si rispondono per memoria, impressione o contesto conversazionale parziale.
+
+Prima di affermare uno stato operativo il supervisor deve verificare la fonte canonica aggiornata:
+
+```text
+1. IDENTIFICA la repository a cui appartiene la domanda.
+2. LEGGI la continuity canonica di quella repository/workstream.
+3. VERIFICA branch e HEAD reali quando la risposta dipende dallo stato corrente.
+4. SE Work è attivo, distingui:
+   - repository/branch di Work;
+   - repository/branch del supervisor;
+   - task eseguito da Work;
+   - task solo preparato o in attesa.
+5. CONFRONTA eventuali informazioni della chat con la repo; la repo/continuity prevale per lo stato operativo.
+6. SE lo stato non è verificabile, dichiaralo esplicitamente invece di indovinarlo.
+```
+
+Regola:
+
+```text
+OPERATIONAL CLAIM
+→ SOURCE-OF-TRUTH READ
+→ STATE/HEAD VERIFICATION
+→ ANSWER
+```
+
+È vietato rispondere prima e "controllare dopo" quando la domanda riguarda lo stato reale del progetto.
+
+## 21. Tracciabilità obbligatoria dei test lungo MIP
+
+Le sezioni 5-8 sono estese dalla seguente regola: ogni test usato per dimostrare il comportamento reale di un modulo o di un confine deve produrre una traccia verificabile dall'owner.
+
+Formato minimo:
+
+```text
+REAL INPUT
+→ PRODUCER/MODULE REALMENTE ESEGUITO
+→ ACTUAL RAW/STRUCTURED OUTPUT
+→ EXPECTED OUTPUT
+→ FIELD-BY-FIELD DIFF
+→ MIP/CONTRACT REPRESENTATION
+→ ADAPTER TRANSFORMATION, SE PRESENTE
+→ ACTUAL INPUT CONSEGNATO AL CONSUMER SUCCESSIVO
+→ ACTUAL OUTPUT DEL CONSUMER SUCCESSIVO
+→ FIRST DIVERGENCE
+```
+
+Per ogni confine registrare esplicitamente:
+
+```text
+fieldsPreserved
+fieldsChanged
+fieldsLost
+fieldsInvented
+identity/provenance preserved?
+UNKNOWN/UNRESOLVED/AMBIGUOUS/UNAVAILABLE/NO_MATCH/ERROR preserved?
+reasonCodes
+confidence/sourceReliability quando applicabili
+```
+
+Un passaggio è dimostrato soltanto se è possibile rispondere concretamente a:
+
+```text
+"Cosa è entrato?"
+"Cosa ha capito/prodotto il modulo?"
+"In quale forma MIP è uscito?"
+"Cosa è stato consegnato al modulo dopo?"
+"Cosa ha prodotto il modulo dopo?"
+"Dove compare la prima differenza rispetto all'atteso?"
+```
+
+Se il consumer successivo non esiste o non è ancora integrato, il test si ferma a quel confine e il verdetto deve essere `PARZIALMENTE DIMOSTRATO` / `NON ANCORA DIMOSTRATO`, mai chiusura dell'intera catena.
+
+Questa regola non sostituisce test atomici, cross-modulo, E2E o DiagnosticTrace: li rende concretamente ispezionabili e localizzabili lungo il ciclo completo.
+
+## 22. Regole d'oro aggiuntive
+
+```text
+13. VERIFY OPERATIONAL STATE BEFORE CLAIMING IT
+14. EVERY REAL TEST MUST SHOW INPUT -> MIP -> HANDOFF -> OUTPUT
+15. RECORD LOST / CHANGED / INVENTED FIELDS AND FIRST DIVERGENCE
+16. CONFIRMED CONSTRUCTION PLAN -> PERSIST NOW + LINK FROM CONTINUITY
 ```

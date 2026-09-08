@@ -1,6 +1,7 @@
 package matrix.assembling
 
 import matrix.assembling.authority.AuthorityResolution
+import matrix.assembling.canonical.CanonicalClaimCoherenceResult
 import matrix.assembling.mip.MatrixContextSnapshot
 import matrix.assembling.mip.MipField
 import matrix.assembling.mip.MipFieldStatus
@@ -37,6 +38,8 @@ data class MatrixTurnFrame(
      * successful no-match is represented by PRESENT list entries with RetrievalStatus.NO_MATCH.
      */
     val retrievalResults: MipField<List<RetrievalResult>> = MipField.unavailable(),
+    /** Claim-wise canonical semantic/structural stability results before Authority. */
+    val canonicalCoherenceResults: MipField<List<CanonicalClaimCoherenceResult>> = MipField.unavailable(),
     /** Current claim-wise canonical AUTHORITY-1.0 resolutions. */
     val canonicalAuthorityResolutions: MipField<List<AuthorityResolution>> = MipField.unavailable(),
     /**
@@ -68,6 +71,15 @@ data class MatrixTurnFrame(
 
     fun requireCanonicalRetrievalResults(): List<RetrievalResult> =
         retrievalResults.requirePresentSlot("retrievalResults")
+
+    fun requireCanonicalCoherenceResults(): List<CanonicalClaimCoherenceResult> =
+        canonicalCoherenceResults.requirePresentSlot("canonicalCoherenceResults")
+
+    fun requireCanonicalCoherenceForClaim(claimId: String): CanonicalClaimCoherenceResult {
+        require(claimId.isNotBlank()) { "claimId must not be blank" }
+        return requireCanonicalCoherenceResults().singleOrNull { it.claimId == claimId }
+            ?: error("MatrixTurnFrame missing unique canonical Coherence result for claimId=$claimId")
+    }
 
     fun requireCanonicalAuthorityResolutions(): List<AuthorityResolution> =
         canonicalAuthorityResolutions.requirePresentSlot("canonicalAuthorityResolutions")
@@ -113,6 +125,13 @@ data class MatrixTurnFrame(
         )) {
             "retrievalResults outer status=${retrievalResults.status} is invalid; result-level retrieval status belongs inside RetrievalResult"
         }
+        require(canonicalCoherenceResults.status !in setOf(
+            MipFieldStatus.NO_MATCH,
+            MipFieldStatus.AMBIGUOUS,
+            MipFieldStatus.CONFLICTED,
+        )) {
+            "canonicalCoherenceResults outer status=${canonicalCoherenceResults.status} is invalid; claim-wise status belongs inside each result"
+        }
 
         val context = contextSnapshot.value.takeIf { contextSnapshot.status == MipFieldStatus.PRESENT }
         if (context != null) {
@@ -134,6 +153,26 @@ data class MatrixTurnFrame(
             }
             require(results.map { it.queryId }.distinct().size == results.size) {
                 "retrievalResults queryIds must be unique"
+            }
+        }
+
+        if (canonicalCoherenceResults.status == MipFieldStatus.PRESENT) {
+            require(context != null) {
+                "PRESENT canonicalCoherenceResults requires PRESENT contextSnapshot"
+            }
+            val results = requireNotNull(canonicalCoherenceResults.value)
+            val canonicalClaimIds = requireNotNull(canonicalUnderstandingV3.value).claims.map { it.claimId }
+            require(results.isNotEmpty()) {
+                "PRESENT canonicalCoherenceResults must not be empty"
+            }
+            require(results.map { it.claimId }.distinct().size == results.size) {
+                "canonical Coherence results must contain at most one result per claimId"
+            }
+            require(results.map { it.claimId }.toSet() == canonicalClaimIds.toSet()) {
+                "canonical Coherence results must cover exactly the current canonical claim set"
+            }
+            require(results.all { it.contextSnapshotId == context.snapshotId }) {
+                "canonical Coherence results must reference the current contextSnapshotId=${context.snapshotId}"
             }
         }
 
@@ -290,6 +329,9 @@ data class DiagnosticTrace(
     val inputOriginale: String? = null,
     val observation: DiagnosticSnapshot? = null,
     val understandingResult: DiagnosticSnapshot? = null,
+    val contextAssembly: DiagnosticSnapshot? = null,
+    val retrievalResult: DiagnosticSnapshot? = null,
+    val coherenceValidation: DiagnosticSnapshot? = null,
     val authorityResolution: DiagnosticSnapshot? = null,
     val admissionDecision: DiagnosticSnapshot? = null,
     val memoryResult: DiagnosticSnapshot? = null,
@@ -306,6 +348,9 @@ data class DiagnosticTrace(
     fun reason(code: String): DiagnosticTrace = copy(reasoningChain = reasoningChain + code)
     fun observe(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(observation = snapshot)
     fun understood(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(understandingResult = snapshot)
+    fun context(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(contextAssembly = snapshot)
+    fun retrieval(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(retrievalResult = snapshot)
+    fun coherence(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(coherenceValidation = snapshot)
     fun authority(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(authorityResolution = snapshot)
     fun admission(snapshot: DiagnosticSnapshot): DiagnosticTrace = copy(admissionDecision = snapshot)
     fun memory(snapshot: DiagnosticSnapshot, id: String? = memoryId): DiagnosticTrace = copy(

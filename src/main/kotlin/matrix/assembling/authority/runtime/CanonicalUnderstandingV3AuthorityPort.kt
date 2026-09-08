@@ -54,7 +54,12 @@ class CanonicalUnderstandingV3AuthorityPort(
                     requestId = "${turn.turnId}:${claim.claimId}:authority",
                     claim = projected,
                     contextSnapshot = context,
-                    retrievalResult = retrievalForClaim(turn, observation.claims.size),
+                    retrievalResult = retrievalForClaim(
+                        turn = turn,
+                        claimId = claim.claimId,
+                        contextSnapshotId = context.snapshotId,
+                        claimCount = observation.claims.size,
+                    ),
                     provenance = claim.provenance,
                 )
             )
@@ -97,23 +102,68 @@ class CanonicalUnderstandingV3AuthorityPort(
     }
 
     /**
-     * RetrievalResult currently has no claimId binding in MIP-1.0. Therefore only the
-     * unambiguous 1-claim/1-result case is bound here; multi-claim turns stay UNRESOLVED rather
-     * than guessing by list order or parsing query IDs.
+     * Binds retrieval evidence to the exact claim and immutable context snapshot.
+     *
+     * Legacy compatibility is deliberately limited to the unambiguous 1-claim/1-result case when
+     * the result has not yet been migrated to explicit claim binding. Multi-claim turns never use
+     * list order or queryId parsing as an identity substitute.
      */
-    private fun retrievalForClaim(turn: MatrixTurnFrame, claimCount: Int): MipField<RetrievalResult> =
+    private fun retrievalForClaim(
+        turn: MatrixTurnFrame,
+        claimId: String,
+        contextSnapshotId: String,
+        claimCount: Int,
+    ): MipField<RetrievalResult> =
         when (turn.retrievalResults.status) {
             MipFieldStatus.PRESENT -> {
                 val results = requireNotNull(turn.retrievalResults.value)
-                if (claimCount == 1 && results.size == 1) MipField.present(results.single())
-                else MipField.unresolved()
+
+                if (
+                    claimCount == 1 &&
+                    results.size == 1 &&
+                    results.single().claimId.status != MipFieldStatus.PRESENT
+                ) {
+                    MipField.present(results.single())
+                } else {
+                    val matching = results.filter {
+                        it.claimId.status == MipFieldStatus.PRESENT && it.claimId.value == claimId
+                    }
+                    when (matching.size) {
+                        0 -> MipField.unresolved()
+                        1 -> validateContextBinding(matching.single(), contextSnapshotId)
+                        else -> MipField.conflicted()
+                    }
+                }
             }
             MipFieldStatus.NOT_APPLICABLE -> MipField.notApplicable()
             MipFieldStatus.UNKNOWN -> MipField.unknown()
             MipFieldStatus.UNRESOLVED -> MipField.unresolved()
+            MipFieldStatus.AMBIGUOUS -> MipField.ambiguous()
+            MipFieldStatus.CONFLICTED -> MipField.conflicted()
             MipFieldStatus.UNAVAILABLE -> MipField.unavailable()
+            MipFieldStatus.NO_MATCH -> MipField.noMatch()
             MipFieldStatus.ERROR -> MipField.error()
-            else -> MipField.error()
+        }
+
+    private fun validateContextBinding(
+        result: RetrievalResult,
+        expectedContextSnapshotId: String,
+    ): MipField<RetrievalResult> =
+        when (result.contextSnapshotId.status) {
+            MipFieldStatus.PRESENT ->
+                if (result.contextSnapshotId.value == expectedContextSnapshotId) {
+                    MipField.present(result)
+                } else {
+                    MipField.error()
+                }
+            MipFieldStatus.NOT_APPLICABLE -> MipField.error()
+            MipFieldStatus.UNKNOWN -> MipField.unknown()
+            MipFieldStatus.UNRESOLVED -> MipField.unresolved()
+            MipFieldStatus.AMBIGUOUS -> MipField.ambiguous()
+            MipFieldStatus.CONFLICTED -> MipField.conflicted()
+            MipFieldStatus.UNAVAILABLE -> MipField.unavailable()
+            MipFieldStatus.NO_MATCH -> MipField.error()
+            MipFieldStatus.ERROR -> MipField.error()
         }
 
     private fun boundaryFailure(turn: MatrixTurnFrame, code: String, message: String): MatrixBoundaryViolationException =
