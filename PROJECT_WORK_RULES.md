@@ -1,7 +1,7 @@
 # Regole canoniche di lavoro
 
 Stato: CANONICO
-Data: 2026-09-05
+Data: 2026-09-08
 
 ## Una repository alla volta
 
@@ -13,6 +13,28 @@ Salvo indicazione esplicita del proprietario, si lavora su una sola repository a
 - Il cambio di repository attiva richiede istruzione esplicita.
 - Se una modifica di un componente richiede aggiornamenti di codice, test, documentazione o continuità nella repository attiva, tali aggiornamenti vanno mantenuti coerenti nello stesso workstream.
 - Non creare specifiche parallele quando esiste già un documento canonico aggiornabile.
+
+## Sorgente operativa corrente: Assembling
+
+Per il Matrix Engine corrente la repository attiva/canonica è `MATRIXNEO23/assembling` salvo esplicito cambio autorizzato dal proprietario.
+
+Repository storiche come `8.10.9evo3`, `8.10.9evo3-solo-gpt` e predecessori sono backup/fonti storiche: non devono essere usate come implementazione corrente, né come base per un nuovo indice dei moduli, salvo recupero mirato esplicitamente richiesto.
+
+## Indice canonico moduli Engine
+
+Prima di iniziare o riprendere qualunque lavoro sul Matrix Engine leggere:
+
+`docs/ENGINE_MODULE_INDEX.md`
+
+L'indice deve permettere a una nuova sessione/Work/Supervisor di sapere autonomamente:
+- quali moduli esistono;
+- quali sono realmente cablati, parziali, compatibility/deprecated o `NON_CABLATO`;
+- dove si trova il codice corrente;
+- quali sono i documenti/contratti autorevoli;
+- quali adapter/vendor/artifact appartengono al modulo;
+- quali percorsi sono storici e non vanno usati come correnti.
+
+Ogni task che modifica o aggiunge un modulo, adapter, protocollo, modello/runtime artifact, locator, persistence route, stato di wiring o gate di readiness deve aggiornare `docs/ENGINE_MODULE_INDEX.md` e `docs/WORK_CONTINUITY.md` prima di essere considerato completato.
 
 ## Nuovi moduli = directory/package dedicata
 
